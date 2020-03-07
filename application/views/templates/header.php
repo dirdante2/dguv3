@@ -9,6 +9,8 @@
 	<script src="<?php echo base_url();?>lib/datatables/datatables.js"></script>
 	<!--<script src="<?php echo base_url();?>lib/datatables/datatables.min.js"></script>-->
 	<!--<script src="<?php echo base_url();?>lib/datatables/jquery.dataTables.min.js"></script>-->
+	<script src="https://code.iconify.design/1/1.0.4/iconify.min.js"></script>
+	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/bootstrap/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/jquery/jquery-ui.min.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/jquery/jquery-ui.structure.min.css">

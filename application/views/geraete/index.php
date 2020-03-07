@@ -20,7 +20,7 @@
 <div class="btn-group pull-right">
 <a class="<?php if(!$ort) { echo "d-none"; } ?> btn btn-primary" href="<?php echo site_url('geraete'); ?>">Alle Geräte auflisten</a>
 
-<a href="<?php echo site_url('geraete/edit'); ?>" class="btn btn-success">Neues Gerät hinzufügen</a>
+<a href="<?php echo site_url('geraete/edit'); ?>" class="btn btn-success"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neues Gerät hinzufügen</a>
 <button id="suche_abgelaufen" class="btn btn-danger filter">Prüfung Abgelaufen</button>
 <button id="suche_baldabgelaufen" class="btn btn-warning filter">Prüfung bald Abgelaufen</button>
 <button id="suche_inaktiv" class="btn btn-secondary filter">Gerät auser Betrieb</button>
@@ -111,10 +111,10 @@ if(count($geraete)==0) {
 			<td>letzte (anzahl)</td>
 			<td>
 				<div class="btn-group btn-group-sm" role="group" aria-label="options">
-					<a href="#"><button type="button" class="btn btn-success btn-sm">Prüfungen</button></a>
+					<a href="#"><button type="button" class="btn btn-success btn-sm"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span></button></a>
 					<a href="<?php echo site_url('geraete/pruefung/') ?>"><button type="button" class="btn btn-info btn-sm">Protokoll</button></a>
-					<a href="<?php echo site_url('geraete/edit/'.$geraet['gid']); ?>"><button type="button" class="btn btn-secondary btn-sm">bearbeiten</button></a>
-					<a href="<?php echo site_url('geraete/delete/'.$geraet['gid']); ?>"><button type="button" class="btn btn-danger btn-sm">löschen</button></a>
+					<a href="<?php echo site_url('geraete/edit/'.$geraet['gid']); ?>"><button type="button" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span></button></a>
+					<a href="<?php echo site_url('geraete/delete/'.$geraet['gid']); ?>"><button type="button" class="btn btn-danger btn-sm"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span></button></a>
 				</div>
 			<!--<a href="<?php echo site_url('geraete/edit/'.$geraet['gid']); ?>">bearbeiten</a> | <a href="<?php echo site_url('geraete/delete/'.$geraet['gid']); ?>">löschen</a>-->
 		

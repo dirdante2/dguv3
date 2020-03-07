@@ -1,7 +1,7 @@
 
 <h1>Orte</h1>
 
-<a href="<?php echo site_url('orte/edit'); ?>" class="btn btn-primary">Ort hinzufügen</a>
+<a href="<?php echo site_url('orte/edit'); ?>" class="btn btn-primary"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Ort hinzufügen</a>
 <br>
 <br>
 <table class="table" id="table" style="width:100%">
@@ -35,10 +35,10 @@ if(count($orte)==0) {
 			<td><?php echo $ort['beschreibung']; ?></td>
 			<td>xxx?</td>
 			<td>
-				<a href="<?php echo site_url('geraete/index/'.$ort['oid']); ?>" class="btn btn-primary">Geräte</a>
-				<a href="<?php echo site_url('geraete/geraete/'.$ort['oid']); ?>" class="btn btn-success">Drucken</a>
-				<a href="<?php echo site_url('orte/edit/'.$ort['oid']); ?>" class="btn btn-secondary">bearbeiten</a>
-				<a href="<?php echo site_url('orte/delete/'.$ort['oid']); ?>" class="btn btn-danger">löschen</a>
+				<a href="<?php echo site_url('geraete/index/'.$ort['oid']); ?>" class="btn btn-primary"><span class="iconify icon:ant-design:ordered-list-outlined icon-width:20 icon-height:20"></span></a>
+				<a href="<?php echo site_url('geraete/geraete/'.$ort['oid']); ?>" class="btn btn-success"><span class="iconify icon:fa-solid:car-side icon-width:20 icon-height:20"></span></a>
+				<a href="<?php echo site_url('orte/edit/'.$ort['oid']); ?>" class="btn btn-secondary"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span></a>
+				<a href="<?php echo site_url('orte/delete/'.$ort['oid']); ?>" class="btn btn-danger"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span></a>
 			</td>
 		</tr>
 		<?php

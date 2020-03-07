@@ -1,2 +1,7 @@
-# dguv3
-Ein Projekt zum Verwalten von DGUV3-Messungen
+## codemix-vanilla-php
+
+Template for project creation of PHP inside CodeMix
+
+# Contents
+
+This template project is an example that prints on the console the Hello World!!! Greeting HTML tagged with the PHP language.

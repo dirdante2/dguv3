@@ -1,7 +1,7 @@
 
 <h1>Messgeräte</h1>
 
-<a href="<?php echo site_url('messgeraete/edit'); ?>" class="btn btn-primary">Messgerät hinzufügen</a>
+<a href="<?php echo site_url('messgeraete/edit'); ?>" class="btn btn-primary"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Messgerät hinzufügen</a>
 <br>
 <br>
 
@@ -34,8 +34,8 @@ if(count($messgeraete)==0) {
 			<td><?php echo $messgeraet['name']; ?></td>
 			<td><?php echo $messgeraet['beschreibung']; ?></td>
 			<td>
-				<a href="<?php echo site_url('messgeraete/edit/'.$messgeraet['mid']); ?>" class="btn btn-secondary">bearbeiten</a>
-				<a href="<?php echo site_url('messgeraete/delete/'.$messgeraet['mid']); ?>" class="btn btn-danger">löschen</a>
+				<a href="<?php echo site_url('messgeraete/edit/'.$messgeraet['mid']); ?>" class="btn btn-secondary"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span></a>
+				<a href="<?php echo site_url('messgeraete/delete/'.$messgeraet['mid']); ?>" class="btn btn-danger"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span></a>
 			</td>
 		</tr>
 		<?php

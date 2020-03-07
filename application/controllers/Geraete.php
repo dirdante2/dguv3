@@ -25,7 +25,7 @@ class Geraete extends CI_Controller {
 			$data['ort'] = NULL;
 			$data['geraete'] = $this->Geraete_model->get();
 		}
-
+		/*$this->output->cache(5);*/
 		$this->load->view('templates/header');
 		$this->load->view('templates/datatable');
 		$this->load->view('geraete/index',$data);
@@ -41,7 +41,7 @@ class Geraete extends CI_Controller {
 			$data['ort'] = NULL;
 			$data['geraete'] = $this->Geraete_model->get();
 		}
-
+		/*$this->output->cache(5);*/
 		$this->load->view('templates/print/header');
 		$this->load->view('templates/datatable');
 		$this->load->view('geraete/geraete',$data);
@@ -57,7 +57,7 @@ class Geraete extends CI_Controller {
 			$data['ort'] = NULL;
 			$data['geraete'] = $this->Geraete_model->get();
 		}
-
+		/*$this->output->cache(10);*/
 		$this->load->view('templates/print/header');
 		$this->load->view('templates/datatable');
 		$this->load->view('geraete/pruefung',$data);

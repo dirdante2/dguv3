@@ -9,6 +9,7 @@ $(document).ready( function () {
       "bFilter": true,
       "bSort": true,
       "info": true,
+      "iDisplayLength":25,
       "order": [[ 0, "asc" ]]
       
   
