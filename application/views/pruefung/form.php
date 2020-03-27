@@ -26,7 +26,7 @@ $().ready(function() {
 
 
 
-<h1>Prüfung bearbeiten - <?php echo $geraet['name'].' ( ID: '.$geraet['gid'].')'; ?></h1>
+<h1>Prüfung bearbeiten - <?php echo $geraet['name'].' ( ID: '.$geraet['gid'].')'; ?> <?php echo $geraet['oid']; ?></h1>
 <br>
 <?php
 echo form_open('pruefung/edit/'.$geraet['gid']);

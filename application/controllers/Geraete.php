@@ -47,22 +47,7 @@ class Geraete extends CI_Controller {
 		$this->load->view('geraete/geraete',$data);
 		$this->load->view('templates/print/footer');
 	}
-	/*
-	muss an die richtige stelle*/
-	function pruefung($oid=NULL) {
-		if($oid) {
-			$data['ort'] = $this->Orte_model->get($oid);
-			$data['geraete'] = $this->Geraete_model->getByOid($oid);
-		} else {
-			$data['ort'] = NULL;
-			$data['geraete'] = $this->Geraete_model->get();
-		}
-		/*$this->output->cache(10);*/
-		$this->load->view('templates/print/header');
-		$this->load->view('templates/datatable');
-		$this->load->view('geraete/pruefung',$data);
-		$this->load->view('templates/print/footer');
-	}
+
 
 
 
