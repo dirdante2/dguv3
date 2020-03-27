@@ -8,7 +8,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 
-class Geraete_model extends CI_Model {
+class Pruefung_model extends CI_Model {
 
 	function __construct() {
 		$this->load->database();
@@ -16,15 +16,15 @@ class Geraete_model extends CI_Model {
 
 	function get($gid=NULL) {
 		if($gid===NULL) {
-			$this->db->select('geraete.*, orte.name AS ortsname');
+			$this->db->select('pruefung.*, geraete.*');
 			$this->db->from('geraete');
-			$this->db->join('orte', 'geraete.oid = orte.oid');
+			$this->db->join('pruefung', 'pruefung.gid = geraete.gid', 'LEFT');
 			return $this->db->get()->result_array();
 		}
-		$this->db->select('geraete.*, orte.name AS ortsname');
-		$this->db->from('geraete');
-		$this->db->join('orte', 'geraete.oid = orte.oid');
-		$this->db->where('gid',$gid);
+                $this->db->select('pruefung.*, geraete.*');
+                $this->db->from('geraete');
+                $this->db->join('pruefung', 'pruefung.gid = geraete.gid', 'LEFT');
+		$this->db->where('geraete.gid',$gid);
 
 		$result = $this->db->get()->result_array(); 
 		if(is_array($result)) {
@@ -34,26 +34,23 @@ class Geraete_model extends CI_Model {
 		}
 	}
 
-	function getByOid($oid) {
-		$this->db->select('geraete.*, orte.name AS ortsname');
-		$this->db->from('geraete');
-		$this->db->join('orte', 'geraete.oid = orte.oid');
-		$this->db->where('orte.oid',$oid);
-		return $this->db->get()->result_array();
-	}
-
 
 	function set($data,$gid=NULL) {
 		if($gid) {
-			$this->db->where('gid',$gid);
-			return $this->db->update('geraete',$data);
+                        $res = $this->db->get_where('pruefung', array('gid'=>$gid))->result_array();
+                        if ($res) {
+                            $this->db->where('gid',$gid);
+                            return $this->db->update('pruefung',$data);                            
+                        } else {
+                            return $this->db->insert('pruefung',$data);
+                        }
 		}
-		return $this->db->insert('geraete',$data);
+		return $this->db->insert('pruefung',$data);
 	}
 
 	function delete($gid) {
 		$this->db->where('gid',$gid);
-		return $this->db->delete('geraete');
+		return $this->db->delete('pruefung');
 	}
 
 

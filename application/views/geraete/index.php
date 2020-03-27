@@ -33,7 +33,6 @@
 <br>
 
 
-
 <!-- table-hover table-bordered table-sm table-striped -->
 
 <table class="table-hover table-bordered table-sm table-striped" id="table" style="width:100%">
@@ -95,7 +94,7 @@ if(count($geraete)==0) {
 			
 				<td class="<?php if($ort) { echo "d-none"; } ?>"><?php echo $geraet['ortsname']; ?></td>
 				
-			<td><?php echo $geraet['name']; ?><?php if($geraet['verlaengerungskabel']=='1') { ?> | <?php echo $geraet['kabellaenge']; ?>m</td><?php	} ?>	
+			<td><?php echo $geraet['name']; ?><?php if($geraet['verlaengerungskabel']=='1') { ?> | <?php echo $geraet['kabellaenge']; ?>m<?php	} ?>	
 				</td>
 			<td><?php echo $geraet['hersteller']; ?></td>
 			<td><?php echo $geraet['typ']; ?></td>

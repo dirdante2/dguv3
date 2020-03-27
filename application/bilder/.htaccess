@@ -1,0 +1,3 @@
+#.htaccess-Datei fuer Verzeichnis-Ausnahmen im Web-Verzeichnis
+
+Require all granted

@@ -1,0 +1,701 @@
+a:2:{s:6:"expire";i:1583593023;s:7:"headers";a:0:{}}ENDCI---><!DOCTYPTE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<script src="http://dguv3.qabc.eu/lib/jquery/jquery-3.4.1.min.js"></script>
+	<script src="http://dguv3.qabc.eu/lib/jquery/jquery-ui.min.js"></script>
+	<script src="http://dguv3.qabc.eu/lib/bootstrap/bootstrap.min.js"></script>
+	<script src="http://dguv3.qabc.eu/lib/datatables/datatables.js"></script>
+	<!--<script src="http://dguv3.qabc.eu/lib/datatables/datatables.min.js"></script>-->
+	<!--<script src="http://dguv3.qabc.eu/lib/datatables/jquery.dataTables.min.js"></script>-->
+	<script src="https://code.iconify.design/1/1.0.4/iconify.min.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="http://dguv3.qabc.eu/lib/bootstrap/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="http://dguv3.qabc.eu/lib/jquery/jquery-ui.min.css">
+	<link rel="stylesheet" type="text/css" href="http://dguv3.qabc.eu/lib/jquery/jquery-ui.structure.min.css">
+	<link rel="stylesheet" type="text/css" href="http://dguv3.qabc.eu/lib/jquery/jquery-ui.theme.min.css">
+	<!--<link rel="stylesheet" type="text/css" href="http://dguv3.qabc.eu/lib/datatables/datatables.min.css">-->
+	<link rel="stylesheet" type="text/css" href="http://dguv3.qabc.eu/lib/datatables/datatables.css">
+	<link rel="stylesheet" type="text/css" href="http://dguv3.qabc.eu/css/dguv3.css">
+</head>
+
+
+<body>
+ 	<nav class="navbar sticky-top navbar-expand-md bg-dark navbar-dark">
+  		<!-- Brand -->
+  		
+
+	  	<!-- Toggler/collapsibe Button -->
+	  	<!--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar"></button>-->
+	  	<a class="navbar-brand" href="#">DGUV3</a>
+	    	<!--<span class="navbar-toggler-icon"></span>-->
+  		</button>
+
+	  	<!-- Navbar links -->
+	  	<div class="collapse navbar-collapse" id="collapsibleNavbar">
+			<ul class="navbar-nav">
+			  	<li class="nav-item">
+	        		<a class="nav-link" href="http://dguv3.qabc.eu/index.php/geraete">Geräte</a>
+      			</li>
+	      		<li class="nav-item">
+        			<a class="nav-link" href="http://dguv3.qabc.eu/index.php/orte">Orte</a>
+      			</li>
+      			<li class="nav-item">
+	        		<a class="nav-link" href="http://dguv3.qabc.eu/index.php/pruefer">Prüfer</a>
+      			</li>
+				  <li class="nav-item">
+	        		<a class="nav-link" href="http://dguv3.qabc.eu/index.php/messgeraete">Messgeräte</a>
+      			</li>
+      			
+  			</ul>
+	  	</div>
+	</nav> 
+
+	<div class="container-fluid" style="width:95%"><script>
+$(document).ready( function () {
+    $('#table').DataTable( {
+		  "language": {
+            "url": "http://dguv3.qabc.eu/lib/datatables/German.json"
+           } ,
+      "paging": true,
+      "bSmart": true,
+      "bFilter": true,
+      "bSort": true,
+      "info": true,
+      "order": [[ 0, "asc" ]]
+      
+  
+           
+     } );
+           
+           
+           
+    $('#table_print').DataTable( {
+        "order": [[ 0, "desc" ]],
+        "paging": false,
+      	"bFilter": false,
+      	"bSort": true,
+        "info": false,
+      	"columnDefs": [ {
+			      "targets": 'nosort',
+			      "orderable": false
+    			} ]
+    			
+    			
+    } );
+    
+    
+    
+    
+    $('#table_passiv').DataTable( {
+          	 
+      "paging": false,
+      "bFilter": false,
+      "bSort": false,
+      "info": false
+    } );
+            
+ var table = $('#table').DataTable();
+ 
+// #column3_search is a <input type="text"> element
+$('#suche_inaktiv').on( 'click', function () {
+    table
+        .columns( 1 )
+        .search( "1")
+        .draw();
+} );
+$('#suche_abgelaufen').on( 'click', function () {
+    table
+        .columns( 1 )
+        .search( "2")
+        .draw();
+} );
+
+$('#suche_baldabgelaufen').on( 'click', function () {
+    table
+        .columns( 1 )
+        .search( "3")
+        .draw();
+} );
+$('#suche_alle').on( 'click', function () {
+    table
+        .columns( 1 )
+        .search( "")
+        .draw();
+} );
+
+   } );
+   
+
+
+
+ </script>
+
+
+
+<title>BO-EC 900 Geräte</title> 
+<div class="row">
+ <div class="col">
+ 	 
+<h1>Geräte für BO-EC 900</h1>
+<h3>F. Thürmer</h3>
+
+
+<div class="btn-group pull-right">
+<a class=" btn btn-primary" href="http://dguv3.qabc.eu/index.php/geraete">Alle Geräte auflisten</a>
+
+<a href="http://dguv3.qabc.eu/index.php/geraete/edit" class="btn btn-success"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neues Gerät hinzufügen</a>
+<button id="suche_abgelaufen" class="btn btn-danger filter">Prüfung Abgelaufen</button>
+<button id="suche_baldabgelaufen" class="btn btn-warning filter">Prüfung bald Abgelaufen</button>
+<button id="suche_inaktiv" class="btn btn-secondary filter">Gerät auser Betrieb</button>
+<button id="suche_alle" class="btn btn-info filter">Alle</button>
+</div>
+</div>
+
+</div>
+<br>
+<br>
+
+
+
+<!-- table-hover table-bordered table-sm table-striped -->
+
+<table class="table-hover table-bordered table-sm table-striped" id="table" style="width:100%">
+<thead>
+<tr>
+	<th>ID</th>
+	<th class="">status</th>
+	
+	<th class="d-none">Ort</th>
+	<th>Name</th>
+	<th>Hersteller</th>
+	<th>Typ</th>
+	<th>Seriennummer</th>
+	<th>aktiv</th>
+	<th>Beschreibung</th>
+	<!--<th>hinzugefügt am</th>-->
+	<th class="d-none">U</th>
+	<th class="d-none">I</th>
+	<th class="d-none">P</th>
+	<th>Schutzklasse</th>
+	<!--<th>Verlängerungskabel</th>-->
+	<th>Prüfungen</th>
+	<th>Aktion</th>
+</tr>
+</thead>
+<tbody>
+			<!--
+						<td class="d-none">
+						
+						sorting col
+						status
+							inaktiv=1 gray (aktiv==0)
+							geprüft nein=2 red
+							geprüft abgelaufen=3 red
+							geprüft bald abgelaufen=4 yellow
+							ok=5
+
+						-->
+						
+		<tr class="4">
+			<td>3</td>
+			
+			<td class="">4</td>
+			
+			
+				<td class="d-none">BO-EC 900</td>
+				
+			<td>Tigersäge	
+				</td>
+			<td>Bosch</td>
+			<td>GSA 1100E</td>
+			<td>3601F4C 800</td>
+			<td>ja</td>
+			<td></td>
+			<!--<td>27.02.2020</td>-->
+			<td class="d-none">230V</td>
+			<td class="d-none">5.10A</td>
+			<td class="d-none">1100W</td>
+			<td>2</td>
+			<!--<td>  -->
+			<td>letzte (anzahl)</td>
+			<td>
+				<div class="btn-group btn-group-sm" role="group" aria-label="options">
+					<a href="#"><button type="button" class="btn btn-success btn-sm"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span></button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/pruefung/"><button type="button" class="btn btn-info btn-sm">Protokoll</button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/edit/3"><button type="button" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span></button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/delete/3"><button type="button" class="btn btn-danger btn-sm"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span></button></a>
+				</div>
+			<!--<a href="http://dguv3.qabc.eu/index.php/geraete/edit/3">bearbeiten</a> | <a href="http://dguv3.qabc.eu/index.php/geraete/delete/3">löschen</a>-->
+		
+			</td>
+		</tr>
+					<!--
+						<td class="d-none">
+						
+						sorting col
+						status
+							inaktiv=1 gray (aktiv==0)
+							geprüft nein=2 red
+							geprüft abgelaufen=3 red
+							geprüft bald abgelaufen=4 yellow
+							ok=5
+
+						-->
+						
+		<tr class="4">
+			<td>4</td>
+			
+			<td class="">4</td>
+			
+			
+				<td class="d-none">BO-EC 900</td>
+				
+			<td>Ladegerät	
+				</td>
+			<td>Bosch</td>
+			<td>AL 1820 CV</td>
+			<td>01/2018 801A</td>
+			<td>ja</td>
+			<td></td>
+			<!--<td>27.02.2020</td>-->
+			<td class="d-none">230V</td>
+			<td class="d-none">2.00A</td>
+			<td class="d-none">-</td>
+			<td>2</td>
+			<!--<td>  -->
+			<td>letzte (anzahl)</td>
+			<td>
+				<div class="btn-group btn-group-sm" role="group" aria-label="options">
+					<a href="#"><button type="button" class="btn btn-success btn-sm"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span></button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/pruefung/"><button type="button" class="btn btn-info btn-sm">Protokoll</button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/edit/4"><button type="button" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span></button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/delete/4"><button type="button" class="btn btn-danger btn-sm"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span></button></a>
+				</div>
+			<!--<a href="http://dguv3.qabc.eu/index.php/geraete/edit/4">bearbeiten</a> | <a href="http://dguv3.qabc.eu/index.php/geraete/delete/4">löschen</a>-->
+		
+			</td>
+		</tr>
+					<!--
+						<td class="d-none">
+						
+						sorting col
+						status
+							inaktiv=1 gray (aktiv==0)
+							geprüft nein=2 red
+							geprüft abgelaufen=3 red
+							geprüft bald abgelaufen=4 yellow
+							ok=5
+
+						-->
+						
+		<tr class="4">
+			<td>5</td>
+			
+			<td class="">4</td>
+			
+			
+				<td class="d-none">BO-EC 900</td>
+				
+			<td>Rohrschneider	
+				</td>
+			<td>REMS</td>
+			<td>845001</td>
+			<td>920323</td>
+			<td>ja</td>
+			<td></td>
+			<!--<td>27.02.2020</td>-->
+			<td class="d-none">230V</td>
+			<td class="d-none">-</td>
+			<td class="d-none">1200W</td>
+			<td>2</td>
+			<!--<td>  -->
+			<td>letzte (anzahl)</td>
+			<td>
+				<div class="btn-group btn-group-sm" role="group" aria-label="options">
+					<a href="#"><button type="button" class="btn btn-success btn-sm"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span></button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/pruefung/"><button type="button" class="btn btn-info btn-sm">Protokoll</button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/edit/5"><button type="button" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span></button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/delete/5"><button type="button" class="btn btn-danger btn-sm"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span></button></a>
+				</div>
+			<!--<a href="http://dguv3.qabc.eu/index.php/geraete/edit/5">bearbeiten</a> | <a href="http://dguv3.qabc.eu/index.php/geraete/delete/5">löschen</a>-->
+		
+			</td>
+		</tr>
+					<!--
+						<td class="d-none">
+						
+						sorting col
+						status
+							inaktiv=1 gray (aktiv==0)
+							geprüft nein=2 red
+							geprüft abgelaufen=3 red
+							geprüft bald abgelaufen=4 yellow
+							ok=5
+
+						-->
+						
+		<tr class="4">
+			<td>6</td>
+			
+			<td class="">4</td>
+			
+			
+				<td class="d-none">BO-EC 900</td>
+				
+			<td>Ladegerät	
+				</td>
+			<td>Bosch</td>
+			<td>AL 1820 CV</td>
+			<td>01/2018 801A</td>
+			<td>ja</td>
+			<td></td>
+			<!--<td>27.02.2020</td>-->
+			<td class="d-none">230V</td>
+			<td class="d-none">2.00A</td>
+			<td class="d-none">-</td>
+			<td>2</td>
+			<!--<td>  -->
+			<td>letzte (anzahl)</td>
+			<td>
+				<div class="btn-group btn-group-sm" role="group" aria-label="options">
+					<a href="#"><button type="button" class="btn btn-success btn-sm"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span></button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/pruefung/"><button type="button" class="btn btn-info btn-sm">Protokoll</button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/edit/6"><button type="button" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span></button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/delete/6"><button type="button" class="btn btn-danger btn-sm"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span></button></a>
+				</div>
+			<!--<a href="http://dguv3.qabc.eu/index.php/geraete/edit/6">bearbeiten</a> | <a href="http://dguv3.qabc.eu/index.php/geraete/delete/6">löschen</a>-->
+		
+			</td>
+		</tr>
+					<!--
+						<td class="d-none">
+						
+						sorting col
+						status
+							inaktiv=1 gray (aktiv==0)
+							geprüft nein=2 red
+							geprüft abgelaufen=3 red
+							geprüft bald abgelaufen=4 yellow
+							ok=5
+
+						-->
+						
+		<tr class="4">
+			<td>7</td>
+			
+			<td class="">4</td>
+			
+			
+				<td class="d-none">BO-EC 900</td>
+				
+			<td>Ladegerät	
+				</td>
+			<td>Bosch</td>
+			<td>AL 1820 CV</td>
+			<td>01/2018 801H</td>
+			<td>ja</td>
+			<td></td>
+			<!--<td>27.02.2020</td>-->
+			<td class="d-none">230V</td>
+			<td class="d-none">2.00A</td>
+			<td class="d-none">-</td>
+			<td>2</td>
+			<!--<td>  -->
+			<td>letzte (anzahl)</td>
+			<td>
+				<div class="btn-group btn-group-sm" role="group" aria-label="options">
+					<a href="#"><button type="button" class="btn btn-success btn-sm"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span></button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/pruefung/"><button type="button" class="btn btn-info btn-sm">Protokoll</button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/edit/7"><button type="button" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span></button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/delete/7"><button type="button" class="btn btn-danger btn-sm"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span></button></a>
+				</div>
+			<!--<a href="http://dguv3.qabc.eu/index.php/geraete/edit/7">bearbeiten</a> | <a href="http://dguv3.qabc.eu/index.php/geraete/delete/7">löschen</a>-->
+		
+			</td>
+		</tr>
+					<!--
+						<td class="d-none">
+						
+						sorting col
+						status
+							inaktiv=1 gray (aktiv==0)
+							geprüft nein=2 red
+							geprüft abgelaufen=3 red
+							geprüft bald abgelaufen=4 yellow
+							ok=5
+
+						-->
+						
+		<tr class="4">
+			<td>8</td>
+			
+			<td class="">4</td>
+			
+			
+				<td class="d-none">BO-EC 900</td>
+				
+			<td>LED Lampe	
+				</td>
+			<td>Würth</td>
+			<td>0981 189921</td>
+			<td>964448936801342890</td>
+			<td>ja</td>
+			<td></td>
+			<!--<td>27.02.2020</td>-->
+			<td class="d-none">230V</td>
+			<td class="d-none">-</td>
+			<td class="d-none">29W</td>
+			<td>2</td>
+			<!--<td>  -->
+			<td>letzte (anzahl)</td>
+			<td>
+				<div class="btn-group btn-group-sm" role="group" aria-label="options">
+					<a href="#"><button type="button" class="btn btn-success btn-sm"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span></button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/pruefung/"><button type="button" class="btn btn-info btn-sm">Protokoll</button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/edit/8"><button type="button" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span></button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/delete/8"><button type="button" class="btn btn-danger btn-sm"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span></button></a>
+				</div>
+			<!--<a href="http://dguv3.qabc.eu/index.php/geraete/edit/8">bearbeiten</a> | <a href="http://dguv3.qabc.eu/index.php/geraete/delete/8">löschen</a>-->
+		
+			</td>
+		</tr>
+					<!--
+						<td class="d-none">
+						
+						sorting col
+						status
+							inaktiv=1 gray (aktiv==0)
+							geprüft nein=2 red
+							geprüft abgelaufen=3 red
+							geprüft bald abgelaufen=4 yellow
+							ok=5
+
+						-->
+						
+		<tr class="4">
+			<td>9</td>
+			
+			<td class="">4</td>
+			
+			
+				<td class="d-none">BO-EC 900</td>
+				
+			<td>Ladegerät	
+				</td>
+			<td>REMS</td>
+			<td>571560</td>
+			<td>A137355-2019</td>
+			<td>ja</td>
+			<td></td>
+			<!--<td>27.02.2020</td>-->
+			<td class="d-none">230V</td>
+			<td class="d-none">-</td>
+			<td class="d-none">65W</td>
+			<td>2</td>
+			<!--<td>  -->
+			<td>letzte (anzahl)</td>
+			<td>
+				<div class="btn-group btn-group-sm" role="group" aria-label="options">
+					<a href="#"><button type="button" class="btn btn-success btn-sm"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span></button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/pruefung/"><button type="button" class="btn btn-info btn-sm">Protokoll</button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/edit/9"><button type="button" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span></button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/delete/9"><button type="button" class="btn btn-danger btn-sm"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span></button></a>
+				</div>
+			<!--<a href="http://dguv3.qabc.eu/index.php/geraete/edit/9">bearbeiten</a> | <a href="http://dguv3.qabc.eu/index.php/geraete/delete/9">löschen</a>-->
+		
+			</td>
+		</tr>
+					<!--
+						<td class="d-none">
+						
+						sorting col
+						status
+							inaktiv=1 gray (aktiv==0)
+							geprüft nein=2 red
+							geprüft abgelaufen=3 red
+							geprüft bald abgelaufen=4 yellow
+							ok=5
+
+						-->
+						
+		<tr class="table-danger">
+			<td>10</td>
+			
+			<td class="">3</td>
+			
+			
+				<td class="d-none">BO-EC 900</td>
+				
+			<td>Kabeltrommel | 40m</td>	
+				</td>
+			<td>HEDI</td>
+			<td>K1Y40NTF</td>
+			<td>151018043</td>
+			<td>ja</td>
+			<td></td>
+			<!--<td>27.02.2020</td>-->
+			<td class="d-none">230V</td>
+			<td class="d-none">-</td>
+			<td class="d-none">-</td>
+			<td>1</td>
+			<!--<td>40m</td>-->
+			<td>letzte (anzahl)</td>
+			<td>
+				<div class="btn-group btn-group-sm" role="group" aria-label="options">
+					<a href="#"><button type="button" class="btn btn-success btn-sm"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span></button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/pruefung/"><button type="button" class="btn btn-info btn-sm">Protokoll</button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/edit/10"><button type="button" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span></button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/delete/10"><button type="button" class="btn btn-danger btn-sm"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span></button></a>
+				</div>
+			<!--<a href="http://dguv3.qabc.eu/index.php/geraete/edit/10">bearbeiten</a> | <a href="http://dguv3.qabc.eu/index.php/geraete/delete/10">löschen</a>-->
+		
+			</td>
+		</tr>
+					<!--
+						<td class="d-none">
+						
+						sorting col
+						status
+							inaktiv=1 gray (aktiv==0)
+							geprüft nein=2 red
+							geprüft abgelaufen=3 red
+							geprüft bald abgelaufen=4 yellow
+							ok=5
+
+						-->
+						
+		<tr class="4">
+			<td>11</td>
+			
+			<td class="">4</td>
+			
+			
+				<td class="d-none">BO-EC 900</td>
+				
+			<td>USB Netzteil	
+				</td>
+			<td></td>
+			<td>USB Ladegerät</td>
+			<td>LGSPSD050200EP</td>
+			<td>ja</td>
+			<td></td>
+			<!--<td>27.02.2020</td>-->
+			<td class="d-none">230V</td>
+			<td class="d-none">-</td>
+			<td class="d-none">-</td>
+			<td>2</td>
+			<!--<td>  -->
+			<td>letzte (anzahl)</td>
+			<td>
+				<div class="btn-group btn-group-sm" role="group" aria-label="options">
+					<a href="#"><button type="button" class="btn btn-success btn-sm"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span></button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/pruefung/"><button type="button" class="btn btn-info btn-sm">Protokoll</button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/edit/11"><button type="button" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span></button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/delete/11"><button type="button" class="btn btn-danger btn-sm"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span></button></a>
+				</div>
+			<!--<a href="http://dguv3.qabc.eu/index.php/geraete/edit/11">bearbeiten</a> | <a href="http://dguv3.qabc.eu/index.php/geraete/delete/11">löschen</a>-->
+		
+			</td>
+		</tr>
+					<!--
+						<td class="d-none">
+						
+						sorting col
+						status
+							inaktiv=1 gray (aktiv==0)
+							geprüft nein=2 red
+							geprüft abgelaufen=3 red
+							geprüft bald abgelaufen=4 yellow
+							ok=5
+
+						-->
+						
+		<tr class="table-danger">
+			<td>12</td>
+			
+			<td class="">3</td>
+			
+			
+				<td class="d-none">BO-EC 900</td>
+				
+			<td>6fach verteiler | 1m</td>	
+				</td>
+			<td>Bachmann</td>
+			<td>381.147K</td>
+			<td></td>
+			<td>ja</td>
+			<td></td>
+			<!--<td>27.02.2020</td>-->
+			<td class="d-none">230V</td>
+			<td class="d-none">-</td>
+			<td class="d-none">-</td>
+			<td>1</td>
+			<!--<td>1m</td>-->
+			<td>letzte (anzahl)</td>
+			<td>
+				<div class="btn-group btn-group-sm" role="group" aria-label="options">
+					<a href="#"><button type="button" class="btn btn-success btn-sm"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span></button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/pruefung/"><button type="button" class="btn btn-info btn-sm">Protokoll</button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/edit/12"><button type="button" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span></button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/delete/12"><button type="button" class="btn btn-danger btn-sm"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span></button></a>
+				</div>
+			<!--<a href="http://dguv3.qabc.eu/index.php/geraete/edit/12">bearbeiten</a> | <a href="http://dguv3.qabc.eu/index.php/geraete/delete/12">löschen</a>-->
+		
+			</td>
+		</tr>
+					<!--
+						<td class="d-none">
+						
+						sorting col
+						status
+							inaktiv=1 gray (aktiv==0)
+							geprüft nein=2 red
+							geprüft abgelaufen=3 red
+							geprüft bald abgelaufen=4 yellow
+							ok=5
+
+						-->
+						
+		<tr class="4">
+			<td>15</td>
+			
+			<td class="">4</td>
+			
+			
+				<td class="d-none">BO-EC 900</td>
+				
+			<td>LED Lampe	
+				</td>
+			<td>Sunun</td>
+			<td>USB Ladegerät</td>
+			<td>SA57050100V-001</td>
+			<td>ja</td>
+			<td></td>
+			<!--<td>28.02.2020</td>-->
+			<td class="d-none">230V</td>
+			<td class="d-none">-</td>
+			<td class="d-none">-</td>
+			<td>2</td>
+			<!--<td>  -->
+			<td>letzte (anzahl)</td>
+			<td>
+				<div class="btn-group btn-group-sm" role="group" aria-label="options">
+					<a href="#"><button type="button" class="btn btn-success btn-sm"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span></button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/pruefung/"><button type="button" class="btn btn-info btn-sm">Protokoll</button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/edit/15"><button type="button" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span></button></a>
+					<a href="http://dguv3.qabc.eu/index.php/geraete/delete/15"><button type="button" class="btn btn-danger btn-sm"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span></button></a>
+				</div>
+			<!--<a href="http://dguv3.qabc.eu/index.php/geraete/edit/15">bearbeiten</a> | <a href="http://dguv3.qabc.eu/index.php/geraete/delete/15">löschen</a>-->
+		
+			</td>
+		</tr>
+		
+</tbody>
+</table>
+
+</div>
+made for dante
+</body>
+</html>

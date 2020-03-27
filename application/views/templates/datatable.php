@@ -72,6 +72,11 @@ $('#suche_alle').on( 'click', function () {
         .draw();
 } );
 
+
+
+
+
+
    } );
    
 
