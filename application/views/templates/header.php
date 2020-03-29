@@ -29,21 +29,22 @@
 
 <body>
  	
+
+
 <nav class="navbar sticky-top navbar-expand-md bg-dark navbar-dark">
-  		<!-- Brand -->
-  		
-
-	  	<!-- Toggler/collapsibe Button -->
-	  	<!--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar"></button>-->
-	  	<a class="navbar-brand" href="#">DGUV3</a>
-	    	<!--<span class="navbar-toggler-icon"></span>-->
-  		</button>
-
-	  	<!-- Navbar links -->
-	  	<div class="collapse navbar-collapse" id="collapsibleNavbar">
-			<ul class="navbar-nav">
-                        <li class="nav-item">
-	        		<a class="nav-link" href="<?php echo site_url('geraete'); ?>"><span class="iconify" data-icon="jam:plug" data-width="20" data-height="20"></span> Geräte</a>
+  <a class="navbar-brand" href="#">DGUV3</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+    	
+    	
+   
+      
+      <li class="nav-item">
+        			<a class="nav-link" href="<?php echo site_url('geraete'); ?>"><span class="iconify" data-icon="jam:plug" data-width="20" data-height="20"></span> Gerät</a>
       			</li>
 	      		<li class="nav-item">
         			<a class="nav-link" href="<?php echo site_url('orte'); ?>"><span class="iconify" data-icon="ic:baseline-room" data-width="20" data-height="20"></span> Orte</a>
@@ -56,11 +57,15 @@
       			</li>
                         <li class="nav-item">
 	        		<a class="nav-link" href="<?php echo site_url('pruefung'); ?>"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span> Prüfungen</a>
-      			</li>  
-      			    			
-  			</ul>
-	  	</div>
-	</nav> 
+      			</li>
+    </ul>
+    
+  </div>
+</nav>
+
+
+
+
 
 
 	<div class="container-fluid" style="width:95%">
