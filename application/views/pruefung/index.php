@@ -1,13 +1,37 @@
-
-<title>Prüfungen</title> 
+<title><?php if($geraet) { echo $geraet['name']; } ?> Prüfung</title> 
 <div class="row">
  <div class="col">
  	 
+<?php
+	if($geraet) {
+?>
+<h1>Prüfung für <?php echo $geraet['name']; ?></h1>
 
+<table> <tr> 
+<td><?php echo $geraet['name']; ?><?php if($geraet['verlaengerungskabel']=='1') { ?> | <?php echo $geraet['kabellaenge']; ?>m<?php	} ?>	
+				</td>
+		<tr>	<td><?php echo $geraet['hersteller']; ?></td></tr>
+		<tr>	<td><?php echo $geraet['typ']; ?></td></tr>
+		<tr>	<td><?php echo $geraet['seriennummer']; ?></td></tr>
+		<tr>	<td><?php if($geraet['aktiv']=='0') { echo "nein"; } else { echo "ja"; } ?></td></tr>
+		<tr>	<td><?php echo $geraet['beschreibung']; ?></td></tr>
+			<!--<td><?php $blubb = new DateTime($geraet['hinzugefuegt']); echo $blubb->format('d.m.Y');  ?></td>-->
+		<tr>	<td class="d-none"><?php if($geraet['nennspannung']=='0') { echo "-"; } else { echo $geraet['nennspannung'].'V'; } ?></td></tr>
+		<tr>	<td class="d-none"><?php if($geraet['nennstrom']=='0.00') { echo "-"; } else { echo $geraet['nennstrom'].'A'; } ?></td></tr>
+		<tr>	<td class="d-none"><?php if($geraet['leistung']=='0') { echo "-"; } else { echo $geraet['leistung'].'W'; } ?></td></tr>
+		<tr>	<td><?php echo $geraet['schutzklasse']; ?></td></tr>
+</table>
+<?php
+	} else {
+?>
+<h1>Prüfung</h1>
+<?php
+	}
+?>
 <div class="btn-group pull-right">
-<a class=" btn btn-primary" href="<?php echo site_url('pruefung'); ?>">Alle Geräte auflisten</a>
+<a class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-primary" href="<?php echo site_url('pruefung'); ?>">Alle Prüfung auflisten</a>
 
-<a href="#" class="btn btn-success"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neues Gerät hinzufügen</a>
+<a href="<?php echo site_url('pruefung/edit/'.$geraet['gid']); ?>" class="btn btn-success"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neue Prüfung hinzufügen</a>
 <button id="suche_abgelaufen" class="btn btn-danger filter">Prüfung Abgelaufen</button>
 <button id="suche_baldabgelaufen" class="btn btn-warning filter">Prüfung bald Abgelaufen</button>
 <button id="suche_inaktiv" class="btn btn-secondary filter">Gerät auser Betrieb</button>
