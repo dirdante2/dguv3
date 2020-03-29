@@ -15,15 +15,18 @@ class Geraete_model extends CI_Model {
 	}
 
 	function get($gid=NULL) {
+	    
+	    $this->db->select('geraete.*, orte.name AS ortsname, MAX(datum) AS letztesdatum, COUNT(pid) AS anzahl');
+	    $this->db->from('geraete');
+	    $this->db->join('orte', 'geraete.oid = orte.oid');
+	    $this->db->join('pruefung','pruefung.gid = geraete.gid','LEFT');
+	    $this->db->group_by('gid');
+    
+	    
 		if($gid===NULL) {
-			$this->db->select('geraete.*, orte.name AS ortsname');
-			$this->db->from('geraete');
-			$this->db->join('orte', 'geraete.oid = orte.oid');
+			
 			return $this->db->get()->result_array();
 		}
-		$this->db->select('geraete.*, orte.name AS ortsname');
-		$this->db->from('geraete');
-		$this->db->join('orte', 'geraete.oid = orte.oid');
 		$this->db->where('gid',$gid);
 
 		$result = $this->db->get()->result_array(); 
