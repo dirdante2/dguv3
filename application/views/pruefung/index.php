@@ -17,7 +17,7 @@
 							</tr>
 							<tr>
 								<td>Ort</td>
-								<td><?php echo $geraet['oid']; ?></td>
+								<td><?php echo $geraet['ortsname']; ?></td>
 							</tr>
 							<tr>
 								<td>Name</td>
