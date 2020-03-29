@@ -45,7 +45,8 @@ class Pruefung_model extends CI_Model {
     }
 
     function new($data) {
-		return $this->db->insert('pruefung',$data);
+        $this->db->insert('pruefung',$data);
+        return $this->db->insert_id();
     }
 
 	function update($data,$pruefung_id) {
