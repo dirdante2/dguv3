@@ -12,12 +12,16 @@ class Pruefung extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 		$this->load->model('Pruefung_model');
+		$this->load->model('Geraete_model');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 	}
 
 	function index($gid=NULL) {
+        if($gid) {
+            $data['geraet'] = $this->Geraete_model->getByOid($gid);
+        }
         $data['pruefung'] = $this->Pruefung_model->get($gid);
 
 		$this->load->view('templates/header');
