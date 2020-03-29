@@ -16,23 +16,13 @@ class Pruefung_model extends CI_Model {
 	}
 
 	function get($gid=NULL) {
-		if($gid===NULL) {
-			$this->db->select('pruefung.*, geraete.*');
-			$this->db->from('geraete');
-			$this->db->join('pruefung', 'pruefung.gid = geraete.gid', 'LEFT');
-			return $this->db->get()->result_array();
-		}
         $this->db->select('pruefung.*, geraete.*');
         $this->db->from('geraete');
         $this->db->join('pruefung', 'pruefung.gid = geraete.gid', 'LEFT');
-		$this->db->where('geraete.gid',$gid);
-
-		$result = $this->db->get()->result_array();
-		if(is_array($result)) {
-			return $result[0];
-		} else {
-			return NULL;
-		}
+        if($gid!==NULL) {
+            $this->db->where('geraete.gid',$gid);
+        }
+        return $this->db->get()->result_array();
 	}
 
 	function set($data,$gid=NULL) {
