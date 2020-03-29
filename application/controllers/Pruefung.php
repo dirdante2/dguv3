@@ -20,7 +20,9 @@ class Pruefung extends CI_Controller {
 
 	function index($gid=NULL) {
         if($gid) {
-            $data['geraet'] = $this->Geraete_model->getByOid($gid);
+            $data['geraet'] = $this->Geraete_model->get($gid);
+        } else {
+            $data['geraet'] = NULL;
         }
         $data['pruefung'] = $this->Pruefung_model->get($gid);
 
