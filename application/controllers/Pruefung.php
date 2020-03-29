@@ -33,18 +33,16 @@ class Pruefung extends CI_Controller {
 	}
 
 
-	function pruefung($oid=NULL) {
-		if($oid) {
-			$data['ort'] = $this->Orte_model->get($oid);
-			$data['pruefung'] = $this->Pruefung_model->getByOid($oid);
-		} else {
-			$data['ort'] = NULL;
-			$data['pruefung'] = $this->Pruefung_model->get();
+	function protokoll($pruefung_id=NULL) {
+		if($pruefung_id) {
+			
+			$data['pruefung'] = $this->Pruefung_model->get($pruefung_id);
+		
 		}
 
 		$this->load->view('templates/print/header');
 		$this->load->view('templates/datatable');
-		$this->load->view('pruefung/pruefung',$data);
+		$this->load->view('pruefung/protokoll',$data);
 		$this->load->view('templates/print/footer');
 	}
 
