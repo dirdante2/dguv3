@@ -104,8 +104,8 @@
 <table class="table-hover table-bordered table-sm table-striped" id="table" style="width:100%">
 <thead>
 <tr>
-<th>id</th>
-<th>status</th>
+<th class="d-none">id</th>
+<th class="d-none">status</th>
 	<th>GID</th>
 	<th>Datum</th>
 	<th>Information</th>
@@ -162,7 +162,7 @@ if(count($pruefung)==0) {
 		<tr class="<?php if($pr['bestanden']=='0') { echo "table-danger"; } elseif ($nextyear < $today)  { echo "table-warning"; } elseif ($nextyearfast < $today) { echo "table-info"; } ?>">
 		<td><?php echo $pr['pruefungid']; ?></td>
 		
-		<td class=""><?php if($pr['bestanden']=='0') { echo "4"; } elseif ($nextyear < $today)  { echo "2"; } elseif ($nextyearfast < $today) { echo "3"; } ?></td>
+		<td class="d-none"><?php if($pr['bestanden']=='0') { echo "4"; } elseif ($nextyear < $today)  { echo "2"; } elseif ($nextyearfast < $today) { echo "3"; } ?></td>
 			<td><?php echo $pr['gid']; ?></td>
 			<td><?php $blubb = new DateTime($pr['datum']); echo $pr['datum']?$blubb->format('d.m.Y'):'';  ?>
 									

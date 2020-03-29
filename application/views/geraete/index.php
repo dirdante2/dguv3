@@ -43,7 +43,7 @@
 <thead>
 <tr>
 	<th>ID</th>
-	<th class="">status</th>
+	<th class="d-none">status</th>
 	
 	<th class="<?php if($ort) { echo "d-none"; } ?>">Ort</th>
 	<th>Name</th>
@@ -103,7 +103,7 @@ if(count($geraete)==0) {
 		<tr class="<?php if($geraet['aktiv']=='0') { echo "table-secondary"; } elseif ($nextyear < $today)  { echo "table-warning"; } elseif ($nextyearfast < $today) { echo "table-info"; }?>">
 			<td><?php echo $geraet['gid']; ?></td>
 			
-			<td class=""><?php if($geraet['aktiv']=='0') { echo "1"; } elseif ($nextyear < $today)  { echo "2"; } elseif ($nextyearfast < $today) { echo "3"; }?></td>
+			<td class="d-none"><?php if($geraet['aktiv']=='0') { echo "1"; } elseif ($nextyear < $today)  { echo "2"; } elseif ($nextyearfast < $today) { echo "3"; }?></td>
 			
 			
 				<td class="<?php if($ort) { echo "d-none"; } ?>"><?php echo $geraet['ortsname']; ?></td>
