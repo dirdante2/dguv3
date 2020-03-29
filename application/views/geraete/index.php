@@ -110,7 +110,7 @@ if(count($geraete)==0) {
 			<td>letzte (anzahl)</td>
 			<td>
 				<div class="btn-group btn-group-sm" role="group" aria-label="options">
-					<a href="<?php echo site_url('pruefung/edit/'.$pr['gid']); ?>"><button type="button" class="btn btn-success btn-sm"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span> prüfung</button></a>
+					<a href="<?php echo site_url('pruefung/index/'.$geraet['gid']); ?>"><button type="button" class="btn btn-success btn-sm"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span> prüfung</button></a>
 					<a href="<?php echo site_url('geraete/pruefung/') ?>"><button type="button" class="btn btn-info btn-sm">Protokoll</button></a>
 					<a href="<?php echo site_url('geraete/edit/'.$geraet['gid']); ?>"><button type="button" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> edit</button></a>
 					<a href="<?php echo site_url('geraete/delete/'.$geraet['gid']); ?>"><button type="button" class="btn btn-danger btn-sm"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span> delete</button></a>

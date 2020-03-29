@@ -1,5 +1,27 @@
+
 <title>Prüfungen</title> 
-<h1>Prüfungen</h1>
+<div class="row">
+ <div class="col">
+ 	 
+
+<div class="btn-group pull-right">
+<a class=" btn btn-primary" href="<?php echo site_url('pruefung'); ?>">Alle Geräte auflisten</a>
+
+<a href="#" class="btn btn-success"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neues Gerät hinzufügen</a>
+<button id="suche_abgelaufen" class="btn btn-danger filter">Prüfung Abgelaufen</button>
+<button id="suche_baldabgelaufen" class="btn btn-warning filter">Prüfung bald Abgelaufen</button>
+<button id="suche_inaktiv" class="btn btn-secondary filter">Gerät auser Betrieb</button>
+<button id="suche_alle" class="btn btn-info filter">Alle</button>
+</div>
+</div>
+
+</div>
+<br>
+<br>
+
+
+
+
 
 <?php /*<a href="<?php echo site_url('pruefung/edit'); ?>" class="btn btn-primary">Neues Prüfung hinzufügen</a> */?>
 <br>
@@ -10,8 +32,8 @@
 <tr>
 	<th>ID</th>
 	<th>Datum</th>
-	<th>MID</th>
-	<th>PID</th>
+	<th>messgerät</th>
+	<th>prüfer</th>
 	<th>Sichtpruefung</th>
         <th>Schutzleiter</th>
         <th>Isowiderstand</th>
@@ -45,8 +67,8 @@ if(count($pruefung)==0) {
 		<tr class="">
 			<td><?php echo $pr['gid']; ?></td>		
 			<td><?php $blubb = new DateTime($pr['datum']); echo $pr['datum']?$blubb->format('d.m.Y'):'';  ?></td>
-			<td><?php echo $pr['mid']; ?></td>	
-                        <td><?php echo $pr['pid']; ?></td>
+			<td><?php echo $pr['messgeraetname']; ?></td>	
+                        <td><?php echo $pr['pruefername']; ?></td>
                         <td><?php if($pr['sichtpruefung']=='1') { echo "ja"; } else { echo "nein"; } ?></td>
                         <td><?php echo $pr['schutzleiter']; ?></td>
                         <td><?php echo $pr['isowiderstand']; ?></td>
