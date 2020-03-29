@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: dd25120
--- Generation Time: Mar 29, 2020 at 03:52 AM
+-- Generation Time: Mar 30, 2020 at 12:09 AM
 -- Server version: 5.7.28-nmm1-log
 -- PHP Version: 7.1.33-nmm1
 
@@ -214,7 +214,8 @@ ALTER TABLE `pruefer`
 -- Indexes for table `pruefung`
 --
 ALTER TABLE `pruefung`
-  ADD PRIMARY KEY (`pruefungid`);
+  ADD PRIMARY KEY (`pruefungid`),
+  ADD KEY `datum` (`datum`);
 
 --
 -- Indexes for table `users`
@@ -274,6 +275,12 @@ ALTER TABLE `orte`
 --
 ALTER TABLE `pruefer`
   MODIFY `pid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `pruefung`
+--
+ALTER TABLE `pruefung`
+  MODIFY `pruefungid` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
