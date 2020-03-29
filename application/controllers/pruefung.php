@@ -4,6 +4,7 @@
 * (C) Christian Klein, 2020
 */
 
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Pruefung extends CI_Controller {
