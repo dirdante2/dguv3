@@ -148,16 +148,23 @@
 							<tr>
 								<td>Schutzleiterwiderstand</td>
 								<td>Max 0,30 Ohm</td>
-								<td><?php if($pruefung['schutzleiter']=='0.00') { echo "-"; } else { echo $pruefung['schutzleiter'].'Ohm'; } ?></td>
+								<td><?php if($pruefung['schutzleiter']===null) { echo "-"; } else { echo $pruefung['schutzleiter'].' Ohm'; } ?></td>
 								<td><?php 
 									$y = 0.30;
-									
-									if($pruefung['schutzleiter'] > $y) { echo "Nein"; } else { echo "Ja"; }?></td>
+									if($pruefung['schutzleiter']===null) { 
+									       echo "-"; 
+									} else {
+    									if($pruefung['schutzleiter'] > $y) {
+    									      echo "Nein"; 
+    									} else { 
+    									    echo "Ja"; 
+    								    }
+									}?></td>
 							</tr>
 							<tr>
 								<td>Isolationsprüfung 500V</td>
 								<td>Min 2,00 MOhm</td>
-								<td><?php if($pruefung['isowiderstand']=='0.00') { echo "-"; } else { echo $pruefung['isowiderstand'].'MOhm'; } ?></td>
+								<td><?php if($pruefung['isowiderstand']=='0.00') { echo "-"; } else { echo $pruefung['isowiderstand'].' MOhm'; } ?></td>
 								<td><?php 
 									$y = 2.0;
 									
@@ -166,7 +173,7 @@
 							<tr>
 								<td>Ersatzleiterableitstrom</td>
 								<td>Max 0,50 mA</td>
-								<td><?php if($pruefung['schutzleiterstrom']=='0.00') { echo "-"; } else { echo $pruefung['schutzleiterstrom'].'mA'; } ?></td>
+								<td><?php if($pruefung['schutzleiterstrom']=='0.00') { echo "-"; } else { echo $pruefung['schutzleiterstrom'].' mA'; } ?></td>
 								<td><?php 
 									$y = 0.5;
 									

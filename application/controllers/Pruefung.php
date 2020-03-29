@@ -85,7 +85,11 @@ class Pruefung extends CI_Controller {
 			$geraet = array();
             $fields_request = array('sichtpruefung','schutzleiter','isowiderstand','schutzleiterstrom','beruehrstrom','funktion');
 			foreach($felder as $feld) {
-				$geraet[$feld]=$this->input->post($feld);
+			    if($this->input->post($feld) == '') {
+			        $geraet[$feld]=null;
+			    } else {
+				    $geraet[$feld]=$this->input->post($feld);
+			    }
 			}
             $geraet['bestanden'] = 1;
             foreach ($fields_request as $key) {
