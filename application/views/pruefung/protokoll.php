@@ -167,17 +167,31 @@
 								<td><?php if($pruefung['isowiderstand']=='0.00') { echo "-"; } else { echo $pruefung['isowiderstand'].' MOhm'; } ?></td>
 								<td><?php 
 									$y = 2.0;
-									
-									if($pruefung['isowiderstand'] < $y) { echo "Nein"; } else { echo "Ja"; }?></td>
+									if($pruefung['isowiderstand']===null) { 
+									       echo "-"; 
+									} else {
+    									if($pruefung['isowiderstand'] < $y) {
+    									      echo "Nein"; 
+    									} else { 
+    									    echo "Ja"; 
+    								    }
+									}?></td>
 							</tr>
 							<tr>
 								<td>Ersatzleiterableitstrom</td>
 								<td>Max 0,50 mA</td>
 								<td><?php if($pruefung['schutzleiterstrom']=='0.00') { echo "-"; } else { echo $pruefung['schutzleiterstrom'].' mA'; } ?></td>
-								<td><?php 
-									$y = 0.5;
-									
-									if($pruefung['schutzleiterstrom'] > $y) { echo "Nein"; } else { echo "Ja"; }?></td>
+								<td><td><?php 
+									$y = 0.50;
+									if($pruefung['schutzleiterstrom']===null) { 
+									       echo "-"; 
+									} else {
+    									if($pruefung['schutzleiterstrom'] > $y) {
+    									      echo "Nein"; 
+    									} else { 
+    									    echo "Ja"; 
+    								    }
+									}?></td>
 							</tr>
 							<tr>
 								<td>Differenzstrom</td>
@@ -189,10 +203,17 @@
 								<td>Berührungstrom</td>
 								<td>Max 0,25 mA</td>
 								<td><?php if($pruefung['beruehrstrom']=='0.00') { echo "-"; } else { echo $pruefung['beruehrstrom'].'mA'; } ?></td>
-								<td><?php 
+								<td><td><?php 
 									$y = 0.25;
-									
-									if($pruefung['beruehrstrom'] > $y) { echo "Nein"; } else { echo "Ja"; }?></td>
+									if($pruefung['beruehrstrom']===null) { 
+									       echo "-"; 
+									} else {
+    									if($pruefung['beruehrstrom'] > $y) {
+    									      echo "Nein"; 
+    									} else { 
+    									    echo "Ja"; 
+    								    }
+									}?></td>
 							</tr>
 							<tr>
 								<td>Funktionsprüfung</td>
