@@ -103,7 +103,8 @@
 <table class="table-hover table-bordered table-sm table-striped" id="table" style="width:100%">
 <thead>
 <tr>
-	<th>ID</th>
+<th>pruefungid</th>
+	<th>GID</th>
 	<th>Datum</th>
 	<th>messgerät</th>
 	<th>prüfer</th>
@@ -138,6 +139,7 @@ if(count($pruefung)==0) {
 		letzte prüfung älter als 1 jahr = gelb table-warning
 		-->
 		<tr class="">
+		<td><?php echo $pr['pruefungid']; ?></td>		
 			<td><?php echo $pr['gid']; ?></td>		
 			<td><?php $blubb = new DateTime($pr['datum']); echo $pr['datum']?$blubb->format('d.m.Y'):'';  ?></td>
 			<td><?php echo $pr['messgeraetname']; ?></td>	
