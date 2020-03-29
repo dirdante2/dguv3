@@ -17,8 +17,8 @@ class Pruefung_model extends CI_Model {
 
 	function get($gid=NULL) {
         $this->db->select('pruefung.*, geraete.*');
-        $this->db->from('geraete');
-        $this->db->join('pruefung', 'pruefung.gid = geraete.gid', 'LEFT');
+        $this->db->from('pruefung');
+        $this->db->join('geraete', 'pruefung.gid = geraete.gid', 'LEFT');
         if($gid!==NULL) {
             $this->db->where('geraete.gid',$gid);
         }
