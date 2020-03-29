@@ -64,51 +64,36 @@ class Pruefung extends CI_Controller {
 		}
 	}
 
+	function new($gid) {
+        $pruefung_id = $this->Pruefung_model->new(array('gid'=>$gid));
+        redirect('pruefung/edit/'.$pruefung_id);
+	}
 
-	function edit($gid=0) {
-		$felder = array('gid','datum','mid','pid','sichtpruefung','schutzleiter','isowiderstand','schutzleiterstrom','beruehrstrom','funktion','bestanden','bemerkung');
-
-	
-		$this->form_validation->set_rules('gid', 'Greraete-ID', 'required');
-		$this->form_validation->set_rules('gid', 'Geraet', 'callback_oid_check'); //valid gid?
+    function edit($pruefung_id) {
+		$felder = array('datum','mid','pid','sichtpruefung','schutzleiter','isowiderstand','schutzleiterstrom','beruehrstrom','funktion','bestanden','bemerkung');
 
 		if($this->form_validation->run() === FALSE) {
 			$this->load->view('templates/header');
-
-			//Neues Gerät
-			if($gid==0) {
-				/* foreach($felder as $feld) {
-					$liste[$feld]="";
-				}
-				$liste['gid']=0;
-				$liste['ortsname']='';
-				$liste['aktiv']=TRUE;
-				$liste['schutzklasse']='2';
-				$liste['hinzugefuegt']=date('Y-m-d');
-				$this->load->view('pruefung/form',array('geraet'=>$liste)); */
-			}
-			//Vorhandeses Gerät
-			else {
-				$this->load->view('pruefung/form',array('geraet'=>$this->Pruefung_model->get($gid)));
-			}
+            $this->load->view('pruefung/form', array('geraet'=>$this->Pruefung_model->get($pruefung_id)));
 			$this->load->view('templates/footer');
 
 		} else {
 			$geraet = array();
-                        $fields_request = array('sichtpruefung','schutzleiter','isowiderstand','schutzleiterstrom','beruehrstrom','funktion');
+            $fields_request = array('sichtpruefung','schutzleiter','isowiderstand','schutzleiterstrom','beruehrstrom','funktion');
 			foreach($felder as $feld) {
 				$geraet[$feld]=$this->input->post($feld);
 			}
-                        $geraet['bestanden'] = 1;
-                        foreach ($fields_request as $key) {
-                            if ($geraet[$key] == 0) {
-                                $geraet['bestanden'] = 0;
-                            }
-                        }
-			$this->Pruefung_model->set($geraet,$gid);
-			redirect('pruefung');
+            $geraet['bestanden'] = 1;
+            foreach ($fields_request as $key) {
+                if ($geraet[$key] == 0) {
+                    $geraet['bestanden'] = 0;
+                }
+            }
+			$this->Pruefung_model->update($geraet,$pruefung_id);
+            $pruefung = $this->Pruefung_model->get($pruefung_id);
+            redirect('pruefung/'.$pruefung['gid']);
 		}
-	}
+    }
 
 	function delete($gid) {
 		$this->form_validation->set_rules('confirm', 'Bestätigung', 'required');

@@ -1,41 +1,12 @@
-<script>
-$().ready(function() {
-	/*	$('#orte').autocomplete({
-	    source: function (request, response) {
-        	$.getJSON("<?php echo site_url(); ?>/orte/json/" + request.term, function (data) {
-	            response($.map(data, function (value, key) {
-                	return {
-	                    label: value,
-                    	value: key
-                	};
-            	}));
-			})
-		},
-		select: function( event, ui ) {
-       	 	$( "#orte" ).val( ui.item.label );
-			$( "#oid" ).val( ui.item.value );			
-    	    return false;
-	    },
-    	minLength: 2,
-	    delay: 100
-	}); */
-	
-    $( "#datum" ).datepicker({ dateFormat: 'yy-mm-dd' });
-});
-</script>
-
-
 
 <h1>Prüfung bearbeiten - <?php echo $geraet['name'].' ( ID: '.$geraet['gid'].')'; ?> <?php echo $geraet['oid']; ?></h1>
 <br>
 <?php
-echo form_open('pruefung/edit/'.$geraet['gid']);
+echo form_open('pruefung/edit/'.$geraet['pruefungid']);
 echo validation_errors();
 ?>
-<input type="hidden" name="gid" value="<?php echo $geraet['gid']; ?>">
 <div class="row">
- <div class="col-md-6">
-	
+<div class="col-md-6">
 <form>
 
   <div class="form-group row">

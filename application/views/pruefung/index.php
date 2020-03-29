@@ -154,7 +154,7 @@ if(count($pruefung)==0) {
                         <td><?php echo $pr['bemerkung']; ?></td>
 			<td>
 				<div class="btn-group btn-group-sm" role="group" aria-label="options">
-					<a href="<?php echo site_url('pruefung/edit/'.$pr['gid']); ?>"><button type="button" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span></button></a>
+					<a href="<?php echo site_url('pruefung/edit/'.$pr['pruefungid']); ?>"><button type="button" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span></button></a>
 				</div>
 			</td>
 		</tr>
