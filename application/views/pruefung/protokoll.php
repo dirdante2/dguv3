@@ -143,7 +143,7 @@
 								<td>Sichtprüfung</td>
 								<td></td>
 								<td></td>
-								<td><?php if($pruefung['sichtpruefung']=='0') { echo "Nein"; } else { echo "Ja"; }?></td>
+								<td><?php if($pruefung['sichtpruefung']===null) { echo "Nein"; } else { echo "Ja"; }?></td>
 							</tr>
 							<tr>
 								<td>Schutzleiterwiderstand</td>
@@ -164,7 +164,7 @@
 							<tr>
 								<td>Isolationsprüfung 500V</td>
 								<td>Min 2,00 MOhm</td>
-								<td><?php if($pruefung['isowiderstand']=='0.00') { echo "-"; } else { echo $pruefung['isowiderstand'].' MOhm'; } ?></td>
+								<td><?php if($pruefung['isowiderstand']===null) { echo "-"; } else { echo $pruefung['isowiderstand'].' MOhm'; } ?></td>
 								<td><?php 
 									$y = 2.0;
 									if($pruefung['isowiderstand']===null) { 
@@ -178,10 +178,10 @@
 									}?></td>
 							</tr>
 							<tr>
-								<td>Ersatzleiterableitstrom</td>
+								<td>schutzleiterstrom</td>
 								<td>Max 0,50 mA</td>
-								<td><?php if($pruefung['schutzleiterstrom']=='0.00') { echo "-"; } else { echo $pruefung['schutzleiterstrom'].' mA'; } ?></td>
-								<td><td><?php 
+								<td><?php if($pruefung['schutzleiterstrom']===null) { echo "-"; } else { echo $pruefung['schutzleiterstrom'].' mA'; } ?></td>
+								<td><?php 
 									$y = 0.50;
 									if($pruefung['schutzleiterstrom']===null) { 
 									       echo "-"; 
@@ -193,17 +193,12 @@
     								    }
 									}?></td>
 							</tr>
-							<tr>
-								<td>Differenzstrom</td>
-								<td>Max 3,5 mA</td>
-								<td></td>
-								<td></td>
-							</tr>
+							
 							<tr>
 								<td>Berührungstrom</td>
 								<td>Max 0,25 mA</td>
 								<td><?php if($pruefung['beruehrstrom']=='0.00') { echo "-"; } else { echo $pruefung['beruehrstrom'].'mA'; } ?></td>
-								<td><td><?php 
+								<td><?php 
 									$y = 0.25;
 									if($pruefung['beruehrstrom']===null) { 
 									       echo "-"; 
