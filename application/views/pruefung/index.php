@@ -2,36 +2,85 @@
 <div class="row">
  <div class="col">
  	 
+
+<h1>Prüfungen</h1>
 <?php
 	if($geraet) {
 ?>
-<h1>Prüfung für <?php echo $geraet['name']; ?></h1>
+<div class="row">
+<div class="col-3">
+						<b>Objekt</b><br><br>
+<table  class="table table-sm">
+							<tr>
+								<td>ID</td>
+								<td><?php echo $geraet['gid']; ?></td>
+							</tr>
+							<tr>
+								<td>Ort</td>
+								<td><?php echo $geraet['oid']; ?></td>
+							</tr>
+							<tr>
+								<td>Name</td>
+								<td><?php echo $geraet['name']; ?></td>
+							</tr>
+							<tr>
+								<td>Hersteller</td>
+								<td><?php echo $geraet['hersteller']; ?></td>
+							</tr>
+							<tr>
+								<td>Typ</td>
+								<td><?php echo $geraet['typ']; ?></td>
+							</tr>
+							<tr>
+								<td>Seriennummer</td>
+								<td><?php echo $geraet['seriennummer']; ?></td>
+							</tr>
+							<tr>
+								<td>Beschreibung</td>
+								<td><?php echo $geraet['beschreibung']; ?></td>
+							</tr>
+						</table>
+</div>
+<div class="col-3">
+						<b> </b><br><br>
+<table  class="table table-sm">
+							<tr>
+								<td>Nennspannung</td>
+								<td><?php if($geraet['nennspannung']=='0') { echo "-"; } else { echo $geraet['nennspannung'].'V'; } ?></td>
+							</tr>
+							<tr>
+								<td>Nennstrom</td>
+								<td><?php if($geraet['nennstrom']=='0.00') { echo "-"; } else { echo $geraet['nennstrom'].'A'; } ?></td>
+							</tr>
+							<tr>
+								<td>Leistung</td>
+								<td><?php if($geraet['leistung']=='0') { echo "-"; } else { echo $geraet['leistung'].'W'; } ?></td>
+							</tr>
+							<tr>
+								<td>Schutzklasse</td>
+								<td><?php echo $geraet['schutzklasse']; ?></td>
+							</tr>
+							<tr>
+								<td>Verlaengerungskabel</td>
+								<td><?php if($geraet['verlaengerungskabel']=='0') { ?>  <?php } else { ?><?php echo $geraet['kabellaenge']; ?>m</td><?php	} ?></td>
+							</tr>
+							<tr>
+								<td>Aktiv</td>
+								<td><?php if($geraet['aktiv']=='0') { echo "nein"; } else { echo "ja"; } ?></td>
+							</tr>
+						
+						</table>
+</div>
+</div>
 
-<table> <tr> 
-<td><?php echo $geraet['name']; ?><?php if($geraet['verlaengerungskabel']=='1') { ?> | <?php echo $geraet['kabellaenge']; ?>m<?php	} ?>	
-				</td>
-		<tr>	<td><?php echo $geraet['hersteller']; ?></td></tr>
-		<tr>	<td><?php echo $geraet['typ']; ?></td></tr>
-		<tr>	<td><?php echo $geraet['seriennummer']; ?></td></tr>
-		<tr>	<td><?php if($geraet['aktiv']=='0') { echo "nein"; } else { echo "ja"; } ?></td></tr>
-		<tr>	<td><?php echo $geraet['beschreibung']; ?></td></tr>
-			<!--<td><?php $blubb = new DateTime($geraet['hinzugefuegt']); echo $blubb->format('d.m.Y');  ?></td>-->
-		<tr>	<td class="d-none"><?php if($geraet['nennspannung']=='0') { echo "-"; } else { echo $geraet['nennspannung'].'V'; } ?></td></tr>
-		<tr>	<td class="d-none"><?php if($geraet['nennstrom']=='0.00') { echo "-"; } else { echo $geraet['nennstrom'].'A'; } ?></td></tr>
-		<tr>	<td class="d-none"><?php if($geraet['leistung']=='0') { echo "-"; } else { echo $geraet['leistung'].'W'; } ?></td></tr>
-		<tr>	<td><?php echo $geraet['schutzklasse']; ?></td></tr>
-</table>
-<?php
-	} else {
-?>
-<h1>Prüfung</h1>
+
 <?php
 	}
 ?>
 <div class="btn-group pull-right">
 <a class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-primary" href="<?php echo site_url('pruefung'); ?>">Alle Prüfung auflisten</a>
 
-<a href="<?php echo site_url('pruefung/edit/'.$geraet['gid']); ?>" class="btn btn-success"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neue Prüfung hinzufügen</a>
+<a href="<?php if($geraet) { echo site_url('pruefung/edit/'.$geraet['gid']); } else { echo site_url('pruefung/new/'); } ?>" class="btn btn-success"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neue Prüfung hinzufügen</a>
 <button id="suche_abgelaufen" class="btn btn-danger filter">Prüfung Abgelaufen</button>
 <button id="suche_baldabgelaufen" class="btn btn-warning filter">Prüfung bald Abgelaufen</button>
 <button id="suche_inaktiv" class="btn btn-secondary filter">Gerät auser Betrieb</button>
