@@ -24,7 +24,7 @@ class Pruefung extends CI_Controller {
         } else {
             $data['geraet'] = NULL;
         }
-        $data['pruefung'] = $this->Pruefung_model->get($gid);
+        $data['pruefung'] = $this->Pruefung_model->list($gid);
 
 		$this->load->view('templates/header');
 		$this->load->view('templates/datatable');
