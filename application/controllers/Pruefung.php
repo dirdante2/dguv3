@@ -97,6 +97,12 @@ class Pruefung extends CI_Controller {
 				    $geraet[$feld]=$this->input->post($feld);
 			    }
 			}
+			/*Verälngerungskabel
+			Laut Norm darf der RPE (schutzleiter)
+			0,3 Ohm für die ersten 5m betragen
+			für jede weiteren 7,5m 0,1 Ohm mehr
+			maximal jedoch 1 Ohm.*/
+			
             $geraet['bestanden'] = 1;
             
             //Kriterein
