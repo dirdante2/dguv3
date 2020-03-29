@@ -80,7 +80,7 @@
 <div class="btn-group pull-right">
 <a class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-primary" href="<?php echo site_url('pruefung'); ?>">Alle Prüfung auflisten</a>
 
-<a href="<?php if($geraet) { echo site_url('pruefung/new/'.$geraet['gid']); } else { echo site_url('pruefung/new/'); } ?>" class="btn btn-success"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neue Prüfung hinzufügen</a>
+<a href="<?php if($geraet) { echo site_url('pruefung/new/'.$geraet['gid']); } ?>" class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-success"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neue Prüfung hinzufügen</a>
 <button id="suche_abgelaufen" class="btn btn-danger filter">Prüfung Abgelaufen</button>
 <button id="suche_baldabgelaufen" class="btn btn-warning filter">Prüfung bald Abgelaufen</button>
 <button id="suche_inaktiv" class="btn btn-secondary filter">Gerät auser Betrieb</button>
