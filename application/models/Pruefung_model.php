@@ -27,13 +27,15 @@ class Pruefung_model extends CI_Model {
         return $this->db->get()->result_array();
 	}
 
-    function list($gid) {
+    function list($gid=NULL) {
         $this->db->select('pruefung.*, geraete.*, messgeraete.name as messgeraetname, pruefer.name as pruefername');
         $this->db->from('pruefung');
         $this->db->join('geraete', 'pruefung.gid = geraete.gid', 'LEFT');
         $this->db->join('messgeraete', 'pruefung.mid = messgeraete.mid', 'LEFT');
         $this->db->join('pruefer', 'pruefung.pid = pruefer.pid', 'LEFT');
-        $this->db->where('pruefung.gid',$gid);
+        if($gid!==NULL) {
+            $this->db->where('pruefung.gid',$gid);
+        }
         return $this->db->get()->result_array();
     }
 
