@@ -13,6 +13,8 @@ class Pruefung extends CI_Controller {
 		parent::__construct();
 		$this->load->model('Pruefung_model');
 		$this->load->model('Geraete_model');
+		$this->load->model('Pruefer_model');
+		$this->load->model('Messgeraete_model');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -78,7 +80,11 @@ class Pruefung extends CI_Controller {
 					
 		if($this->form_validation->run() === FALSE) {
 			$this->load->view('templates/header');
-            $this->load->view('pruefung/form', array('geraet'=>$this->Pruefung_model->get($pruefung_id)));
+            $this->load->view('pruefung/form', array(
+                    'pruefer'=> $this->Pruefer_model->get(),
+                    'messgeraete'=> $this->Messgeraete_model->get(),
+                    'geraet'=>$this->Pruefung_model->get($pruefung_id)
+                    ));
 			$this->load->view('templates/footer');
 
 		} else {
@@ -92,11 +98,35 @@ class Pruefung extends CI_Controller {
 			    }
 			}
             $geraet['bestanden'] = 1;
-            foreach ($fields_request as $key) {
-                if ($geraet[$key] == 0) {
-                    $geraet['bestanden'] = 0;
-                }
+            
+            //Kriterein
+            if($geraet['funktion']==0) {
+                $geraet['bestanden'] = 0;
             }
+            
+            if($geraet['sichtpruefung']==0) {
+                $geraet['bestanden'] = 0;
+            }
+            
+            if($geraet['schutzleiter']>0.3) {
+                //TODO: Kabellänge
+                $geraet['bestanden'] = 0;
+            }
+            
+            if($geraet['isowiderstand']<2.0) {
+                $geraet['bestanden'] = 0;
+            }
+            
+            if($geraet['schutzleiterstrom']>0.5) {
+                $geraet['bestanden'] = 0;
+            }
+            
+            if($geraet['beruehrstrom']>0.25) {
+                $geraet['bestanden'] = 0;
+            }
+            
+            
+            
 			$this->Pruefung_model->update($geraet,$pruefung_id);
             $pruefung = $this->Pruefung_model->get($pruefung_id);
             redirect('pruefung/index/'.$pruefung['gid']);

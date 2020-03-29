@@ -74,4 +74,15 @@ class Messgeraete extends CI_Controller {
 
 
 	}
+	
+	function json($key="") {
+	    $geraete=$this->Messgeraete_model->getByName($key);
+	    $response=array();
+	    foreach($geraete as $geraet) {
+	        $response[$geraet['gid']]="{$gereat['name']} {$gereat['beschreibung']}";
+	        
+	    }
+	    
+	    echo json_encode($response);
+	}
 }

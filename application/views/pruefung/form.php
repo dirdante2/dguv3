@@ -1,4 +1,3 @@
-
 <h1>Prüfung bearbeiten - <?php echo $geraet['name'].' ( ID: '.$geraet['gid'].')'; ?> <?php echo $geraet['oid']; ?></h1>
 <br>
 <?php
@@ -16,15 +15,39 @@ echo validation_errors();
     </div>
   </div>
   <div class="form-group row">
-    <label for="hersteller" class="col-sm-5 col-form-label">Mid</label>
+    <label for="hersteller" class="col-sm-5 col-form-label">Messgerät</label>
     <div class="col-sm-7">
-      <input type="text" class="form-control" name="mid" id="mid" value="<?php echo $geraet['mid']; ?>">
+    
+    	<select name="mid">
+    		<?php 
+    		foreach($messgeraete as $m) {
+    		    echo '<option value="'.$m['mid'].'"';
+    		    if($m['mid'] == $geraet['mid']) {
+    		        echo ' selected';
+    		    }
+    		    echo '>'.$m['name'].'</option>';
+    		}
+    		?>
+    	</select>
+    
+      <input type="hidden" class="form-control" name="mid" id="mid" value="<?php echo $geraet['mid']; ?>">
     </div>
   </div>
   <div class="form-group row">
-    <label for="hersteller" class="col-sm-5 col-form-label">Pid</label>
+    <label for="hersteller" class="col-sm-5 col-form-label">Prüfer</label>
     <div class="col-sm-7">
-      <input type="text" class="form-control" name="pid" id="pid" value="<?php echo $geraet['pid']; ?>">
+    
+       	<select name="pid">
+    		<?php 
+    		foreach($pruefer as $p) {
+    		    echo '<option value="'.$p['pid'].'"';
+    		    if($p['pid'] == $geraet['pid']) {
+    		        echo ' selected';
+    		    }
+    		    echo '>'.$p['name'].'</option>';
+    		}
+    		?>
+    	</select>
     </div>
   </div>    
     

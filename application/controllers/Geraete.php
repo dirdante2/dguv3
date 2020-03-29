@@ -124,9 +124,6 @@ class Geraete extends CI_Controller {
 			$this->Geraete_model->delete($gid);
 			redirect('geraete');
 		}
-
-
-
 	}
 	
 }

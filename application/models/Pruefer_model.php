@@ -20,7 +20,20 @@ class Pruefer_model extends CI_Model {
 		}
 		return $this->db->get_where('pruefer', array('pid'=>$pid))->result_array()[0];
 	}
-
+	
+	function getByName($name) {
+	    $this->db->like('name', $name);
+	    $this->db->limit(10);
+	    $this->db->order_by('name');
+	    $result = $this->db->get('pruefer')->result_array();
+	    if (is_array($result)) {
+	        return $result;
+	    } else {
+	        return NULL;
+	 
+	    }
+	}
+	
 	function set($data, $pid=NULL) {
 		if($pid) {
 			$this->db->set(

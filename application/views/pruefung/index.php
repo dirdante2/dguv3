@@ -152,7 +152,7 @@ if(count($pruefung)==0) {
 			<td><?php echo $pr['schutzleiterstrom']; ?></td>
 			<td><?php echo $pr['beruehrstrom']; ?></td>
 			<td><?php if($pr['funktion']=='1') { echo "ja"; } else { echo "nein"; } ?></td>
-                        <td><?php if($pr['bestanden']=='1') { echo "ok"; } ?></td>
+                        <td><?php if($pr['bestanden']=='1') { echo "ok"; } else { echo "nein"; } ?></td>
                         <td><?php echo $pr['bemerkung']; ?></td>
 			<td>
 				<div class="btn-group btn-group-sm" role="group" aria-label="options">

@@ -20,6 +20,18 @@ class Messgeraete_model extends CI_Model {
 		}
 		return $this->db->get_where('messgeraete', array('mid'=>$mid))->result_array()[0];
 	}
+	
+	function getByName($name) {
+	    $this->db->like('name', $name);
+	    $this->db->limit(10);
+	    $this->db->order_by('name');
+	    $result = $this->db->get('messgeraete')->result_array();
+	    if (is_array($result)) {
+	        return $result;
+	    } else {
+	        return NULL;
+	    }
+	}
 
 	function set($data, $mid=NULL) {
 		if($mid) {
