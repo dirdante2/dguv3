@@ -81,18 +81,20 @@
 <a class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-primary" href="<?php echo site_url('pruefung'); ?>">Alle Prüfung auflisten</a>
 
 <a href="<?php if($geraet) { echo site_url('pruefung/new/'.$geraet['gid']); } ?>" class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-success"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neue Prüfung hinzufügen</a>
+<a class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-secondary" href="<?php echo site_url('geraete/edit/'.$geraet['gid']); ?>"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> Gerät bearbeiten</a>
+<a class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-primary" href="<?php echo site_url('geraete/index/'.$geraet['oid']); ?>"><span class="iconify" data-icon="ic:baseline-room" data-width="20" data-height="20"></span> Ort anzeigen</a>
+</div>
+</div>
+
+</div>
+<br>
+<br>
+<!--
 <button id="suche_abgelaufen" class="btn btn-danger filter">Prüfung Abgelaufen</button>
 <button id="suche_baldabgelaufen" class="btn btn-warning filter">Prüfung bald Abgelaufen</button>
 <button id="suche_inaktiv" class="btn btn-secondary filter">Gerät auser Betrieb</button>
 <button id="suche_alle" class="btn btn-info filter">Alle</button>
-</div>
-</div>
-
-</div>
-<br>
-<br>
-
-
+-->
 
 
 
@@ -154,7 +156,8 @@ if(count($pruefung)==0) {
                         <td><?php echo $pr['bemerkung']; ?></td>
 			<td>
 				<div class="btn-group btn-group-sm" role="group" aria-label="options">
-					<a href="<?php echo site_url('pruefung/edit/'.$pr['pruefungid']); ?>"><button type="button" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span></button></a>
+					<a href="<?php echo site_url('pruefung/edit/'.$pr['pruefungid']); ?>"><button type="button" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> edit</button></a>
+				<a href="<?php echo site_url('pruefung/delete/'.$pr['pruefungid']); ?>"><button type="button" class="btn btn-danger btn-sm"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span> delete</button></a>
 				</div>
 			</td>
 		</tr>

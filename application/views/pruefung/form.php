@@ -48,21 +48,21 @@ echo validation_errors();
   <div class="form-group row">
     <label for="typ" class="col-sm-5 col-form-label">Schutzleiter</label>
     <div class="col-sm-7">
-      <input type="number" step="0.01" min="0" max="0.3" class="form-control" name="schutzleiter" id="schutzleiter" value="<?php echo $geraet['schutzleiter']; ?>" > (max 0.3)
+      <input type="number" step="0.01" class="form-control" name="schutzleiter" id="schutzleiter" value="<?php echo $geraet['schutzleiter']; ?>" > (max 0.3)
     </div>
   </div>
   <?php }?>  
   <div class="form-group row">
     <label for="seriennummer" class="col-sm-5 col-form-label">Isowiderstand</label>
     <div class="col-sm-7">
-      <input type="number" step="0.01" min="2" class="form-control" name="isowiderstand" id="isowiderstand" value="<?php echo $geraet['isowiderstand']; ?>"> (min 2)
+      <input type="number" step="0.01" class="form-control" name="isowiderstand" id="isowiderstand" value="<?php echo $geraet['isowiderstand']; ?>"> (min 2)
     </div>
   </div>
   <?php if ( $geraet['schutzklasse'] == '1') {?>  
   <div class="form-group row">
     <label for="typ" class="col-sm-5 col-form-label">Schutzleiterstrom</label>
     <div class="col-sm-7">
-      <input type="number" step="0.01" min="0" max="0.5" class="form-control" name="schutzleiterstrom" id="schutzleiterstrom" value="<?php echo $geraet['schutzleiterstrom']; ?>" > (max 0.5)
+      <input type="number" step="0.01" class="form-control" name="schutzleiterstrom" id="schutzleiterstrom" value="<?php echo $geraet['schutzleiterstrom']; ?>" > (max 0.5)
     </div>
   </div>
   <?php }?>      
@@ -70,7 +70,7 @@ echo validation_errors();
   <div class="form-group row">
     <label for="typ" class="col-sm-5 col-form-label">Beruehrstrom</label>
     <div class="col-sm-7">
-      <input type="number" step="0.01" min="0" max="0.25" class="form-control" name="beruehrstrom" id="beruehrstrom" value="<?php echo $geraet['beruehrstrom']; ?>" > (max 0.25)
+      <input type="number" step="0.01" class="form-control" name="beruehrstrom" id="beruehrstrom" value="<?php echo $geraet['beruehrstrom']; ?>" > (max 0.25)
     </div>
   </div>
   <?php }?>     

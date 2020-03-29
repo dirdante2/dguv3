@@ -36,7 +36,7 @@ class Pruefung extends CI_Controller {
 	function protokoll($pruefung_id=NULL) {
 		if($pruefung_id) {
 			
-			$data['pruefung'] = $this->Pruefung_model->get($pruefung_id);
+			$data['pruefung'] = $this->Pruefung_model->getnotarray($pruefung_id);
 		
 		}
 
@@ -48,20 +48,22 @@ class Pruefung extends CI_Controller {
 
 
 
-	/**
-	 * Checks if an oid exists
-	 * @param oid OID
+/**
+	 * Checks if an gid exists
+	 * @param gid geräte id
 	 * @return TRUE / FALSE
+	 
+	 funktioniert noch nicht ganz?
+	 keine abfrage auf diese funktion vorhanden
 	 */
-	public function oid_check($oid) {
-		if($this->Orte_model->get($oid)) {
+	public function gid_check($gid) {
+		if($this->Gerate_model->get($gid)) {
 			return TRUE;
 		} else {
-			 $this->form_validation->set_message('oid_check', 'Unbekannter Ort');
+			 $this->form_validation->set_message('gid_check', 'Unbekanntes Gerät');
 			return FALSE;
 		}
 	}
-
 	function new($gid) {
         $pruefung_id = $this->Pruefung_model->new(array('gid'=>$gid));
         redirect('pruefung/edit/'.$pruefung_id);
@@ -69,7 +71,11 @@ class Pruefung extends CI_Controller {
 
     function edit($pruefung_id) {
 		$felder = array('datum','mid','pid','sichtpruefung','schutzleiter','isowiderstand','schutzleiterstrom','beruehrstrom','funktion','bestanden','bemerkung');
-
+			
+					$this->form_validation->set_rules('pid', 'Pid', 'required');
+					$this->form_validation->set_rules('mid', 'Mid', 'required');
+					//$this->form_validation->set_rules('oid', 'Ort', 'callback_oid_check'); //valid oid?
+					
 		if($this->form_validation->run() === FALSE) {
 			$this->load->view('templates/header');
             $this->load->view('pruefung/form', array('geraet'=>$this->Pruefung_model->get($pruefung_id)));
@@ -89,7 +95,7 @@ class Pruefung extends CI_Controller {
             }
 			$this->Pruefung_model->update($geraet,$pruefung_id);
             $pruefung = $this->Pruefung_model->get($pruefung_id);
-            redirect('pruefung/'.$pruefung['gid']);
+            redirect('pruefung/index/'.$pruefung['gid']);
 		}
     }
 
