@@ -35,7 +35,7 @@ if(count($pruefung)==0) {
 <?php
 
 } else {
-	foreach($pruefung as $geraet) {
+	foreach($pruefung as $pr) {
 
 		?>
 		<!--
@@ -43,22 +43,22 @@ if(count($pruefung)==0) {
 		letzte prüfung älter als 1 jahr = gelb table-warning
 		-->
 		<tr class="">
-			<td><?php echo $geraet['gid']; ?></td>		
-			<td><?php $blubb = new DateTime($geraet['datum']); echo $geraet['datum']?$blubb->format('d.m.Y'):'';  ?></td>			
-			<td><?php echo $geraet['mid']; ?></td>	
-                        <td><?php echo $geraet['pid']; ?></td>
-                        <td><?php if($geraet['sichtpruefung']=='1') { echo "ja"; } else { echo "nein"; } ?></td>
-                        <td><?php echo $geraet['schutzleiter']; ?></td>
-                        <td><?php echo $geraet['isowiderstand']; ?></td>
-			<td><?php echo $geraet['schutzleiterstrom']; ?></td>
-			<td><?php echo $geraet['beruehrstrom']; ?></td>
-			<td><?php if($geraet['funktion']=='1') { echo "ja"; } else { echo "nein"; } ?></td>
-                        <td><?php if($geraet['bestanden']=='1') { echo "ok"; } ?></td>
-                        <td><?php echo $geraet['bemerkung']; ?></td>
+			<td><?php echo $pr['gid']; ?></td>		
+			<td><?php $blubb = new DateTime($pr['datum']); echo $pr['datum']?$blubb->format('d.m.Y'):'';  ?></td>
+			<td><?php echo $pr['mid']; ?></td>	
+                        <td><?php echo $pr['pid']; ?></td>
+                        <td><?php if($pr['sichtpruefung']=='1') { echo "ja"; } else { echo "nein"; } ?></td>
+                        <td><?php echo $pr['schutzleiter']; ?></td>
+                        <td><?php echo $pr['isowiderstand']; ?></td>
+			<td><?php echo $pr['schutzleiterstrom']; ?></td>
+			<td><?php echo $pr['beruehrstrom']; ?></td>
+			<td><?php if($pr['funktion']=='1') { echo "ja"; } else { echo "nein"; } ?></td>
+                        <td><?php if($pr['bestanden']=='1') { echo "ok"; } ?></td>
+                        <td><?php echo $pr['bemerkung']; ?></td>
 			<td>
 				<div class="btn-group btn-group-sm" role="group" aria-label="options">
-					<a href="<?php echo site_url('pruefung/edit/'.$geraet['gid']); ?>"><button type="button" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span></button></a>
-				</div>		
+					<a href="<?php echo site_url('pruefung/edit/'.$pr['gid']); ?>"><button type="button" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span></button></a>
+				</div>
 			</td>
 		</tr>
 		<?php
