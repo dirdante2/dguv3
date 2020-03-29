@@ -107,7 +107,7 @@ if(count($geraete)==0) {
 			<td class="d-none"><?php if($geraet['leistung']=='0') { echo "-"; } else { echo $geraet['leistung'].'W'; } ?></td>
 			<td><?php echo $geraet['schutzklasse']; ?></td>
 			<!--<td><?php if($geraet['verlaengerungskabel']=='0') { ?>  <?php } else { ?><?php echo $geraet['kabellaenge']; ?>m</td><?php	} ?>-->
-			<td>letzte (anzahl)</td>
+			<td><?php echo $geraet['letztesdatum']?>    (<?php echo $geraet['anzahl']?>)</td>
 			<td>
 				<div class="btn-group btn-group-sm" role="group" aria-label="options">
 					<a href="<?php echo site_url('pruefung/index/'.$geraet['gid']); ?>"><button type="button" class="btn btn-success btn-sm"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span> prüfung</button></a>
