@@ -11,15 +11,13 @@ class Pruefung extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 		$this->load->model('Pruefung_model');
-		$this->load->model('Orte_model');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 	}
 
-	function index() {
-                $data['ort'] = NULL;
-                $data['pruefung'] = $this->Pruefung_model->get();
+	function index($gid=NULL) {
+        $data['pruefung'] = $this->Pruefung_model->get($gid);
 
 		$this->load->view('templates/header');
 		$this->load->view('templates/datatable');
