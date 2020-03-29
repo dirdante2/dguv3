@@ -55,6 +55,9 @@ echo validation_errors();
   <div class="form-group row">
     <label for="seriennummer" class="col-sm-5 col-form-label">Isowiderstand</label>
     <div class="col-sm-7">
+    	<!--0,3 Ohm für die ersten 5m betragen
+für jede weiteren 7,5m 0,1 Ohm mehr
+maximal jedoch 1 Ohm.-->
       <input type="number" step="0.01" class="form-control" name="isowiderstand" id="isowiderstand" value="<?php echo $geraet['isowiderstand']; ?>"> (min 2)
     </div>
   </div>
