@@ -65,6 +65,12 @@ $('#suche_baldabgelaufen').on( 'click', function () {
         .search( "3")
         .draw();
 } );
+$('#suche_failed').on( 'click', function () {
+    table
+        .columns( 1 )
+        .search( "4")
+        .draw();
+} );
 $('#suche_alle').on( 'click', function () {
     table
         .columns( 1 )
