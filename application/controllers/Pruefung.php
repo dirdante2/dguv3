@@ -13,8 +13,8 @@ class Pruefung extends CI_Controller {
 		parent::__construct();
 		$this->load->model('Pruefung_model');
 		$this->load->model('Geraete_model');
-		$this->load->model('Messgeraete_model');
 		$this->load->model('Pruefer_model');
+		$this->load->model('Messgeraete_model');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -36,7 +36,7 @@ class Pruefung extends CI_Controller {
 
 	function protokoll($pruefung_id=NULL) {
 		if($pruefung_id) {
-			$data['pruefung'] = $this->Pruefung_model->get($pruefung_id);
+			$data['pruefung'] = $this->Pruefung_model->getnotarray($pruefung_id);
 		}
 
 		$this->load->view('templates/print/header');
@@ -45,12 +45,6 @@ class Pruefung extends CI_Controller {
 		$this->load->view('templates/print/footer');
 	}
 
-
-	/**
-	 * Checks if an mid exists
-	 * @param mid MID
-	 * @return TRUE / FALSE
-	 */
 	public function mid_check($mid) {
 		if($this->Messgeraete_model->get($mid)) {
 			return TRUE;
@@ -85,24 +79,62 @@ class Pruefung extends CI_Controller {
 
 		if($this->form_validation->run() === FALSE) {
 			$this->load->view('templates/header');
-            $this->load->view('pruefung/form', array('geraet'=>$this->Pruefung_model->get($pruefung_id)));
+            $this->load->view('pruefung/form', array(
+                    'pruefer'=> $this->Pruefer_model->get(),
+                    'messgeraete'=> $this->Messgeraete_model->get(),
+                    'geraet'=>$this->Pruefung_model->get($pruefung_id)
+                    ));
 			$this->load->view('templates/footer');
 
 		} else {
 			$geraet = array();
             $fields_request = array('sichtpruefung','schutzleiter','isowiderstand','schutzleiterstrom','beruehrstrom','funktion');
 			foreach($felder as $feld) {
-				$geraet[$feld]=$this->input->post($feld);
+			    if($this->input->post($feld) == '') {
+			        $geraet[$feld]=null;
+			    } else {
+				    $geraet[$feld]=$this->input->post($feld);
+			    }
 			}
+			/*Verälngerungskabel
+			Laut Norm darf der RPE (schutzleiter)
+			0,3 Ohm für die ersten 5m betragen
+			für jede weiteren 7,5m 0,1 Ohm mehr
+			maximal jedoch 1 Ohm.*/
+			
             $geraet['bestanden'] = 1;
-            foreach ($fields_request as $key) {
-                if ($geraet[$key] == 0) {
-                    $geraet['bestanden'] = 0;
-                }
+            
+            //Kriterein
+            if($geraet['funktion']==0) {
+                $geraet['bestanden'] = 0;
             }
+            
+            if($geraet['sichtpruefung']==0) {
+                $geraet['bestanden'] = 0;
+            }
+            
+            if($geraet['schutzleiter']>0.3) {
+                //TODO: Kabellänge
+                $geraet['bestanden'] = 0;
+            }
+            
+            if($geraet['isowiderstand']<2.0) {
+                $geraet['bestanden'] = 0;
+            }
+            
+            if($geraet['schutzleiterstrom']>0.5) {
+                $geraet['bestanden'] = 0;
+            }
+            
+            if($geraet['beruehrstrom']>0.25) {
+                $geraet['bestanden'] = 0;
+            }
+            
+            
+            
 			$this->Pruefung_model->update($geraet,$pruefung_id);
             $pruefung = $this->Pruefung_model->get($pruefung_id);
-            redirect('pruefung/'.$pruefung['gid']);
+            redirect('pruefung/index/'.$pruefung['gid']);
 		}
     }
 

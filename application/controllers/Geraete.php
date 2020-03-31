@@ -102,9 +102,12 @@ class Geraete extends CI_Controller {
 				$geraet[$feld]=$this->input->post($feld);
 			}
 			$this->Geraete_model->set($geraet,$gid);
-			redirect('geraete');
+			$geraet = $this->Geraete_model->get($gid);
+			redirect('geraete/index/'.$geraet['oid']);
 		}
 	}
+	
+
 
 	function delete($gid) {
 		$this->form_validation->set_rules('confirm', 'Bestätigung', 'required');
@@ -121,9 +124,6 @@ class Geraete extends CI_Controller {
 			$this->Geraete_model->delete($gid);
 			redirect('geraete');
 		}
-
-
-
 	}
 	
 }

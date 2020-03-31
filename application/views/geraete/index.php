@@ -21,25 +21,29 @@
 <a class="<?php if(!$ort) { echo "d-none"; } ?> btn btn-primary" href="<?php echo site_url('geraete'); ?>">Alle Geräte auflisten</a>
 
 <a href="<?php echo site_url('geraete/edit'); ?>" class="btn btn-success"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neues Gerät hinzufügen</a>
-<button id="suche_abgelaufen" class="btn btn-danger filter">Prüfung Abgelaufen</button>
-<button id="suche_baldabgelaufen" class="btn btn-warning filter">Prüfung bald Abgelaufen</button>
+
+</div>
+</div>
+
+</div>
+<br>
+
+<div class="btn-group pull-right">
+<button id="suche_abgelaufen" class="btn btn-warning filter">Prüfung Abgelaufen</button>
+<button id="suche_baldabgelaufen" class="btn btn-info filter">Prüfung bald Abgelaufen</button>
 <button id="suche_inaktiv" class="btn btn-secondary filter">Gerät auser Betrieb</button>
+
 <button id="suche_alle" class="btn btn-info filter">Alle</button>
 </div>
-</div>
-
-</div>
 <br>
 <br>
-
-
 <!-- table-hover table-bordered table-sm table-striped -->
 
 <table class="table-hover table-bordered table-sm table-striped" id="table" style="width:100%">
 <thead>
 <tr>
 	<th>ID</th>
-	<th class="">status</th>
+	<th class="d-none">status</th>
 	
 	<th class="<?php if($ort) { echo "d-none"; } ?>">Ort</th>
 	<th>Name</th>
@@ -72,6 +76,15 @@ if(count($geraete)==0) {
 } else {
 	foreach($geraete as $geraet) {
 
+				$today = date("Y-m");
+				$day     = $geraet['letztesdatum'];
+				$nextyear = strtotime("+12 month", strtotime($day));
+				$nextyearfast = strtotime("+10 month", strtotime($day));
+				$nextyear = date("Y-m", $nextyear);
+				$nextyearfast = date("Y-m", $nextyearfast);
+
+
+
 		?>
 			<!--
 						<td class="d-none">
@@ -79,17 +92,18 @@ if(count($geraete)==0) {
 						sorting col
 						status
 							inaktiv=1 gray (aktiv==0)
-							geprüft nein=2 red
-							geprüft abgelaufen=3 red
-							geprüft bald abgelaufen=4 yellow
-							ok=5
+							geprüft nein=2 -
+							geprüft abgelaufen=2 warning
+							geprüft bald abgelaufen=3 info
+							failed 4 red
 
 						-->
-						
-		<tr class="<?php if($geraet['aktiv']=='0') { echo "table-secondary"; } elseif($geraet['verlaengerungskabel']=='1')  { echo "table-danger"; } else { echo "4"; }?>">
+
+													
+		<tr class="<?php if($geraet['aktiv']=='0') { echo "table-secondary"; } elseif ($nextyear < $today)  { echo "table-warning"; } elseif ($nextyearfast < $today) { echo "table-info"; }?>">
 			<td><?php echo $geraet['gid']; ?></td>
 			
-			<td class=""><?php if($geraet['aktiv']=='0') { echo "1"; } elseif($geraet['verlaengerungskabel']=='1')  { echo "3"; } else { echo "4"; }?></td>
+			<td class="d-none"><?php if($geraet['aktiv']=='0') { echo "1"; } elseif ($nextyear < $today)  { echo "2"; } elseif ($nextyearfast < $today) { echo "3"; }?></td>
 			
 			
 				<td class="<?php if($ort) { echo "d-none"; } ?>"><?php echo $geraet['ortsname']; ?></td>
@@ -107,11 +121,11 @@ if(count($geraete)==0) {
 			<td class="d-none"><?php if($geraet['leistung']=='0') { echo "-"; } else { echo $geraet['leistung'].'W'; } ?></td>
 			<td><?php echo $geraet['schutzklasse']; ?></td>
 			<!--<td><?php if($geraet['verlaengerungskabel']=='0') { ?>  <?php } else { ?><?php echo $geraet['kabellaenge']; ?>m</td><?php	} ?>-->
-			<td>letzte (anzahl)</td>
+			<td><?php echo $geraet['letztesdatum']?>    (<?php echo $geraet['anzahl']?>)</td>
 			<td>
 				<div class="btn-group btn-group-sm" role="group" aria-label="options">
 					<a href="<?php echo site_url('pruefung/index/'.$geraet['gid']); ?>"><button type="button" class="btn btn-success btn-sm"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span> prüfung</button></a>
-					<a href="<?php echo site_url('geraete/pruefung/') ?>"><button type="button" class="btn btn-info btn-sm">Protokoll</button></a>
+					
 					<a href="<?php echo site_url('geraete/edit/'.$geraet['gid']); ?>"><button type="button" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> edit</button></a>
 					<a href="<?php echo site_url('geraete/delete/'.$geraet['gid']); ?>"><button type="button" class="btn btn-danger btn-sm"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span> delete</button></a>
 				</div>
@@ -127,3 +141,4 @@ if(count($geraete)==0) {
 </tbody>
 </table>
 
+</div>

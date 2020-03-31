@@ -1,4 +1,3 @@
-
 <h1>Prüfung bearbeiten - <?php echo $geraet['name'].' ( ID: '.$geraet['gid'].')'; ?> <?php echo $geraet['oid']; ?></h1>
 <br>
 <?php
@@ -16,15 +15,39 @@ echo validation_errors();
     </div>
   </div>
   <div class="form-group row">
-    <label for="hersteller" class="col-sm-5 col-form-label">Mid</label>
+    <label for="hersteller" class="col-sm-5 col-form-label">Messgerät</label>
     <div class="col-sm-7">
-      <input type="text" class="form-control" name="mid" id="mid" value="<?php echo $geraet['mid']; ?>">
+    
+    	<select name="mid">
+    		<?php 
+    		foreach($messgeraete as $m) {
+    		    echo '<option value="'.$m['mid'].'"';
+    		    if($m['mid'] == $geraet['mid']) {
+    		        echo ' selected';
+    		    }
+    		    echo '>'.$m['name'].'</option>';
+    		}
+    		?>
+    	</select>
+    
+      <input type="hidden" class="form-control" name="mid" id="mid" value="<?php echo $geraet['mid']; ?>">
     </div>
   </div>
   <div class="form-group row">
-    <label for="hersteller" class="col-sm-5 col-form-label">Pid</label>
+    <label for="hersteller" class="col-sm-5 col-form-label">Prüfer</label>
     <div class="col-sm-7">
-      <input type="text" class="form-control" name="pid" id="pid" value="<?php echo $geraet['pid']; ?>">
+    
+       	<select name="pid">
+    		<?php 
+    		foreach($pruefer as $p) {
+    		    echo '<option value="'.$p['pid'].'"';
+    		    if($p['pid'] == $geraet['pid']) {
+    		        echo ' selected';
+    		    }
+    		    echo '>'.$p['name'].'</option>';
+    		}
+    		?>
+    	</select>
     </div>
   </div>    
     
@@ -48,21 +71,24 @@ echo validation_errors();
   <div class="form-group row">
     <label for="typ" class="col-sm-5 col-form-label">Schutzleiter</label>
     <div class="col-sm-7">
-      <input type="number" step="0.01" min="0" max="0.3" class="form-control" name="schutzleiter" id="schutzleiter" value="<?php echo $geraet['schutzleiter']; ?>" > (max 0.3)
+      <input type="number" step="0.01" class="form-control" name="schutzleiter" id="schutzleiter" value="<?php echo $geraet['schutzleiter']; ?>" > (max 0.3)
     </div>
   </div>
   <?php }?>  
   <div class="form-group row">
     <label for="seriennummer" class="col-sm-5 col-form-label">Isowiderstand</label>
     <div class="col-sm-7">
-      <input type="number" step="0.01" min="2" class="form-control" name="isowiderstand" id="isowiderstand" value="<?php echo $geraet['isowiderstand']; ?>"> (min 2)
+    	<!--0,3 Ohm für die ersten 5m betragen
+für jede weiteren 7,5m 0,1 Ohm mehr
+maximal jedoch 1 Ohm.-->
+      <input type="number" step="0.01" class="form-control" name="isowiderstand" id="isowiderstand" value="<?php echo $geraet['isowiderstand']; ?>"> (min 2)
     </div>
   </div>
   <?php if ( $geraet['schutzklasse'] == '1') {?>  
   <div class="form-group row">
     <label for="typ" class="col-sm-5 col-form-label">Schutzleiterstrom</label>
     <div class="col-sm-7">
-      <input type="number" step="0.01" min="0" max="0.5" class="form-control" name="schutzleiterstrom" id="schutzleiterstrom" value="<?php echo $geraet['schutzleiterstrom']; ?>" > (max 0.5)
+      <input type="number" step="0.01" class="form-control" name="schutzleiterstrom" id="schutzleiterstrom" value="<?php echo $geraet['schutzleiterstrom']; ?>" > (max 0.5)
     </div>
   </div>
   <?php }?>      
@@ -70,7 +96,7 @@ echo validation_errors();
   <div class="form-group row">
     <label for="typ" class="col-sm-5 col-form-label">Beruehrstrom</label>
     <div class="col-sm-7">
-      <input type="number" step="0.01" min="0" max="0.25" class="form-control" name="beruehrstrom" id="beruehrstrom" value="<?php echo $geraet['beruehrstrom']; ?>" > (max 0.25)
+      <input type="number" step="0.01" class="form-control" name="beruehrstrom" id="beruehrstrom" value="<?php echo $geraet['beruehrstrom']; ?>" > (max 0.25)
     </div>
   </div>
   <?php }?>     

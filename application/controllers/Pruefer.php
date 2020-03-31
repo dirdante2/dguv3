@@ -71,4 +71,16 @@ class Pruefer extends CI_Controller {
 			redirect('pruefer');
 		}
 	}
+	
+	function json($key="") {
+	    $prueferliste=$this->Pruefer_model->getByName($key);
+	    $response=array();
+	    foreach($prueferliste as $pruefer) {
+	        $response[$pruefer['pid']]="{$pruefer['name']} {$pruefer['beschreibung']}";
+	        
+	    }
+	    
+	    echo json_encode($response);
+	}
+	
 }
