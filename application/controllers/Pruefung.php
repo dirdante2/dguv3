@@ -136,9 +136,9 @@ class Pruefung extends CI_Controller {
 				}
 			}
 
-			$gid = getGid($pruefung_id);
+			$gid = $this->getGid($pruefung_id);
 			$geraet = $this->Geraete_model->get($gid);
-			$RPEmax = kabellaengeToRPEmax($geraet['kabellaenge']);
+			$RPEmax = $this->kabellaengeToRPEmax($geraet['kabellaenge']);
 
 			$pruefung['bestanden'] = 1;
 
