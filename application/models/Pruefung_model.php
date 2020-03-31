@@ -26,7 +26,7 @@ class Pruefung_model extends CI_Model {
 			$this->db->where('pruefung.pruefungid',$pruefung_id);
 		}
 		$result = $this->db->get()->result_array();
-		if(is_array($result)) {
+		if(!empty($result)) {
 			return $result[0];
 		} else {
 			return NULL;
@@ -48,7 +48,7 @@ class Pruefung_model extends CI_Model {
 		$this->db->where('pruefung.pruefungid',$pruefung_id);
 
 		$result = $this->db->get()->result_array();
-		if(is_array($result)) {
+		if(!empty($result)) {
 			return $result[0];
 		} else {
 			return NULL;

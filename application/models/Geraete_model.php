@@ -27,7 +27,7 @@ class Geraete_model extends CI_Model {
 		$this->db->where('geraete.gid',$gid);
 
 		$result = $this->db->get()->result_array();
-		if(is_array($result)) {
+		if(!empty($result)) {
 			return $result[0];
 		} else {
 			return NULL;

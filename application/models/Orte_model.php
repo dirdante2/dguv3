@@ -36,7 +36,7 @@ class Orte_model extends CI_Model {
 		$this->db->limit(10);
 		$this->db->order_by('name');
 		$result = $this->db->get('orte')->result_array();
-		if (is_array($result)) {
+		if (!empty($result)) {
 			return $result;
 		} else {
 			return NULL;

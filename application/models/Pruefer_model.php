@@ -18,7 +18,12 @@ class Pruefer_model extends CI_Model {
 		if($pid===NULL) {
 			return $this->db->get('pruefer')->result_array();
 		}
-		return $this->db->get_where('pruefer', array('pid'=>$pid))->result_array()[0];
+		$result = $this->db->get_where('pruefer', array('pid'=>$pid))->result_array();
+		if (!empty($result)) {
+			return $result[0];
+		} else {
+			return NULL;
+		}
 	}
 
 	function getByName($name) {
@@ -26,7 +31,7 @@ class Pruefer_model extends CI_Model {
 		$this->db->limit(10);
 		$this->db->order_by('name');
 		$result = $this->db->get('pruefer')->result_array();
-		if (is_array($result)) {
+		if (!empty($result)) {
 			return $result;
 		} else {
 			return NULL;
