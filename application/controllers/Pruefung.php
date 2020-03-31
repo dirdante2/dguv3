@@ -21,12 +21,12 @@ class Pruefung extends CI_Controller {
 	}
 
 	function index($gid=NULL) {
-        if($gid) {
-            $data['geraet'] = $this->Geraete_model->get($gid);
-        } else {
-            $data['geraet'] = NULL;
-        }
-        $data['pruefung'] = $this->Pruefung_model->list($gid);
+		if($gid) {
+			$data['geraet'] = $this->Geraete_model->get($gid);
+		} else {
+			$data['geraet'] = NULL;
+		}
+		$data['pruefung'] = $this->Pruefung_model->list($gid);
 
 		$this->load->view('templates/header');
 		$this->load->view('templates/datatable');
@@ -57,59 +57,59 @@ class Pruefung extends CI_Controller {
 		if($this->Pruefer_model->get($pid)) {
 			return TRUE;
 		} else {
-            $this->form_validation->set_message('pid_check', 'Unbekannter Prüfer');
+			$this->form_validation->set_message('pid_check', 'Unbekannter Prüfer');
 			return FALSE;
 		}
 	}
 
 	function new($gid) {
-        if($this->Geraete_model->get($gid)) {
-            $pruefung_id = $this->Pruefung_model->new(array('gid'=>$gid));
-            redirect('pruefung/edit/'.$pruefung_id);
-        } else {
-            // $this->load->view('templates/header');
-            // TODO check how show_error works
-            show_error('Gerät mit der id "'.$gid.'" existiert nicht.', 404);
-            // $this->load->view('templates/footer');
-        }
+		if($this->Geraete_model->get($gid)) {
+			$pruefung_id = $this->Pruefung_model->new(array('gid'=>$gid));
+			redirect('pruefung/edit/'.$pruefung_id);
+		} else {
+			// $this->load->view('templates/header');
+			// TODO check how show_error works
+			show_error('Gerät mit der id "'.$gid.'" existiert nicht.', 404);
+			// $this->load->view('templates/footer');
+		}
 	}
 
-    private function getGid($pruefung_id) {
-        $pruefung = $this->Pruefung_model->get($pruefung_id);
-        return $pruefung['gid'];
-    }
+	private function getGid($pruefung_id) {
+		$pruefung = $this->Pruefung_model->get($pruefung_id);
+		return $pruefung['gid'];
+	}
 
-    /*Verlängerungskabel
-      Laut Norm darf der RPE (schutzleiter)
-      0,3 Ohm für die ersten 5m betragen
-      für jede weiteren 7,5m 0,1 Ohm mehr
-      maximal jedoch 1 Ohm.*/
-    // sze: TODO check by dante
-    // sze: TODO add unit tests for this function
-    // sze: check(0.3, kabellaengeToRPEmax(1))
-    // sze: check(0.3, kabellaengeToRPEmax(5))
-    // sze: check(0.4, kabellaengeToRPEmax(12.5))
-    // sze: check(0.5, kabellaengeToRPEmax(20))
-    // sze: check(1,   kabellaengeToRPEmax(1000000))
-    private function kabellaengeToRPEmax($kabellaenge) {
-        $first_kl = 5;
-        $first = min($kabellaenge, $first_kl);
-        $rest  = max(0, $kabellaenge - $first_kl);
-        $rest_ohm = 0.1;
-        $rest_ratio = 1 / 7.5;
+	/*Verlängerungskabel
+		Laut Norm darf der RPE (schutzleiter)
+		0,3 Ohm für die ersten 5m betragen
+		für jede weiteren 7,5m 0,1 Ohm mehr
+		maximal jedoch 1 Ohm.*/
+	// sze: TODO check by dante
+	// sze: TODO add unit tests for this function
+	// sze: check(0.3, kabellaengeToRPEmax(1))
+	// sze: check(0.3, kabellaengeToRPEmax(5))
+	// sze: check(0.4, kabellaengeToRPEmax(12.5))
+	// sze: check(0.5, kabellaengeToRPEmax(20))
+	// sze: check(1,   kabellaengeToRPEmax(1000000))
+	private function kabellaengeToRPEmax($kabellaenge) {
+		$first_kl = 5;
+		$first = min($kabellaenge, $first_kl);
+		$rest  = max(0, $kabellaenge - $first_kl);
+		$rest_ohm = 0.1;
+		$rest_ratio = 1 / 7.5;
 
-        $rpe_max = min(0.3 + $rest * $rest_ratio * $rest_ohm, 1);
-        return $rpe_max;
-    }
+		$rpe_max = min(0.3 + $rest * $rest_ratio * $rest_ohm, 1);
+		return $rpe_max;
+	}
 
-    function edit($pruefung_id) {
-        if(!$this->Pruefung_model->get($pruefung_id)) {
-            // $this->load->view('templates/header');
-            // TODO check how show_error works
-            show_error('Prüfung mit der id "'.$pruefung_id.'" existiert nicht.', 404);
-            // $this->load->view('templates/footer');
-            return NULL;
-        }
+	function edit($pruefung_id) {
+		if(!$this->Pruefung_model->get($pruefung_id)) {
+			// $this->load->view('templates/header');
+			// TODO check how show_error works
+			show_error('Prüfung mit der id "'.$pruefung_id.'" existiert nicht.', 404);
+			// $this->load->view('templates/footer');
+			return NULL;
+		}
 
 		$felder = array('datum','mid','pid','sichtpruefung','schutzleiter','isowiderstand','schutzleiterstrom','beruehrstrom','funktion','bestanden','bemerkung');
 
@@ -118,64 +118,60 @@ class Pruefung extends CI_Controller {
 
 		if($this->form_validation->run() === FALSE) {
 			$this->load->view('templates/header');
-            $this->load->view('pruefung/form', array(
-                    'pruefer'=> $this->Pruefer_model->get(),
-                    'messgeraete'=> $this->Messgeraete_model->get(),
-                    'geraet'=>$this->Pruefung_model->get($pruefung_id)
-                    ));
+			$this->load->view('pruefung/form', array(
+					'pruefer'=> $this->Pruefer_model->get(),
+					'messgeraete'=> $this->Messgeraete_model->get(),
+					'geraet'=>$this->Pruefung_model->get($pruefung_id)
+					));
 			$this->load->view('templates/footer');
 
 		} else {
-			$geraet = array();
-            $fields_request = array('sichtpruefung','schutzleiter','isowiderstand','schutzleiterstrom','beruehrstrom','funktion');
+			$pruefung = array();
+			$fields_request = array('sichtpruefung','schutzleiter','isowiderstand','schutzleiterstrom','beruehrstrom','funktion');
 			foreach($felder as $feld) {
-			    if($this->input->post($feld) == '') {
-			        $geraet[$feld]=null;
-			    } else {
-				    $geraet[$feld]=$this->input->post($feld);
-			    }
+				if($this->input->post($feld) == '') {
+					$pruefung[$feld]=null;
+				} else {
+					$pruefung[$feld]=$this->input->post($feld);
+				}
 			}
-			/*Verälngerungskabel
-			Laut Norm darf der RPE (schutzleiter)
-			0,3 Ohm für die ersten 5m betragen
-			für jede weiteren 7,5m 0,1 Ohm mehr
-			maximal jedoch 1 Ohm.*/
-			
-            $geraet['bestanden'] = 1;
-            
-            //Kriterein
-            if($geraet['funktion']==0) {
-                $geraet['bestanden'] = 0;
-            }
-            
-            if($geraet['sichtpruefung']==0) {
-                $geraet['bestanden'] = 0;
-            }
-            
-            if($geraet['schutzleiter']>0.3) {
-                //TODO: Kabellänge
-                $geraet['bestanden'] = 0;
-            }
-            
-            if($geraet['isowiderstand']<2.0) {
-                $geraet['bestanden'] = 0;
-            }
-            
-            if($geraet['schutzleiterstrom']>0.5) {
-                $geraet['bestanden'] = 0;
-            }
-            
-            if($geraet['beruehrstrom']>0.25) {
-                $geraet['bestanden'] = 0;
-            }
-            
-            
-            
-			$this->Pruefung_model->update($geraet,$pruefung_id);
-            $pruefung = $this->Pruefung_model->get($pruefung_id);
-            redirect('pruefung/index/'.$pruefung['gid']);
+
+			$gid = getGid($pruefung_id);
+			$geraet = $this->Geraete_model->get($gid);
+			$RPEmax = kabellaengeToRPEmax($geraet['kabellaenge']);
+
+			$pruefung['bestanden'] = 1;
+
+			//Kriterein
+			if($pruefung['funktion']==0) {
+				$pruefung['bestanden'] = 0;
+			}
+
+			if($pruefung['sichtpruefung']==0) {
+				$pruefung['bestanden'] = 0;
+			}
+
+			if($pruefung['schutzleiter']>$RPEmax) {
+				// sze: TODO check by dante
+				$pruefung['bestanden'] = 0;
+			}
+
+			if($pruefung['isowiderstand']<2.0) {
+				$pruefung['bestanden'] = 0;
+			}
+
+			if($pruefung['schutzleiterstrom']>0.5) {
+				$pruefung['bestanden'] = 0;
+			}
+
+			if($pruefung['beruehrstrom']>0.25) {
+				$pruefung['bestanden'] = 0;
+			}
+
+			$this->Pruefung_model->update($pruefung,$pruefung_id);
+			redirect('pruefung/index/'.$gid);
 		}
-    }
+	}
 
 	function delete($pruefung_id) {
 		$this->form_validation->set_rules('confirm', 'Bestätigung', 'required');
@@ -196,5 +192,5 @@ class Pruefung extends CI_Controller {
 
 
 	}
-	
+
 }
