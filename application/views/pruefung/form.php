@@ -17,9 +17,8 @@ echo validation_errors();
   <div class="form-group row">
     <label for="hersteller" class="col-sm-5 col-form-label">Messgerät</label>
     <div class="col-sm-7">
-    
     	<select name="mid">
-    		<?php 
+    		<?php
     		foreach($messgeraete as $m) {
     		    echo '<option value="'.$m['mid'].'"';
     		    if($m['mid'] == $geraet['mid']) {
@@ -34,9 +33,8 @@ echo validation_errors();
   <div class="form-group row">
     <label for="hersteller" class="col-sm-5 col-form-label">Prüfer</label>
     <div class="col-sm-7">
-    
        	<select name="pid">
-    		<?php 
+    		<?php
     		foreach($pruefer as $p) {
     		    echo '<option value="'.$p['pid'].'"';
     		    if($p['pid'] == $geraet['pid']) {
@@ -47,8 +45,8 @@ echo validation_errors();
     		?>
     	</select>
     </div>
-  </div>    
-    
+  </div>
+
   <fieldset class="form-group">
     <div class="row">
       <legend class="col-form-label col-sm-5 pt-0">Sichtpruefung</legend>
@@ -56,23 +54,23 @@ echo validation_errors();
         <div class="form-check">
           <input class="form-check-input" type="radio" name="sichtpruefung" id="sichtpruefung0" value="0" <?php if(!$geraet['sichtpruefung']) { echo 'checked'; } ?>>
           <label class="form-check-label" for="sichtpruefung0">nein</label>
-        </div>           
+        </div>
         <div class="form-check">
           <input class="form-check-input" type="radio" name="sichtpruefung" id="sichtpruefung" value="1" <?php if($geraet['sichtpruefung']) { echo 'checked'; } ?>>
           <label class="form-check-label" for="sichtpruefung">ja</label>
-        </div>    
+        </div>
       </div>
     </div>
-  </fieldset>    
-    
-  <?php if ( $geraet['schutzklasse'] == '1') {?>  
+  </fieldset>
+
+  <?php if ( $geraet['schutzklasse'] == '1') {?>
   <div class="form-group row">
     <label for="typ" class="col-sm-5 col-form-label">Schutzleiter</label>
     <div class="col-sm-7">
       <input type="number" step="0.01" class="form-control" name="schutzleiter" id="schutzleiter" value="<?php echo $geraet['schutzleiter']; ?>" > (max 0.3)
     </div>
   </div>
-  <?php }?>  
+  <?php }?>
   <div class="form-group row">
     <label for="seriennummer" class="col-sm-5 col-form-label">Isowiderstand</label>
     <div class="col-sm-7">
@@ -82,24 +80,24 @@ maximal jedoch 1 Ohm.-->
       <input type="number" step="0.01" class="form-control" name="isowiderstand" id="isowiderstand" value="<?php echo $geraet['isowiderstand']; ?>"> (min 2)
     </div>
   </div>
-  <?php if ( $geraet['schutzklasse'] == '1') {?>  
+  <?php if ( $geraet['schutzklasse'] == '1') {?>
   <div class="form-group row">
     <label for="typ" class="col-sm-5 col-form-label">Schutzleiterstrom</label>
     <div class="col-sm-7">
       <input type="number" step="0.01" class="form-control" name="schutzleiterstrom" id="schutzleiterstrom" value="<?php echo $geraet['schutzleiterstrom']; ?>" > (max 0.5)
     </div>
   </div>
-  <?php }?>      
-  <?php if ( $geraet['schutzklasse'] == '1' || $geraet['schutzklasse'] == '2') {?>  
+  <?php }?>
+  <?php if ( $geraet['schutzklasse'] == '1' || $geraet['schutzklasse'] == '2') {?>
   <div class="form-group row">
     <label for="typ" class="col-sm-5 col-form-label">Beruehrstrom</label>
     <div class="col-sm-7">
       <input type="number" step="0.01" class="form-control" name="beruehrstrom" id="beruehrstrom" value="<?php echo $geraet['beruehrstrom']; ?>" > (max 0.25)
     </div>
   </div>
-  <?php }?>     
+  <?php }?>
 
-  
+
    <fieldset class="form-group">
     <div class="row">
       <legend class="col-form-label col-sm-5 pt-0">Funktion</legend>
@@ -111,9 +109,9 @@ maximal jedoch 1 Ohm.-->
         <div class="form-check">
           <input class="form-check-input" type="radio" name="funktion" id="funktion1" data-toggle="collapse" data-target=".collapseOne:not(.show)" value="1" <?php if($geraet['funktion']) { echo 'checked'; } ?>>
           <label class="form-check-label" for="funktion1">ja</label>
-        </div>       
+        </div>
       </div>
-    </div>   
+    </div>
   </fieldset>
 
   <div class="form-group row">
@@ -122,8 +120,8 @@ maximal jedoch 1 Ohm.-->
       <textarea class="form-control" rows="3" name="bemerkung" id="bemerkung" ><?php echo $geraet['bemerkung']; ?></textarea>
     </div>
   </div>
-  
- 
+
+
 
 <br>
 <input type="submit" class="btn btn-primary btn-lg btn-block" value="speichern">
@@ -131,5 +129,5 @@ maximal jedoch 1 Ohm.-->
 
 </div>
  <div class="col-6"  style="width:50%"></div>
- 
+
 </div>
