@@ -19,12 +19,12 @@ class Geraete_model extends CI_Model {
 		$this->db->from('geraete');
 		$this->db->join('orte', 'geraete.oid = orte.oid');
 		$this->db->join('pruefung','pruefung.gid = geraete.gid','LEFT');
-		$this->db->group_by('gid');
+		$this->db->group_by('pruefung.gid');
 
 		if($gid===NULL) {
 			return $this->db->get()->result_array();
 		}
-		$this->db->where('gid',$gid);
+		$this->db->where('geraete.gid',$gid);
 
 		$result = $this->db->get()->result_array();
 		if(is_array($result)) {
@@ -39,11 +39,10 @@ class Geraete_model extends CI_Model {
 		$this->db->from('geraete');
 		$this->db->join('orte', 'geraete.oid = orte.oid');
 		$this->db->join('pruefung','pruefung.gid = geraete.gid','LEFT');
-		$this->db->group_by('gid');
+		$this->db->group_by('pruefung.gid');
 		$this->db->where('orte.oid',$oid);
 		return $this->db->get()->result_array();
 	}
-
 
 	function set($data,$gid=NULL) {
 		if($gid) {
