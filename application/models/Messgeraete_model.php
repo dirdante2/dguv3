@@ -18,7 +18,12 @@ class Messgeraete_model extends CI_Model {
 		if($mid===NULL) {
 			return $this->db->get('messgeraete')->result_array();
 		}
-		return $this->db->get_where('messgeraete', array('mid'=>$mid))->result_array()[0];
+		$result = $this->db->get_where('messgeraete', array('mid'=>$mid))->result_array();
+		if (!empty($result)) {
+			return $result[0];
+		} else {
+			return NULL;
+		}
 	}
 
 	function getByName($name) {
