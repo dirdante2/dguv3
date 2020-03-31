@@ -36,9 +36,7 @@ class Pruefer extends CI_Controller {
 
 			if($pid==0) {
 				$this->load->view('pruefer/form',array('pruefer'=>array('pid'=>0,'beschreibung'=>'','name'=>'')));
-			}
-			
-			else {
+			} else {
 				$this->load->view('pruefer/form',array('pruefer'=>$this->Pruefer_model->get($pid)));
 			}
 			$this->load->view('templates/footer');
@@ -66,21 +64,20 @@ class Pruefer extends CI_Controller {
 				'canceltarget' => 'pruefer'
 			));
 			$this->load->view('templates/footer');
-		} else {	
+		} else {
 			$this->Pruefer_model->delete($pid);
 			redirect('pruefer');
 		}
 	}
-	
+
 	function json($key="") {
-	    $prueferliste=$this->Pruefer_model->getByName($key);
-	    $response=array();
-	    foreach($prueferliste as $pruefer) {
-	        $response[$pruefer['pid']]="{$pruefer['name']} {$pruefer['beschreibung']}";
-	        
-	    }
-	    
-	    echo json_encode($response);
+		$prueferliste=$this->Pruefer_model->getByName($key);
+		$response=array();
+		foreach($prueferliste as $pruefer) {
+			$response[$pruefer['pid']]="{$pruefer['name']} {$pruefer['beschreibung']}";
+		}
+
+		echo json_encode($response);
 	}
-	
+
 }

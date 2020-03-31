@@ -15,21 +15,18 @@ class Geraete_model extends CI_Model {
 	}
 
 	function get($gid=NULL) {
-	    
-	    $this->db->select('geraete.*, orte.name AS ortsname, MAX(datum) AS letztesdatum, COUNT(pid) AS anzahl');
-	    $this->db->from('geraete');
-	    $this->db->join('orte', 'geraete.oid = orte.oid');
-	    $this->db->join('pruefung','pruefung.gid = geraete.gid','LEFT');
-	    $this->db->group_by('gid');
-    
-	    
+		$this->db->select('geraete.*, orte.name AS ortsname, MAX(datum) AS letztesdatum, COUNT(pid) AS anzahl');
+		$this->db->from('geraete');
+		$this->db->join('orte', 'geraete.oid = orte.oid');
+		$this->db->join('pruefung','pruefung.gid = geraete.gid','LEFT');
+		$this->db->group_by('gid');
+
 		if($gid===NULL) {
-			
 			return $this->db->get()->result_array();
 		}
 		$this->db->where('gid',$gid);
 
-		$result = $this->db->get()->result_array(); 
+		$result = $this->db->get()->result_array();
 		if(is_array($result)) {
 			return $result[0];
 		} else {
@@ -60,6 +57,5 @@ class Geraete_model extends CI_Model {
 		$this->db->where('gid',$gid);
 		return $this->db->delete('geraete');
 	}
-
 
 }

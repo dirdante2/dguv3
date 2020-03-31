@@ -45,14 +45,12 @@ class Orte_model extends CI_Model {
 
 	function set($data, $oid=NULL) {
 		if($oid) {
-			$this->db->set(
-				array(
-					'name' => $data['name'],
-					'beschreibung' => $data['beschreibung']
-				)
-				);
-				$this->db->where('oid',$oid);
-			
+			$this->db->set(array(
+				'name' => $data['name'],
+				'beschreibung' => $data['beschreibung']
+			));
+			$this->db->where('oid',$oid);
+
 			return $this->db->update('orte',$data);
 		}
 		return $this->db->insert('orte',$data);

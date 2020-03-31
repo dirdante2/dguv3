@@ -26,7 +26,6 @@ class Orte extends CI_Controller {
 	}
 
 	function edit($oid=0) {
-
 		$this->form_validation->set_rules('name', 'Name', 'required');
 		$this->form_validation->set_rules('beschreibung', 'Beschreibung', 'required');
 
@@ -35,9 +34,7 @@ class Orte extends CI_Controller {
 
 			if($oid==0) {
 				$this->load->view('orte/form',array('ort'=>array('oid'=>0,'beschreibung'=>'','name'=>'')));
-			}
-			
-			else {
+			} else {
 				$this->load->view('orte/form',array('ort'=>$this->Orte_model->get($oid)));
 			}
 			$this->load->view('templates/footer');
@@ -64,7 +61,7 @@ class Orte extends CI_Controller {
 				'canceltarget' => 'orte'
 			));
 			$this->load->view('templates/footer');
-		} else {	
+		} else {
 			$this->Orte_model->delete($oid);
 			redirect('orte');
 		}
@@ -75,9 +72,8 @@ class Orte extends CI_Controller {
 		$response=array();
 		foreach($orte as $ort) {
 			$response[$ort['oid']]="{$ort['name']} {$ort['beschreibung']}";
-			
 		}
-		
+
 		echo json_encode($response);
 	}
 
