@@ -29,8 +29,6 @@ echo validation_errors();
     		}
     		?>
     	</select>
-    
-      <input type="hidden" class="form-control" name="mid" id="mid" value="<?php echo $geraet['mid']; ?>">
     </div>
   </div>
   <div class="form-group row">
