@@ -67,10 +67,7 @@ class Pruefung extends CI_Controller {
 			$pruefung_id = $this->Pruefung_model->new(array('gid'=>$gid));
 			redirect('pruefung/edit/'.$pruefung_id);
 		} else {
-			// $this->load->view('templates/header');
-			// TODO check how show_error works
 			show_error('Gerät mit der id "'.$gid.'" existiert nicht.', 404);
-			// $this->load->view('templates/footer');
 		}
 	}
 
@@ -104,10 +101,7 @@ class Pruefung extends CI_Controller {
 
 	function edit($pruefung_id) {
 		if(!$this->Pruefung_model->get($pruefung_id)) {
-			// $this->load->view('templates/header');
-			// TODO check how show_error works
 			show_error('Prüfung mit der id "'.$pruefung_id.'" existiert nicht.', 404);
-			// $this->load->view('templates/footer');
 			return NULL;
 		}
 
