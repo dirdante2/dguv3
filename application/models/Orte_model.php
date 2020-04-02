@@ -28,7 +28,7 @@ class Orte_model extends CI_Model {
 		if($oid===NULL) {
 			return $this->db->get()->result_array();
 		} else {
-			$this->db->where('oid', $oid);
+			$this->db->where('orte.oid', $oid);
 		}
 
 		$result = $this->db->get()->result_array();
