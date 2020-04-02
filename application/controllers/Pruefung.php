@@ -125,20 +125,20 @@ class Pruefung extends CI_Controller {
 				$pruefung['bestanden'] = 0;
 			}
 
-			if($pruefung['schutzleiter']>$RPEmax) {
+			if($pruefung['schutzleiter']>=$RPEmax) {
 				// sze: TODO check by dante
 				$pruefung['bestanden'] = 0;
 			}
 
-			if($pruefung['isowiderstand']<2.0) {
+			if($pruefung['isowiderstand']<=2.0) {
 				$pruefung['bestanden'] = 0;
 			}
 
-			if($pruefung['schutzleiterstrom']>0.5) {
+			if($pruefung['schutzleiterstrom']>=0.5) {
 				$pruefung['bestanden'] = 0;
 			}
 
-			if($pruefung['beruehrstrom']>0.25) {
+			if($pruefung['beruehrstrom']>=0.25) {
 				$pruefung['bestanden'] = 0;
 			}
 
