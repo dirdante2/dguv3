@@ -2,11 +2,11 @@
 <title>item prüfung</title> 
 <div class="row">
  <div class="col-md-8">
-  <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://dguv3.qabc.eu/index.php/pruefung/protokoll/<?php echo $pruefung['pruefungid']; ?>" class="img-fluid" alt="Responsive image">
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo base_url();?>index.php/pruefung/protokoll/<?php echo $pruefung['pruefungid']; ?>" class="img-fluid" alt="Responsive image">
  </div>
 
  <div class="col-md-4">
- 	<img src="<?php echo base_url();?>application/bilder/logo.jpg" class="img-fluid" alt="Responsive image">
+ 	<img src="<?php echo base_url();?>application/bilder/logo.jpg" class="img-fluid" alt="Responsive image" style="max-height:200px;">
  </div>
  </div>
 
