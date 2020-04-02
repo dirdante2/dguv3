@@ -79,7 +79,14 @@
 								<td>Schutzklasse</td>
 								<td><?php echo $pruefung['schutzklasse']; ?></td>
 							</tr>
-							
+							<tr>
+								<td>Verlängerungskabel</td>
+								<td><?php if($pruefung['verlaengerungskabel']=='0') { ?>-<?php } else { ?><?php echo $pruefung['kabellaenge']; ?>m</td><?php	} ?></td>
+							</tr>
+							<tr>
+								<td>Aktiv</td>
+								<td><?php if($pruefung['aktiv']=='0') { echo "nein"; } else { echo "ja"; } ?></td>
+							</tr>
 						</table>
 						
 				</div>	

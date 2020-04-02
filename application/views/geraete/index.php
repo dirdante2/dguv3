@@ -19,9 +19,8 @@
 ?>
 <div class="btn-group pull-right">
 <a class="<?php if(!$ort) { echo "d-none"; } ?> btn btn-primary" href="<?php echo site_url('geraete'); ?>">Alle Geräte auflisten</a>
+<a class="btn btn-success" href="<?php echo site_url('geraete/edit'); ?>"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neues Gerät hinzufügen</a>
 
-<a href="<?php echo site_url('geraete/edit'); ?>" class="btn btn-success"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neues Gerät hinzufügen</a>
-<a href="<?php echo site_url('geraete/geraete/'.$ort['oid']); ?>" class="btn btn-success"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
 </div>
 </div>
 
@@ -29,8 +28,9 @@
 <br>
 
 <div class="btn-group pull-right">
-<button id="suche_abgelaufen" class="btn btn-warning filter">Prüfung Abgelaufen</button>
 <button id="suche_baldabgelaufen" class="btn btn-info filter">Prüfung bald Abgelaufen</button>
+<button id="suche_abgelaufen" class="btn btn-warning filter">Prüfung Abgelaufen</button>
+<button id="suche_failed" class="btn btn-danger filter">Prüfung fehlgeschlagen</button>
 <button id="suche_inaktiv" class="btn btn-secondary filter">Gerät auser Betrieb</button>
 
 <button id="suche_alle" class="btn btn-info filter">Alle</button>
@@ -100,10 +100,10 @@ if(count($geraete)==0) {
 						-->
 
 													
-		<tr class="<?php if($geraet['aktiv']=='0') { echo "table-secondary"; } elseif ($nextyear < $today)  { echo "table-warning"; } elseif ($nextyearfast < $today) { echo "table-info"; }?>">
+		<tr class="<?php if($geraet['aktiv']=='0') { echo "table-secondary"; } elseif ($geraet['bestanden']=='0')  { echo "table-danger"; } elseif ($nextyear < $today)  { echo "table-warning"; } elseif ($nextyearfast < $today) { echo "table-info"; }?>">
 			<td><?php echo $geraet['gid']; ?></td>
 			
-			<td class="d-none"><?php if($geraet['aktiv']=='0') { echo "1"; } elseif ($nextyear < $today)  { echo "2"; } elseif ($nextyearfast < $today) { echo "3"; }?></td>
+			<td class="d-none"><?php if($geraet['aktiv']=='0') { echo "1"; } elseif ($geraet['bestanden']=='0')  { echo "4"; } elseif ($nextyear < $today)  { echo "2"; } elseif ($nextyearfast < $today) { echo "3"; }?></td>
 			
 			
 				<td class="<?php if($ort) { echo "d-none"; } ?>"><?php echo $geraet['ortsname']; ?></td>
@@ -129,7 +129,7 @@ if(count($geraete)==0) {
 					<a href="<?php echo site_url('geraete/edit/'.$geraet['gid']); ?>" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> edit</a>
 					<a href="<?php echo site_url('geraete/delete/'.$geraet['gid']); ?>" class="btn btn-danger btn-sm"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span> delete</a>
 				</div>
-			<!--<a href="<?php echo site_url('geraete/edit/'.$geraet['gid']); ?>">bearbeiten</a> | <a href="<?php echo site_url('geraete/delete/'.$geraet['gid']); ?>">löschen</a>-->
+			
 		
 			</td>
 		</tr>

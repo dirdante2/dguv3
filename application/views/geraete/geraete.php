@@ -1,11 +1,9 @@
 
-<title><?php echo $ort['name']; ?> Geräte</title>  
+<title><?php if($ort) { echo $ort['name']; } ?> Geräte</title>  
 <br>
 <div class="row">
  <div class="col-5">
-  <?php
-  	if($ort) {
-  ?>
+  <?php if($ort) { ?>
   <h1>Geräte für <?php echo $ort['name']; ?></h1>
   <h3><?php echo $ort['beschreibung']; ?></h3>
 
@@ -13,12 +11,10 @@
   	} else {
   ?>
   <h1>Geräte</h1>
-  <?php
-  	}
-  ?>
+  <?php	} ?>
  </div>
  <div class="col-3">
-  <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://dguv3.qabc.eu/index.php/geraete/index/7" class="img-fluid" alt="Responsive image">
+  <?php if($ort) { ?><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo base_url();?>index.php/geraete/geraete/<?php echo $ort['oid']; ?>" class="img-fluid" alt="Responsive image"><?php	} ?>
  </div>
  <div class="col-4">
 <img src="<?php echo base_url();?>application/bilder/logo.jpg" class="img-fluid" alt="Responsive image">
@@ -39,7 +35,7 @@
 		<table class="table-bordered table-striped" id="table_print" style="width:100%" >
 		<thead>
 		<tr>
-			<th class="d-none">status</th>
+			<!--<th class="d-none">status</th>-->
 			<th class="nosort">ID</th>
 			<th class="nosort <?php if($ort) { echo "d-none"; } ?>">Ort</th>
 			<th class="nosort" data-class-name="priority">Name</th>
@@ -76,7 +72,7 @@
 				
 						
 					?>
-					<tr class="<?php if($geraet['aktiv']=='0') { echo "table-secondary"; } elseif($geraet['verlaengerungskabel']=='1')  { echo "table-danger"; } else { echo "4"; }?>">
+					<tr class="">
 						<!--
 						<td class="d-none">
 						
@@ -88,9 +84,9 @@
 							geprüft bald abgelaufen=4 yellow
 							ok=5
 
-						-->
-						<td class="d-none"><?php if($geraet['aktiv']=='0') { echo "1"; } elseif($geraet['verlaengerungskabel']=='1')  { echo "3"; } else { echo "4"; }?></td>
 						
+						<td class="d-none"><?php if($geraet['aktiv']=='0') { echo "1"; } elseif($geraet['bestanden']=='0')  { echo "1"; } elseif($nextyear < $today)  { echo "2"; } else { echo "4"; }?></td>
+						-->
 						<td><?php echo $geraet['gid']; ?></td>
 						
 						
@@ -102,15 +98,15 @@
 						<td><?php echo $geraet['hersteller']; ?></td>
 						<td><?php echo $geraet['typ']; ?></td>
 						<td><?php echo $geraet['seriennummer']; ?></td>
-						<td><?php if($geraet['aktiv']=='0') { echo "nein"; } else { echo "ja"; } ?></td>
+						<td><?php echo $geraet['bestanden']; ?></td>
 						<td><?php echo $geraet['beschreibung']; ?></td>
 						<!--<td><?php $blubb = new DateTime($geraet['hinzugefuegt']); echo $blubb->format('d.m.Y');  ?></td>-->
 			<!--			<td><?php if($geraet['nennspannung']=='') { echo "-"; } else { echo $geraet['nennspannung'].'V'; } ?></td>
 						<td><?php if($geraet['nennstrom']=='') { echo "-"; } else { echo $geraet['nennstrom'].'A'; } ?></td>
 						<td><?php if($geraet['leistung']=='') { echo "-"; } else { echo $geraet['leistung'].'W'; } ?></td>-->
-						<td>?</td>
+						<td><?php echo $geraet['pruefername']; ?></td>
 						<!--<td><?php if($geraet['verlaengerungskabel']=='0') { ?>  <?php } else { ?><?php echo $geraet['kabellaenge']; ?>m</td><?php	} ?>-->
-						<td>-</td>
+						<td><?php echo $geraet['letztesdatum']; ?></td>
 						
 					</tr>
 					<?php

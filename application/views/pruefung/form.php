@@ -1,3 +1,10 @@
+<script>
+$().ready(function() {
+			
+    $( "#datum" ).datepicker({ dateFormat: 'yy-mm-dd' });
+});
+</script>
+
 <h1>Prüfung bearbeiten - <?php echo $geraet['geraetename'].' ( ID: '.$geraet['gid'].')'; ?> von <?php echo $geraet['ortsname']; ?></h1>
 <br>
 <div class="row">
@@ -54,8 +61,8 @@
 								<td><?php echo $geraet['schutzklasse']; ?></td>
 							</tr>
 							<tr>
-								<td>Verlaengerungskabel</td>
-								<td><?php if($geraet['verlaengerungskabel']=='0') { ?>  <?php } else { ?><?php echo $geraet['kabellaenge']; ?>m</td><?php	} ?></td>
+								<td>Verlängerungskabel</td>
+								<td><?php if($geraet['verlaengerungskabel']=='0') { ?>-<?php } else { ?><?php echo $geraet['kabellaenge']; ?>m</td><?php	} ?></td>
 							</tr>
 							<tr>
 								<td>Aktiv</td>
@@ -132,7 +139,7 @@ echo validation_errors();
   <div class="form-group row">
     <label for="typ" class="col-sm-5 col-form-label">Schutzleiter</label>
     <div class="col-sm-7">
-      <input type="number" step="0.01" class="form-control" name="schutzleiter" id="schutzleiter" value="<?php echo $geraet['schutzleiter']; ?>" > (max 0.3)
+      <input type="number" step="0.01" class="form-control" name="schutzleiter" id="schutzleiter" value="<?php echo $geraet['schutzleiter']; ?>" > (max 0.3)(<?php echo $RPEmax; ?>)
     </div>
   </div>
   <?php }?>

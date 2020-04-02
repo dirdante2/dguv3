@@ -61,8 +61,8 @@
 								<td><?php echo $geraet['schutzklasse']; ?></td>
 							</tr>
 							<tr>
-								<td>Verlaengerungskabel</td>
-								<td><?php if($geraet['verlaengerungskabel']=='0') { ?>  <?php } else { ?><?php echo $geraet['kabellaenge']; ?>m</td><?php	} ?></td>
+								<td>Verlängerungskabel</td>
+								<td><?php if($geraet['verlaengerungskabel']=='0') { ?>-<?php } else { ?><?php echo $geraet['kabellaenge']; ?>m</td><?php	} ?></td>
 							</tr>
 							<tr>
 								<td>Aktiv</td>
@@ -102,7 +102,7 @@
 <?php /*<a href="<?php echo site_url('pruefung/edit'); ?>" class="btn btn-primary">Neues Prüfung hinzufügen</a> */?>
 
 <!-- table-hover table-bordered table-sm table-striped -->
-<table class="table-hover table-bordered table-sm table-striped" id="table" style="width:100%">
+<table class="table-hover table-bordered table-sm table-striped" id="tabledesc" style="width:100%">
 <thead>
 <tr>
 	
@@ -177,7 +177,7 @@ if(count($pruefung)==0) {
 												<td><?php if($pr['beruehrstrom']===NULL) { echo "-"; } else { echo $pr['beruehrstrom']; } ?> <?php $y = 0.25; if($pr['beruehrstrom']===NULL) { echo "-"; } elseif($pr['beruehrstrom'] <= $y) {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
 												
 												<td><?php if($pr['funktion']=='1') { echo "ja"; } else { echo "nein"; } ?> <?php if($pr['funktion']=='1') {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
-                        <td><?php if($pr['bestanden']=='1') { echo "ja"; } else { echo "nein"; } ?> <?php if($pr['sichtpruefung']=='1') {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
+                        <td><?php if($pr['bestanden']=='1') { echo "ja"; } else { echo "nein"; } ?> <?php if($pr['bestanden']=='1') {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
                         <td><?php echo $pr['bemerkung']; ?></td>
 			
 			
