@@ -102,8 +102,18 @@ class Geraete extends CI_Controller {
 				$geraet[$feld]=$this->input->post($feld);
 			}
 			$this->Geraete_model->set($geraet,$gid);
-			$geraet = $this->Geraete_model->get($gid);
-			redirect('geraete/index/'.$geraet['oid']);
+				// get ortsid von neu angelegtem gerät damit redirect zu richtiger seite führt?!!
+			$gortsid = $this->Geraete_model->get($gid);
+			
+			if($gid==0) {
+				redirect('geraete');
+				}
+			//Vorhandeses Gerät
+			else {
+			redirect('geraete/index/'.$gortsid['oid']);
+			
+			}
+				
 		}
 	}
 	

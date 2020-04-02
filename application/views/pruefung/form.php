@@ -1,5 +1,70 @@
-<h1>Prüfung bearbeiten - <?php echo $geraet['name'].' ( ID: '.$geraet['gid'].')'; ?> <?php echo $geraet['oid']; ?></h1>
+<h1>Prüfung bearbeiten - <?php echo $geraet['geraetename'].' ( ID: '.$geraet['gid'].')'; ?> von <?php echo $geraet['ortsname']; ?></h1>
 <br>
+<div class="row">
+<div class="col-3">
+						<b>Objekt</b><br><br>
+<table  class="table table-sm">
+							<tr>
+								<td>ID</td>
+								<td><?php echo $geraet['gid']; ?></td>
+							</tr>
+							<tr>
+								<td>Ort</td>
+								<td><?php echo $geraet['ortsname']; ?></td>
+							</tr>
+							<tr>
+								<td>Name</td>
+								<td><?php echo $geraet['name']; ?></td>
+							</tr>
+							<tr>
+								<td>Hersteller</td>
+								<td><?php echo $geraet['hersteller']; ?></td>
+							</tr>
+							<tr>
+								<td>Typ</td>
+								<td><?php echo $geraet['typ']; ?></td>
+							</tr>
+							<tr>
+								<td>Seriennummer</td>
+								<td><?php echo $geraet['seriennummer']; ?></td>
+							</tr>
+							<tr>
+								<td>Beschreibung</td>
+								<td><?php echo $geraet['geraetebeschreibung']; ?></td>
+							</tr>
+						</table>
+</div>
+<div class="col-3">
+						<b> </b><br><br>
+<table  class="table table-sm">
+							<tr>
+								<td>Nennspannung</td>
+								<td><?php if($geraet['nennspannung']=='0') { echo "-"; } else { echo $geraet['nennspannung'].'V'; } ?></td>
+							</tr>
+							<tr>
+								<td>Nennstrom</td>
+								<td><?php if($geraet['nennstrom']=='0.00') { echo "-"; } else { echo $geraet['nennstrom'].'A'; } ?></td>
+							</tr>
+							<tr>
+								<td>Leistung</td>
+								<td><?php if($geraet['leistung']=='0') { echo "-"; } else { echo $geraet['leistung'].'W'; } ?></td>
+							</tr>
+							<tr>
+								<td>Schutzklasse</td>
+								<td><?php echo $geraet['schutzklasse']; ?></td>
+							</tr>
+							<tr>
+								<td>Verlaengerungskabel</td>
+								<td><?php if($geraet['verlaengerungskabel']=='0') { ?>  <?php } else { ?><?php echo $geraet['kabellaenge']; ?>m</td><?php	} ?></td>
+							</tr>
+							<tr>
+								<td>Aktiv</td>
+								<td><?php if($geraet['aktiv']=='0') { echo "nein"; } else { echo "ja"; } ?></td>
+							</tr>
+						
+						</table>
+</div>
+</div>
 <?php
 echo form_open('pruefung/edit/'.$geraet['pruefungid']);
 echo validation_errors();

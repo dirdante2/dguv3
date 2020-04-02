@@ -15,6 +15,7 @@ class Pruefung extends CI_Controller {
 		$this->load->model('Geraete_model');
 		$this->load->model('Pruefer_model');
 		$this->load->model('Messgeraete_model');
+		$this->load->model('Orte_model');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');

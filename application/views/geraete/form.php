@@ -162,7 +162,7 @@ echo validation_errors();
   <div class="form-group row">
     <label for="beschreibung" class="col-sm-5 col-form-label">Beschreibung</label>
     <div class="col-sm-7">
-      <textarea class="form-control" rows="3" name="beschreibung" id="beschreibung" value="<?php echo $geraet['beschreibung']; ?>"></textarea>
+      <input type="textarea" class="form-control" rows="3" name="beschreibung" id="beschreibung" value="<?php echo $geraet['beschreibung']; ?>">
     </div>
   </div>
   
