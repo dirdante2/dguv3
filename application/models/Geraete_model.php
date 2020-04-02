@@ -44,6 +44,32 @@ class Geraete_model extends CI_Model {
 		return $this->db->get()->result_array();
 	}
 
+
+	/*Verlängerungskabel
+	  Laut Norm darf der RPE (schutzleiter)
+	  0,3 Ohm für die ersten 5m betragen
+	  für jede weiteren 7,5m 0,1 Ohm mehr
+	  maximal jedoch 1 Ohm.*/
+	// sze: TODO check by dante
+	// sze: TODO add unit tests for this function
+	// sze: check(0.3, kabellaengeToRPEmax(1))
+	// sze: check(0.3, kabellaengeToRPEmax(5))
+	// sze: check(0.4, kabellaengeToRPEmax(12.5))
+	// sze: check(0.5, kabellaengeToRPEmax(20))
+	// sze: check(1,   kabellaengeToRPEmax(1000000))
+	private function getRPEmax($gid) {
+		$kabellaenge = $this->get($gid)['kabellaenge'];
+
+		$first_kl = 5;
+		$first = min($kabellaenge, $first_kl);
+		$rest  = max(0, $kabellaenge - $first_kl);
+		$rest_ohm = 0.1;
+		$rest_ratio = 1 / 7.5;
+
+		$rpe_max = min(0.3 + $rest * $rest_ratio * $rest_ohm, 1);
+		return $rpe_max;
+	}
+
 	function set($data,$gid=NULL) {
 		if($gid) {
 			$this->db->where('gid',$gid);
