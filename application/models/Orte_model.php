@@ -20,9 +20,17 @@ class Orte_model extends CI_Model {
 	 * @return list of Orte, single Ort or NULL
 	 */
 	function get($oid=NULL) {
+		
+			$this->db->select('orte.*, COUNT(gid) AS anzahl');
+		$this->db->from('orte');
+		$this->db->join('geraete', 'orte.oid = geraete.oid');
+		
+		$this->db->group_by('orte.oid');
+		
 		if($oid===NULL) {
 			return $this->db->get('orte')->result_array();
 		}
+		
 		$result = $this->db->get_where('orte', array('oid'=>$oid))->result_array();
 		if (!empty($result)) {
 			return $result[0];
