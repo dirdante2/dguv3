@@ -111,12 +111,17 @@ class Pruefung extends CI_Controller {
 		$this->form_validation->set_rules('mid', 'Messgerät', 'callback_mid_check');
 		$this->form_validation->set_rules('pid', 'Prüfer', 'callback_pid_check');
 
+		$gid = $this->getGid($pruefung_id);
+		$geraet = $this->Geraete_model->get($gid);
+		$RPEmax = $this->kabellaengeToRPEmax($geraet['kabellaenge']);
+
 		if($this->form_validation->run() === FALSE) {
 			$this->load->view('templates/header');
 			$this->load->view('pruefung/form', array(
 					'pruefer'=> $this->Pruefer_model->get(),
 					'messgeraete'=> $this->Messgeraete_model->get(),
-					'geraet'=>$this->Pruefung_model->get($pruefung_id)
+					'geraet'=>$this->Pruefung_model->get($pruefung_id),
+					'RPEmax'=>$RPEmax
 					));
 			$this->load->view('templates/footer');
 
@@ -130,10 +135,6 @@ class Pruefung extends CI_Controller {
 					$pruefung[$feld]=$this->input->post($feld);
 				}
 			}
-
-			$gid = $this->getGid($pruefung_id);
-			$geraet = $this->Geraete_model->get($gid);
-			$RPEmax = $this->kabellaengeToRPEmax($geraet['kabellaenge']);
 
 			$pruefung['bestanden'] = 1;
 
