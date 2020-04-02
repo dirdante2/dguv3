@@ -85,6 +85,7 @@
 <a class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-primary" href="<?php echo site_url('geraete/index/'.$geraet['oid']); ?>"><span class="iconify" data-icon="ic:baseline-room" data-width="20" data-height="20"></span> Ort anzeigen</a>
 </div>
 
+<br>
 
 
 <br>
@@ -106,7 +107,7 @@
 <tr>
 <th class="d-none">id</th>
 <th class="d-none">status</th>
-	<th>GID</th>
+	<th>Gerät</th>
 	<th>Datum</th>
 	<th>Information</th>
 
@@ -160,32 +161,38 @@ if(count($pruefung)==0) {
 		
 		-->
 		<tr class="<?php if($pr['bestanden']=='0') { echo "table-danger"; } elseif ($nextyear < $today)  { echo "table-warning"; } elseif ($nextyearfast < $today) { echo "table-info"; } ?>">
-		<td><?php echo $pr['pruefungid']; ?></td>
+		<td class="d-none"><?php echo $pr['pruefungid']; ?></td>
 		
 		<td class="d-none"><?php if($pr['bestanden']=='0') { echo "4"; } elseif ($nextyear < $today)  { echo "2"; } elseif ($nextyearfast < $today) { echo "3"; } ?></td>
-			<td><?php echo $pr['gid']; ?></td>
+			<td><?php echo $pr['geraetename']; ?></td>
 			<td><?php $blubb = new DateTime($pr['datum']); echo $pr['datum']?$blubb->format('d.m.Y'):'';  ?>
 									
-
+				
+				
 				
 				
 				</td>
 			<td><?php echo $pr['pruefername']; ?><br>(<?php echo $pr['messgeraetname']; ?>)</td>	
                    
-                        <td><?php if($pr['sichtpruefung']=='1') { echo "ja"; } else { echo "nein"; } ?></td>
-                        <td><?php if($pr['schutzleiter']===NULL) { echo "-"; } else { echo $pr['schutzleiter'].'Ohm'; } ?></td>
-                        <td><?php if($pr['isowiderstand']===NULL) { echo "-"; } else { echo $pr['isowiderstand'].'MOhm'; } ?></td>
-			<td><?php if($pr['schutzleiterstrom']===NULL) { echo "-"; } else { echo $pr['schutzleiterstrom'].'mA'; } ?></td>
-			<td><?php if($pr['beruehrstrom']===NULL) { echo "-"; } else { echo $pr['beruehrstrom'].'mA'; } ?></td>
-			<td><?php if($pr['funktion']=='1') { echo "ja"; } else { echo "nein"; } ?></td>
+                        <td><?php if($pr['sichtpruefung']=='1') { echo "ja"; } else { echo "nein"; } ?> <?php if($pr['sichtpruefung']=='1') {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
+                        
+                        <td><?php if($pr['schutzleiter']===NULL) { echo "-"; } else { echo $pr['schutzleiter'].'Ohm'; } ?> <?php $y = 0.3; if($pr['schutzleiter']===NULL) { echo "-"; } elseif($pr['schutzleiter'] <= $y)  {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
+                        <td><?php if($pr['isowiderstand']===NULL) { echo "-"; } else { echo $pr['isowiderstand'].'MOhm'; } ?> <?php $y = 2.0; if($pr['isowiderstand']===NULL) { echo "-"; } elseif($pr['isowiderstand'] >= $y) {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
+												<td><?php if($pr['schutzleiterstrom']===NULL) { echo "-"; } else { echo $pr['schutzleiterstrom'].'mA'; } ?> <?php $y = 0.5; if($pr['schutzleiterstrom']===NULL) { echo "-"; } elseif($pr['schutzleiterstrom'] <= $y) {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
+												<td><?php if($pr['beruehrstrom']===NULL) { echo "-"; } else { echo $pr['beruehrstrom'].'mA'; } ?> <?php $y = 0.25; if($pr['beruehrstrom']===NULL) { echo "-"; } elseif($pr['beruehrstrom'] <= $y) {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
+												
+												<td><?php if($pr['funktion']=='1') { echo "ja"; } else { echo "nein"; } ?> <?php if($pr['funktion']=='1') {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
                         <td><?php if($pr['bestanden']=='1') { echo "ok"; } else { echo "nein"; } ?></td>
                         <td><?php echo $pr['bemerkung']; ?></td>
+			
+			
 			<td>
 				<div class="btn-group btn-group-sm" role="group" aria-label="options">
-					<a href="<?php echo site_url('geraete/index/'.$pr['oid']); ?>" class="btn btn-primary"><span class="iconify" data-icon="jam:plug" data-width="20" data-height="20"></span> Ort</a>
-					<a href="<?php echo site_url('pruefung/index/'.$pr['gid']); ?>"><button type="button" class="btn btn-success btn-sm"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span> Prüfung</button></a>
-					<a href="<?php echo site_url('pruefung/edit/'.$pr['pruefungid']); ?>"><button type="button" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> edit</button></a>
-				<a href="<?php echo site_url('pruefung/delete/'.$pr['pruefungid']); ?>"><button type="button" class="btn btn-danger btn-sm"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span> delete</button></a>
+					<a href="<?php echo site_url('pruefung/protokoll/'.$pr['pruefungid']); ?>" class="btn btn-primary"><span class="iconify" data-icon="bx:bxs-file-pdf" data-width="20" data-height="20"></span> PDF</a>
+					<a href="<?php echo site_url('geraete/index/'.$pr['oid']); ?>" class="<?php if($geraet) { echo "d-none"; } ?> btn btn-primary"><span class="iconify" data-icon="ic:baseline-room" data-width="20" data-height="20"></span> Ort</a>
+					<a href="<?php echo site_url('pruefung/index/'.$pr['gid']); ?>" class="<?php if($geraet) { echo "d-none"; } ?> btn btn-primary btn-sm"><span class="iconify icon:jam:plug icon-width:20 icon-height:20"></span> Gerät</a>
+					<a href="<?php echo site_url('pruefung/edit/'.$pr['pruefungid']); ?>" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> edit</a>
+				<a href="<?php echo site_url('pruefung/delete/'.$pr['pruefungid']); ?>" class="btn btn-danger btn-sm"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span> delete</a>
 				</div>
 			</td>
 		</tr>
