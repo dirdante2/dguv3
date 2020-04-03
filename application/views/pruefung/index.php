@@ -199,3 +199,34 @@ if(count($pruefung)==0) {
 
 </tbody>
 </table>
+<div class="row">
+	<div class="col">
+
+						<br><br>
+<table  class="table" style="width:700px">
+	<thead>
+		<th>Messung</th>
+		<th>Grenzwerte</th>
+	</thead>
+		<tbody>
+							<tr>
+								<td>Schutzleiterwiderstand</td>
+								<td>Max 0.3 Ohm (Pro Meter Kabel +0.1 Ohm aber Max 1.0 Ohm)</td>
+							</tr>
+							<tr>
+								<td>Isolationsprüfung 500V</td>
+								<td>Min 2,00 MOhm</td>
+							</tr>
+							<tr>
+								<td>Schutzleiterstrom</td>
+								<td>Max 0,50 mA</td>
+							</tr>
+							<tr>
+								<td>Berührungstrom</td>
+								<td>Max 0,25 mA</td>
+							</tr>
+						</tbody>
+						</table>
+
+</div>
+</div>
