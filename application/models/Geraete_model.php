@@ -57,7 +57,7 @@ class Geraete_model extends CI_Model {
 	// sze: check(0.4, kabellaengeToRPEmax(12.5))
 	// sze: check(0.5, kabellaengeToRPEmax(20))
 	// sze: check(1,   kabellaengeToRPEmax(1000000))
-	private function getRPEmax($gid) {
+	function getRPEmax($gid) {
 		$kabellaenge = $this->get($gid)['kabellaenge'];
 
 		$first_kl = 5;

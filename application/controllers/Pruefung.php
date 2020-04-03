@@ -65,7 +65,10 @@ class Pruefung extends CI_Controller {
 
 	function new($gid) {
 		if($this->Geraete_model->get($gid)) {
-			$pruefung_id = $this->Pruefung_model->new(array('gid'=>$gid));
+			$pruefung_id = $this->Pruefung_model->new(array(
+			'gid'=>$gid,
+			'datum'=>date('Y-m-d')
+			));
 			redirect('pruefung/edit/'.$pruefung_id);
 		} else {
 			show_error('Gerät mit der id "'.$gid.'" existiert nicht.', 404);

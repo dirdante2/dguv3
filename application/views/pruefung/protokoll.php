@@ -1,5 +1,5 @@
 
-<title>item prüfung</title> 
+<title>GID <?php echo $pruefung['gid']; ?> Protokoll <?php echo $pruefung['pruefungid']; ?></title> 
 <div class="row">
  <div class="col-md-8">
   <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo base_url();?>index.php/pruefung/protokoll/<?php echo $pruefung['pruefungid']; ?>" class="img-fluid" alt="Responsive image">
@@ -154,14 +154,14 @@
 							</tr>
 							<tr>
 								<td>Schutzleiterwiderstand</td>
-								<td>Max 0,30 Ohm</td>
+								<td>Max <?php echo $pruefung['RPEmax']; ?> Ohm</td>
 								<td><?php if($pruefung['schutzleiter']===null || $pruefung['sichtpruefung']== '0') { echo "-"; } else { echo $pruefung['schutzleiter'].' Ohm'; } ?></td>
 								<td><?php 
-									$y = 0.30;
+									$y = $pruefung['RPEmax'];
 									if($pruefung['schutzleiter']===null || $pruefung['sichtpruefung']== '0') { 
 									       echo "-"; 
 									} else {
-    									if($pruefung['schutzleiter'] > $y) {
+    									if($pruefung['schutzleiter'] >= $y) {
     									      echo "Nein"; 
     									} else { 
     									    echo "Ja"; 
@@ -177,7 +177,7 @@
 									if($pruefung['isowiderstand']===null || $pruefung['sichtpruefung']== '0') { 
 									       echo "-"; 
 									} else {
-    									if($pruefung['isowiderstand'] < $y) {
+    									if($pruefung['isowiderstand'] <= $y) {
     									      echo "Nein"; 
     									} else { 
     									    echo "Ja"; 
@@ -193,7 +193,7 @@
 									if($pruefung['schutzleiterstrom']===null || $pruefung['sichtpruefung']== '0') { 
 									       echo "-"; 
 									} else {
-    									if($pruefung['schutzleiterstrom'] > $y) {
+    									if($pruefung['schutzleiterstrom'] >= $y) {
     									      echo "Nein"; 
     									} else { 
     									    echo "Ja"; 
@@ -210,7 +210,7 @@
 									if($pruefung['beruehrstrom']===null || $pruefung['sichtpruefung']== '0') { 
 									       echo "-"; 
 									} else {
-    									if($pruefung['beruehrstrom'] > $y) {
+    									if($pruefung['beruehrstrom'] >= $y) {
     									      echo "Nein"; 
     									} else { 
     									    echo "Ja"; 
