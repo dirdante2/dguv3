@@ -94,36 +94,36 @@ $('#suche_alle').on( 'click', function () {
         .draw();
 } );
 
- var table = $('#tabledesc').DataTable();
+  var table2 = $('#tabledesc').DataTable();
  
 // #column3_search is a <input type="text"> element
 $('#suche_inaktiv').on( 'click', function () {
-    table
+    table2
         .columns( 1 )
         .search( "1")
         .draw();
 } );
 $('#suche_abgelaufen').on( 'click', function () {
-    table
+    table2
         .columns( 1 )
         .search( "2")
         .draw();
 } );
 
 $('#suche_baldabgelaufen').on( 'click', function () {
-    table
+    table2
         .columns( 1 )
         .search( "3")
         .draw();
 } );
 $('#suche_failed').on( 'click', function () {
-    table
+    table2
         .columns( 1 )
         .search( "4")
         .draw();
 } );
 $('#suche_alle').on( 'click', function () {
-    table
+    table2
         .columns( 1 )
         .search( "")
         .draw();
