@@ -34,7 +34,8 @@
         		$data['geraete_count']= $this->Dguv3_model->getcountdata('geraete');
         		$data['geraete_aktiv_1']= $this->Dguv3_model->getcountdata('geraete','aktiv', '1');
         		$data['geraete_aktiv_0']= $this->Dguv3_model->getcountdata('geraete','aktiv', '0');
-        		$data['geraete_count_fail']= $this->Dguv3_model->getgeraetecountdata();
+        		$data['geraete_count_fail']= $this->Dguv3_model->getgeraete_bestanden_countdata();
+        		$data['geraete_count_geprueft_0']= $this->Dguv3_model->getgeraete_geprueft_countdata();
         		
         		$data['orte_count']= $this->Dguv3_model->getcountdata('orte');
         		

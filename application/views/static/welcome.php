@@ -10,7 +10,7 @@
 					
 <table  class="table">
 	<thead>
-		<th><span class="iconify" data-icon="jam:plug" data-width="20" data-height="20"></span> Geräte</th>
+		<th><span class="iconify" data-icon="jam:plug" data-width="20" data-height="20"></span> GerÃ¤te</th>
 		<th></th>
 	</thead>
 		<tbody>
@@ -30,6 +30,10 @@
 								<td>durchgefallen</td>
 								<td><?php echo $geraete_count_fail; ?></td>
 							</tr>
+							<tr>
+								<td>ungeprÃ¼ft</td>
+								<td><?php echo $geraete_count_geprueft_0; ?></td>
+							</tr>
 						</tbody>
 						</table>
 
@@ -40,7 +44,7 @@
 						
 <table  class="table">
 	<thead>
-		<th><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span> Prüfungen</th>
+		<th><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span> PrÃ¼fungen</th>
 		<th></th>
 	</thead>
 		<tbody>
@@ -72,11 +76,11 @@
 	</thead>
 		<tbody>
 							<tr>
-								<td><span class="iconify" data-icon="ic:baseline-account-circle" data-width="20" data-height="20"></span> Prüfer</td>
+								<td><span class="iconify" data-icon="ic:baseline-account-circle" data-width="20" data-height="20"></span> PrÃ¼fer</td>
 								<td><?php echo $pruefer_count; ?></td>
 							</tr>
 							<tr>
-								<td><span class="iconify" data-icon="ic:outline-computer" data-width="20" data-height="20"></span> Messgeräte</td>
+								<td><span class="iconify" data-icon="ic:outline-computer" data-width="20" data-height="20"></span> MessgerÃ¤te</td>
 								<td><?php echo $messgeraete_count; ?></td>
 							</tr>
 							<tr>
