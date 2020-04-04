@@ -5,7 +5,8 @@ $().ready(function() {
 });
 </script>
 
-<h1>Prüfung bearbeiten - <?php echo $geraet['geraetename'].' ( ID: '.$geraet['gid'].')'; ?> von <?php echo $geraet['ortsname']; ?></h1>
+<h1>Prüfung bearbeiten</h1>  <br>
+<h2><?php echo $geraet['geraetename'].' ( ID: '.$geraet['gid'].')'; ?> <br>von <?php echo $geraet['ortsname']; ?></h2>
 <br>
 <div class="row">
 <div class="col-3">

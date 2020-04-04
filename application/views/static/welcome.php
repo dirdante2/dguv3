@@ -18,12 +18,12 @@
 								<td>Gesamt</td>
 								<td><?php echo $geraete_count; ?></td>
 							</tr>
-							<tr>
-								<td>aktiv</td>
+							<tr >
+								<td style="text-indent:20px;">aktiv</td>
 								<td><?php echo $geraete_aktiv_1; ?></td>
 							</tr>
 							<tr>
-								<td>inaktiv</td>
+								<td style="text-indent:20px;">inaktiv</td>
 								<td><?php echo $geraete_aktiv_0; ?></td>
 							</tr>
 							<tr>
@@ -53,11 +53,11 @@
 								<td><?php echo $pruefung_count; ?></td>
 							</tr>
 							<tr>
-								<td>bestanden</td>
+								<td style="text-indent:20px;">bestanden</td>
 								<td><?php echo $pruefung_bestanden_1; ?></td>
 							</tr>
 							<tr>
-								<td>fehlgeschlagen</td>
+								<td style="text-indent:20px;">fehlgeschlagen</td>
 								<td><?php echo $pruefung_bestanden_0; ?></td>
 							</tr>
 							
