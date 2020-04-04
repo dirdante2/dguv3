@@ -2,7 +2,7 @@
 <html>
 <head>
 
-	<meta charset="utf-8">
+	<meta charset="UTF-8">
 	<script src="<?php echo base_url();?>lib/jquery/jquery-3.4.1.min.js"></script>
 	<script src="<?php echo base_url();?>lib/jquery/jquery-ui.min.js"></script>
 	<script src="<?php echo base_url();?>lib/bootstrap/bootstrap.min.js"></script>
@@ -32,7 +32,7 @@
 
 
 <nav class="navbar sticky-top navbar-expand-md bg-dark navbar-dark">
-  <a class="navbar-brand" href="#">DGUV3</a>
+  <a class="navbar-brand" href="<?php echo site_url('Dguv3'); ?>">DGUV3</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
