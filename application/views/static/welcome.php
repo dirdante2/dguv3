@@ -19,39 +19,30 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="text-indent:20px;">aktiv</td>
-                    <td>
-                        <?php echo $geraete_aktiv_1; ?>
-                    </td>
-                </tr>
-                <tr>
                     <td style="text-indent:20px;">inaktiv</td>
                     <td>
                         <?php echo $geraete_aktiv_0; ?>
                     </td>
                 </tr>
                 <tr>
-                    <td>geprüft</td>
+                    <td style="text-indent:20px;">aktiv</td>
+                    <td>
+                        <?php echo $geraete_aktiv_1; ?>
+                    </td>
+                </tr>
+                
+                
+                <tr>
+                    <td style="text-indent:30px;">ungeprüft</td>
+                    <td>
+                        <?php echo $geraete_count_geprueft_null; ?>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td style="text-indent:30px;">geprüft</td>
                     <td>
                         <?php echo $geraete_count_geprueft; ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-indent:20px;">bestanden</td>
-                    <td>
-                        <?php echo $geraete_count_geprueft_1; ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-indent:40px;">abgelaufen</td>
-                    <td>
-                        <?php echo $geraete_count_geprueft_abgelaufen; ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-indent:40px;">bald abgelaufen</td>
-                    <td>
-                        <?php echo $geraete_count_geprueft_baldabgelaufen; ?>
                     </td>
                 </tr>
                 <tr>
@@ -61,11 +52,25 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>ungeprüft</td>
+                    <td style="text-indent:40px;">bestanden</td>
                     <td>
-                        <?php echo $geraete_count_geprueft_null; ?>
+                        <?php echo $geraete_count_geprueft_1; ?>
                     </td>
                 </tr>
+                <tr>
+                    <td style="text-indent:50px;">abgelaufen</td>
+                    <td>
+                        <?php echo $geraete_count_geprueft_abgelaufen; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-indent:50px;">bald abgelaufen</td>
+                    <td>
+                        <?php echo $geraete_count_geprueft_baldabgelaufen; ?>
+                    </td>
+                </tr>
+                
+                
                 
             </tbody>
         </table>

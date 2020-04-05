@@ -49,7 +49,8 @@ class Dguv3_model extends CI_Model
 				$this->db->from('geraete');
 				
 				$this->db->join('pruefung','geraete.gid = pruefung.gid AND pruefung.pruefungid = (SELECT pruefungid from pruefung as pr where geraete.gid = pr.gid order by datum desc, pruefungid desc limit 1)','LEFT');
-        
+        $this->db->where('aktiv', '1');
+         
         //gibt geräte zurück die ungeprüft sind
         if ($tblvar===NULL) {
             $this->db->where('bestanden', NULL);
@@ -83,6 +84,7 @@ class Dguv3_model extends CI_Model
         } else {
             $this->db->where('bestanden', $tblvar);
         }
+        
         return $this->db->count_all_results();
         
    

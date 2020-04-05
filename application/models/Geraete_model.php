@@ -19,7 +19,7 @@ class Geraete_model extends CI_Model {
 		$this->db->from('geraete');
 		$this->db->join('orte', 'geraete.oid = orte.oid');
 		$this->db->join('pruefung','geraete.gid = pruefung.gid AND pruefung.pruefungid = (SELECT pruefungid from pruefung as pr where geraete.gid = pr.gid order by datum desc, pruefungid desc limit 1)','LEFT');
-		$this->db->join('pruefer', 'pruefer.pid = pruefung.pid', 'LEFT');
+		$this->db->join('pruefer', 'pruefung.pid = pruefer.pid', 'LEFT');
 
 		if($gid===NULL) {
 			return $this->db->get()->result_array();
@@ -39,7 +39,7 @@ class Geraete_model extends CI_Model {
 		$this->db->from('geraete');
 		$this->db->join('orte', 'geraete.oid = orte.oid');
 		$this->db->join('pruefung','geraete.gid = pruefung.gid AND pruefung.pruefungid = (SELECT pruefungid from pruefung as pr where geraete.gid = pr.gid order by datum desc, pruefungid desc limit 1)','LEFT');
-		$this->db->join('pruefer', 'pruefer.pid = pruefung.pid', 'LEFT');
+		$this->db->join('pruefer', 'pruefung.pid = pruefer.pid', 'LEFT');
 		$this->db->where('orte.oid',$oid);
 		return $this->db->get()->result_array();
 	}
