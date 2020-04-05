@@ -27,6 +27,8 @@ class Pruefung extends CI_Controller {
 		} else {
 			$data['geraet'] = NULL;
 		}
+		$data['pruefungabgelaufen']= $this->config->item('dguv3_pruefungabgelaufen');
+		$data['pruefungbaldabgelaufen']= $this->config->item('dguv3_pruefungbaldabgelaufen');
 		$data['pruefung'] = $this->Pruefung_model->list($gid);
 
 		$this->load->view('templates/header');
@@ -39,6 +41,7 @@ class Pruefung extends CI_Controller {
 		if($pruefung_id) {
 			$data['pruefung'] = $this->Pruefung_model->getnotarray($pruefung_id);
 		}
+		
 		$data['adresse']= $this->config->item('dguv3_adresse');
 		$data['logourl']= $this->config->item('dguv3_logourl');
 		$this->load->view('templates/print/header');

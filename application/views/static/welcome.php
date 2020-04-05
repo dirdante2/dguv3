@@ -55,7 +55,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="text-indent:20px;">durchgefallen</td>
+                    <td style="text-indent:40px;">durchgefallen</td>
                     <td>
                         <?php echo $geraete_count_geprueft_0; ?>
                     </td>

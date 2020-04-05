@@ -137,12 +137,12 @@ if(count($pruefung)==0) {
 } else {
 	foreach($pruefung as $pr) {
 		
-				$today = date("Y-m");
+				$today = date("Y-m-d");
 				$day     = $pr['datum'];
-				$nextyear = strtotime("+12 month", strtotime($day));
-				$nextyearfast = strtotime("+10 month", strtotime($day));
-				$nextyear = date("Y-m", $nextyear);
-				$nextyearfast = date("Y-m", $nextyearfast);
+				$nextyear = strtotime('+'.$pruefungabgelaufen, strtotime($day));
+				$nextyearfast = strtotime('+'.$pruefungbaldabgelaufen, strtotime($day));
+				$nextyear = date("Y-m-d", $nextyear);
+				$nextyearfast = date("Y-m-d", $nextyearfast);
 				
 
 		?>

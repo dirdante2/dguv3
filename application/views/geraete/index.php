@@ -80,12 +80,12 @@ if(count($geraete)==0) {
 } else {
 	foreach($geraete as $geraet) {
 
-				$today = date("Y-m");
+				$today = date("Y-m-d");
 				$day     = $geraet['letztesdatum'];
-				$nextyear = strtotime("+12 month", strtotime($day));
-				$nextyearfast = strtotime("+10 month", strtotime($day));
-				$nextyear = date("Y-m", $nextyear);
-				$nextyearfast = date("Y-m", $nextyearfast);
+				$nextyear = strtotime('+'.$pruefungabgelaufen, strtotime($day));
+				$nextyearfast = strtotime('+'.$pruefungbaldabgelaufen, strtotime($day));
+				$nextyear = date("Y-m-d", $nextyear);
+				$nextyearfast = date("Y-m-d", $nextyearfast);
 
 
 

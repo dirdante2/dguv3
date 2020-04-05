@@ -9,3 +9,9 @@ $config['dguv3_adresse']='emcot group GmbH<br>Vienhovenweg 2a<br>44867 Bochum';
 // /application/bilder/logo.jpg
 $config['dguv3_logourl']='/application/bilder/logo.jpg';
 
+//zeitangabe ab wann prüfungen als abgelaufen gelten
+//12monate: 12 month
+$config['dguv3_pruefungabgelaufen']='12 month';
+//zeitangabe ab wann prüfungen als bald abgelaufen gelten
+//10monate: 10 month
+$config['dguv3_pruefungbaldabgelaufen']='10 month';

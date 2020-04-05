@@ -25,6 +25,8 @@ class Geraete extends CI_Controller {
 			$data['ort'] = NULL;
 			$data['geraete'] = $this->Geraete_model->get();
 		}
+		$data['pruefungabgelaufen']= $this->config->item('dguv3_pruefungabgelaufen');
+		$data['pruefungbaldabgelaufen']= $this->config->item('dguv3_pruefungbaldabgelaufen');
 		/*$this->output->cache(5);*/
 		$this->load->view('templates/header');
 		$this->load->view('templates/datatable');

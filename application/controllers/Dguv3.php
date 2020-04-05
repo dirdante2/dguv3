@@ -29,7 +29,8 @@
         }
 
         public function notloggedin() {
-        	
+        		
+        		
         		$data['adresse']= $this->config->item('dguv3_adresse');      		
         		$data['geraete_count']= $this->Dguv3_model->getcountdata('geraete');
         		$data['geraete_aktiv_1']= $this->Dguv3_model->getcountdata('geraete','aktiv', '1');

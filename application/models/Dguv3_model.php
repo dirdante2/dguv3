@@ -41,50 +41,14 @@ class Dguv3_model extends CI_Model
     // geräte abgelaufen: bestanden=1 und letztesdatum+12monate< today
     // geräte bald abgelaufen: bestanden=1 und letztesdatum+10monate< today
     
-    function getgeraete_bestanden_countdata($tblvar=NULL, $letztesdatum=NULL)
-    {
-        $this->db->select('geraete.*, orte.name AS ortsname, pruefung.bestanden, pruefung.datum AS letztesdatum, (select count(*) from pruefung as pr where geraete.gid = pr.gid) AS anzahl, pruefer.name as pruefername');
-        $this->db->from('geraete');
-        $this->db->join('orte', 'geraete.oid = orte.oid');
-        $this->db->join('pruefung', 'pruefung.gid = geraete.gid AND pruefung.pruefungid = (SELECT pruefungid from pruefung as pr where geraete.gid = pr.gid order by datum desc, pruefungid desc limit 1)', 'LEFT');
-        $this->db->join('pruefer', 'pruefer.pid = pruefung.pid', 'LEFT');
-        
-        
-
-        
-        //gibt geräte zurück die ungeprüft sind
-        if ($tblvar===NULL) {
-            $this->db->where('bestanden', NULL);
-            
-        //gibt geräte zurück die bestanden sind    
-        } elseif($tblvar== '1') {
-        	
-        		//spalte anzahl wird nicht erkannt?
-        		//spalte letztesdatum wird nicht erkannt?!
-        
-        	  //$this->db->where('letztesdatum <', '2020-01-01');
-        	  //$this->db->where('letztesdatum <', $letztesdatum);
-            $this->db->where('bestanden', $tblvar);
-        
-        
-        //gibt andere geräte zurück; var=0 durchgefallen
-        } else {
-            $this->db->where('bestanden', $tblvar);
-        }
-        return $this->db->count_all_results();
-        
-    }
-    
-    
     function getgeraete_bestanden_countdata2($tblvar=NULL, $letztesdatum=NULL)
     {
-        $this->db->select('geraete.*, letztepruefung.*');
-        $this->db->from('(select gid,pid,mid,bestanden , max(datum) as letztesdatum from pruefung group by gid) as letztepruefung');
-        $this->db->join('geraete', 'geraete.gid = letztepruefung.gid', 'right');
         
         
-        
-
+        $this->db->select('geraete.*, pruefung.bestanden, pruefung.datum AS letztesdatum, (select count(*) from pruefung as pr where geraete.gid = pr.gid) AS anzahl');
+				$this->db->from('geraete');
+				
+				$this->db->join('pruefung','geraete.gid = pruefung.gid AND pruefung.pruefungid = (SELECT pruefungid from pruefung as pr where geraete.gid = pr.gid order by datum desc, pruefungid desc limit 1)','LEFT');
         
         //gibt geräte zurück die ungeprüft sind
         if ($tblvar===NULL) {
@@ -92,29 +56,26 @@ class Dguv3_model extends CI_Model
             
         //gibt geräte zurück die bestanden sind    
         } elseif($tblvar== '1') {
+        				$pruefungabgelaufen = $this->config->item('dguv3_pruefungabgelaufen');
+								$pruefungbaldabgelaufen = $this->config->item('dguv3_pruefungbaldabgelaufen');
         	 			$today = date("Y-m-d");
-        	 			$abgelaufen = strtotime("-12 month", strtotime($today));
-        	 			$baldabgelaufen = strtotime("-10 month", strtotime($today));
+        	 			$abgelaufen = strtotime('-'.$pruefungabgelaufen, strtotime($today));
+        	 			$baldabgelaufen = strtotime('-'.$pruefungbaldabgelaufen, strtotime($today));
         	 			$abgelaufen = date("Y-m-d", $abgelaufen);
 								$baldabgelaufen = date("Y-m-d", $baldabgelaufen);
         	 			$this->db->where('bestanden', '1');
         	 			
-        	 		
-        			if ($letztesdatum== 'abgelaufen'){
-        		 
+        	 			//geräte mit prüfung bestanden die abgelaufen sind
+	        			if ($letztesdatum== 'abgelaufen'){
 
-							$this->db->where('letztesdatum <', $abgelaufen);
-        		 
-        		 } elseif ($letztesdatum== 'baldabgelaufen'){
-        		 	
-        		 	$this->db->where('letztesdatum >', $abgelaufen);
-        		 	$this->db->where('letztesdatum <', $baldabgelaufen);
-        		}
-        		//spalte anzahl wird nicht erkannt?
-        		//spalte letztesdatum wird nicht erkannt?!
-        
-        	  //$this->db->where('letztesdatum <', '2020-01-01');
-        	  //$this->db->where('letztesdatum <', $letztesdatum);
+									$this->db->where('datum <', $abgelaufen);
+	        		 	//geräte mit prüfung die bald abgelaufen sind
+	        		 	} elseif ($letztesdatum== 'baldabgelaufen'){
+	        		 	
+	        		 		$this->db->where('datum >', $abgelaufen);
+	        		 		$this->db->where('datum <', $baldabgelaufen);
+	        			}
+
            
         
         
