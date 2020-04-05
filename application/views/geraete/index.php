@@ -54,7 +54,7 @@
 	<th>Hersteller</th>
 	<th>Typ</th>
 	<th>Seriennummer</th>
-	<th>aktiv</th>
+	<!--<th>aktiv</th>-->
 	<th>Beschreibung</th>
 	<!--<th>hinzugefügt am</th>-->
 	<th class="d-none">U</th>
@@ -117,7 +117,7 @@ if(count($geraete)==0) {
 			<td><?php echo $geraet['hersteller']; ?></td>
 			<td><?php echo $geraet['typ']; ?></td>
 			<td><?php echo $geraet['seriennummer']; ?></td>
-			<td><?php if($geraet['aktiv']=='0') { echo "nein"; } else { echo "ja"; } ?></td>
+			<!--<td><?php if($geraet['aktiv']=='0') { echo "nein"; } else { echo "ja"; } ?></td>-->
 			<td><?php echo $geraet['beschreibung']; ?></td>
 			<!--<td><?php $blubb = new DateTime($geraet['hinzugefuegt']); echo $blubb->format('d.m.Y');  ?></td>-->
 			<td class="d-none"><?php if($geraet['nennspannung']=='0') { echo "-"; } else { echo $geraet['nennspannung'].'V'; } ?></td>
@@ -127,9 +127,10 @@ if(count($geraete)==0) {
 			<!--<td><?php if($geraet['verlaengerungskabel']=='0') { ?>  <?php } else { ?><?php echo $geraet['kabellaenge']; ?>m</td><?php	} ?>-->
 			<td><?php echo $geraet['letztesdatum']?>    (<?php echo $geraet['anzahl']?>)</td>
 			<td>
-				<div class="btn-group btn-group-sm" role="group" aria-label="options">
-					<a href="<?php if($geraet) { echo site_url('pruefung/new/'.$geraet['gid']); } ?>" class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-success"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neue Prüfung</a>
-					<a href="<?php echo site_url('pruefung/index/'.$geraet['gid']); ?>" class="btn btn-primary btn-sm"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span> prüfung</a>
+				<div class="text-right btn-group btn-group-sm" role="group" aria-label="options">
+					
+					<a href="<?php if($geraet) { echo site_url('pruefung/new/'.$geraet['gid']); } ?>" class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-success <?php if($geraet['aktiv']=='0') { echo " disabled"; } ?>"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neue Prüfung</a>
+					<a href="<?php echo site_url('pruefung/index/'.$geraet['gid']); ?>" class="btn btn-primary btn-sm <?php if($geraet['aktiv']=='0') { echo " disabled"; } ?>"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span> prüfung</a>
 					<a href="<?php echo site_url('geraete/index/'.$geraet['oid']); ?>" class="<?php if($ort) { echo "d-none"; } ?> btn btn-primary"><span class="iconify" data-icon="ic:baseline-room" data-width="20" data-height="20"></span> Ort</a>
 					<a href="<?php echo site_url('geraete/edit/'.$geraet['gid']); ?>" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> edit</a>
 					<a href="<?php echo site_url('geraete/delete/'.$geraet['gid']); ?>" class="btn btn-danger btn-sm"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span> delete</a>
