@@ -39,7 +39,8 @@ class Pruefung extends CI_Controller {
 		if($pruefung_id) {
 			$data['pruefung'] = $this->Pruefung_model->getnotarray($pruefung_id);
 		}
-
+		$data['adresse']= $this->config->item('dguv3_adresse');
+		$data['logourl']= $this->config->item('dguv3_logourl');
 		$this->load->view('templates/print/header');
 		$this->load->view('templates/datatable');
 		$this->load->view('pruefung/protokoll',$data);

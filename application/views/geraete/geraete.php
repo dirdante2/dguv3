@@ -6,7 +6,8 @@
   <?php if($ort) { ?>
   <h1>Geräte für <?php echo $ort['name']; ?></h1>
   <h3><?php echo $ort['beschreibung']; ?></h3>
-
+  <br>
+	<?php echo $adresse; ?>
   <?php
   	} else {
   ?>

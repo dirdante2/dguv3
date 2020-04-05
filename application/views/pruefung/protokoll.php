@@ -6,7 +6,7 @@
  </div>
 
  <div class="col-md-4">
- 	<img src="<?php echo base_url();?>application/bilder/logo.jpg" class="img-fluid" alt="Responsive image" style="max-height:200px;">
+ 	<img src="<?php echo $logourl; ?>" class="img-fluid" alt="Responsive image" style="max-height:200px;">
  </div>
  </div>
 
@@ -22,9 +22,7 @@
 			
 				<div class="col-3">
 						<b>Kunde</b><br><br>
-						emcot group GmbH<br>
-						Vienhovenweg 2a<br>
-						44867 Bochum
+						<?php echo $adresse; ?>
 				</div>
 				<div class="col-6">
 						<b>Objekt</b><br><br>
