@@ -22,7 +22,7 @@ $().ready(function() {
 							</tr>
 							<tr>
 								<td>Name</td>
-								<td><?php echo $geraet['name']; ?></td>
+								<td><?php echo $geraet['geraetename']; ?></td>
 							</tr>
 							<tr>
 								<td>Hersteller</td>

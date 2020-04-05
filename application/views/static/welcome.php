@@ -31,13 +31,31 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>bestanden</td>
+                    <td>geprüft</td>
+                    <td>
+                        <?php echo $geraete_count_geprueft; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-indent:20px;">bestanden</td>
                     <td>
                         <?php echo $geraete_count_geprueft_1; ?>
                     </td>
                 </tr>
                 <tr>
-                    <td>durchgefallen</td>
+                    <td style="text-indent:40px;">abgelaufen</td>
+                    <td>
+                        <?php echo $geraete_count_geprueft_abgelaufen; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-indent:40px;">bald abgelaufen</td>
+                    <td>
+                        <?php echo $geraete_count_geprueft_baldabgelaufen; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-indent:20px;">durchgefallen</td>
                     <td>
                         <?php echo $geraete_count_geprueft_0; ?>
                     </td>
@@ -48,18 +66,7 @@
                         <?php echo $geraete_count_geprueft_null; ?>
                     </td>
                 </tr>
-                <tr>
-                    <td>abgelaufen</td>
-                    <td>
-                        x
-                    </td>
-                </tr>
-                <tr>
-                    <td>bald abgelaufen</td>
-                    <td>
-                        x
-                    </td>
-                </tr>
+                
             </tbody>
         </table>
 

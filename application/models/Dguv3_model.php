@@ -76,9 +76,57 @@ class Dguv3_model extends CI_Model
     }
     
     
-    
+    function getgeraete_bestanden_countdata2($tblvar=NULL, $letztesdatum=NULL)
+    {
+        $this->db->select('geraete.*, letztepruefung.*');
+        $this->db->from('(select gid,pid,mid,bestanden , max(datum) as letztesdatum from pruefung group by gid) as letztepruefung');
+        $this->db->join('geraete', 'geraete.gid = letztepruefung.gid', 'right');
+        
+        
+        
+
+        
+        //gibt geräte zurück die ungeprüft sind
+        if ($tblvar===NULL) {
+            $this->db->where('bestanden', NULL);
+            
+        //gibt geräte zurück die bestanden sind    
+        } elseif($tblvar== '1') {
+        	 			$today = date("Y-m-d");
+        	 			$abgelaufen = strtotime("-12 month", strtotime($today));
+        	 			$baldabgelaufen = strtotime("-10 month", strtotime($today));
+        	 			$abgelaufen = date("Y-m-d", $abgelaufen);
+								$baldabgelaufen = date("Y-m-d", $baldabgelaufen);
+        	 			$this->db->where('bestanden', '1');
+        	 			
+        	 		
+        			if ($letztesdatum== 'abgelaufen'){
+        		 
+
+							$this->db->where('letztesdatum <', $abgelaufen);
+        		 
+        		 } elseif ($letztesdatum== 'baldabgelaufen'){
+        		 	
+        		 	$this->db->where('letztesdatum >', $abgelaufen);
+        		 	$this->db->where('letztesdatum <', $baldabgelaufen);
+        		}
+        		//spalte anzahl wird nicht erkannt?
+        		//spalte letztesdatum wird nicht erkannt?!
+        
+        	  //$this->db->where('letztesdatum <', '2020-01-01');
+        	  //$this->db->where('letztesdatum <', $letztesdatum);
+           
+        
+        
+        //gibt andere geräte zurück; var=0 durchgefallen
+        } else {
+            $this->db->where('bestanden', $tblvar);
+        }
+        return $this->db->count_all_results();
+        
    
     
     
     
-}
+		}
+	}
