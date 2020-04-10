@@ -184,8 +184,8 @@ if(count($pruefung)==0) {
 			
 			<td>
 				<div class="btn-group btn-group-sm" role="group" aria-label="options">
-					<a href="<?php echo site_url('pruefung/protokoll/'.$pr['pruefungid']); ?>" class="btn btn-primary"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> PDF</a>
-					<a href="<?php echo site_url('geraete/index/'.$pr['oid']); ?>" class="<?php if($geraet) { echo "d-none"; } ?> btn btn-primary"><span class="iconify" data-icon="ic:baseline-room" data-width="20" data-height="20"></span> Ort</a>
+					<a href="<?php echo site_url('pruefung/protokoll/'.$pr['pruefungid']); ?>" class="btn btn-primary btn-sm"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> PDF</a>
+					<a href="<?php echo site_url('geraete/index/'.$pr['oid']); ?>" class="<?php if($geraet) { echo "d-none"; } ?> btn btn-primary btn-sm"><span class="iconify" data-icon="ic:baseline-room" data-width="20" data-height="20"></span> Ort</a>
 					<a href="<?php echo site_url('pruefung/index/'.$pr['gid']); ?>" class="<?php if($geraet) { echo "d-none"; } ?> btn btn-primary btn-sm"><span class="iconify icon:jam:plug icon-width:20 icon-height:20"></span> Gerät</a>
 					<a href="<?php echo site_url('pruefung/edit/'.$pr['pruefungid']); ?>" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> edit</a>
 				<a href="<?php echo site_url('pruefung/delete/'.$pr['pruefungid']); ?>" class="btn btn-danger btn-sm"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span> delete</a>

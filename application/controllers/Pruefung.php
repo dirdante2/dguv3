@@ -98,6 +98,8 @@ class Pruefung extends CI_Controller {
 
 		$gid = $this->getGid($pruefung_id);
 		$RPEmax = $this->Geraete_model->getRPEmax($gid);
+		
+		$schutzklasse = $this->Geraete_model->get($gid)['schutzklasse'];
 
 		if($this->form_validation->run() === FALSE) {
 			$this->load->view('templates/header');
@@ -112,42 +114,44 @@ class Pruefung extends CI_Controller {
 		} else {
 			$pruefung = array();
 			$fields_request = array('sichtpruefung','schutzleiter','isowiderstand','schutzleiterstrom','beruehrstrom','funktion');
+			
+
 			foreach($felder as $feld) {
 				if($this->input->post($feld) == '') {
 					$pruefung[$feld]=null;
 				} else {
 					$pruefung[$feld]=$this->input->post($feld);
 				}
+			
 			}
-
-			$pruefung['RPEmax'] = $RPEmax;
+			
+			$pruefung['RPEmax'] = $RPEmax;		
 			$pruefung['bestanden'] = 1;
-
+			
+			//schutzklasse 4=Leiter
 			//Kriterein
 			if($pruefung['funktion']==0) {
 				$pruefung['bestanden'] = 0;
 			}
-
 			if($pruefung['sichtpruefung']==0) {
 				$pruefung['bestanden'] = 0;
-			}
-
-			if($pruefung['schutzleiter']>=$RPEmax) {
+			}			
+			if($pruefung['schutzleiter']>$RPEmax & $schutzklasse!=4) {
 				// sze: TODO check by dante
 				$pruefung['bestanden'] = 0;
+				
 			}
-
-			if($pruefung['isowiderstand']<=2.0) {
+			if($pruefung['isowiderstand']<2.0 & $schutzklasse!=4) {
+				$pruefung['bestanden'] = 0;
+				
+			}
+			if($pruefung['schutzleiterstrom']>=0.5 & $schutzklasse!=4) {
 				$pruefung['bestanden'] = 0;
 			}
-
-			if($pruefung['schutzleiterstrom']>=0.5) {
+			if($pruefung['beruehrstrom']>0.25 & $schutzklasse!=4) {
 				$pruefung['bestanden'] = 0;
 			}
-
-			if($pruefung['beruehrstrom']>=0.25) {
-				$pruefung['bestanden'] = 0;
-			}
+			
 
 			$this->Pruefung_model->update($pruefung,$pruefung_id);
 			redirect('pruefung/index/'.$gid);

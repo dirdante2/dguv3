@@ -87,6 +87,7 @@ echo validation_errors();
       <input type="text" class="form-control" name="datum" id="datum" value="<?php echo $geraet['datum']; ?>" required>
     </div>
   </div>
+  
   <div class="form-group row">
     <label for="hersteller" class="col-sm-5 col-form-label">Messgerät</label>
     <div class="col-sm-7">
@@ -143,7 +144,8 @@ echo validation_errors();
       <input type="number" step="0.01" class="form-control" name="schutzleiter" id="schutzleiter" value="<?php echo $geraet['schutzleiter']; ?>" > (max 0.3)(<?php echo $RPEmax; ?>)
     </div>
   </div>
-  <?php }?>
+   <?php }?>
+  <?php if ( $geraet['schutzklasse'] == '1' || $geraet['schutzklasse'] == '2' || $geraet['schutzklasse'] == '3') {?>
   <div class="form-group row">
     <label for="seriennummer" class="col-sm-5 col-form-label">Isowiderstand</label>
     <div class="col-sm-7">
@@ -153,6 +155,7 @@ maximal jedoch 1 Ohm.-->
       <input type="number" step="0.01" class="form-control" name="isowiderstand" id="isowiderstand" value="<?php echo $geraet['isowiderstand']; ?>"> (min 2)
     </div>
   </div>
+ <?php }?>
   <?php if ( $geraet['schutzklasse'] == '1') {?>
   <div class="form-group row">
     <label for="typ" class="col-sm-5 col-form-label">Schutzleiterstrom</label>

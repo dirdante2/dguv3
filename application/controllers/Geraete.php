@@ -25,6 +25,8 @@ class Geraete extends CI_Controller {
 			$data['ort'] = NULL;
 			$data['geraete'] = $this->Geraete_model->get();
 		}
+		
+		$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_col');
 		$data['pruefungabgelaufen']= $this->config->item('dguv3_pruefungabgelaufen');
 		$data['pruefungbaldabgelaufen']= $this->config->item('dguv3_pruefungbaldabgelaufen');
 		/*$this->output->cache(5);*/
@@ -43,6 +45,8 @@ class Geraete extends CI_Controller {
 			$data['ort'] = NULL;
 			$data['geraete'] = $this->Geraete_model->get();
 		}
+		
+		$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_pdf_col');
 		$data['adresse']= $this->config->item('dguv3_adresse');
 		/*$this->output->cache(5);*/
 		$this->load->view('templates/print/header');
