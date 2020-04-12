@@ -1,9 +1,42 @@
 
 <h1>Orte</h1>
-
+<div class="btn-group pull-right">
 <a href="<?php echo site_url('orte/edit'); ?>" class="btn btn-primary"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Ort hinzufügen</a>
+<form method="post"> 
+        <input type="submit" name="button1"
+                class="btn btn-primary" value="Übersichten erstellen" /></form>
+              </div>
 <br>
 <br>
+
+<?php	
+if(array_key_exists('button1', $_POST)) { 
+            button1($orte);
+            echo '<br><br>'; 
+        } 
+        
+function button1($orte) { 
+	
+	foreach($orte as $ort) {
+	
+        		$year=date("Y");
+        		
+        		
+        		$ortsid= $ort['oid'];
+        		$ortsname= $ort['name'];
+        		if (!file_exists('pdf/'.$year.'/'.$ortsname)) { mkdir('pdf/'.$year.'/'.$ortsname, 0755, true); }
+        		
+            echo "PDF Übersicht ".$ortsname." wurde erstellt"; 
+            
+            $apikey = '93fa945c-3a01-4fff-a966-3a2f069a1539';
+$value = 'https://dguv3.qabc.eu/index.php/geraete/geraete/'.$ortsid ; // a url starting with http or an HTML string.  see example #5 if you have a long HTML string
+$result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($apikey) . "&value=" .$value ."&username=admin&password=pruefung");
+file_put_contents('pdf/'.$year.'/'.$ortsname.'/liste.pdf',$result);
+      }
+    }
+      
+      
+       ?>
 <table class="table" id="table" style="width:100%">
 <thead>
 <tr>

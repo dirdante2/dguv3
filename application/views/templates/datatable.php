@@ -10,7 +10,7 @@ $(document).ready( function () {
       "bSort": true,
       "info": true,
       "iDisplayLength":25,
-      "order": [[ 0, "asc" ]]
+      "order": [[ 0, "desc" ]]
       
   
            

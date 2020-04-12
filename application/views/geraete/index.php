@@ -5,6 +5,8 @@
  	 
 <?php
 	if($ort) {
+		
+		
 ?>
 <h1>Geräte für <?php echo $ort['name']; ?></h1>
 <h3><?php echo $ort['beschreibung']; ?></h3>
@@ -12,10 +14,14 @@
 
 <?php
 	} else {
+		
 ?>
 <h1>Geräte</h1>
 <?php
 	}
+	
+	 
+        
 ?>
 <div class="btn-group pull-right">
 <a class="<?php if(!$ort) { echo "d-none"; } ?> btn btn-primary" href="<?php echo site_url('geraete'); ?>">Alle Geräte auflisten</a>
@@ -24,6 +30,10 @@
 	if($ort) { ?>
 		<a href="<?php echo site_url('geraete/geraete/'.$ort['oid']); ?>" class="btn btn-primary"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
 		<a href="<?php echo site_url('geraete/edit/'.$ort['oid']); ?>" class="btn btn-secondary"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> Gerät bearbeiten</a>
+		
+        <form method="post"> 
+        <input type="submit" name="button1"
+                class="btn btn-primary" value="Übersicht erstellen" /></form> 
 	<?php	} ?>
 </div>
 </div>
@@ -42,7 +52,26 @@
 <br>
 <br>
 <!-- table-hover table-bordered table-sm table-striped -->
-<?php echo $dguv3_show_geraete_col[0][1]; ?>
+
+<?php	
+if(array_key_exists('button1', $_POST)) { 
+            button1($ort);
+            echo '<br><br>'; 
+        } 
+        
+function button1($ort) { 
+        		$year=date("Y");
+        		$ortsid= $ort['oid'];
+        		$ortsname= $ort['name'];
+        		if (!file_exists('pdf/'.$year.'/'.$ortsname)) { mkdir('pdf/'.$year.'/'.$ortsname, 0755, true); }
+        		
+            echo "PDF Übersicht wurde erstellt"; 
+            
+            $apikey = '93fa945c-3a01-4fff-a966-3a2f069a1539';
+$value = 'https://dguv3.qabc.eu/index.php/geraete/geraete/'.$ortsid ; // a url starting with http or an HTML string.  see example #5 if you have a long HTML string
+$result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($apikey) . "&value=" .$value ."&username=admin&password=pruefung");
+file_put_contents('pdf/'.$year.'/'.$ortsname.'/liste.pdf',$result);
+      } ?> 
 
 
 <table class="table-hover table-bordered table-sm table-striped" id="table" style="width:100%">

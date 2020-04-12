@@ -1,15 +1,13 @@
 
 <title>GID <?php echo $pruefung['gid']; ?> Protokoll <?php echo $pruefung['pruefungid']; ?></title> 
-<div class="row">
- <div class="col-md-8">
-  <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo base_url();?>index.php/pruefung/protokoll/<?php echo $pruefung['pruefungid']; ?>" class="img-fluid" alt="Responsive image">
- </div>
 
- <div class="col-md-4">
- 	<img src="<?php echo $logourl; ?>" class="img-fluid" alt="Responsive image" style="max-height:200px;">
- </div>
- </div>
+ 	
 
+<table style="width:100%"><tr>
+	<td class="text-left">QR<br><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo base_url();?>index.php/pruefung/index/<?php echo $pruefung['gid']; ?>" width="80px" alt="Responsive image"></td>
+	<td class="text-right"><img src="<?php echo base_url();?>application/bilder/logo.jpg" width="280px" alt="Responsive image" ></td>
+	
+	</tr></table>
 
 <br>
 
@@ -18,13 +16,12 @@
 		<div class="row" style="border: 1px solid #000;">
 			<div class="col"><h4>Prüfprotokoll elektrischer Geräte gemäß DIN VDE 0701/0702,<br>BetrSichV, DGUV Vorschrift 3</h4></div>
 		</div><br>
-		<div class="row">
-			
-				<div class="col-3">
+		
+		<table style="width:100%"><tr>
+		<td class="align-baseline">
 						<b>Kunde</b><br><br>
 						<?php echo $adresse; ?>
-				</div>
-				<div class="col-6">
+				</td><td class="align-baseline">
 						<b>Objekt</b><br><br>
 						<table  class="table table-sm">
 							<tr>
@@ -57,8 +54,7 @@
 							</tr>
 						</table>
 						
-				</div>	
-				<div class="col-3">
+				</td><td class="align-baseline">	
 						<br><br>
 						<table  class="table table-sm">
 							<tr>
@@ -87,10 +83,10 @@
 							</tr>
 						</table>
 						
-				</div>	
-				
+				</td>	
+				</tr></table>
 			
-		</div><hr>
+		<hr>
 		<div class="row">
 			
 				
@@ -228,7 +224,7 @@
 								<td></td>
 							</tr>
 							<tr>
-								<td>Ergebniss</td>
+								<td>Ergebnis</td>
 								<td></td>
 								<td></td>
 								<td><?php if($pruefung['bestanden']=='0') { echo "Nein"; } else { echo "Ja"; }?></td>

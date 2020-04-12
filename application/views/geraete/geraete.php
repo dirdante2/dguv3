@@ -1,9 +1,11 @@
 
 <title><?php if($ort) { echo $ort['name']; } ?> Geräte</title>  
 <br>
-<div class="row">
- <div class="col-5">
-  <?php if($ort) { ?>
+
+<table style="width:100%">
+	<tr>
+		<td class="text-left">
+			<?php if($ort) { ?>
   <h1>Geräte für <?php echo $ort['name']; ?></h1>
   <h3><?php echo $ort['beschreibung']; ?></h3>
   <br>
@@ -16,16 +18,22 @@
   ?>
   <h1>Geräte</h1>
   <?php	} ?>
- </div>
- <div class="col-3">
-  <?php if($ort) { ?><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo base_url();?>index.php/geraete/geraete/<?php echo $ort['oid']; ?>" class="img-fluid" alt="Responsive image"><?php	} ?>
+			
+		</td>
+		<td class="text-center">
+			 <?php if($ort) { ?><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo base_url();?>index.php/geraete/geraete/<?php echo $ort['oid']; ?>" width="100px" class="img-fluid" alt="Responsive image"><?php	} ?>
  	<br><?php $blubb = new DateTime(); echo $blubb->format('d.m.Y');  ?>
- 
- </div>
- <div class="col-4">
-<img src="<?php echo base_url();?>application/bilder/logo.jpg" class="img-fluid" alt="Responsive image">
- </div>
- </div>
+			
+		</td>
+		<td class="text-right">
+			<img src="<?php echo base_url();?>application/bilder/logo.jpg" width="300px" alt="Responsive image" >
+			
+		
+		</td>
+	</tr>
+</table>
+
+
  <br>
 
 <div class="row">
@@ -36,25 +44,25 @@
 		<table class="table-bordered table-striped" id="table_print" style="width:100%" >
 		<thead>
 			<tr>
-				<th class="nosort <?php if($dguv3_show_geraete_col[0][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[0][0]; ?></th>
-				<th class="nosort <?php if($dguv3_show_geraete_col[1][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[1][0]; ?></th>
-				<th class="nosort <?php if($ort || $dguv3_show_geraete_col[2][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[2][0]; ?></th>
-				<th class="nosort <?php if($dguv3_show_geraete_col[3][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[3][0]; ?></th>
-				<th class="nosort <?php if($dguv3_show_geraete_col[4][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[4][0]; ?></th>
-				<th class="nosort <?php if($dguv3_show_geraete_col[5][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[5][0]; ?></th>
-				<th class="nosort <?php if($dguv3_show_geraete_col[6][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[6][0]; ?></th>
-				<th class="nosort <?php if($dguv3_show_geraete_col[7][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[7][0]; ?></th>
-				<th class="nosort <?php if($dguv3_show_geraete_col[8][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[8][0]; ?></th>
-				<th class="nosort <?php if($dguv3_show_geraete_col[9][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[9][0]; ?></th>
-				<th class="nosort <?php if($dguv3_show_geraete_col[10][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[10][0]; ?></th>
-				<th class="nosort <?php if($dguv3_show_geraete_col[11][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[11][0]; ?></th>
-				<th class="nosort <?php if($dguv3_show_geraete_col[12][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[12][0]; ?></th>
-				<th class="nosort <?php if($dguv3_show_geraete_col[13][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[13][0]; ?></th>
-				<th class="nosort <?php if($dguv3_show_geraete_col[14][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[14][0]; ?></th>
-				<th class="nosort <?php if($dguv3_show_geraete_col[15][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[15][0]; ?></th>
-				<th class="nosort <?php if($dguv3_show_geraete_col[16][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[16][0]; ?></th>
-				<th class="nosort <?php if($dguv3_show_geraete_col[17][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[17][0]; ?></th>
-				<th class="nosort <?php if($dguv3_show_geraete_col[18][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[18][0]; ?></th>
+				<th class="<?php if($dguv3_show_geraete_col[0][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[0][0]; ?></th>
+				<th class="<?php if($dguv3_show_geraete_col[1][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[1][0]; ?></th>
+				<th class="<?php if($ort || $dguv3_show_geraete_col[2][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[2][0]; ?></th>
+				<th class="<?php if($dguv3_show_geraete_col[3][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[3][0]; ?></th>
+				<th class="<?php if($dguv3_show_geraete_col[4][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[4][0]; ?></th>
+				<th class="<?php if($dguv3_show_geraete_col[5][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[5][0]; ?></th>
+				<th class="<?php if($dguv3_show_geraete_col[6][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[6][0]; ?></th>
+				<th class="<?php if($dguv3_show_geraete_col[7][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[7][0]; ?></th>
+				<th class="<?php if($dguv3_show_geraete_col[8][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[8][0]; ?></th>
+				<th class="<?php if($dguv3_show_geraete_col[9][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[9][0]; ?></th>
+				<th class="<?php if($dguv3_show_geraete_col[10][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[10][0]; ?></th>
+				<th class="<?php if($dguv3_show_geraete_col[11][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[11][0]; ?></th>
+				<th class="<?php if($dguv3_show_geraete_col[12][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[12][0]; ?></th>
+				<th class="<?php if($dguv3_show_geraete_col[13][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[13][0]; ?></th>
+				<th class="<?php if($dguv3_show_geraete_col[14][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[14][0]; ?></th>
+				<th class="<?php if($dguv3_show_geraete_col[15][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[15][0]; ?></th>
+				<th class="<?php if($dguv3_show_geraete_col[16][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[16][0]; ?></th>
+				<th class="<?php if($dguv3_show_geraete_col[17][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[17][0]; ?></th>
+				
 			</tr>
 		</thead>
 		<tbody>
@@ -131,8 +139,10 @@
 						<br><br>
 <table  class="table" style="width:700px">
 	<thead>
+		<tr>
 		<th>Messung</th>
 		<th>Grenzwerte</th>
+		</tr>
 	</thead>
 		<tbody>
 							<tr>

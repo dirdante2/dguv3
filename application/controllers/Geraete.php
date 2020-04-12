@@ -6,12 +6,14 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+		
 class Geraete extends CI_Controller {
 
 	function __construct() {
 		parent::__construct();
 		$this->load->model('Geraete_model');
 		$this->load->model('Orte_model');
+		$this->load->model('Html2pdf_model');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -38,6 +40,7 @@ class Geraete extends CI_Controller {
 
 
 	function geraete($oid=NULL) {
+		
 		if($oid) {
 			$data['ort'] = $this->Orte_model->get($oid);
 			$data['geraete'] = $this->Geraete_model->getByOid($oid);
@@ -49,11 +52,37 @@ class Geraete extends CI_Controller {
 		$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_pdf_col');
 		$data['adresse']= $this->config->item('dguv3_adresse');
 		/*$this->output->cache(5);*/
+		
+		//ob_start();
+		
 		$this->load->view('templates/print/header');
 		$this->load->view('templates/datatable');
 		$this->load->view('geraete/geraete',$data);
 		$this->load->view('templates/print/footer');
-	}
+//$content = ob_get_contents();
+    //ob_clean();
+    
+    //$content=serialize($content);
+    
+		//$this->Html2pdf_model->html2pdfget($content);
+		//$this->Geraete_model->downloadUrlToFile('https://dguv3.qabc.eu/index.php/geraete/geraete/'.$oid);
+		
+		
+		}
+	
+	
+	
+function downloadUrlToFile()
+{   
+   $apikey = '93fa945c-3a01-4fff-a966-3a2f069a1539';
+$value = '25'; // a url starting with http or an HTML string.  see example #5 if you have a long HTML string
+$result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($apikey) . "&value=" .$value);
+file_put_contents('mypdf25.pdf',$result);
+}
+
+
+
+
 
 
 

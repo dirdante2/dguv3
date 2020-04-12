@@ -100,7 +100,11 @@ class Pruefung extends CI_Controller {
 		$RPEmax = $this->Geraete_model->getRPEmax($gid);
 		
 		$schutzklasse = $this->Geraete_model->get($gid)['schutzklasse'];
-
+		$geraetename = $this->Geraete_model->get($gid)['name'];
+		$ortsid = $this->Geraete_model->get($gid)['oid'];
+		$ortsname = $this->Geraete_model->get($gid)['ortsname'];
+		
+		
 		if($this->form_validation->run() === FALSE) {
 			$this->load->view('templates/header');
 			$this->load->view('pruefung/form', array(
@@ -154,6 +158,24 @@ class Pruefung extends CI_Controller {
 			
 
 			$this->Pruefung_model->update($pruefung,$pruefung_id);
+			$prdatum = $this->Pruefung_model->get($pruefung_id)['datum'];
+			
+			//prüfung als pdf speichern
+					
+						$timestamp = strtotime($prdatum);
+						$year = date("Y", $timestamp);
+						
+        		
+        		if (!file_exists('pdf/'.$year.'/'.$ortsname)) { mkdir('pdf/'.$year.'/'.$ortsname, 0755, true); }
+        		
+           // echo "This is Button1 that is selected"; 
+           // echo $ortsid;
+            $apikey = '93fa945c-3a01-4fff-a966-3a2f069a1539';
+						$value = 'https://dguv3.qabc.eu/index.php/pruefung/protokoll/'.$pruefung_id ; // a url starting with http or an HTML string.  see example #5 if you have a long HTML string
+						$result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($apikey) . "&value=" .$value ."&username=admin&password=pruefung");
+						file_put_contents('pdf/'.$year.'/'.$ortsname.'/GID'.$gid.'_'.$geraetename.'_PID'.$pruefung_id.'_'.$prdatum.'.pdf',$result);
+			
+			
 			redirect('pruefung/index/'.$gid);
 		}
 	}

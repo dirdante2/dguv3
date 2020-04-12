@@ -14,7 +14,19 @@
  */
 
 // zu zippender ordner
-$folder = "pdf/2020/";
+$root = "pdf";
+
+$files = glob($root.'/*.{zip}', GLOB_BRACE);
+foreach($files as $file) {
+  //do your work here
+  echo $file;
+  echo ' ';
+}
+
+$directories = glob($root . '/*' , GLOB_ONLYDIR);
+print_r($directories);
+
+foreach ($directories as $folder) {
 
 // file und dir counter
 $fc = 0;
@@ -25,7 +37,7 @@ ini_set("max_execution_time", 300);
 
 // Objekt erstellen und schauen, ob der Server zippen kann
 $zip = new ZipArchive();
-if ($zip->open("pdf/2020.zip", ZIPARCHIVE::CREATE) !== TRUE) {
+if ($zip->open($folder.".zip", ZIPARCHIVE::CREATE) !== TRUE) {
 	die ("Das Archiv konnte nicht erstellt werden!");
 }
 
@@ -60,7 +72,10 @@ echo "</pre>";
 $zip->close();
 
 // bericht
-echo "<h4>Das Archiv wurde erfolgreich erstellt.</h4>";
+echo "<h4>Das Archiv ".$folder.".zip wurde erfolgreich erstellt.</h4>";
 echo "<p>Ordner: " . $dc . "</br>";
 echo "Dateien: " . $fc . "</p>";
+}
+
+
 ?>
