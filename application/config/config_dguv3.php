@@ -31,7 +31,7 @@ array('Typ',1),
 array('Seriennummer',1),
 array('aktiv',0),
 array('Beschreibung',1),
-array('hinzugefügt am',1),
+array('hinzugefügt',1),
 array('Spannung',0),
 array('Strom',0),
 array('Leistung',0),
@@ -52,7 +52,7 @@ array('Typ',1),
 array('Seriennummer',1),
 array('aktiv',0),
 array('Beschreibung',0),
-array('hinzugefügt am',1),
+array('hinzugefügt',1),
 array('Spannung',0),
 array('Strom',0),
 array('Leistung',0),
@@ -63,3 +63,5 @@ array('Bestanden',1),
 array('Prüfer',1),
 array('Aktion',0)
 );
+//api key für pdf dienst http://api.html2pdfrocket.com
+$config['html2pdf_api_key']='93fa945c-3a01-4fff-a966-3a2f069a1539';

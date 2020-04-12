@@ -26,31 +26,31 @@
 						<table  class="table table-sm">
 							<tr>
 								<td>ID</td>
-								<td><?php echo $pruefung['gid']; ?></td>
+								<td><?php if($pruefung['gid']==NULL) { echo "-"; } else { echo $pruefung['gid']; } ?></td>
 							</tr>
 							<tr>
 								<td>Ort</td>
-								<td><?php echo $pruefung['ortsname']; ?></td>
+								<td><?php if($pruefung['ortsname']==NULL) { echo "-"; } else { echo $pruefung['ortsname']; } ?></td>
 							</tr>
 							<tr>
 								<td>Name</td>
-								<td><?php echo $pruefung['geraetename']; ?></td>
+								<td><?php if($pruefung['geraetename']==NULL) { echo "-"; } else { echo $pruefung['geraetename']; } ?></td>
 							</tr>
 							<tr>
 								<td>Hersteller</td>
-								<td><?php echo $pruefung['hersteller']; ?></td>
+								<td><?php if($pruefung['hersteller']==NULL) { echo "-"; } else { echo $pruefung['hersteller']; } ?></td>
 							</tr>
 							<tr>
 								<td>Typ</td>
-								<td><?php echo $pruefung['typ']; ?></td>
+								<td><?php if($pruefung['typ']==NULL) { echo "-"; } else { echo $pruefung['typ']; } ?></td>
 							</tr>
 							<tr>
 								<td>Seriennummer</td>
-								<td><?php echo $pruefung['seriennummer']; ?></td>
+								<td><?php if($pruefung['seriennummer']==NULL) { echo "-"; } else { echo $pruefung['seriennummer']; } ?></td>
 							</tr>
 							<tr>
 								<td>Beschreibung</td>
-								<td><?php echo $pruefung['geraetebeschreibung']; ?></td>
+								<td><?php if($pruefung['geraetebeschreibung']==NULL) { echo "-"; } else { echo $pruefung['geraetebeschreibung']; } ?></td>
 							</tr>
 						</table>
 						
@@ -79,7 +79,7 @@
 							</tr>
 							<tr>
 								<td>Aktiv</td>
-								<td><?php if($pruefung['aktiv']=='0') { echo "nein"; } else { echo "ja"; } ?></td>
+								<td><?php if($pruefung['aktiv']=='0') { echo "Nein"; } else { echo "Ja"; } ?></td>
 							</tr>
 						</table>
 						
@@ -148,8 +148,8 @@
 							</tr>
 							<tr>
 								<td>Schutzleiterwiderstand</td>
-								<td>Max <?php echo $pruefung['RPEmax']; ?> Ohm</td>
-								<td><?php if($pruefung['schutzleiter']===null || $pruefung['sichtpruefung']== '0') { echo "-"; } else { echo $pruefung['schutzleiter'].' Ohm'; } ?></td>
+								<td>max <?php echo $pruefung['RPEmax']; ?> &#8486;</td>
+								<td><?php if($pruefung['schutzleiter']===null || $pruefung['sichtpruefung']== '0') { echo "-"; } else { echo $pruefung['schutzleiter'].' &#8486;'; } ?></td>
 								<td><?php 
 									$y = $pruefung['RPEmax'];
 									if($pruefung['schutzleiter']===null || $pruefung['sichtpruefung']== '0') { 
@@ -164,8 +164,8 @@
 							</tr>
 							<tr>
 								<td>Isolationsprüfung 500V</td>
-								<td>Min 2,00 MOhm</td>
-								<td><?php if($pruefung['isowiderstand']===null || $pruefung['sichtpruefung']== '0') { echo "-"; } else { echo $pruefung['isowiderstand'].' MOhm'; } ?></td>
+								<td>min 2.00 M&#8486;</td>
+								<td><?php if($pruefung['isowiderstand']===null || $pruefung['sichtpruefung']== '0') { echo "-"; } else { echo $pruefung['isowiderstand'].' M&#8486;'; } ?></td>
 								<td><?php 
 									$y = 2.0;
 									if($pruefung['isowiderstand']===null || $pruefung['sichtpruefung']== '0') { 
@@ -179,8 +179,8 @@
 									}?></td>
 							</tr>
 							<tr>
-								<td>schutzleiterstrom</td>
-								<td>Max 0,50 mA</td>
+								<td>Schutzleiterstrom</td>
+								<td>max 0.50 mA</td>
 								<td><?php if($pruefung['schutzleiterstrom']===null || $pruefung['sichtpruefung']== '0') { echo "-"; } else { echo $pruefung['schutzleiterstrom'].' mA'; } ?></td>
 								<td><?php 
 									$y = 0.50;
@@ -197,7 +197,7 @@
 							
 							<tr>
 								<td>Berührungstrom</td>
-								<td>Max 0,25 mA</td>
+								<td>max 0.25 mA</td>
 								<td><?php if($pruefung['beruehrstrom']===null || $pruefung['sichtpruefung']== '0') { echo "-"; } else { echo $pruefung['beruehrstrom'].'mA'; } ?></td>
 								<td><?php 
 									$y = 0.25;

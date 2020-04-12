@@ -21,7 +21,7 @@
 			
 		</td>
 		<td class="text-center">
-			 <?php if($ort) { ?><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo base_url();?>index.php/geraete/geraete/<?php echo $ort['oid']; ?>" width="100px" class="img-fluid" alt="Responsive image"><?php	} ?>
+			 <?php if($ort) { ?><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo base_url();?>index.php/geraete/index/<?php echo $ort['oid']; ?>" width="100px" class="img-fluid" alt="Responsive image"><?php	} ?>
  	<br><?php $blubb = new DateTime(); echo $blubb->format('d.m.Y');  ?>
 			
 		</td>

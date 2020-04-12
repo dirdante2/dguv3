@@ -18,7 +18,7 @@ class Orte extends CI_Controller {
 
 	function index() {
 		$data['orte'] = $this->Orte_model->get();
-
+		$data['html2pdf_api_key']= $this->config->item('html2pdf_api_key');
 		$this->load->view('templates/header');
 		$this->load->view('templates/datatable');
 		$this->load->view('orte/index',$data);

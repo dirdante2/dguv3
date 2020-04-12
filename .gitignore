@@ -1,6 +1,6 @@
 application/config/database.php
 application/config/config.php
-application/config/dguv3.php
+application/config/config_dguv3.php
 application/bilder/logo.jpg
 dd25120.sql
 todo.txt

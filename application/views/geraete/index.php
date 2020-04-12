@@ -26,10 +26,19 @@
 <div class="btn-group pull-right">
 <a class="<?php if(!$ort) { echo "d-none"; } ?> btn btn-primary" href="<?php echo site_url('geraete'); ?>">Alle Geräte auflisten</a>
 <a class="btn btn-success" href="<?php echo site_url('geraete/edit'); ?>"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neues Gerät hinzufügen</a>
+		
 <?php
-	if($ort) { ?>
-		<a href="<?php echo site_url('geraete/geraete/'.$ort['oid']); ?>" class="btn btn-primary"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
-		<a href="<?php echo site_url('geraete/edit/'.$ort['oid']); ?>" class="btn btn-secondary"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> Gerät bearbeiten</a>
+	if($ort) { 
+		
+		$year=date("Y");
+		if (file_exists('pdf/'.$year.'/'. $ort['name'].'/liste.pdf')) { ?>
+			<a href="<?php echo site_url('geraete/edit/'.$ort['oid']); ?>" class="btn btn-secondary"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> Gerät bearbeiten</a>
+
+				<a href="<?php echo base_url('pdf/'.$year.'/'. $ort['name'].'/liste.pdf');?>" target="_blank" class="btn btn-primary"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
+				
+			<?php } ?>
+		<!--<a href="<?php echo site_url('geraete/geraete/'.$ort['oid']); ?>" class="btn btn-primary"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
+		-->
 		
         <form method="post"> 
         <input type="submit" name="button1"
@@ -67,7 +76,7 @@ function button1($ort) {
         		
             echo "PDF Übersicht wurde erstellt"; 
             
-            $apikey = '93fa945c-3a01-4fff-a966-3a2f069a1539';
+            $apikey = $html2pdf_api_key;
 $value = 'https://dguv3.qabc.eu/index.php/geraete/geraete/'.$ortsid ; // a url starting with http or an HTML string.  see example #5 if you have a long HTML string
 $result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($apikey) . "&value=" .$value ."&username=admin&password=pruefung");
 file_put_contents('pdf/'.$year.'/'.$ortsname.'/liste.pdf',$result);

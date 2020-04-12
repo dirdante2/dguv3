@@ -28,14 +28,14 @@ function button1($orte) {
         		
             echo "PDF Übersicht ".$ortsname." wurde erstellt"; 
             
-            $apikey = '93fa945c-3a01-4fff-a966-3a2f069a1539';
+           $apikey = $html2pdf_api_key;
 $value = 'https://dguv3.qabc.eu/index.php/geraete/geraete/'.$ortsid ; // a url starting with http or an HTML string.  see example #5 if you have a long HTML string
 $result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($apikey) . "&value=" .$value ."&username=admin&password=pruefung");
 file_put_contents('pdf/'.$year.'/'.$ortsname.'/liste.pdf',$result);
       }
     }
       
-      
+     
        ?>
 <table class="table" id="table" style="width:100%">
 <thead>
@@ -44,6 +44,7 @@ file_put_contents('pdf/'.$year.'/'.$ortsname.'/liste.pdf',$result);
 	<th>Name</th>
 	<th>Beschreiung</th>
 	<th>Geräte</th>
+	<th>PDF erstellt</th>
 	<th>Aktion</th>
 </tr>
 </thead>
@@ -59,6 +60,7 @@ if(count($orte)==0) {
 <?php
 
 } else {
+	$year=date("Y");
 	foreach($orte as $ort) {
 
 		?>
@@ -67,19 +69,29 @@ if(count($orte)==0) {
 			<td><?php echo $ort['name']; ?></td>
 			<td><?php echo $ort['beschreibung']; ?></td>
 			<td><?php echo $ort['geraeteanzahl']; ?></td>
+			<td><?php if (file_exists('pdf/'.$year.'/'. $ort['name'].'/liste.pdf')) { echo date("d.m.Y", filemtime('pdf/'.$year.'/'. $ort['name'].'/liste.pdf')); } else { echo 'no file';} ?></td>
 			<td>
 				<div class="btn-group btn-group-sm" role="group" aria-label="options">
 				<a href="<?php echo site_url('geraete/index/'.$ort['oid']); ?>" class="btn btn-primary"><span class="iconify" data-icon="jam:plug" data-width="20" data-height="20"></span> Geräte</a>
-				<a href="<?php echo site_url('geraete/geraete/'.$ort['oid']); ?>" class="btn btn-primary"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
+				<!--<a href="<?php echo site_url('geraete/geraete/'.$ort['oid']); ?>" class="btn btn-primary"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
+				-->
+				<?php if (file_exists('pdf/'.$year.'/'. $ort['name'].'/liste.pdf')) { ?>
+				<a href="<?php echo base_url('pdf/'.$year.'/'. $ort['name'].'/liste.pdf');?>" target="_blank" class="btn btn-primary"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
+				
+			<?php } ?>
 				<a href="<?php echo site_url('orte/edit/'.$ort['oid']); ?>" class="btn btn-secondary"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> edit</a>
 				<a href="<?php echo site_url('orte/delete/'.$ort['oid']); ?>" class="btn btn-danger"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span> delete</a>
+				
+     
 				</div>
 			</td>
 		</tr>
 		<?php
 	}
 }
+
 ?>
 
 </tbody>
 </table>
+

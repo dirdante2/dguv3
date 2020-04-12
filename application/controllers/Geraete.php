@@ -27,7 +27,7 @@ class Geraete extends CI_Controller {
 			$data['ort'] = NULL;
 			$data['geraete'] = $this->Geraete_model->get();
 		}
-		
+		$data['html2pdf_api_key']= $this->config->item('html2pdf_api_key');
 		$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_col');
 		$data['pruefungabgelaufen']= $this->config->item('dguv3_pruefungabgelaufen');
 		$data['pruefungbaldabgelaufen']= $this->config->item('dguv3_pruefungbaldabgelaufen');
@@ -72,13 +72,7 @@ class Geraete extends CI_Controller {
 	
 	
 	
-function downloadUrlToFile()
-{   
-   $apikey = '93fa945c-3a01-4fff-a966-3a2f069a1539';
-$value = '25'; // a url starting with http or an HTML string.  see example #5 if you have a long HTML string
-$result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($apikey) . "&value=" .$value);
-file_put_contents('mypdf25.pdf',$result);
-}
+
 
 
 

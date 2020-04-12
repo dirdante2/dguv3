@@ -94,7 +94,7 @@
 <button id="suche_abgelaufen" class="btn btn-warning filter">Prüfung Abgelaufen</button>
 <button id="suche_baldabgelaufen" class="btn btn-info filter">Prüfung bald Abgelaufen</button>
 <button id="suche_failed" class="btn btn-danger filter">Prüfung durchgefallen</button>
-<button id="suche_alle" class="btn btn-Secondary filter">Alle</button>
+<button id="suche_alle" class="btn btn-info filter">Alle</button>
 </div>
 <br>
 <br>
@@ -184,7 +184,21 @@ if(count($pruefung)==0) {
 			
 			<td>
 				<div class="btn-group btn-group-sm" role="group" aria-label="options">
-					<a href="<?php echo site_url('pruefung/protokoll/'.$pr['pruefungid']); ?>" class="btn btn-primary btn-sm"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> PDF</a>
+					<!--<a href="<?php echo site_url('pruefung/protokoll/'.$pr['pruefungid']); ?>" class="btn btn-primary btn-sm"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> PDF</a>
+					-->
+					<?php 
+						$timestamp = strtotime($pr['datum']);
+						$year = date("Y", $timestamp); 
+						$prdatum = date("Y-m-d", $timestamp);
+						
+					if (file_exists('pdf/'.$year.'/'.$geraet['ortsname'].'/GID'.$geraet['gid'].'_'.$geraet['name'].'_PID'.$pr['pruefungid'].'_'.$prdatum.'.pdf')) { 
+						
+						?>
+						
+						<a href="<?php echo base_url('pdf/'.$year.'/'.$geraet['ortsname'].'/GID'.$geraet['gid'].'_'.$geraet['name'].'_PID'.$pr['pruefungid'].'_'.$prdatum.'.pdf');?>" target="_blank" class="btn btn-primary"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
+					
+					<?php } ?>
+					
 					<a href="<?php echo site_url('geraete/index/'.$pr['oid']); ?>" class="<?php if($geraet) { echo "d-none"; } ?> btn btn-primary btn-sm"><span class="iconify" data-icon="ic:baseline-room" data-width="20" data-height="20"></span> Ort</a>
 					<a href="<?php echo site_url('pruefung/index/'.$pr['gid']); ?>" class="<?php if($geraet) { echo "d-none"; } ?> btn btn-primary btn-sm"><span class="iconify icon:jam:plug icon-width:20 icon-height:20"></span> Gerät</a>
 					<a href="<?php echo site_url('pruefung/edit/'.$pr['pruefungid']); ?>" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> edit</a>
