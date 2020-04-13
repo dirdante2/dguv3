@@ -17,6 +17,9 @@ class Orte extends CI_Controller {
 	}
 
 	function index() {
+		if(!$this->session->userdata('level')){
+          echo "Access Denied";
+          }else{
 		$data['orte'] = $this->Orte_model->get();
 		$data['html2pdf_api_key']= $this->config->item('html2pdf_api_key');
 		$this->load->view('templates/header');
@@ -24,8 +27,12 @@ class Orte extends CI_Controller {
 		$this->load->view('orte/index',$data);
 		$this->load->view('templates/footer');
 	}
+	}
 
 	function edit($oid=0) {
+		if(!$this->session->userdata('level')){
+          echo "Access Denied";
+          }else{
 		$this->form_validation->set_rules('name', 'Name', 'required');
 		$this->form_validation->set_rules('beschreibung', 'Beschreibung', 'required');
 
@@ -49,8 +56,12 @@ class Orte extends CI_Controller {
 			redirect('orte');
 		}
 	}
+	}
 
 	function delete($oid) {
+		if(!$this->session->userdata('level')){
+          echo "Access Denied";
+          }else{
 		$this->form_validation->set_rules('confirm', 'Bestätigung', 'required');
 
 		if($this->form_validation->run() === FALSE) {
@@ -66,6 +77,7 @@ class Orte extends CI_Controller {
 			redirect('orte');
 		}
 	}
+	}
 
 	function json($key="") {
 		$orte=$this->Orte_model->getByName($key);
@@ -76,5 +88,39 @@ class Orte extends CI_Controller {
 
 		echo json_encode($response);
 	}
+
+
+	function html2pdf_listen() {
+		
+		 		$orte = $this->Orte_model->get();
+		 		
+		 		$html2pdf_api_key= $this->config->item('html2pdf_api_key');
+				$html2pdf_user_pass= $this->config->item('html2pdf_user_pass');
+	 			foreach($orte as $ort) {
+	 				
+	 				$ortsname = $this->Orte_model->get($ort['oid'])['name'];
+	 				
+	 				$year=date("Y");
+      
+     
+      
+      
+	        if (!file_exists('pdf/'.$year.'/'.$ortsname)) { mkdir('pdf/'.$year.'/'.$ortsname, 0755, true); }
+	        		
+	           //echo "PDF Übersicht wurde erstellt"; 
+	            
+	            
+						$value = site_url('geraete/uebersicht/'.$ort['oid']); // a url starting with http or an HTML string.  see example #5 if you have a long HTML string
+						$result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($html2pdf_api_key) . "&value=" .$value . $html2pdf_user_pass);
+						file_put_contents('pdf/'.$year.'/'.$ortsname.'/liste_'.$ortsname.'.pdf',$result);
+				}
+				redirect('orte');
+				
+					
+  }
+
+
+
+
 
 }

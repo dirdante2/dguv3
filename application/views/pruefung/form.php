@@ -96,9 +96,21 @@ echo validation_errors();
     		<?php
     		foreach($messgeraete as $m) {
     		    echo '<option value="'.$m['mid'].'"';
-    		    if($m['mid'] == $geraet['mid']) {
+    		    
+    		    if($this->session->userdata('usermid')){
+    		    	 if($this->session->userdata('usermid') == $m['mid']){
+    		    	 	
+    		    	echo ' selected';
+    		    	}
+    		    } else {
+    		    	if($m['mid'] == $geraet['mid']){
     		        echo ' selected';
-    		    }
+    		    	}
+    		    
+    				}
+    		    
+    		    
+    		    
     		    echo '>'.$m['name'].'</option>';
     		}
     		?>
@@ -112,10 +124,19 @@ echo validation_errors();
     		<?php
     		foreach($pruefer as $p) {
     		    echo '<option value="'.$p['pid'].'"';
-    		    if($p['pid'] == $geraet['pid']) {
+    		    
+    		    if($this->session->userdata('userpid')){
+    		    	 if($this->session->userdata('userpid') == $p['pid']){
+    		    	 	
+    		    	echo ' selected';
+    		    	}
+    		    } else {
+    		    	if($p['pid'] == $geraet['pid']){
     		        echo ' selected';
-    		    }
-    		    echo '>'.$p['name'].'</option>';
+    		    	}
+    		    
+    				}
+    				echo '>'.$p['name'].'</option>';
     		}
     		?>
     	</select>

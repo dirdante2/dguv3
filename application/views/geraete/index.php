@@ -1,48 +1,37 @@
 
-<title><?php if($ort) { echo $ort['name']; } ?> Geräte</title> 
+<!--<title><?php if($ort) { echo $ort['name']; } ?> Geräte</title> -->
 <div class="row">
  <div class="col">
  	 
-<?php
-	if($ort) {
-		
-		
-?>
+<?php	if($ort) { ?>
 <h1>Geräte für <?php echo $ort['name']; ?></h1>
 <h3><?php echo $ort['beschreibung']; ?></h3>
 
 
-<?php
-	} else {
-		
-?>
+<?php	} else { ?>
 <h1>Geräte</h1>
-<?php
-	}
-	
-	 
-        
-?>
+<?php	} ?>
+
 <div class="btn-group pull-right">
 <a class="<?php if(!$ort) { echo "d-none"; } ?> btn btn-primary" href="<?php echo site_url('geraete'); ?>">Alle Geräte auflisten</a>
-<a class="btn btn-success" href="<?php echo site_url('geraete/edit'); ?>"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neues Gerät hinzufügen</a>
+<a class="btn btn-success <?php if($this->session->userdata('level')>='2') { echo " disabled"; }?>" href="<?php echo site_url('geraete/edit'); ?>"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neues Gerät hinzufügen</a>
 		
 <?php
 	if($ort) { 
 		
 		$year=date("Y");
-		if (file_exists('pdf/'.$year.'/'. $ort['name'].'/liste.pdf')) { ?>
-			<a href="<?php echo site_url('geraete/edit/'.$ort['oid']); ?>" class="btn btn-secondary"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> Gerät bearbeiten</a>
+		if (file_exists('pdf/'.$year.'/'. $ort['name'].'/liste_'.$ort['name'].'.pdf')) { ?>
+			<a href="<?php echo site_url('geraete/edit/'.$ort['oid']); ?>" class="btn btn-secondary <?php if($this->session->userdata('level')>='2') { echo " disabled"; }?>"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> Gerät bearbeiten</a>
 
-				<a href="<?php echo base_url('pdf/'.$year.'/'. $ort['name'].'/liste.pdf');?>" target="_blank" class="btn btn-primary"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
+				<a href="<?php echo base_url('pdf/'.$year.'/'. $ort['name'].'/liste_'.$ort['name'].'.pdf');?>" target="_blank" class="btn btn-primary "><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
 				
 			<?php } ?>
 		<!--<a href="<?php echo site_url('geraete/geraete/'.$ort['oid']); ?>" class="btn btn-primary"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
 		-->
-		
-        <form method="post"> 
+		<a href="<?php echo base_url(); ?>index.php/geraete/html2pdf_liste/<?php echo $ort['oid']  ?>"  class="btn btn-primary <?php if($this->session->userdata('level')>='2') { echo " disabled"; }?>">Übersicht erstellen</a>
+       <!-- <form method="post"> 
         <input type="submit" name="button1"
-                class="btn btn-primary" value="Übersicht erstellen" /></form> 
+                class="btn btn-primary" value="Übersicht erstellen" /></form> -->
 	<?php	} ?>
 </div>
 </div>
@@ -62,27 +51,7 @@
 <br>
 <!-- table-hover table-bordered table-sm table-striped -->
 
-<?php	
-if(array_key_exists('button1', $_POST)) { 
-            button1($ort,$html2pdf_api_key,$html2pdf_user_pass);
-            echo '<br><br>'; 
-        } 
-        
-function button1($ort,$html2pdf_api_key,$html2pdf_user_pass) { 
-        		$year=date("Y");
-        		$ortsid= $ort['oid'];
-        		$ortsname= $ort['name'];
-        		if (!file_exists('pdf/'.$year.'/'.$ortsname)) { mkdir('pdf/'.$year.'/'.$ortsname, 0755, true); }
-        		
-            echo "PDF Übersicht wurde erstellt"; 
-            
-            
-$value = site_url('geraete/uebersicht/'.$ort['oid']); // a url starting with http or an HTML string.  see example #5 if you have a long HTML string
-$result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($html2pdf_api_key) . "&value=" .$value . $html2pdf_user_pass);
-file_put_contents('pdf/'.$year.'/'.$ortsname.'/liste.pdf',$result);
 
-
-      } ?> 
 
 
 <table class="table-hover table-bordered table-sm table-striped" id="table" style="width:100%">
@@ -151,7 +120,7 @@ if(count($geraete)==0) {
 			<td class="<?php if($dguv3_show_geraete_col[1][1]=='0') { echo "d-none"; } ?>"><?php if($geraet['aktiv']=='0') { echo "1"; } elseif ($geraet['bestanden']=='0')  { echo "4"; } elseif ($nextyear < $today)  { echo "2"; } elseif ($nextyearfast < $today) { echo "3"; }?></td>
 			
 			
-				<td class="<?php if($ort || $dguv3_show_geraete_col[2][1]=='0') { echo "d-none"; } ?>"><?php echo $geraet['ortsname']; ?></td>
+				<td style="white-space:nowrap;" class="<?php if($ort || $dguv3_show_geraete_col[2][1]=='0') { echo "d-none"; } ?>"><?php echo $geraet['ortsname']; ?></td>
 				
 			<td class="<?php if($dguv3_show_geraete_col[3][1]=='0') { echo "d-none"; } ?>"><?php echo $geraet['name']; ?><?php if($geraet['verlaengerungskabel']=='1') { ?> | <?php echo $geraet['kabellaenge']; ?>m<?php	} ?>	
 				</td>
@@ -170,11 +139,11 @@ if(count($geraete)==0) {
 			<td class="<?php if($dguv3_show_geraete_col[16][1]=='0') { echo "d-none"; } ?>">
 				<div class="text-right btn-group btn-group-sm" role="group" aria-label="options">
 					
-					<a href="<?php if($geraet) { echo site_url('pruefung/new/'.$geraet['gid']); } ?>" class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-success btn-sm <?php if($geraet['aktiv']=='0') { echo " disabled"; } ?>"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neue Prüfung</a>
+					<a href="<?php if($geraet) { echo site_url('pruefung/new/'.$geraet['gid']); } ?>" class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-success btn-sm <?php if($geraet['aktiv']=='0' || $this->session->userdata('level')>='2') { echo " disabled"; } ?>"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neue Prüfung</a>
 					<a href="<?php echo site_url('pruefung/index/'.$geraet['gid']); ?>" class="btn btn-primary btn-sm <?php if($geraet['aktiv']=='0') { echo " disabled"; } ?>"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span> prüfung</a>
 					<a href="<?php echo site_url('geraete/index/'.$geraet['oid']); ?>" class="<?php if($ort) { echo "d-none"; } ?> btn btn-primary btn-sm"><span class="iconify" data-icon="ic:baseline-room" data-width="20" data-height="20"></span> Ort</a>
-					<a href="<?php echo site_url('geraete/edit/'.$geraet['gid']); ?>" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> edit</a>
-					<a href="<?php echo site_url('geraete/delete/'.$geraet['gid']); ?>" class="btn btn-danger btn-sm"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span> delete</a>
+					<a href="<?php echo site_url('geraete/edit/'.$geraet['gid']); ?>" class="btn btn-secondary btn-sm <?php if($this->session->userdata('level')>='2') { echo " disabled"; }?>"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> edit</a>
+					<a href="<?php echo site_url('geraete/delete/'.$geraet['gid']); ?>" class="btn btn-danger btn-sm <?php if($this->session->userdata('level')>='2') { echo " disabled"; }?>"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span> delete</a>
 				</div>
 			
 		
@@ -188,4 +157,3 @@ if(count($geraete)==0) {
 </tbody>
 </table>
 
-</div>

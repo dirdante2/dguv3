@@ -22,6 +22,9 @@ class Pruefung extends CI_Controller {
 	}
 
 	function index($gid=NULL) {
+		if(!$this->session->userdata('level')){
+          echo "Access Denied";
+          }else{
 		if($gid) {
 			$data['geraet'] = $this->Geraete_model->get($gid);
 		} else {
@@ -35,6 +38,7 @@ class Pruefung extends CI_Controller {
 		$this->load->view('templates/datatable');
 		$this->load->view('pruefung/index',$data);
 		$this->load->view('templates/footer');
+	}
 	}
 
 	function protokoll($pruefung_id=NULL) {
@@ -68,6 +72,9 @@ class Pruefung extends CI_Controller {
 	}
 
 	function new($gid) {
+		if(!$this->session->userdata('level')){
+          echo "Access Denied";
+          }else{
 		if($this->Geraete_model->get($gid)) {
 			 $oid = $this->Geraete_model->get($gid)['oid'];
 			$pruefung_id = $this->Pruefung_model->new(array(
@@ -80,6 +87,7 @@ class Pruefung extends CI_Controller {
 			show_error('Gerät mit der id "'.$gid.'" existiert nicht.', 404);
 		}
 	}
+	}
 
 	private function getGid($pruefung_id) {
 		$pruefung = $this->Pruefung_model->get($pruefung_id);
@@ -88,6 +96,9 @@ class Pruefung extends CI_Controller {
 
 
 	function edit($pruefung_id) {
+		if(!$this->session->userdata('level')){
+          echo "Access Denied";
+          }else{
 		if(!$this->Pruefung_model->get($pruefung_id)) {
 			show_error('Prüfung mit der id "'.$pruefung_id.'" existiert nicht.', 404);
 			return NULL;
@@ -181,15 +192,19 @@ class Pruefung extends CI_Controller {
             //$apikey = '93fa945c-3a01-4fff-a966-3a2f069a1539';
            
 						$value = site_url('pruefung/protokoll/'.$pruefung_id); // a url starting with http or an HTML string.  see example #5 if you have a long HTML string
-						$result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($html2pdf_api_key) . "&value=" .$value . $html2pdf_user_pass);
-						file_put_contents('pdf/'.$year.'/'.$ortsname.'/GID'.$gid.'_'.$geraetename.'_PID'.$pruefung_id.'_'.$prdatum.'_'.$bestanden.'.pdf',$result);
+						//$result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($html2pdf_api_key) . "&value=" .$value . $html2pdf_user_pass);
+						//file_put_contents('pdf/'.$year.'/'.$ortsname.'/GID'.$gid.'_'.$geraetename.'_PID'.$pruefung_id.'_'.$prdatum.'_'.$bestanden.'.pdf',$result);
 			
 			
 			redirect('pruefung/index/'.$gid);
 		}
 	}
+	}
 
 	function delete($pruefung_id) {
+		if(!$this->session->userdata('level')){
+          echo "Access Denied";
+          }else{
 		$this->form_validation->set_rules('confirm', 'Bestätigung', 'required');
 
 		if($this->form_validation->run() === FALSE) {
@@ -203,6 +218,7 @@ class Pruefung extends CI_Controller {
 		} else {
 			$this->Pruefung_model->delete($pruefung_id);
 			redirect('pruefung');
+		}
 		}
 
 

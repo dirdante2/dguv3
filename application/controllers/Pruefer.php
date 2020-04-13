@@ -17,17 +17,23 @@ class Pruefer extends CI_Controller {
 	}
 
 	function index() {
-
+		if(!$this->session->userdata('level')){
+          echo "Access Denied";
+          }else{
 		$data['pruefer'] = $this->Pruefer_model->get();
 
 		$this->load->view('templates/header');
 		$this->load->view('templates/datatable');
 		$this->load->view('pruefer/index',$data);
 		$this->load->view('templates/footer');
+		}
 	}
 
 	function edit($pid=0) {
-
+		if(!$this->session->userdata('level')){
+          echo "Access Denied";
+          }else{
+	
 		$this->form_validation->set_rules('name', 'Name', 'required');
 		$this->form_validation->set_rules('beschreibung', 'Beschreibung', 'required');
 
@@ -52,8 +58,12 @@ class Pruefer extends CI_Controller {
 			redirect('pruefer');
 		}
 	}
+	}
 
 	function delete($pid) {
+		if(!$this->session->userdata('level')){
+          echo "Access Denied";
+          }else{
 		$this->form_validation->set_rules('confirm', 'Bestätigung', 'required');
 
 		if($this->form_validation->run() === FALSE) {
@@ -68,6 +78,7 @@ class Pruefer extends CI_Controller {
 			$this->Pruefer_model->delete($pid);
 			redirect('pruefer');
 		}
+	}
 	}
 
 	function json($key="") {

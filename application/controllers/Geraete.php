@@ -20,6 +20,9 @@ class Geraete extends CI_Controller {
 	}
 
 	function index($oid=NULL) {
+		if(!$this->session->userdata('level')){
+          echo "Access Denied";
+          }else{
 		if($oid) {
 			$data['ort'] = $this->Orte_model->get($oid);
 			$data['geraete'] = $this->Geraete_model->getByOid($oid);
@@ -37,6 +40,7 @@ class Geraete extends CI_Controller {
 		$this->load->view('templates/datatable');
 		$this->load->view('geraete/index',$data);
 		$this->load->view('templates/footer');
+		}
 	}
 
 
@@ -71,7 +75,31 @@ class Geraete extends CI_Controller {
 		
 		}
 	
-	
+	function html2pdf_liste($oid) {
+		 		
+		 		$html2pdf_api_key= $this->config->item('html2pdf_api_key');
+				$html2pdf_user_pass= $this->config->item('html2pdf_user_pass');
+		 		
+		 		$ortsname = $this->Orte_model->get($oid)['name'];
+		 		$year=date("Y");
+        
+       
+        
+        
+        if (!file_exists('pdf/'.$year.'/'.$ortsname)) { mkdir('pdf/'.$year.'/'.$ortsname, 0755, true); }
+        		
+           //echo "PDF Übersicht wurde erstellt"; 
+            
+            
+					$value = site_url('geraete/uebersicht/'.$oid); // a url starting with http or an HTML string.  see example #5 if you have a long HTML string
+					$result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($html2pdf_api_key) . "&value=" .$value . $html2pdf_user_pass);
+					file_put_contents('pdf/'.$year.'/'.$ortsname.'/liste_'.$ortsname.'.pdf',$result);
+
+					redirect('geraete/index/'.$oid);
+					
+					
+      }
+
 	
 
 

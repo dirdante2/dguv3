@@ -9,31 +9,27 @@
 
 
     class Dguv3 extends CI_Controller {
+    		function __construct(){
+    			
+    parent::__construct();
     
-        public function __construct() {
-            parent::__construct();
-            $this->load->model('Dguv3_model');
-            $this->load->helper('form');
-						$this->load->library('form_validation');
-        }
-
-        public function index() {
-            if(!$this->ia->in_group('dguv3')) {
-                redirect('dguv3/notloggedin');
-            }
-           
-			
-            $this->load->view('templates/header');
-            $this->load->view('static/welcome');
-            $this->load->view('templates/footer');
-        }
-
-        public function notloggedin() {
-        			
-							
-							
-							        		
-        		$data['adresse']= $this->config->item('dguv3_adresse');      		
+    $this->load->model('Dguv3_model');
+    
+    
+    if($this->session->userdata('logged_in') !== TRUE){
+      //redirect('login');
+      $this->load->view('templates/header');
+      $this->load->view('static/welcome');
+      $this->load->view('templates/footer');
+    }
+  }
+ 
+  function index(){
+    //Allowing akses to admin only
+      if(!$this->session->userdata('level')){
+          //echo "Access Denied";
+          }else{
+          $data['adresse']= $this->config->item('dguv3_adresse');      		
         		$data['geraete_count']= $this->Dguv3_model->getcountdata('geraete');
         		$data['geraete_aktiv_1']= $this->Dguv3_model->getcountdata('geraete','aktiv', '1');
         		$data['geraete_aktiv_0']= $this->Dguv3_model->getcountdata('geraete','aktiv', '0');
@@ -56,9 +52,21 @@
         		$data['pruefung_bestanden_1']= $this->Dguv3_model->getcountdata('pruefung','bestanden', '1');
         		$data['pruefung_bestanden_0']= $this->Dguv3_model->getcountdata('pruefung','bestanden', '0');
         		//$this->output->cache(5);
+            
+           	
+          
+			
             $this->load->view('templates/header');
-            $this->load->view('static/welcome',$data);
+            $this->load->view('dashboard_view',$data);
             $this->load->view('templates/footer');
-        }
+          
+      
+          
+      }
+ 
+  }
+  
+        
+       
     }
 					

@@ -56,10 +56,21 @@
 	        		<a class="nav-link" href="<?php echo site_url('messgeraete'); ?>"><span class="iconify" data-icon="ic:outline-computer" data-width="20" data-height="20"></span> Messgeräte</a>
       			</li>
                         <li class="nav-item">
-	        		<a class="nav-link" href="<?php echo site_url('pruefung'); ?>"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span> Prüfungen</a>
+	        		<a class="nav-link" href="<?php echo site_url('pruefung'); ?>"><span class="iconify" data-icon="bx:bx-clipboard" data-width="20" data-height="20"></span> Prüfungen</a>
       			</li>
+      			 
     </ul>
-    
+    <ul class="nav navbar-nav navbar-right">
+    	<?php if($this->session->userdata('level')) {?>
+    	<div class="d-flex align-items-center nav-link"><?php echo $this->session->userdata('username');?>
+    		</div>
+    		
+      <li class="nav-item"> <a class="nav-link" href="<?php echo site_url('login/logout');?>"><span class="iconify" data-icon="mdi:logout" data-width="20" data-height="20"></span> Logout</a></li>
+    	</div>
+    <?php } else { ?>
+     <li class="nav-item"><a class="nav-link" href="<?php echo site_url('login');?>"><span class="iconify" data-icon="mdi:logout" data-width="20" data-height="20"></span> Login</a></li>
+    <?php } ?>
+    </ul>
   </div>
 </nav>
 

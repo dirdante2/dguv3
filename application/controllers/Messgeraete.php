@@ -17,7 +17,9 @@ class Messgeraete extends CI_Controller {
 	}
 
 	function index() {
-
+		if(!$this->session->userdata('level')){
+          echo "Access Denied";
+          }else{
 		$data['messgeraete'] = $this->Messgeraete_model->get();
 
 		$this->load->view('templates/header');
@@ -25,9 +27,12 @@ class Messgeraete extends CI_Controller {
 		$this->load->view('messgeraete/index',$data);
 		$this->load->view('templates/footer');
 	}
+	}
 
 	function edit($mid=0) {
-
+		if(!$this->session->userdata('level')){
+          echo "Access Denied";
+          }else{
 		$this->form_validation->set_rules('name', 'Name', 'required');
 		$this->form_validation->set_rules('beschreibung', 'Beschreibung', 'required');
 
@@ -54,8 +59,12 @@ class Messgeraete extends CI_Controller {
 			redirect('messgeraete');
 		}
 	}
+	}
 
 	function delete($mid) {
+		if(!$this->session->userdata('level')){
+          echo "Access Denied";
+          }else{
 		$this->form_validation->set_rules('confirm', 'Bestätigung', 'required');
 
 		if($this->form_validation->run() === FALSE) {
@@ -70,6 +79,7 @@ class Messgeraete extends CI_Controller {
 			$this->Messgeraete_model->delete($mid);
 			redirect('messgeraete');
 		}
+	}
 
 
 
