@@ -13,7 +13,7 @@ class Geraete extends CI_Controller {
 		parent::__construct();
 		$this->load->model('Geraete_model');
 		$this->load->model('Orte_model');
-		$this->load->model('Html2pdf_model');
+		
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -28,6 +28,7 @@ class Geraete extends CI_Controller {
 			$data['geraete'] = $this->Geraete_model->get();
 		}
 		$data['html2pdf_api_key']= $this->config->item('html2pdf_api_key');
+		$data['html2pdf_user_pass']= $this->config->item('html2pdf_user_pass');
 		$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_col');
 		$data['pruefungabgelaufen']= $this->config->item('dguv3_pruefungabgelaufen');
 		$data['pruefungbaldabgelaufen']= $this->config->item('dguv3_pruefungbaldabgelaufen');
@@ -39,7 +40,7 @@ class Geraete extends CI_Controller {
 	}
 
 
-	function geraete($oid=NULL) {
+	function uebersicht($oid=NULL) {
 		
 		if($oid) {
 			$data['ort'] = $this->Orte_model->get($oid);
@@ -57,7 +58,7 @@ class Geraete extends CI_Controller {
 		
 		$this->load->view('templates/print/header');
 		$this->load->view('templates/datatable');
-		$this->load->view('geraete/geraete',$data);
+		$this->load->view('geraete/uebersicht',$data);
 		$this->load->view('templates/print/footer');
 //$content = ob_get_contents();
     //ob_clean();

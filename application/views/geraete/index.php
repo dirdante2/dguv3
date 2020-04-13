@@ -64,11 +64,11 @@
 
 <?php	
 if(array_key_exists('button1', $_POST)) { 
-            button1($ort);
+            button1($ort,$html2pdf_api_key,$html2pdf_user_pass);
             echo '<br><br>'; 
         } 
         
-function button1($ort) { 
+function button1($ort,$html2pdf_api_key,$html2pdf_user_pass) { 
         		$year=date("Y");
         		$ortsid= $ort['oid'];
         		$ortsname= $ort['name'];
@@ -76,10 +76,12 @@ function button1($ort) {
         		
             echo "PDF Übersicht wurde erstellt"; 
             
-            $apikey = $html2pdf_api_key;
-$value = 'https://dguv3.qabc.eu/index.php/geraete/geraete/'.$ortsid ; // a url starting with http or an HTML string.  see example #5 if you have a long HTML string
-$result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($apikey) . "&value=" .$value ."&username=admin&password=pruefung");
+            
+$value = site_url('geraete/uebersicht/'.$ort['oid']); // a url starting with http or an HTML string.  see example #5 if you have a long HTML string
+$result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($html2pdf_api_key) . "&value=" .$value . $html2pdf_user_pass);
 file_put_contents('pdf/'.$year.'/'.$ortsname.'/liste.pdf',$result);
+
+
       } ?> 
 
 

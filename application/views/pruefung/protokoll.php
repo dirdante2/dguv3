@@ -242,24 +242,26 @@
 				
 				<div class="col">
 						<b>Bemerkung</b><br>
-						<?php echo $pruefung['bemerkung']; ?>
+						<?php if($pruefung['bemerkung']=='') { echo "<br><br>"; } else { echo $pruefung['bemerkung']; }?>
 				</div>	
 				
-		<br>
+		
 			
 		</div><hr>
 		Die Prüfung wurde ordnungsgemäß durchgeführt
-				
-		<div class="row align-items-end">				
-				<div class="col"><?php $blubb = new DateTime($pruefung['datum']); echo $blubb->format('d.m.Y');  ?></div>	
-			<!--	<div class="col"><img src="<?php echo base_url();?>/application/bilder/unterschrift.png" style="height:100px;"></div>	-->
-			<br><br>
-		</div>
+		<br><br>
+				<table style="width:100%"><tr>
+			<td><?php $blubb = new DateTime($pruefung['datum']); echo $blubb->format('d.m.Y');  ?></td>
+			<td></td>
+			</tr></table>
+		
+			
+		
 		<hr>	
-		<div class="row">				
-				<div class="col">Datum</div>	
-				<div class="col">Unterschrift</div>	
-		</div>
+		<table style="width:100%"><tr>
+			<td>Datum</td>
+			<td class="text-center">Unterschrift</td>
+			</tr></table>
 		
 
 </div>

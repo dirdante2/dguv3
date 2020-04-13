@@ -190,14 +190,15 @@ if(count($pruefung)==0) {
 						$timestamp = strtotime($pr['datum']);
 						$year = date("Y", $timestamp); 
 						$prdatum = date("Y-m-d", $timestamp);
-						
-					if (file_exists('pdf/'.$year.'/'.$geraet['ortsname'].'/GID'.$geraet['gid'].'_'.$geraet['name'].'_PID'.$pr['pruefungid'].'_'.$prdatum.'.pdf')) { 
-						
 						?>
 						
-						<a href="<?php echo base_url('pdf/'.$year.'/'.$geraet['ortsname'].'/GID'.$geraet['gid'].'_'.$geraet['name'].'_PID'.$pr['pruefungid'].'_'.$prdatum.'.pdf');?>" target="_blank" class="btn btn-primary"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
 					
-					<?php } ?>
+						
+						
+						
+						<a href="<?php echo base_url('pdf/'.$year.'/'.$pr['ortsname'].'/GID'.$pr['gid'].'_'.$pr['geraetename'].'_PID'.$pr['pruefungid'].'_'.$prdatum.'.pdf');?>" target="_blank" class="btn btn-primary<?php if (!file_exists('pdf/'.$year.'/'.$pr['ortsname'].'/GID'.$pr['gid'].'_'.$pr['geraetename'].'_PID'.$pr['pruefungid'].'_'.$prdatum.'.pdf')) { echo " disabled"; } ?>"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
+					
+					
 					
 					<a href="<?php echo site_url('geraete/index/'.$pr['oid']); ?>" class="<?php if($geraet) { echo "d-none"; } ?> btn btn-primary btn-sm"><span class="iconify" data-icon="ic:baseline-room" data-width="20" data-height="20"></span> Ort</a>
 					<a href="<?php echo site_url('pruefung/index/'.$pr['gid']); ?>" class="<?php if($geraet) { echo "d-none"; } ?> btn btn-primary btn-sm"><span class="iconify icon:jam:plug icon-width:20 icon-height:20"></span> Gerät</a>

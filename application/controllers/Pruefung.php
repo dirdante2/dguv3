@@ -69,8 +69,10 @@ class Pruefung extends CI_Controller {
 
 	function new($gid) {
 		if($this->Geraete_model->get($gid)) {
+			 $oid = $this->Geraete_model->get($gid)['oid'];
 			$pruefung_id = $this->Pruefung_model->new(array(
 			'gid'=>$gid,
+			'oid'=>$oid,
 			'datum'=>date('Y-m-d')
 			));
 			redirect('pruefung/edit/'.$pruefung_id);
@@ -91,7 +93,7 @@ class Pruefung extends CI_Controller {
 			return NULL;
 		}
 
-		$felder = array('datum','mid','pid','sichtpruefung','schutzleiter','isowiderstand','schutzleiterstrom','beruehrstrom','funktion','bestanden','bemerkung');
+		$felder = array('datum','oid','mid','pid','sichtpruefung','schutzleiter','isowiderstand','schutzleiterstrom','beruehrstrom','funktion','bestanden','bemerkung');
 
 		$this->form_validation->set_rules('mid', 'Messgerät', 'callback_mid_check');
 		$this->form_validation->set_rules('pid', 'Prüfer', 'callback_pid_check');
@@ -164,15 +166,16 @@ class Pruefung extends CI_Controller {
 					
 						$timestamp = strtotime($prdatum);
 						$year = date("Y", $timestamp);
-						$apikey= $this->config->item('html2pdf_api_key');
-        		
+						$html2pdf_api_key= $this->config->item('html2pdf_api_key');
+        		$html2pdf_user_pass= $this->config->item('html2pdf_user_pass');
         		if (!file_exists('pdf/'.$year.'/'.$ortsname)) { mkdir('pdf/'.$year.'/'.$ortsname, 0755, true); }
         		
            // echo "This is Button1 that is selected"; 
            // echo $ortsid;
             //$apikey = '93fa945c-3a01-4fff-a966-3a2f069a1539';
-						$value = 'https://dguv3.qabc.eu/index.php/pruefung/protokoll/'.$pruefung_id ; // a url starting with http or an HTML string.  see example #5 if you have a long HTML string
-						$result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($apikey) . "&value=" .$value ."&username=admin&password=pruefung");
+           
+						$value = site_url('pruefung/protokoll/'.$pruefung_id); // a url starting with http or an HTML string.  see example #5 if you have a long HTML string
+						$result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($html2pdf_api_key) . "&value=" .$value . $html2pdf_user_pass);
 						file_put_contents('pdf/'.$year.'/'.$ortsname.'/GID'.$gid.'_'.$geraetename.'_PID'.$pruefung_id.'_'.$prdatum.'.pdf',$result);
 			
 			

@@ -75,10 +75,10 @@ if(count($orte)==0) {
 				<a href="<?php echo site_url('geraete/index/'.$ort['oid']); ?>" class="btn btn-primary"><span class="iconify" data-icon="jam:plug" data-width="20" data-height="20"></span> Geräte</a>
 				<!--<a href="<?php echo site_url('geraete/geraete/'.$ort['oid']); ?>" class="btn btn-primary"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
 				-->
-				<?php if (file_exists('pdf/'.$year.'/'. $ort['name'].'/liste.pdf')) { ?>
-				<a href="<?php echo base_url('pdf/'.$year.'/'. $ort['name'].'/liste.pdf');?>" target="_blank" class="btn btn-primary"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
 				
-			<?php } ?>
+				<a href="<?php echo base_url('pdf/'.$year.'/'. $ort['name'].'/liste.pdf');?>" target="_blank" class="btn btn-primary <?php if (!file_exists('pdf/'.$year.'/'. $ort['name'].'/liste.pdf')) { echo "disabled"; } ?>"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
+				
+			
 				<a href="<?php echo site_url('orte/edit/'.$ort['oid']); ?>" class="btn btn-secondary"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> edit</a>
 				<a href="<?php echo site_url('orte/delete/'.$ort['oid']); ?>" class="btn btn-danger"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span> delete</a>
 				

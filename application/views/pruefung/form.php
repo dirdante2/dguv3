@@ -80,16 +80,17 @@ echo validation_errors();
 <div class="row">
 <div class="col-md-6">
 <form>
-
+<input type="hidden" class="form-control" name="oid" id="oid" value="<?php echo $geraet['oid']; ?>" required>
   <div class="form-group row">
     <label for="name" class="col-sm-5 col-form-label">Datum</label>
     <div class="col-sm-7">
       <input type="text" class="form-control" name="datum" id="datum" value="<?php echo $geraet['datum']; ?>" required>
     </div>
   </div>
+
   
   <div class="form-group row">
-    <label for="hersteller" class="col-sm-5 col-form-label">Messgerät</label>
+    <label for="Messgerät" class="col-sm-5 col-form-label">Messgerät</label>
     <div class="col-sm-7">
     	<select name="mid">
     		<?php
@@ -105,7 +106,7 @@ echo validation_errors();
     </div>
   </div>
   <div class="form-group row">
-    <label for="hersteller" class="col-sm-5 col-form-label">Prüfer</label>
+    <label for="Prüfer" class="col-sm-5 col-form-label">Prüfer</label>
     <div class="col-sm-7">
        	<select name="pid">
     		<?php
