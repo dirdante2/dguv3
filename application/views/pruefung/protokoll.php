@@ -59,7 +59,7 @@
 						<table  class="table table-sm">
 							<tr>
 								<td>Nennspannung</td>
-								<td><?php if($pruefung['nennspannung']=='0') { echo "-"; } else { echo $pruefung['nennspannung'].'V'; } ?></td>
+								<td><?php if($pruefung['nennspannung']=='0' || $pruefung['schutzklasse']='4') { echo "-"; } else { echo $pruefung['nennspannung'].'V'; } ?></td>
 							</tr>
 							<tr>
 								<td>Nennstrom</td>
@@ -71,11 +71,11 @@
 							</tr>
 							<tr>
 								<td>Schutzklasse</td>
-								<td><?php echo $pruefung['schutzklasse']; ?></td>
+								<td><?php if($pruefung['schutzklasse']=='4') { echo "-"; } else { echo $pruefung['schutzklasse']; } ?></td>
 							</tr>
 							<tr>
 								<td>Verlängerungskabel</td>
-								<td><?php if($pruefung['verlaengerungskabel']=='0') { ?>-<?php } else { ?><?php echo $pruefung['kabellaenge']; ?>m</td><?php	} ?></td>
+								<td><?php if($pruefung['verlaengerungskabel']=='0') { echo "-"; } else { echo $pruefung['kabellaenge'].'m';} ?></td>
 							</tr>
 							<tr>
 								<td>Aktiv</td>
@@ -107,7 +107,7 @@
 							</tr>
 							<tr>
 								<td>Prüfgerät</td>
-								<td><?php echo $pruefung['messgeraetname']; ?></td>
+								<td><?php if($pruefung['schutzklasse']=='4') { echo "-"; } else { echo $pruefung['messgeraetname']; } ?></td>
 							</tr>
 							<tr>
 								<td>Nächste Prüfung</td>

@@ -10,43 +10,45 @@
 <div class="row">
 <div class="col-3">
 						<b>Objekt</b><br><br>
-<table  class="table table-sm">
+
+						<table  class="table table-sm">
 							<tr>
 								<td>ID</td>
-								<td><?php echo $geraet['gid']; ?></td>
+								<td><?php if($geraet['gid']==NULL) { echo "-"; } else { echo $geraet['gid']; } ?></td>
 							</tr>
 							<tr>
 								<td>Ort</td>
-								<td><?php echo $geraet['ortsname']; ?></td>
+								<td><?php if($geraet['ortsname']==NULL) { echo "-"; } else { echo $geraet['ortsname']; } ?></td>
 							</tr>
 							<tr>
 								<td>Name</td>
-								<td><?php echo $geraet['name']; ?></td>
+								<td><?php if($geraet['name']==NULL) { echo "-"; } else { echo $geraet['name']; } ?></td>
 							</tr>
 							<tr>
 								<td>Hersteller</td>
-								<td><?php echo $geraet['hersteller']; ?></td>
+								<td><?php if($geraet['hersteller']==NULL) { echo "-"; } else { echo $geraet['hersteller']; } ?></td>
 							</tr>
 							<tr>
 								<td>Typ</td>
-								<td><?php echo $geraet['typ']; ?></td>
+								<td><?php if($geraet['typ']==NULL) { echo "-"; } else { echo $geraet['typ']; } ?></td>
 							</tr>
 							<tr>
 								<td>Seriennummer</td>
-								<td><?php echo $geraet['seriennummer']; ?></td>
+								<td><?php if($geraet['seriennummer']==NULL) { echo "-"; } else { echo $geraet['seriennummer']; } ?></td>
 							</tr>
 							<tr>
 								<td>Beschreibung</td>
-								<td><?php echo $geraet['beschreibung']; ?></td>
+								<td><?php if($geraet['beschreibung']==NULL) { echo "-"; } else { echo $geraet['beschreibung']; } ?></td>
 							</tr>
 						</table>
 </div>
 <div class="col-3">
 						<b> </b><br><br>
-<table  class="table table-sm">
+
+						<table  class="table table-sm">
 							<tr>
 								<td>Nennspannung</td>
-								<td><?php if($geraet['nennspannung']=='0') { echo "-"; } else { echo $geraet['nennspannung'].'V'; } ?></td>
+								<td><?php if($geraet['nennspannung']=='0' || $geraet['schutzklasse']='4') { echo "-"; } else { echo $geraet['nennspannung'].'V'; } ?></td>
 							</tr>
 							<tr>
 								<td>Nennstrom</td>
@@ -58,17 +60,16 @@
 							</tr>
 							<tr>
 								<td>Schutzklasse</td>
-								<td><?php echo $geraet['schutzklasse']; ?></td>
+								<td><?php if($geraet['schutzklasse']=='4') { echo "-"; } else { echo $geraet['schutzklasse']; } ?></td>
 							</tr>
 							<tr>
 								<td>Verlängerungskabel</td>
-								<td><?php if($geraet['verlaengerungskabel']=='0') { ?>-<?php } else { ?><?php echo $geraet['kabellaenge']; ?>m</td><?php	} ?></td>
+								<td><?php if($geraet['verlaengerungskabel']=='0') { echo "-"; } else { echo $geraet['kabellaenge'].'m';} ?></td>
 							</tr>
 							<tr>
 								<td>Aktiv</td>
-								<td><?php if($geraet['aktiv']=='0') { echo "nein"; } else { echo "ja"; } ?></td>
+								<td><?php if($geraet['aktiv']=='0') { echo "Nein"; } else { echo "Ja"; } ?></td>
 							</tr>
-						
 						</table>
 </div>
 </div>
@@ -171,11 +172,11 @@ if(count($pruefung)==0) {
                    
                         <td><?php if($pr['sichtpruefung']=='1') { echo "ja"; } else { echo "nein"; } ?> <?php if($pr['sichtpruefung']=='1') {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
                         
-                        <td><?php if($pr['schutzleiter']===NULL) { echo "-"; } else { echo $pr['schutzleiter']; } ?> <?php $y = $pr['RPEmax']; if($pr['schutzleiter']===NULL) { echo "-"; } elseif($pr['schutzleiter'] <= $y)  {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?>(<?php echo $pr['RPEmax']; ?>)</td>
+                        <td><?php if($pr['schutzleiter']===NULL) { echo "-"; } else { echo $pr['schutzleiter']; } ?> <?php $y = $pr['RPEmax']; if($pr['schutzleiter']===NULL) { echo ""; } elseif($pr['schutzleiter'] <= $y)  {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?><?php if($pr['RPEmax']===NULL) { echo ""; } else { echo '('.$pr['RPEmax'].')'; } ?></td>
                         
-                        <td><?php if($pr['isowiderstand']===NULL) { echo "-"; } else { echo $pr['isowiderstand']; } ?> <?php $y = 2.0; if($pr['isowiderstand']===NULL) { echo "-"; } elseif($pr['isowiderstand'] >= $y) {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
-												<td><?php if($pr['schutzleiterstrom']===NULL) { echo "-"; } else { echo $pr['schutzleiterstrom']; } ?> <?php $y = 0.5; if($pr['schutzleiterstrom']===NULL) { echo "-"; } elseif($pr['schutzleiterstrom'] <= $y) {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
-												<td><?php if($pr['beruehrstrom']===NULL) { echo "-"; } else { echo $pr['beruehrstrom']; } ?> <?php $y = 0.25; if($pr['beruehrstrom']===NULL) { echo "-"; } elseif($pr['beruehrstrom'] <= $y) {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
+                        <td><?php if($pr['isowiderstand']===NULL) { echo "-"; } else { echo $pr['isowiderstand']; } ?> <?php $y = 2.0; if($pr['isowiderstand']===NULL) { echo ""; } elseif($pr['isowiderstand'] >= $y) {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
+												<td><?php if($pr['schutzleiterstrom']===NULL) { echo "-"; } else { echo $pr['schutzleiterstrom']; } ?> <?php $y = 0.5; if($pr['schutzleiterstrom']===NULL) { echo ""; } elseif($pr['schutzleiterstrom'] <= $y) {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
+												<td><?php if($pr['beruehrstrom']===NULL) { echo "-"; } else { echo $pr['beruehrstrom']; } ?> <?php $y = 0.25; if($pr['beruehrstrom']===NULL) { echo ""; } elseif($pr['beruehrstrom'] <= $y) {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
 												
 												<td><?php if($pr['funktion']=='1') { echo "ja"; } else { echo "nein"; } ?> <?php if($pr['funktion']=='1') {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
                         <td><?php if($pr['bestanden']=='1') { echo "ja"; } else { echo "nein"; } ?> <?php if($pr['bestanden']=='1') {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>

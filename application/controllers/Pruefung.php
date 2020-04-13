@@ -130,8 +130,10 @@ class Pruefung extends CI_Controller {
 				}
 			
 			}
-			
-			$pruefung['RPEmax'] = $RPEmax;		
+			if($schutzklasse!=4) {
+				
+				$pruefung['RPEmax'] = $RPEmax;		
+			}
 			$pruefung['bestanden'] = 1;
 			
 			//schutzklasse 4=Leiter
@@ -163,7 +165,11 @@ class Pruefung extends CI_Controller {
 			$prdatum = $this->Pruefung_model->get($pruefung_id)['datum'];
 			
 			//prüfung als pdf speichern
-					
+					if($pruefung['bestanden']='1'){
+						$bestanden='ok';
+					} else {
+						$bestanden='fail';
+					}
 						$timestamp = strtotime($prdatum);
 						$year = date("Y", $timestamp);
 						$html2pdf_api_key= $this->config->item('html2pdf_api_key');
@@ -176,7 +182,7 @@ class Pruefung extends CI_Controller {
            
 						$value = site_url('pruefung/protokoll/'.$pruefung_id); // a url starting with http or an HTML string.  see example #5 if you have a long HTML string
 						$result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($html2pdf_api_key) . "&value=" .$value . $html2pdf_user_pass);
-						file_put_contents('pdf/'.$year.'/'.$ortsname.'/GID'.$gid.'_'.$geraetename.'_PID'.$pruefung_id.'_'.$prdatum.'.pdf',$result);
+						file_put_contents('pdf/'.$year.'/'.$ortsname.'/GID'.$gid.'_'.$geraetename.'_PID'.$pruefung_id.'_'.$prdatum.'_'.$bestanden.'.pdf',$result);
 			
 			
 			redirect('pruefung/index/'.$gid);
