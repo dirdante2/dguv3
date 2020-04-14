@@ -192,8 +192,8 @@ class Pruefung extends CI_Controller {
             //$apikey = '93fa945c-3a01-4fff-a966-3a2f069a1539';
            
 						$value = site_url('pruefung/protokoll/'.$pruefung_id); // a url starting with http or an HTML string.  see example #5 if you have a long HTML string
-						//$result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($html2pdf_api_key) . "&value=" .$value . $html2pdf_user_pass);
-						//file_put_contents('pdf/'.$year.'/'.$ortsname.'/GID'.$gid.'_'.$geraetename.'_PID'.$pruefung_id.'_'.$prdatum.'_'.$bestanden.'.pdf',$result);
+						$result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($html2pdf_api_key) . "&value=" .$value . $html2pdf_user_pass);
+						file_put_contents('pdf/'.$year.'/'.$ortsname.'/GID'.$gid.'_'.$geraetename.'_PID'.$pruefung_id.'_'.$prdatum.'_'.$bestanden.'.pdf',$result);
 			
 			
 			redirect('pruefung/index/'.$gid);
