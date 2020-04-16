@@ -21,7 +21,10 @@ class Geraete extends CI_Controller {
 
 	function index($oid=NULL) {
 		if(!$this->session->userdata('level')){
-          echo "Access Denied";
+			$this->load->view('templates/header');
+			$this->load->view('static/denied');
+			$this->load->view('templates/footer');
+			
           }else{
 		if($oid) {
 			$data['ort'] = $this->Orte_model->get($oid);
