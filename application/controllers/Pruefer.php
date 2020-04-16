@@ -18,7 +18,9 @@ class Pruefer extends CI_Controller {
 
 	function index() {
 		if(!$this->session->userdata('level')){
-          echo "Access Denied";
+			$this->load->view('templates/header');
+			$this->load->view('static/denied');
+			$this->load->view('templates/footer');
           }else{
 		$data['pruefer'] = $this->Pruefer_model->get();
 
@@ -31,7 +33,9 @@ class Pruefer extends CI_Controller {
 
 	function edit($pid=0) {
 		if(!$this->session->userdata('level')){
-          echo "Access Denied";
+          $this->load->view('templates/header');
+			$this->load->view('static/denied');
+			$this->load->view('templates/footer');
           }else{
 	
 		$this->form_validation->set_rules('name', 'Name', 'required');
@@ -62,7 +66,9 @@ class Pruefer extends CI_Controller {
 
 	function delete($pid) {
 		if(!$this->session->userdata('level')){
-          echo "Access Denied";
+          $this->load->view('templates/header');
+			$this->load->view('static/denied');
+			$this->load->view('templates/footer');
           }else{
 		$this->form_validation->set_rules('confirm', 'Bestätigung', 'required');
 

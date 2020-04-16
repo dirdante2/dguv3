@@ -18,7 +18,9 @@ class Orte extends CI_Controller {
 
 	function index() {
 		if(!$this->session->userdata('level')){
-          echo "Access Denied";
+			$this->load->view('templates/header');
+			$this->load->view('static/denied');
+			$this->load->view('templates/footer');
           }else{
 		$data['orte'] = $this->Orte_model->get();
 		$data['html2pdf_api_key']= $this->config->item('html2pdf_api_key');
@@ -31,7 +33,9 @@ class Orte extends CI_Controller {
 
 	function edit($oid=0) {
 		if(!$this->session->userdata('level')){
-          echo "Access Denied";
+          $this->load->view('templates/header');
+			$this->load->view('static/denied');
+			$this->load->view('templates/footer');
           }else{
 		$this->form_validation->set_rules('name', 'Name', 'required');
 		$this->form_validation->set_rules('beschreibung', 'Beschreibung', 'required');
@@ -60,7 +64,9 @@ class Orte extends CI_Controller {
 
 	function delete($oid) {
 		if(!$this->session->userdata('level')){
-          echo "Access Denied";
+          $this->load->view('templates/header');
+			$this->load->view('static/denied');
+			$this->load->view('templates/footer');
           }else{
 		$this->form_validation->set_rules('confirm', 'Bestätigung', 'required');
 

@@ -12,7 +12,9 @@ class Page extends CI_Controller{
       if($this->session->userdata('level')==='1'){
           $this->load->view('dashboard_view');
       }else{
-          echo "Access Denied";
+          $this->load->view('templates/header');
+			$this->load->view('static/denied');
+			$this->load->view('templates/footer');
       }
  
   }
@@ -22,7 +24,9 @@ class Page extends CI_Controller{
     if($this->session->userdata('level')==='2'){
       $this->load->view('dashboard_view');
     }else{
-        echo "Access Denied";
+        $this->load->view('templates/header');
+			$this->load->view('static/denied');
+			$this->load->view('templates/footer');
     }
   }
  
@@ -31,7 +35,9 @@ class Page extends CI_Controller{
     if($this->session->userdata('level')==='3'){
       $this->load->view('dashboard_view');
     }else{
-        echo "Access Denied";
+        $this->load->view('templates/header');
+			$this->load->view('static/denied');
+			$this->load->view('templates/footer');
     }
   }
  

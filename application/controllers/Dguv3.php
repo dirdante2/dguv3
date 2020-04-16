@@ -26,9 +26,9 @@
  
   function index(){
     //Allowing akses to admin only
-      if(!$this->session->userdata('level')){
-          //echo "Access Denied";
-          }else{
+      if($this->session->userdata('level')){
+       
+          
           $data['adresse']= $this->config->item('dguv3_adresse');      		
         		$data['geraete_count']= $this->Dguv3_model->getcountdata('geraete');
         		$data['geraete_aktiv_1']= $this->Dguv3_model->getcountdata('geraete','aktiv', '1');

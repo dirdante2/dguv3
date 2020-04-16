@@ -23,7 +23,9 @@ class Pruefung extends CI_Controller {
 
 	function index($gid=NULL) {
 		if(!$this->session->userdata('level')){
-          echo "Access Denied";
+          $this->load->view('templates/header');
+			$this->load->view('static/denied');
+			$this->load->view('templates/footer');
           }else{
 		if($gid) {
 			$data['geraet'] = $this->Geraete_model->get($gid);
@@ -73,7 +75,9 @@ class Pruefung extends CI_Controller {
 
 	function new($gid) {
 		if(!$this->session->userdata('level')){
-          echo "Access Denied";
+          $this->load->view('templates/header');
+			$this->load->view('static/denied');
+			$this->load->view('templates/footer');
           }else{
 		if($this->Geraete_model->get($gid)) {
 			 $oid = $this->Geraete_model->get($gid)['oid'];
@@ -97,7 +101,9 @@ class Pruefung extends CI_Controller {
 
 	function edit($pruefung_id) {
 		if(!$this->session->userdata('level')){
-          echo "Access Denied";
+          $this->load->view('templates/header');
+			$this->load->view('static/denied');
+			$this->load->view('templates/footer');
           }else{
 		if(!$this->Pruefung_model->get($pruefung_id)) {
 			show_error('Prüfung mit der id "'.$pruefung_id.'" existiert nicht.', 404);
@@ -203,7 +209,9 @@ class Pruefung extends CI_Controller {
 
 	function delete($pruefung_id) {
 		if(!$this->session->userdata('level')){
-          echo "Access Denied";
+          $this->load->view('templates/header');
+			$this->load->view('static/denied');
+			$this->load->view('templates/footer');
           }else{
 		$this->form_validation->set_rules('confirm', 'Bestätigung', 'required');
 
