@@ -35,41 +35,41 @@ class Firmen extends CI_Controller {
 	}
 	}
 
-	function edit($mid=0) {
+	function edit($firma_id=0) {
 		if(!$this->session->userdata('level')){
           $this->load->view('templates/header');
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
-		//$this->form_validation->set_rules('name', 'Name', 'required');
+		$this->form_validation->set_rules('firma_name', 'Name', 'required');
 		//$this->form_validation->set_rules('beschreibung', 'Beschreibung', 'required');
 
 		if($this->form_validation->run() === FALSE) {
 			$this->load->view('templates/header');
 
-			if($mid==0) {
-				$this->load->view('firmen/form',array('messgeraet'=>array('mid'=>0,'beschreibung'=>'','name'=>'')));
+			if($firma_id==0) {
+				$this->load->view('firmen/form',array('firma'=>array('firma_id'=>0,'firma_beschreibung'=>'','firma_name'=>'')));
 			}
 			
 			else {
-				$this->load->view('firmen/form',array('messgeraet'=>$this->Firmen_model->get($mid)));
+				$this->load->view('firmen/form',array('firma'=>$this->Firmen_model->get($firma_id)));
 			}
 			$this->load->view('templates/footer');
 
 		} else {
 
-			$messgeraet = array (
-				'name' => $this->input->post('name'),
-				'beschreibung' => $this->input->post('beschreibung'),
+			$firma = array (
+				'firma_name' => $this->input->post('firma_name'),
+				'firma_beschreibung' => $this->input->post('firma_beschreibung'),
 			);
 
-			$this->Firmen_model->set($messgeraet,$mid);
+			$this->Firmen_model->set($firma,$firma_id);
 			redirect('firmen');
 		}
 	}
 	}
 
-	function delete($mid) {
+	function delete($firma_id) {
 		if(!$this->session->userdata('level')){
           $this->load->view('templates/header');
 			$this->load->view('static/denied');
@@ -81,12 +81,12 @@ class Firmen extends CI_Controller {
 			$this->load->view('templates/header');
 			$this->load->view('templates/confirm',array(
 				'beschreibung' => 'Messgerät wirklich löschen?',
-				'target' => 'firmen/delete/'.$mid,
+				'target' => 'firmen/delete/'.$firma_id,
 				'canceltarget' => 'firmen'
 			));
 			$this->load->view('templates/footer');
 		} else {	
-			$this->Firmen_model->delete($mid);
+			$this->Firmen_model->delete($firma_id);
 			redirect('firmen');
 		}
 	}

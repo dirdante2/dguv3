@@ -23,12 +23,14 @@ class Login extends CI_Controller{
         $usermid  = $data['user_mid'];
         $email = $data['user_email'];
         $level = $data['user_level'];
+        $userid = $data['user_id'];
         $sesdata = array(
             'username'  => $name,
             'userpid'  => $userpid,
             'usermid'  => $usermid,
             'email'     => $email,
             'level'     => $level,
+            'userid'     => $userid,
             'logged_in' => TRUE
         );
         $this->session->set_userdata($sesdata);

@@ -41,7 +41,7 @@ class Users extends CI_Controller {
 	}
 	}
 
-	function new($user_id) {
+	function new($user_id=NULL) {
 		if(!$this->session->userdata('level')){
           $this->load->view('templates/header');
 			$this->load->view('static/denied');
@@ -51,7 +51,7 @@ class Users extends CI_Controller {
 			 //
 
 			$user_id = $this->Users_model->new(array(
-			'user_firmaid'=>'1'
+			'user_firmaid'=>$user_id
 			//'oid'=>$oid,
 			//'datum'=>date('Y-m-d')
 			));
@@ -104,11 +104,11 @@ class Users extends CI_Controller {
 		} else {
 
 			$user = array();
-
+			
 			foreach($felder as $feld) {
 				$user[$feld]=$this->input->post($feld);
 			}
-			
+			$user['user_password']= md5($user['user_password']);
 			$this->Users_model->update($user,$user_id);
 				// get ortsid von neu angelegtem gerät damit redirect zu richtiger seite führt?!!
 			//$gortsid = $this->Geraete_model->get($gid);

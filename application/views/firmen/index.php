@@ -1,7 +1,7 @@
 
 <h1>Firmen</h1>
 
-<a href="<?php echo site_url('messgeraete/edit'); ?>" class="btn btn-primary"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Messgerät hinzufügen</a>
+<a href="<?php echo site_url('firmen/edit'); ?>" class="btn btn-primary"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Messgerät hinzufügen</a>
 <br>
 <br>
 
@@ -17,7 +17,7 @@
 <tbody>
 <?php
 
-if(count($messgeraete)==0) {
+if(count($firmen)==0) {
 
 ?>
 
@@ -26,16 +26,16 @@ if(count($messgeraete)==0) {
 <?php
 
 } else {
-	foreach($messgeraete as $messgeraet) {
+	foreach($firmen as $firma) {
 
 		?>
 		<tr>
-			<td><?php echo $messgeraet['mid']; ?></td>
-			<td><?php echo $messgeraet['name']; ?></td>
-			<td><?php echo $messgeraet['beschreibung']; ?></td>
+			<td><?php echo $firma['firma_id']; ?></td>
+			<td><?php echo $firma['firma_name']; ?></td>
+			<td><?php echo $firma['firma_beschreibung']; ?></td>
 			<td>
-				<a href="<?php echo site_url('messgeraete/edit/'.$messgeraet['mid']); ?>" class="btn btn-secondary"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span></a>
-				<a href="<?php echo site_url('messgeraete/delete/'.$messgeraet['mid']); ?>" class="btn btn-danger"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span></a>
+				<a href="<?php echo site_url('firmen/edit/'.$firma['firma_id']); ?>" class="btn btn-secondary"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span></a>
+				<a href="<?php echo site_url('firmen/delete/'.$firma['firma_id']); ?>" class="btn btn-danger"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span></a>
 			</td>
 		</tr>
 		<?php

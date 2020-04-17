@@ -31,8 +31,8 @@ class Firmen_model extends CI_Model {
 	function set($data, $firma_id=NULL) {
 		if($firma_id) {
 			$this->db->set(array(
-				'name' => $data['name'],
-				'beschreibung' => $data['beschreibung']
+				'firma_name' => $data['firma_name'],
+				'firma_beschreibung' => $data['firma_beschreibung']
 			));
 			$this->db->where('firma_id',$firma_id);
 			return $this->db->update('firmen',$data);

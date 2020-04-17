@@ -62,7 +62,9 @@
     </ul>
     <ul class="nav navbar-nav navbar-right">
     	<?php if($this->session->userdata('level')) {?>
-    	<div class="d-flex align-items-center nav-link"><?php echo $this->session->userdata('username');?>
+    	<div class="d-flex align-items-center">
+		<a class="nav-link" href="<?php echo site_url('users/index/');?><?php echo $this->session->userdata('userid');?>"><?php echo $this->session->userdata('username');?></a>	
+		
     		</div>
     		
       <li class="nav-item"> <a class="nav-link" href="<?php echo site_url('login/logout');?>"><span class="iconify" data-icon="mdi:logout" data-width="20" data-height="20"></span> Logout</a></li>

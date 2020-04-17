@@ -14,7 +14,7 @@ $().ready(function() {
 		},
 		select: function( event, ui ) {
        	 	$( "#orte" ).val( ui.item.label );
-			$( "#oid" ).val( ui.item.value );			
+			$( "#user_oid" ).val( ui.item.value );			
     	    return false;
 	    },
     	minLength: 2,
@@ -62,7 +62,7 @@ echo validation_errors();
     </div>
   </div>
   <div class="form-group row">
-    <label for="name" class="col-sm-5 col-form-label">email*</label>
+    <label for="name" class="col-sm-5 col-form-label">password*</label>
     <div class="col-sm-7">
       <input type="password" class="form-control" name="user_password" id="user_password" value="<?php echo $user['user_password']; ?>">
     </div>
