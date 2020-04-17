@@ -6,3 +6,4 @@ dd25120.sql
 todo.txt
 .vscode
 .vs
+application/cache/*
