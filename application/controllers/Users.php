@@ -43,7 +43,7 @@ class Users extends CI_Controller {
 
 
 
-	function edit($user_id) {
+	function edit($user_id=0) {
 		if(!$this->session->userdata('level')){
           $this->load->view('templates/header');
 			$this->load->view('static/denied');
@@ -55,29 +55,28 @@ class Users extends CI_Controller {
 
 		if($this->form_validation->run() === FALSE) {
 			$this->load->view('templates/header');
-
+			
 			if($user_id==0) {
 				$this->load->view('users/form',array(
-					'user'=>array('user_id'=>0,'name'=>''),
 					'pruefer'=> $this->Pruefer_model->get(),
-					'orte'=> $this->Orte_model->get(),
-					'messgeraete'=> $this->Messgeraete_model->get()
+					'messgeraete'=> $this->Messgeraete_model->get(),
+					
+					'user'=>array('user_id'=>0,'user_name'=>'','user_oid'=>'')
+				
 				));
 			} else {
-				
-
-				$this->load->view('users/form', array(
-					'user'=>$this->Users_model->get($user_id),
+				$this->load->view('users/form',array(
 					'pruefer'=> $this->Pruefer_model->get(),
-					'orte'=> $this->Orte_model->get(),
-					'messgeraete'=> $this->Messgeraete_model->get()
-					
-					
-					));
-
-
+					'messgeraete'=> $this->Messgeraete_model->get(),
+					'user'=>$this->Users_model->get($user_id)
+				
+				));
 			}
 			$this->load->view('templates/footer');
+			
+			
+
+
 
 		} else {
 

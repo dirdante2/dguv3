@@ -27,7 +27,7 @@ class Users_model extends CI_Model {
 		
 		$result = $this->db->get()->result_array();
 		if(!empty($result)) {
-			return $result;
+			return $result[0];
 		} else {
 			return NULL;
 		}

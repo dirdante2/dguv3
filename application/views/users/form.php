@@ -36,7 +36,7 @@ echo validation_errors();
 ?>
 
 
-<input type="text" name="user_id" value="<?php echo $user['user_id']; ?>">
+user id<input type="text" name="user_id" value="<?php echo $user['user_id']; ?>">
 <div class="row">
  <div class="col-md-6">
 	
@@ -44,14 +44,15 @@ echo validation_errors();
 <div class="form-group row">
     <label for="orte" class="col-sm-5 col-form-label">Ort*</label>
     <div class="col-sm-7">
-      <input type="text" class="form-control" id="orte" value="<?php echo $geraet['ortsname']; ?>" required>
-      <input type="hidden" id="oid" name="oid" value="<?php echo $geraet['oid']; ?>">
+      <input type="text" class="form-control" id="orte" value="<?php echo $user['user_oid']; ?>" required>
+      <!-- hidden -->
+      <input type="text" id="oid" name="oid" value="<?php echo $user['user_oid']; ?>">
     </div>
   </div>
   <div class="form-group row">
     <label for="name" class="col-sm-5 col-form-label">Name*</label>
     <div class="col-sm-7">
-      <input type="text" class="form-control" name="name" id="name" value="<?php echo $user['name']; ?>" required>
+      <input type="text" class="form-control" name="name" id="name" value="<?php echo $user['user_name']; ?>" required>
     </div>
   </div>
 
@@ -71,7 +72,7 @@ echo validation_errors();
     		    	echo ' selected';
     		    	}
     		    } else {
-    		    	if($m['mid'] == $geraet['mid']){
+    		    	if($m['mid'] == $user['user_mid']){
     		        echo ' selected';
     		    	}
     		    
