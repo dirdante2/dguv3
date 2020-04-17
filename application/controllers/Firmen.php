@@ -48,7 +48,14 @@ class Firmen extends CI_Controller {
 			$this->load->view('templates/header');
 
 			if($firma_id==0) {
-				$this->load->view('firmen/form',array('firma'=>array('firma_id'=>0,'firma_beschreibung'=>'','firma_name'=>'')));
+				$this->load->view('firmen/form',array('firma'=>array(
+					'firma_id'=>0,
+					'firma_beschreibung'=>'',
+					'firma_name'=>'',
+					'firma_ort'=>'',
+					'firma_strasse'=>'',
+					'firma_plz'=>''
+				)));
 			}
 			
 			else {
@@ -60,6 +67,9 @@ class Firmen extends CI_Controller {
 
 			$firma = array (
 				'firma_name' => $this->input->post('firma_name'),
+				'firma_ort' => $this->input->post('firma_ort'),
+				'firma_strasse' => $this->input->post('firma_strasse'),
+				'firma_plz' => $this->input->post('firma_plz'),
 				'firma_beschreibung' => $this->input->post('firma_beschreibung'),
 			);
 

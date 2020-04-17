@@ -32,6 +32,9 @@ class Firmen_model extends CI_Model {
 		if($firma_id) {
 			$this->db->set(array(
 				'firma_name' => $data['firma_name'],
+				'firma_ort' => $data['firma_ort'],
+				'firma_plz' => $data['firma_plz'],
+				'firma_strasse' => $data['firma_strasse'],
 				'firma_beschreibung' => $data['firma_beschreibung']
 			));
 			$this->db->where('firma_id',$firma_id);

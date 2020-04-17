@@ -10,6 +10,7 @@
 	<tr>
 		<th>ID</th>
 		<th>Name</th>
+		<th>Anschfrift</th>
 		<th>Beschreiung</th>
 		<th>Aktion</th>
 	</tr>
@@ -32,6 +33,9 @@ if(count($firmen)==0) {
 		<tr>
 			<td><?php echo $firma['firma_id']; ?></td>
 			<td><?php echo $firma['firma_name']; ?></td>
+			<td><?php echo $firma['firma_strasse']; ?><br>
+			<?php echo $firma['firma_plz']; ?><br>
+			<?php echo $firma['firma_ort']; ?></td>
 			<td><?php echo $firma['firma_beschreibung']; ?></td>
 			<td>
 				<a href="<?php echo site_url('firmen/edit/'.$firma['firma_id']); ?>" class="btn btn-secondary"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span></a>
