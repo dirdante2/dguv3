@@ -35,11 +35,12 @@ class Users_model extends CI_Model {
 	}
 
 	function list($user_id=NULL) {
-        $this->db->select('users.*, messgeraete.name as messgeraetname, pruefer.name as pruefername, orte.name as ortsname');
+        $this->db->select('users.*, firmen.firma_name,messgeraete.name as messgeraetname, pruefer.name as pruefername, orte.name as ortsname');
         $this->db->from('users');
         $this->db->join('messgeraete', 'users.user_mid = messgeraete.mid', 'LEFT');
         $this->db->join('pruefer', 'users.user_pid = pruefer.pid', 'LEFT');
-        $this->db->join('orte', 'users.user_oid = orte.oid', 'LEFT');
+		$this->db->join('orte', 'users.user_oid = orte.oid', 'LEFT');
+		$this->db->join('firmen', 'users.user_firmaid = firmen.firma_id', 'LEFT');
         if($user_id!==NULL) {
             $this->db->where('users.user_id',$user_id);
         }

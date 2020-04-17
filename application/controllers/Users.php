@@ -14,6 +14,7 @@ class Users extends CI_Controller {
 		$this->load->model('Geraete_model');
 		$this->load->model('Pruefer_model');
 		$this->load->model('Messgeraete_model');
+		$this->load->model('Firmen_model');
 		$this->load->model('Orte_model');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -33,6 +34,7 @@ class Users extends CI_Controller {
 		} else {
 			$data['users'] = $this->Users_model->list();
 		}
+		//$this->output->cache(10);
 
 		$this->load->view('templates/header');
 		$this->load->view('templates/datatable');
@@ -46,12 +48,15 @@ class Users extends CI_Controller {
           $this->load->view('templates/header');
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
+
           }else{
+
 		if($this->Users_model->get($user_id)) {
 			 //
-
+			 $user_firmaid = $this->Users_model->get($user_id)['user_firmaid'];
+			
 			$user_id = $this->Users_model->new(array(
-			'user_firmaid'=>$user_id
+			'user_firmaid'=>$user_firmaid
 			//'oid'=>$oid,
 			//'datum'=>date('Y-m-d')
 			));
@@ -83,7 +88,7 @@ class Users extends CI_Controller {
 				$this->load->view('users/form',array(
 					'pruefer'=> $this->Pruefer_model->get(),
 					'messgeraete'=> $this->Messgeraete_model->get(),
-					
+					'firmen'=> $this->Firmen_model->get(),
 					'user'=>array('user_id'=>0,'user_name'=>'','user_oid'=>'','ortsname'=>'')
 				
 				));
@@ -91,6 +96,7 @@ class Users extends CI_Controller {
 				$this->load->view('users/form',array(
 					'pruefer'=> $this->Pruefer_model->get(),
 					'messgeraete'=> $this->Messgeraete_model->get(),
+					'firmen'=> $this->Firmen_model->get(),
 					'user'=>$this->Users_model->get($user_id)
 				
 				));

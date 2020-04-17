@@ -36,14 +36,15 @@ class Pruefung_model extends CI_Model {
 	//index.php/pruefung/protokoll/1
 	//
 	function getnotarray($pruefung_id=NULL) {
-		$this->db->select('pruefung.*, geraete.*, messgeraete.*, pruefer.*, orte.*, messgeraete.name as messgeraetname, pruefer.name as pruefername, orte.name as ortsname, geraete.name as geraetename, geraete.beschreibung as geraetebeschreibung, orte.beschreibung as ortebeschreibung, messgeraete.beschreibung as messgeraetebeschreibung, pruefer.beschreibung as prueferbeschreibung');
+		$this->db->select('pruefung.*, geraete.*, firmen.* ,messgeraete.name as messgeraetname, pruefer.name as pruefername, orte.name as ortsname, geraete.name as geraetename, geraete.beschreibung as geraetebeschreibung');
 		$this->db->from('pruefung');
 		$this->db->join('geraete', 'pruefung.gid = geraete.gid', 'LEFT');
 		$this->db->join('messgeraete', 'pruefung.mid = messgeraete.mid', 'LEFT');
 		$this->db->join('pruefer', 'pruefung.pid = pruefer.pid', 'LEFT');
-
-
 		$this->db->join('orte', 'geraete.oid = orte.oid', 'LEFT');
+		$this->db->join('firmen', 'pruefung.pruefung_firmaid = firmen.firma_id', 'LEFT');
+
+		
 
 		$this->db->where('pruefung.pruefungid',$pruefung_id);
 

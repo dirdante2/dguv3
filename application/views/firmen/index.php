@@ -22,7 +22,7 @@ if(count($firmen)==0) {
 
 ?>
 
-<td colspan="4">Es sind noch keine Messgeräte definiert.</td>
+<td colspan="4">Es sind noch keine Firmen definiert.</td>
 
 <?php
 

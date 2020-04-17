@@ -20,13 +20,20 @@ class Firmen extends CI_Controller {
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 	}
 
-	function index() {
+	function index($firma_id=NULL) {
 		if(!$this->session->userdata('level')){
 			$this->load->view('templates/header');
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
-		$data['firmen'] = $this->Firmen_model->get();
+		
+
+		if($firma_id) {
+			$data['firmen'] = $this->Firmen_model->list($firma_id);
+		} else {
+			$data['firmen'] = $this->Firmen_model->list();
+		}
+		//$this->output->cache(10);
 
 		$this->load->view('templates/header');
 		$this->load->view('templates/datatable');
@@ -50,11 +57,11 @@ class Firmen extends CI_Controller {
 			if($firma_id==0) {
 				$this->load->view('firmen/form',array('firma'=>array(
 					'firma_id'=>0,
-					'firma_beschreibung'=>'',
 					'firma_name'=>'',
 					'firma_ort'=>'',
 					'firma_strasse'=>'',
-					'firma_plz'=>''
+					'firma_plz'=>'',
+					'firma_beschreibung'=>''
 				)));
 			}
 			

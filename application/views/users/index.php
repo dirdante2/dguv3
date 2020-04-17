@@ -26,7 +26,7 @@ if(count($users)==0) {
 
 ?>
 
-<td colspan="4">Es sind noch keine Messgeräte definiert.</td>
+<td colspan="4">Es sind noch keine User definiert.</td>
 
 <?php
 
@@ -39,7 +39,7 @@ if(count($users)==0) {
 			<td><?php echo $user['user_name']; ?></td>
 			<td><?php echo $user['user_email']; ?></td>
 			<td><?php echo $user['user_level']; ?></td>
-			<td><?php echo $user['user_firmaid']; ?></td>
+			<td><?php echo $user['firma_name']; ?></td>
 			<td><?php echo $user['pruefername']; ?></td>
 			<td><?php echo $user['messgeraetname']; ?></td>
 			<td><?php echo $user['ortsname']; ?></td>

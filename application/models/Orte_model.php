@@ -20,9 +20,10 @@ class Orte_model extends CI_Model {
 	 * @return list of Orte, single Ort or NULL
 	 */
 	function get($oid=NULL) {
-		$this->db->select('orte.*, COUNT(gid) AS geraeteanzahl');
+		$this->db->select('orte.*, firmen.*,COUNT(gid) AS geraeteanzahl');
 		$this->db->from('orte');
 		$this->db->join('geraete', 'orte.oid = geraete.oid','LEFT');
+		$this->db->join('firmen', 'orte.ort_firmaid = firmen.firma_id', 'LEFT');
 		$this->db->group_by('orte.oid');
 
 		if($oid===NULL) {

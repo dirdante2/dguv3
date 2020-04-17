@@ -41,14 +41,7 @@ echo validation_errors();
  <div class="col-md-6">
 	
 <form>
-<div class="form-group row">
-    <label for="orte" class="col-sm-5 col-form-label">Ort*</label>
-    <div class="col-sm-7">
-      <input type="text" class="form-control" id="orte" value="<?php echo $user['ortsname']; ?>" required>
-      <!-- hidden -->
-      <input type="hidden" id="user_oid" name="user_oid" value="<?php echo $user['user_oid']; ?>">
-    </div>
-  </div>
+
   <div class="form-group row">
     <label for="name" class="col-sm-5 col-form-label">Name*</label>
     <div class="col-sm-7">
@@ -62,21 +55,44 @@ echo validation_errors();
     </div>
   </div>
   <div class="form-group row">
-    <label for="name" class="col-sm-5 col-form-label">password*</label>
+    <label for="name" class="col-sm-5 col-form-label">password</label>
     <div class="col-sm-7">
-      <input type="password" class="form-control" name="user_password" id="user_password" value="<?php echo $user['user_password']; ?>">
+      <input type="password" class="form-control" name="user_password" id="user_password" value="">
     </div>
   </div>
-  <div class="form-group row">
-    <label for="name" class="col-sm-5 col-form-label">Level*</label>
-    <div class="col-sm-7">
-      <input type="text" class="form-control" name="user_level" id="user_level" value="<?php echo $user['user_level']; ?>" required>
+  
+  <fieldset class="form-group">
+    <div class="row">
+      <legend class="col-form-label col-sm-5 pt-0">Level*</legend>
+      <div class="col-sm-7">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="user_level" id="1" value="1" <?php if($user['user_level']=='1') { echo 'checked'; } ?> required>
+          <label class="form-check-label" for="1">1 Admin</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="user_level" id="2" value="2" <?php if($user['user_level']=='2') { echo 'checked'; } ?>>
+          <label class="form-check-label" for="2">2 Prüfer</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="user_level" id="3" value="3" <?php if($user['user_level']=='3') { echo 'checked'; } ?>>
+          <label class="form-check-label" for="3">3 Verwaltung</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="user_level" id="4" value="4" <?php if($user['user_level']=='4') { echo 'checked'; } ?>>
+          <label class="form-check-label" for="4">4 User</label>
+        </div>
+       
+      </div>
+      
     </div>
-  </div>
+  </fieldset>
+
   <div class="form-group row">
-    <label for="name" class="col-sm-5 col-form-label">Firma ID*</label>
+    <label for="orte" class="col-sm-5 col-form-label">Ort</label>
     <div class="col-sm-7">
-      <input type="text" class="form-control" name="user_firmaid" id="user_firmaid" value="<?php echo $user['user_firmaid']; ?>" required>
+      <input type="text" class="form-control" id="orte" value="<?php echo $user['ortsname']; ?>">
+      <!-- hidden -->
+      <input type="text" id="user_oid" name="user_oid" value="<?php echo $user['user_oid']; ?>">
     </div>
   </div>
 
@@ -85,6 +101,7 @@ echo validation_errors();
     <label for="Messgerät" class="col-sm-5 col-form-label">Messgerät</label>
     <div class="col-sm-7">
     	<select name="user_mid">
+      <option value="0" selected> keins</option>
     		<?php
     		foreach($messgeraete as $m) {
     		    echo '<option value="'.$m['mid'].'"';
@@ -105,6 +122,7 @@ echo validation_errors();
     <label for="Prüfer" class="col-sm-5 col-form-label">Prüfer</label>
     <div class="col-sm-7">
        	<select name="user_pid">
+         <option value="0" selected> keins</option>
     		<?php
     		foreach($pruefer as $p) {
     		    echo '<option value="'.$p['pid'].'"';
@@ -121,14 +139,55 @@ echo validation_errors();
     	</select>
     </div>
   </div>
+  <div class="form-group row">
+    <label for="Firma" class="col-sm-5 col-form-label">Firma</label>
+    <div class="col-sm-7">
+       	<select name="user_firmaid">
+         <option value="0" selected> keins</option>
+    		<?php
+    		foreach($firmen as $f) {
+    		    echo '<option value="'.$f['firma_id'].'"';
+    		    
+    		   
+    		    	if($f['firma_id'] == $user['user_firmaid']){
+    		        echo ' selected';
+    		    	}
+    		    
 
+    				echo '>'.$f['firma_name'].'</option>';
+    		}
+    		?>
+    	</select>
+    </div>
+  </div>
 
 <br>
-<input type="submit" class="btn btn-primary btn-lg btn-block" value="speichern">
+<input type="submit" class="btn btn-primary btn-lg btn-block" value="speichern"><br><br>
 </form>
 
 </div>
- <div class="col-6"  style="width:50%"></div>
+ <div class="col-6"  style="width:50%"><br>
+ <p>
+      <b><u>User Level</u></b><br>
+      <b>1 Admin</b><br>
+      darf alles<br>
+
+      <b>2 Prüfer</b><br>
+      darf keine Geräte löschen<br>
+      zugriff Nur auf eigene firma<br>
+
+      <b>3 Verwaltung</b><br>
+      Alles drüber<br>
+      darf keine Geräte löschen bearbeiten oder neu<br>
+      Keine Prüfung löschen bearbeiten oder neu<br>
+      keine orte löschen bearbeiten oder neu<br>
+      
+      <b>4 User</b><br>
+      Alles drüber<br>
+      Darf nur eigene firma / Ort sehen<br>
+      Nur eigene Geräte sehen bearbeiten</p>
+
+ </div>
 
 </div>
 

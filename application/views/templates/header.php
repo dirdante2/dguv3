@@ -58,6 +58,12 @@
                         <li class="nav-item">
 	        		<a class="nav-link" href="<?php echo site_url('pruefung'); ?>"><span class="iconify" data-icon="bx:bx-clipboard" data-width="20" data-height="20"></span> Prüfungen</a>
       			</li>
+				  <li class="nav-item">
+	        		<a class="nav-link" href="<?php echo site_url('firmen'); ?>"><span class="iconify" data-icon="bx:bxs-business" data-width="20" data-height="20"></span> Firmen</a>
+      			</li>
+				  <li class="nav-item">
+	        		<a class="nav-link" href="<?php echo site_url('users'); ?>"><span class="iconify" data-icon="fa-solid:users" data-width="20" data-height="20"></span> User</a>
+      			</li>
       			 
     </ul>
     <ul class="nav navbar-nav navbar-right">

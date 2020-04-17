@@ -171,7 +171,7 @@
 									if($pruefung['isowiderstand']===null || $pruefung['sichtpruefung']== '0') { 
 									       echo "-"; 
 									} else {
-    									if($pruefung['isowiderstand'] <= $y) {
+    									if($pruefung['isowiderstand'] < $y) {
     									      echo "Nein"; 
     									} else { 
     									    echo "Ja"; 

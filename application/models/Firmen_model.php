@@ -26,6 +26,16 @@ class Firmen_model extends CI_Model {
 		}
 	}
 
+	function list($firma_id=NULL) {
+		$this->db->select('firmen.*');
+        $this->db->from('firmen');
+       
+        if($firma_id!==NULL) {
+            $this->db->where('firmen.firma_id',$firma_id);
+        }
+
+        return $this->db->get()->result_array();
+    }
 	
 
 	function set($data, $firma_id=NULL) {
@@ -33,8 +43,8 @@ class Firmen_model extends CI_Model {
 			$this->db->set(array(
 				'firma_name' => $data['firma_name'],
 				'firma_ort' => $data['firma_ort'],
-				'firma_plz' => $data['firma_plz'],
 				'firma_strasse' => $data['firma_strasse'],
+				'firma_plz' => $data['firma_plz'],
 				'firma_beschreibung' => $data['firma_beschreibung']
 			));
 			$this->db->where('firma_id',$firma_id);
