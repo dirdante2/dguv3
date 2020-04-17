@@ -29,9 +29,9 @@ class Users extends CI_Controller {
 		
 
 		if($user_id) {
-			$data['users'] = $this->Users_model->get($user_id);
+			$data['users'] = $this->Users_model->list($user_id);
 		} else {
-			$data['users'] = $this->Users_model->get();
+			$data['users'] = $this->Users_model->list();
 		}
 
 		$this->load->view('templates/header');
@@ -41,15 +41,38 @@ class Users extends CI_Controller {
 	}
 	}
 
-
-
-	function edit($user_id=0) {
+	function new($user_id) {
 		if(!$this->session->userdata('level')){
           $this->load->view('templates/header');
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
-		$this->form_validation->set_rules('name', 'Name', 'required');
+		if($this->Users_model->get($user_id)) {
+			 //
+
+			$user_id = $this->Users_model->new(array(
+			'user_firmaid'=>'1'
+			//'oid'=>$oid,
+			//'datum'=>date('Y-m-d')
+			));
+			redirect('users/edit/'.$user_id);
+		} else {
+			show_error('user mit der id "'.$user_id.'" existiert nicht.', 404);
+		}
+	}
+	}
+
+	function edit($user_id=0) {
+		if(!$this->session->userdata('level')){
+
+			
+
+          $this->load->view('templates/header');
+			$this->load->view('static/denied');
+			$this->load->view('templates/footer');
+          }else{
+			$felder = array('user_oid','user_name','user_email','user_mid','user_pid','user_firmaid','user_level','user_password');
+		$this->form_validation->set_rules('user_name', 'Name', 'required');
 		//$this->form_validation->set_rules('beschreibung', 'Beschreibung', 'required');
 		
 
@@ -61,7 +84,7 @@ class Users extends CI_Controller {
 					'pruefer'=> $this->Pruefer_model->get(),
 					'messgeraete'=> $this->Messgeraete_model->get(),
 					
-					'user'=>array('user_id'=>0,'user_name'=>'','user_oid'=>'')
+					'user'=>array('user_id'=>0,'user_name'=>'','user_oid'=>'','ortsname'=>'')
 				
 				));
 			} else {
@@ -80,15 +103,25 @@ class Users extends CI_Controller {
 
 		} else {
 
-			$user = array (
-				'name' => $this->input->post('name'),
-				
-			);
+			$user = array();
 
-			$this->Users_model->set($user,$user_id);
-			redirect('users');
-		}
+			foreach($felder as $feld) {
+				$user[$feld]=$this->input->post($feld);
+			}
+			
+			$this->Users_model->update($user,$user_id);
+				// get ortsid von neu angelegtem gerät damit redirect zu richtiger seite führt?!!
+			//$gortsid = $this->Geraete_model->get($gid);
+			
+			//if($gid==0) {
+				redirect('users');
+			//	}
+			//Vorhandeses Gerät
+			//else {
+			//redirect('geraete/index/'.$gortsid['oid']);
+			//}
 	}
+}
 	}
 
 	function delete($user_id) {
@@ -112,10 +145,5 @@ class Users extends CI_Controller {
 			redirect('users');
 		}
 	}
-
-
-
-	}
-	
-	
 }
+		  }
