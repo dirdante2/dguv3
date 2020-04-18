@@ -42,7 +42,7 @@ class Pruefung_model extends CI_Model {
 		$this->db->join('messgeraete', 'pruefung.mid = messgeraete.mid', 'LEFT');
 		$this->db->join('pruefer', 'pruefung.pid = pruefer.pid', 'LEFT');
 		$this->db->join('orte', 'geraete.oid = orte.oid', 'LEFT');
-		$this->db->join('firmen', 'pruefung.pruefung_firmaid = firmen.firma_id', 'LEFT');
+		$this->db->join('firmen', 'pruefung.pruefung_firmaid = firmen.firmen_firmaid', 'LEFT');
 
 		
 
@@ -56,13 +56,18 @@ class Pruefung_model extends CI_Model {
 		}
 	}
 
-	function list($gid=NULL) {
-		$this->db->select('pruefung.*, geraete.*,orte.name as ortsname, messgeraete.name as messgeraetname, pruefer.name as pruefername, geraete.name as geraetename');
+	function list($gid=NULL,$firmen_firmaid=NULL) {
+		$this->db->select('pruefung.*, firmen.firmen_firmaid,firmen.firma_name,geraete.*,orte.name as ortsname, messgeraete.name as messgeraetname, pruefer.name as pruefername, geraete.name as geraetename');
 		$this->db->from('pruefung');
 		$this->db->join('geraete', 'pruefung.gid = geraete.gid', 'LEFT');
 		$this->db->join('messgeraete', 'pruefung.mid = messgeraete.mid', 'LEFT');
 		$this->db->join('pruefer', 'pruefung.pid = pruefer.pid', 'LEFT');
 		$this->db->join('orte', 'pruefung.oid = orte.oid', 'LEFT');
+		$this->db->join('firmen', 'pruefung.pruefung_firmaid = firmen.firmen_firmaid', 'LEFT');
+
+		if($firmen_firmaid!==NULL) {
+			$this->db->having('pruefung.pruefung_firmaid', $firmen_firmaid);
+		} 
 		if($gid!==NULL) {
 			$this->db->where('pruefung.gid',$gid);
 		}

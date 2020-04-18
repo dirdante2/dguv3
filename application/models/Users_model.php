@@ -22,7 +22,7 @@ class Users_model extends CI_Model {
 		$this->db->join('pruefer', 'users.user_pid = pruefer.pid', 'LEFT');
 		$this->db->join('orte', 'users.user_oid = orte.oid', 'LEFT');
 		if($user_id!==NULL) {
-			$this->db->where('users.user_id',$user_id);
+			$this->db->having('users.user_id',$user_id);
 		}
 		
 		$result = $this->db->get()->result_array();
@@ -40,9 +40,9 @@ class Users_model extends CI_Model {
         $this->db->join('messgeraete', 'users.user_mid = messgeraete.mid', 'LEFT');
         $this->db->join('pruefer', 'users.user_pid = pruefer.pid', 'LEFT');
 		$this->db->join('orte', 'users.user_oid = orte.oid', 'LEFT');
-		$this->db->join('firmen', 'users.user_firmaid = firmen.firma_id', 'LEFT');
+		$this->db->join('firmen', 'users.users_firmaid = firmen.firmen_firmaid', 'LEFT');
         if($user_id!==NULL) {
-            $this->db->where('users.user_id',$user_id);
+            $this->db->having('users.user_id',$user_id);
         }
 
         return $this->db->get()->result_array();

@@ -14,11 +14,11 @@ class Firmen_model extends CI_Model {
 		$this->load->database();
 	}
 
-	function get($firma_id=NULL) {
-		if($firma_id===NULL) {
+	function get($firmen_firmaid=NULL) {
+		if($firmen_firmaid===NULL) {
 			return $this->db->get('firmen')->result_array();
 		}
-		$result = $this->db->get_where('firmen', array('firma_id'=>$firma_id))->result_array();
+		$result = $this->db->get_where('firmen', array('firmen_firmaid'=>$firmen_firmaid))->result_array();
 		if (!empty($result)) {
 			return $result[0];
 		} else {
@@ -26,20 +26,20 @@ class Firmen_model extends CI_Model {
 		}
 	}
 
-	function list($firma_id=NULL) {
+	function list($firmen_firmaid=NULL) {
 		$this->db->select('firmen.*');
         $this->db->from('firmen');
        
-        if($firma_id!==NULL) {
-            $this->db->where('firmen.firma_id',$firma_id);
+        if($firmen_firmaid!==NULL) {
+            $this->db->having('firmen.firmen_firmaid',$firmen_firmaid);
         }
 
         return $this->db->get()->result_array();
     }
 	
 
-	function set($data, $firma_id=NULL) {
-		if($firma_id) {
+	function set($data, $firmen_firmaid=NULL) {
+		if($firmen_firmaid) {
 			$this->db->set(array(
 				'firma_name' => $data['firma_name'],
 				'firma_ort' => $data['firma_ort'],
@@ -47,14 +47,14 @@ class Firmen_model extends CI_Model {
 				'firma_plz' => $data['firma_plz'],
 				'firma_beschreibung' => $data['firma_beschreibung']
 			));
-			$this->db->where('firma_id',$firma_id);
+			$this->db->where('firmen_firmaid',$firmen_firmaid);
 			return $this->db->update('firmen',$data);
 		}
 		return $this->db->insert('firmen',$data);
 	}
 
-	function delete($firma_id) {
-		$this->db->where('firma_id',$firma_id);
+	function delete($firmen_firmaid) {
+		$this->db->where('firmen_firmaid',$firmen_firmaid);
 		return $this->db->delete('firmen');
 	}
 

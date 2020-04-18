@@ -8,7 +8,7 @@
 
 </div>
 <br><br>
-made for dante
+Entwickler Fahrplan, SZE, Dirdante
 </div>
  
 </body>

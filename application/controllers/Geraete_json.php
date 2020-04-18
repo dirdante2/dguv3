@@ -36,8 +36,9 @@ class Geraete_json extends CI_Controller {
 			$data['qrcode']= 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$this->config->config['base_url'].'/index.php/geraete/index/'.$oid;
 			
 
-			$data['adresse']= $this->config->item('dguv3_adresse');
-			
+			//var die nicht in json nötig sind
+			unset($data['ort']['orte_firmaid']);
+			unset($data['ort']['firmen_firmaid']);
 			
 			echo json_encode($data);
 		}

@@ -19,12 +19,15 @@ class Orte_model extends CI_Model {
 	 * @param oid requested id or NULL if all Orte are requested
 	 * @return list of Orte, single Ort or NULL
 	 */
-	function get($oid=NULL) {
+	function get($oid=NULL,$firmen_firmaid=NULL) {
 		$this->db->select('orte.*, firmen.*,COUNT(gid) AS geraeteanzahl');
 		$this->db->from('orte');
 		$this->db->join('geraete', 'orte.oid = geraete.oid','LEFT');
-		$this->db->join('firmen', 'orte.ort_firmaid = firmen.firma_id', 'LEFT');
+		$this->db->join('firmen', 'orte.orte_firmaid = firmen.firmen_firmaid', 'LEFT');
 		$this->db->group_by('orte.oid');
+		if($firmen_firmaid!==NULL) {
+			$this->db->having('orte.orte_firmaid', $firmen_firmaid);
+		} 
 
 		if($oid===NULL) {
 			return $this->db->get()->result_array();
@@ -40,11 +43,22 @@ class Orte_model extends CI_Model {
 		}
 	}
 
-	function getByName($name) {
-		$this->db->like('name', $name);
+	function getByName($name,$firmen_firmaid=NULL) {
+
+		$this->db->select('orte.*, firmen.firmen_firmaid,firmen.firma_name');
+		$this->db->from('orte');
+		$this->db->join('firmen', 'orte.orte_firmaid = firmen.firmen_firmaid', 'LEFT');
+		if($firmen_firmaid!==NULL) {
+			//$this->db->where('orte.orte_firmaid', $firmen_firmaid);
+			$this->db->having('orte.orte_firmaid', $firmen_firmaid);
+		} 
+
+		$this->db->like('orte.name', $name); 
+		$this->db->or_like('orte.beschreibung', $name);
+
 		$this->db->limit(10);
-		$this->db->order_by('name');
-		$result = $this->db->get('orte')->result_array();
+		$this->db->order_by('orte.name');
+		$result = $this->db->get()->result_array();
 		if (!empty($result)) {
 			return $result;
 		} else {

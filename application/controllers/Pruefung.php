@@ -27,14 +27,26 @@ class Pruefung extends CI_Controller {
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
-		if($gid) {
-			$data['geraet'] = $this->Geraete_model->get($gid);
-		} else {
-			$data['geraet'] = NULL;
-		}
+
+			if($gid) {
+				$data['geraet'] = $this->Geraete_model->get($gid);
+			} else {
+				$data['geraet'] = NULL;
+			}
+
+			  //userlevel 2 oder höher kann nur orte mit eigener firma sehen
+			if($this->session->userdata('level')>='2'){
+				$firmen_firmaid=$this->session->userdata('firmaid');
+				$data['pruefung'] = $this->Pruefung_model->list($gid,$firmen_firmaid);
+				
+			} else {
+				$data['pruefung'] = $this->Pruefung_model->list($gid);
+			}
+			
+		
 		$data['pruefungabgelaufen']= $this->config->item('dguv3_pruefungabgelaufen');
 		$data['pruefungbaldabgelaufen']= $this->config->item('dguv3_pruefungbaldabgelaufen');
-		$data['pruefung'] = $this->Pruefung_model->list($gid);
+		
 
 		$this->load->view('templates/header');
 		$this->load->view('templates/datatable');

@@ -23,7 +23,7 @@ class Login extends CI_Controller{
         $usermid  = $data['user_mid'];
         $email = $data['user_email'];
         $level = $data['user_level'];
-        $firmaid = $data['user_firmaid'];
+        $firmaid = $data['users_firmaid'];
         $userid = $data['user_id'];
         $sesdata = array(
             'username'  => $name,
@@ -59,4 +59,6 @@ class Login extends CI_Controller{
       redirect('Dguv3');
   }
  
+  
+
 }

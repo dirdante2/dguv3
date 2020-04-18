@@ -20,16 +20,22 @@ class Firmen extends CI_Controller {
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 	}
 
-	function index($firma_id=NULL) {
+	function index($firmen_firmaid=NULL) {
 		if(!$this->session->userdata('level')){
 			$this->load->view('templates/header');
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
-		
+			//echo $this->session->userdata('level');
+			//echo $this->session->userdata('firmaid');
 
-		if($firma_id) {
-			$data['firmen'] = $this->Firmen_model->list($firma_id);
+			if($this->session->userdata('level')!=1){
+				$firmen_firmaid=$this->session->userdata('firmaid');
+				
+			}
+
+		if($firmen_firmaid) {
+			$data['firmen'] = $this->Firmen_model->list($firmen_firmaid);
 		} else {
 			$data['firmen'] = $this->Firmen_model->list();
 		}
@@ -42,21 +48,30 @@ class Firmen extends CI_Controller {
 	}
 	}
 
-	function edit($firma_id=0) {
-		if(!$this->session->userdata('level')){
+	function edit($firmen_firmaid=0) {
+		//admin prüfer verwalter dürfen bearbeiten
+		if($this->session->userdata('level')>='4'){
           $this->load->view('templates/header');
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
+			  //alle außer admin dürfen nur eigene firma bearbeiten
+			if($this->session->userdata('level')!='1'){
+				$firmen_firmaid=$this->session->userdata('firmaid');
+				
+			}
 		$this->form_validation->set_rules('firma_name', 'Name', 'required');
-		//$this->form_validation->set_rules('beschreibung', 'Beschreibung', 'required');
+		$this->form_validation->set_rules('firma_beschreibung', 'Beschreibung', 'required');
+		$this->form_validation->set_rules('firma_ort', 'Ort', 'required');
+		$this->form_validation->set_rules('firma_plz', 'PLZ', 'required');
+		$this->form_validation->set_rules('firma_strasse', 'Strasse', 'required');
 
 		if($this->form_validation->run() === FALSE) {
 			$this->load->view('templates/header');
 
-			if($firma_id==0) {
+			if($firmen_firmaid==0) {
 				$this->load->view('firmen/form',array('firma'=>array(
-					'firma_id'=>0,
+					'firmen_firmaid'=>0,
 					'firma_name'=>'',
 					'firma_ort'=>'',
 					'firma_strasse'=>'',
@@ -66,7 +81,7 @@ class Firmen extends CI_Controller {
 			}
 			
 			else {
-				$this->load->view('firmen/form',array('firma'=>$this->Firmen_model->get($firma_id)));
+				$this->load->view('firmen/form',array('firma'=>$this->Firmen_model->get($firmen_firmaid)));
 			}
 			$this->load->view('templates/footer');
 
@@ -80,14 +95,15 @@ class Firmen extends CI_Controller {
 				'firma_beschreibung' => $this->input->post('firma_beschreibung'),
 			);
 
-			$this->Firmen_model->set($firma,$firma_id);
+			$this->Firmen_model->set($firma,$firmen_firmaid);
 			redirect('firmen');
 		}
 	}
 	}
 
-	function delete($firma_id) {
-		if(!$this->session->userdata('level')){
+	function delete($firmen_firmaid) {
+		//nur admin darf löschen
+		if($this->session->userdata('level')!=1){
           $this->load->view('templates/header');
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
@@ -98,12 +114,12 @@ class Firmen extends CI_Controller {
 			$this->load->view('templates/header');
 			$this->load->view('templates/confirm',array(
 				'beschreibung' => 'Messgerät wirklich löschen?',
-				'target' => 'firmen/delete/'.$firma_id,
+				'target' => 'firmen/delete/'.$firmen_firmaid,
 				'canceltarget' => 'firmen'
 			));
 			$this->load->view('templates/footer');
 		} else {	
-			$this->Firmen_model->delete($firma_id);
+			$this->Firmen_model->delete($firmen_firmaid);
 			redirect('firmen');
 		}
 	}

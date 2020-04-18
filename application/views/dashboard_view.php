@@ -136,6 +136,18 @@
                         <?php echo $orte_count; ?>
                     </td>
                 </tr>
+                <tr>
+                    <td><span class="iconify" data-icon="fa-solid:users" data-width="20" data-height="20"></span> Users</td>
+                    <td>
+                        <?php echo $users_count; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="iconify" data-icon="bx:bxs-business" data-width="20" data-height="20"></span> Firmen</td>
+                    <td>
+                        <?php echo $firmen_count; ?>
+                    </td>
+                </tr>
             </tbody>
         </table>
 

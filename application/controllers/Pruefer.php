@@ -11,6 +11,7 @@ class Pruefer extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 		$this->load->model('Pruefer_model');
+		$this->load->model('Firmen_model');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -22,7 +23,16 @@ class Pruefer extends CI_Controller {
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
-		$data['pruefer'] = $this->Pruefer_model->get();
+			  //userlevel 2 oder höher kann nur orte mit eigener firma sehen
+			if($this->session->userdata('level')>='2'){
+				$firmen_firmaid=$this->session->userdata('firmaid');
+				
+				$data['pruefer'] = $this->Pruefer_model->get(null,$firmen_firmaid);
+				
+			} else {
+				$data['pruefer'] = $this->Pruefer_model->get();
+			}
+		
 
 		$this->load->view('templates/header');
 		$this->load->view('templates/datatable');
@@ -32,40 +42,57 @@ class Pruefer extends CI_Controller {
 	}
 
 	function edit($pid=0) {
-		if(!$this->session->userdata('level')){
+		//nur rolle 1 und 2 darf prüfer hinzufügen
+		if($this->session->userdata('level')>='3'){
           $this->load->view('templates/header');
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
+			  
 	
-		$this->form_validation->set_rules('name', 'Name', 'required');
-		$this->form_validation->set_rules('beschreibung', 'Beschreibung', 'required');
+			$this->form_validation->set_rules('name', 'Name', 'required');
+			$this->form_validation->set_rules('beschreibung', 'Beschreibung', 'required');
 
-		if($this->form_validation->run() === FALSE) {
-			$this->load->view('templates/header');
+			if($this->form_validation->run() === FALSE) {
+				$this->load->view('templates/header');
 
-			if($pid==0) {
-				$this->load->view('pruefer/form',array('pruefer'=>array('pid'=>0,'beschreibung'=>'','name'=>'')));
+				if($pid==0) {
+					$this->load->view('pruefer/form',array(
+						'pruefer'=>array('pid'=>0,'beschreibung'=>'','name'=>''),
+						'firmen'=> $this->Firmen_model->get()
+
+					));
+				} else {
+					$this->load->view('pruefer/form',array(
+						'pruefer'=>$this->Pruefer_model->get($pid),
+						'firmen'=> $this->Firmen_model->get()
+					
+					));
+				}
+				$this->load->view('templates/footer');
+
 			} else {
-				$this->load->view('pruefer/form',array('pruefer'=>$this->Pruefer_model->get($pid)));
+
+				$pruefer = array (
+					'name' => $this->input->post('name'),
+					'beschreibung' => $this->input->post('beschreibung'),
+					'pruefer_firmaid' => $this->input->post('pruefer_firmaid'),
+				);
+				if ($pruefer['pruefer_firmaid']==NULL) {
+					$pruefer['pruefer_firmaid']=$this->session->userdata('firmaid');
+					
+	
+				}
+
+				$this->Pruefer_model->set($pruefer,$pid);
+				redirect('pruefer');
+				
 			}
-			$this->load->view('templates/footer');
-
-		} else {
-
-			$pruefer = array (
-				'name' => $this->input->post('name'),
-				'beschreibung' => $this->input->post('beschreibung'),
-			);
-
-			$this->Pruefer_model->set($pruefer,$pid);
-			redirect('pruefer');
 		}
-	}
 	}
 
 	function delete($pid) {
-		if(!$this->session->userdata('level')){
+		if(!$this->session->userdata('level')!='1'){
           $this->load->view('templates/header');
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');

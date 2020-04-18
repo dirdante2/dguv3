@@ -1,7 +1,7 @@
 
 <h1>Users</h1>
 
-<a href="<?php echo site_url('users/new'); ?>" class="btn btn-primary"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Messgerät hinzufügen</a>
+<a href="<?php echo site_url('users/new'); ?>" class="btn btn-primary"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> User hinzufügen</a>
 <br>
 <br>
 

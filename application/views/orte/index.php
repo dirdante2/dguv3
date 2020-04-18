@@ -42,6 +42,7 @@ file_put_contents('pdf/'.$year.'/'.$ortsname.'/liste.pdf',$result);
 	<th>Name</th>
 	<th>Beschreiung</th>
 	<th>Geräte</th>
+	<?php if($this->session->userdata('level')=='1'){?><th>Firma</th><?php } ?>
 	<th>PDF erstellt</th>
 	<th>Aktion</th>
 </tr>
@@ -67,6 +68,7 @@ if(count($orte)==0) {
 			<td><?php echo $ort['name']; ?></td>
 			<td><?php echo $ort['beschreibung']; ?></td>
 			<td><?php echo $ort['geraeteanzahl']; ?></td>
+			<?php if($this->session->userdata('level')=='1'){?><td><?php echo $ort['firma_name']; ?></td><?php } ?>
 			<td><?php if (file_exists('pdf/'.$year.'/'. $ort['name'].'/liste_'.$ort['name'].'.pdf')) { echo date("d.m.Y", filemtime('pdf/'.$year.'/'. $ort['name'].'/liste_'.$ort['name'].'.pdf')); } else { echo 'no file';} ?></td>
 			<td>
 				<div class="btn-group btn-group-sm" role="group" aria-label="options">
@@ -77,8 +79,8 @@ if(count($orte)==0) {
 				<a href="<?php echo base_url('pdf/'.$year.'/'. $ort['name'].'/liste_'.$ort['name'].'.pdf');?>" target="_blank" class="btn btn-primary <?php if (!file_exists('pdf/'.$year.'/'. $ort['name'].'/liste_'.$ort['name'].'.pdf')) { echo "disabled"; } ?>"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
 				
 			
-				<a href="<?php echo site_url('orte/edit/'.$ort['oid']); ?>" class="btn btn-secondary"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> edit</a>
-				<a href="<?php echo site_url('orte/delete/'.$ort['oid']); ?>" class="btn btn-danger"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span> delete</a>
+				<a href="<?php echo site_url('orte/edit/'.$ort['oid']); ?>" class="<?php if($this->session->userdata('level')>='4') { echo " disabled"; }?> btn btn-secondary"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> edit</a>
+				<a href="<?php echo site_url('orte/delete/'.$ort['oid']); ?>" class="<?php if($this->session->userdata('level')>='2') { echo " disabled"; }?> btn btn-danger"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span> delete</a>
 				
      
 				</div>

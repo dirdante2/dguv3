@@ -44,7 +44,7 @@ echo validation_errors();
     <label for="orte" class="col-sm-5 col-form-label">Ort*</label>
     <div class="col-sm-7">
       <input type="text" class="form-control" id="orte" value="<?php echo $geraet['ortsname']; ?>" required>
-      <input type="hidden" id="oid" name="oid" value="<?php echo $geraet['oid']; ?>">
+      <input type="text" id="oid" name="oid" value="<?php echo $geraet['oid']; ?>">
     </div>
   </div>
   <div class="form-group row">
@@ -71,6 +71,29 @@ echo validation_errors();
       <input type="text" class="form-control" name="seriennummer" id="seriennummer" value="<?php echo $geraet['seriennummer']; ?>">
     </div>
   </div>
+  <?php if($this->session->userdata('level')=='1'){?>
+<div class="form-group row">
+    <label for="Firma" class="col-sm-5 col-form-label">Firma</label>
+    <div class="col-sm-7">
+       	<select name="geraete_firmaid">
+         
+    		<?php
+    		foreach($firmen as $f) {
+    		    echo '<option value="'.$f['firmen_firmaid'].'"';
+    		    
+                
+    		    	if($f['firmen_firmaid'] == $this->session->userdata('firmaid')){
+    		        echo ' selected';
+    		    	}
+    		    
+
+    				echo '>'.$f['firma_name'].'</option>';
+    		}
+    		?>
+    	</select>
+    </div>
+  </div>
+        <?php } ?>
   <hr>
   <div class="form-group row">
     <label for="nennspannung" class="col-sm-5 col-form-label">Nennspannung (V)</label>

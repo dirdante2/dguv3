@@ -11,6 +11,7 @@ class Messgeraete extends CI_Controller {
 	function __construct() {
 		parent::__construct();
 		$this->load->model('Messgeraete_model');
+		$this->load->model('Firmen_model');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -22,7 +23,14 @@ class Messgeraete extends CI_Controller {
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
-		$data['messgeraete'] = $this->Messgeraete_model->get();
+			if($this->session->userdata('level')>='2'){
+				$firmen_firmaid=$this->session->userdata('firmaid');
+
+				$data['messgeraete'] = $this->Messgeraete_model->get(null,$firmen_firmaid);
+			} else {
+				$data['messgeraete'] = $this->Messgeraete_model->get();
+			}
+
 
 		$this->load->view('templates/header');
 		$this->load->view('templates/datatable');
@@ -44,11 +52,19 @@ class Messgeraete extends CI_Controller {
 			$this->load->view('templates/header');
 
 			if($mid==0) {
-				$this->load->view('messgeraete/form',array('messgeraet'=>array('mid'=>0,'beschreibung'=>'','name'=>'')));
+				$this->load->view('messgeraete/form',array(
+					'messgeraet'=>array('mid'=>0,'beschreibung'=>'','name'=>''),
+					'firmen'=> $this->Firmen_model->get()
+				
+				));
 			}
 			
 			else {
-				$this->load->view('messgeraete/form',array('messgeraet'=>$this->Messgeraete_model->get($mid)));
+				$this->load->view('messgeraete/form',array(
+					'messgeraet'=>$this->Messgeraete_model->get($mid),
+					'firmen'=> $this->Firmen_model->get()
+				
+				));
 			}
 			$this->load->view('templates/footer');
 
@@ -57,7 +73,14 @@ class Messgeraete extends CI_Controller {
 			$messgeraet = array (
 				'name' => $this->input->post('name'),
 				'beschreibung' => $this->input->post('beschreibung'),
+				'messgeraete_firmaid' => $this->input->post('messgeraete_firmaid'),
 			);
+			if ($messgeraet['messgeraete_firmaid']==NULL) {
+				$messgeraet['messgeraete_firmaid']=$this->session->userdata('firmaid');
+				
+
+			}
+			
 
 			$this->Messgeraete_model->set($messgeraet,$mid);
 			redirect('messgeraete');
@@ -66,7 +89,7 @@ class Messgeraete extends CI_Controller {
 	}
 
 	function delete($mid) {
-		if(!$this->session->userdata('level')){
+		if(!$this->session->userdata('level')=='1'){
           $this->load->view('templates/header');
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');

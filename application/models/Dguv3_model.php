@@ -24,7 +24,12 @@ class Dguv3_model extends CI_Model
     {
         $this->db->select('*');
         $this->db->from($tblName);
-        
+        if($this->session->userdata('level')>='2'){
+            $firmen_firmaid=$this->session->userdata('firmaid');
+            $this->db->where($tblName.'.'.$tblName.'_firmaid', $firmen_firmaid);
+        }
+
+
         if ($tblvar !== NULL) {
             $this->db->like($tblcol, $tblvar);
         } else {
@@ -50,7 +55,10 @@ class Dguv3_model extends CI_Model
 				
 				$this->db->join('pruefung','geraete.gid = pruefung.gid AND pruefung.pruefungid = (SELECT pruefungid from pruefung as pr where geraete.gid = pr.gid order by datum desc, pruefungid desc limit 1)','LEFT');
         $this->db->where('aktiv', '1');
-         
+        if($this->session->userdata('level')>='2'){
+            $firmen_firmaid=$this->session->userdata('firmaid');
+            $this->db->where('geraete.geraete_firmaid', $firmen_firmaid);
+        }
         //gibt geräte zurück die ungeprüft sind
         if ($tblvar===NULL) {
             $this->db->where('bestanden', NULL);

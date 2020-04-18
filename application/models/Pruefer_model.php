@@ -14,16 +14,28 @@ class Pruefer_model extends CI_Model {
 		$this->load->database();
 	}
 
-	function get($pid=NULL) {
+	function get($pid=NULL,$firmen_firmaid=NULL) {
+		$this->db->select('pruefer.*,firmen.firma_name');
+		$this->db->from('pruefer');
+		
+		$this->db->join('firmen', 'pruefer.pruefer_firmaid = firmen.firmen_firmaid', 'LEFT');
+		
+		if($firmen_firmaid!==NULL) {
+			$this->db->having('pruefer.pruefer_firmaid', $firmen_firmaid);
+		} 
 		if($pid===NULL) {
-			return $this->db->get('pruefer')->result_array();
+			return $this->db->get()->result_array();
+		} else {
+			$this->db->where('pruefer.pid', $pid);
 		}
-		$result = $this->db->get_where('pruefer', array('pid'=>$pid))->result_array();
+
+		$result = $this->db->get()->result_array();
 		if (!empty($result)) {
 			return $result[0];
 		} else {
 			return NULL;
 		}
+
 	}
 
 	function getByName($name) {

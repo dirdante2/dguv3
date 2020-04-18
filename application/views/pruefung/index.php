@@ -75,17 +75,17 @@
 </div>
 
 
+
+<div class="btn-group pull-right">
+<a class="btn btn-primary" href="<?php echo site_url('pruefung'); ?>">Alle Prüfung auflisten</a>
+
+<a href="<?php echo site_url('pruefung/new/'.$geraet['gid']); ?>" class="<?php if($this->session->userdata('level')>='3') { echo " disabled"; }?> btn btn-success"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neue Prüfung hinzufügen</a>
+<a href="<?php echo site_url('geraete/edit/'.$geraet['gid']); ?>" class="<?php if($this->session->userdata('level')=='3') { echo " disabled"; }?>btn btn-secondary" ><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> Gerät bearbeiten</a>
+<a href="<?php echo site_url('geraete/index/'.$geraet['oid']); ?>" class="btn btn-primary"><span class="iconify" data-icon="ic:baseline-room" data-width="20" data-height="20"></span> Ort anzeigen</a>
+</div>
 <?php
 	}
 ?>
-<div class="btn-group pull-right">
-<a class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-primary" href="<?php echo site_url('pruefung'); ?>">Alle Prüfung auflisten</a>
-
-<a href="<?php if($geraet) { echo site_url('pruefung/new/'.$geraet['gid']); } ?>" class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-success"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neue Prüfung hinzufügen</a>
-<a class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-secondary" href="<?php echo site_url('geraete/edit/'.$geraet['gid']); ?>"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> Gerät bearbeiten</a>
-<a class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-primary" href="<?php echo site_url('geraete/index/'.$geraet['oid']); ?>"><span class="iconify" data-icon="ic:baseline-room" data-width="20" data-height="20"></span> Ort anzeigen</a>
-</div>
-
 <br>
 
 
@@ -203,8 +203,8 @@ if(count($pruefung)==0) {
 					
 					<a href="<?php echo site_url('geraete/index/'.$pr['oid']); ?>" class="<?php if($geraet) { echo "d-none"; } ?> btn btn-primary btn-sm"><span class="iconify" data-icon="ic:baseline-room" data-width="20" data-height="20"></span> Ort</a>
 					<a href="<?php echo site_url('pruefung/index/'.$pr['gid']); ?>" class="<?php if($geraet) { echo "d-none"; } ?> btn btn-primary btn-sm"><span class="iconify icon:jam:plug icon-width:20 icon-height:20"></span> Gerät</a>
-					<a href="<?php echo site_url('pruefung/edit/'.$pr['pruefungid']); ?>" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> edit</a>
-				<a href="<?php echo site_url('pruefung/delete/'.$pr['pruefungid']); ?>" class="btn btn-danger btn-sm"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span> delete</a>
+					<a href="<?php echo site_url('pruefung/edit/'.$pr['pruefungid']); ?>" class="<?php if($this->session->userdata('level')>='3') { echo " disabled"; }?> btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> edit</a>
+				<a href="<?php echo site_url('pruefung/delete/'.$pr['pruefungid']); ?>" class="<?php if($this->session->userdata('level')>='3') { echo " disabled"; }?> btn btn-danger btn-sm"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span> delete</a>
 				</div>
 			</td>
 		</tr>

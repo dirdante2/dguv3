@@ -2,11 +2,11 @@
 
 <?php
 
-echo form_open('firmen/edit/'.$firma['firma_id']);
+echo form_open('firmen/edit/'.$firma['firmen_firmaid']);
 echo validation_errors();
 
 ?>
-<input type="hidden" name="firma_id" value="<?php echo $firma['firma_id'] ?>">
+<input type="hidden" name="firmen_firmaid" value="<?php echo $firma['firmen_firmaid'] ?>">
 <div class="row">
  <div class="col-md-6">
 	

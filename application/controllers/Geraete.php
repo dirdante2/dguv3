@@ -13,7 +13,7 @@ class Geraete extends CI_Controller {
 		parent::__construct();
 		$this->load->model('Geraete_model');
 		$this->load->model('Orte_model');
-		
+		$this->load->model('Firmen_model');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -26,13 +26,33 @@ class Geraete extends CI_Controller {
 			$this->load->view('templates/footer');
 			
           }else{
-		if($oid) {
-			$data['ort'] = $this->Orte_model->get($oid);
-			$data['geraete'] = $this->Geraete_model->getByOid($oid);
-		} else {
-			$data['ort'] = NULL;
-			$data['geraete'] = $this->Geraete_model->get();
-		}
+			  //userlevel 2 oder höher kann nur orte mit eigener firma sehen
+			if($this->session->userdata('level')>='2'){
+				$firmen_firmaid=$this->session->userdata('firmaid');
+				
+				
+					
+				if($oid) {
+					$data['ort'] = $this->Orte_model->get($oid);
+					$data['geraete'] = $this->Geraete_model->getByOid($oid,$firmen_firmaid);
+				} else {
+					$data['ort'] = NULL;
+					$data['geraete'] = $this->Geraete_model->get(null,$firmen_firmaid);
+				}
+				
+			} else {
+				
+				if($oid) {
+					$data['ort'] = $this->Orte_model->get($oid);
+					$data['geraete'] = $this->Geraete_model->getByOid($oid);
+				} else {
+					$data['ort'] = NULL;
+					$data['geraete'] = $this->Geraete_model->get();
+				}
+			}
+
+
+		
 		$data['html2pdf_api_key']= $this->config->item('html2pdf_api_key');
 		$data['html2pdf_user_pass']= $this->config->item('html2pdf_user_pass');
 		$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_col');
@@ -103,15 +123,6 @@ class Geraete extends CI_Controller {
 					
       }
 
-	
-
-
-
-
-
-
-
-
 
 	/**
 	 * Checks if an oid exists
@@ -129,7 +140,7 @@ class Geraete extends CI_Controller {
 
 
 	function edit($gid=0) {
-		$felder = array('oid','hersteller','name','typ','seriennummer','nennstrom','nennspannung','leistung','hinzugefuegt','beschreibung','aktiv','schutzklasse','verlaengerungskabel','kabellaenge');
+		$felder = array('oid','geraete_firmaid','hersteller','name','typ','seriennummer','nennstrom','nennspannung','leistung','hinzugefuegt','beschreibung','aktiv','schutzklasse','verlaengerungskabel','kabellaenge');
 
 		$this->form_validation->set_rules('typ', 'Typ', 'required');
 		$this->form_validation->set_rules('oid', 'Orts-ID', 'required');
@@ -145,15 +156,23 @@ class Geraete extends CI_Controller {
 				}
 				$liste['gid']=0;
 				$liste['ortsname']='';
+				$liste['geraete_firmaid']=$this->session->userdata('firmaid');
 				$liste['aktiv']=TRUE;
 				$liste['nennspannung']='230';
 				$liste['schutzklasse']='2';
 				$liste['hinzugefuegt']=date('Y-m-d');
-				$this->load->view('geraete/form',array('geraet'=>$liste));
+				$this->load->view('geraete/form',array(
+					'geraet'=>$liste,
+					'firmen'=> $this->Firmen_model->get()
+				
+				));
 			}
 			//Vorhandeses Gerät
 			else {
-				$this->load->view('geraete/form',array('geraet'=>$this->Geraete_model->get($gid)));
+				$this->load->view('geraete/form',array(
+					'geraet'=>$this->Geraete_model->get($gid),
+					'firmen'=> $this->Firmen_model->get()
+				));
 			}
 			$this->load->view('templates/footer');
 
@@ -163,6 +182,14 @@ class Geraete extends CI_Controller {
 			foreach($felder as $feld) {
 				$geraet[$feld]=$this->input->post($feld);
 			}
+			if ($geraet['geraete_firmaid']==NULL) {
+				$geraet['geraete_firmaid']=$this->session->userdata('firmaid');
+				
+
+			}
+		
+
+
 			$this->Geraete_model->set($geraet,$gid);
 				// get ortsid von neu angelegtem gerät damit redirect zu richtiger seite führt?!!
 			$gortsid = $this->Geraete_model->get($gid);

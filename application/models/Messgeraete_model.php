@@ -14,16 +14,31 @@ class Messgeraete_model extends CI_Model {
 		$this->load->database();
 	}
 
-	function get($mid=NULL) {
+	function get($mid=NULL,$firmen_firmaid=NULL) {
+
+
+		$this->db->select('messgeraete.*,firmen.firma_name');
+		$this->db->from('messgeraete');
+		
+		$this->db->join('firmen', 'messgeraete.messgeraete_firmaid = firmen.firmen_firmaid', 'LEFT');
+		
+		if($firmen_firmaid!==NULL) {
+			$this->db->having('messgeraete.messgeraete_firmaid', $firmen_firmaid);
+		} 
 		if($mid===NULL) {
-			return $this->db->get('messgeraete')->result_array();
+			return $this->db->get()->result_array();
+		} else {
+			$this->db->where('messgeraete.mid', $mid);
 		}
-		$result = $this->db->get_where('messgeraete', array('mid'=>$mid))->result_array();
+
+		$result = $this->db->get()->result_array();
 		if (!empty($result)) {
 			return $result[0];
 		} else {
 			return NULL;
 		}
+
+		
 	}
 
 	function getByName($name) {

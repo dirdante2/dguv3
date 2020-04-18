@@ -42,10 +42,20 @@
         		$data['geraete_count_geprueft_abgelaufen']= $this->Dguv3_model->getgeraete_bestanden_countdata2('1', 'abgelaufen');
         		
         		//$data['geraete_count_abgelaufen']= $this->Dguv3_model->getgeraete_abgelaufen_countdata();
+        		if($this->session->userdata('level')=='1'){
+            $data['orte_count']= $this->Dguv3_model->getcountdata('orte');
+            $data['users_count']= $this->Dguv3_model->getcountdata('users');
+            $data['firmen_count']= $this->Dguv3_model->getcountdata('firmen');
+            $data['pruefer_count']= $this->Dguv3_model->getcountdata('pruefer');
+            } else {
+              $data['orte_count']= $this->Dguv3_model->getcountdata('orte','orte_firmaid', $this->session->userdata('firmaid'));
+              $data['users_count']= $this->Dguv3_model->getcountdata('users','users_firmaid', $this->session->userdata('firmaid'));
+              $data['firmen_count']= $this->Dguv3_model->getcountdata('firmen','firmen_firmaid', $this->session->userdata('firmaid'));
+              $data['pruefer_count']= $this->Dguv3_model->getcountdata('pruefer','pruefer_firmaid', $this->session->userdata('firmaid'));
+            }
+            
+            
         		
-        		$data['orte_count']= $this->Dguv3_model->getcountdata('orte');
-        		
-        		$data['pruefer_count']= $this->Dguv3_model->getcountdata('pruefer');
         		$data['messgeraete_count']= $this->Dguv3_model->getcountdata('messgeraete');
         		
         		$data['pruefung_count']= $this->Dguv3_model->getcountdata('pruefung');

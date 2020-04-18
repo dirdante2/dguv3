@@ -14,12 +14,18 @@ class Geraete_model extends CI_Model {
 		$this->load->database();
 	}
 
-	function get($gid=NULL) {
-		$this->db->select('geraete.*, orte.name AS ortsname, pruefung.bestanden, pruefung.datum AS letztesdatum, (select count(*) from pruefung as pr where geraete.gid = pr.gid) AS anzahl, pruefer.name as pruefername');
+	function get($gid=NULL,$firmen_firmaid=NULL) {
+		$this->db->select('geraete.*, firmen.firmen_firmaid,firmen.firma_name,orte.name AS ortsname, pruefung.bestanden, pruefung.datum AS letztesdatum, (select count(*) from pruefung as pr where geraete.gid = pr.gid) AS anzahl, pruefer.name as pruefername');
 		$this->db->from('geraete');
 		$this->db->join('orte', 'geraete.oid = orte.oid');
+		$this->db->join('firmen', 'geraete.geraete_firmaid = firmen.firmen_firmaid', 'LEFT');
 		$this->db->join('pruefung','geraete.gid = pruefung.gid AND pruefung.pruefungid = (SELECT pruefungid from pruefung as pr where geraete.gid = pr.gid order by datum desc, pruefungid desc limit 1)','LEFT');
 		$this->db->join('pruefer', 'pruefung.pid = pruefer.pid', 'LEFT');
+		
+
+		if($firmen_firmaid!==NULL) {
+			$this->db->having('geraete.geraete_firmaid', $firmen_firmaid);
+		} 
 
 		if($gid===NULL) {
 			return $this->db->get()->result_array();
@@ -34,12 +40,16 @@ class Geraete_model extends CI_Model {
 		}
 	}
 
-	function getByOid($oid) {
+	function getByOid($oid,$firmen_firmaid=NULL) {
 		$this->db->select('geraete.*, orte.name AS ortsname, pruefung.bestanden, pruefung.datum AS letztesdatum, (select count(*) from pruefung as pr where geraete.gid = pr.gid) AS anzahl, pruefer.name as pruefername');
 		$this->db->from('geraete');
 		$this->db->join('orte', 'geraete.oid = orte.oid');
 		$this->db->join('pruefung','geraete.gid = pruefung.gid AND pruefung.pruefungid = (SELECT pruefungid from pruefung as pr where geraete.gid = pr.gid order by datum desc, pruefungid desc limit 1)','LEFT');
 		$this->db->join('pruefer', 'pruefung.pid = pruefer.pid', 'LEFT');
+		$this->db->join('firmen', 'pruefung.pruefung_firmaid = firmen.firmen_firmaid', 'LEFT');
+		if($firmen_firmaid!==NULL) {
+			$this->db->having('geraete.geraete_firmaid', $firmen_firmaid);
+		} 
 		$this->db->where('orte.oid',$oid);
 		return $this->db->get()->result_array();
 	}
@@ -50,13 +60,7 @@ class Geraete_model extends CI_Model {
 	  0,3 Ohm für die ersten 5m betragen
 	  für jede weiteren 7,5m 0,1 Ohm mehr
 	  maximal jedoch 1 Ohm.*/
-	// sze: TODO check by dante
-	// sze: TODO add unit tests for this function
-	// sze: check(0.3, kabellaengeToRPEmax(1))
-	// sze: check(0.3, kabellaengeToRPEmax(5))
-	// sze: check(0.4, kabellaengeToRPEmax(12.5))
-	// sze: check(0.5, kabellaengeToRPEmax(20))
-	// sze: check(1,   kabellaengeToRPEmax(1000000))
+	
 	function getRPEmax($gid) {
 		$kabellaenge = $this->get($gid)['kabellaenge'];
 

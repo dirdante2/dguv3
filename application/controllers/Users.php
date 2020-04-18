@@ -27,7 +27,10 @@ class Users extends CI_Controller {
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
-		
+			if($this->session->userdata('level')!='1'){
+				$user_id=$this->session->userdata('userid');
+				
+			}
 
 		if($user_id) {
 			$data['users'] = $this->Users_model->list($user_id);
@@ -44,7 +47,7 @@ class Users extends CI_Controller {
 	}
 
 	function new($user_id=NULL) {
-		if(!$this->session->userdata('level')){
+		if($this->session->userdata('level')!='1'){
           $this->load->view('templates/header');
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
@@ -53,10 +56,10 @@ class Users extends CI_Controller {
 
 		if($this->Users_model->get($user_id)) {
 			 //
-			 $user_firmaid = $this->Users_model->get($user_id)['user_firmaid'];
+			 $users_firmaid = $this->Users_model->get($user_id)['users_firmaid'];
 			
 			$user_id = $this->Users_model->new(array(
-			'user_firmaid'=>$user_firmaid
+			'users_firmaid'=>$users_firmaid
 			//'oid'=>$oid,
 			//'datum'=>date('Y-m-d')
 			));
@@ -69,14 +72,15 @@ class Users extends CI_Controller {
 
 	function edit($user_id=0) {
 		if(!$this->session->userdata('level')){
-
-			
-
           $this->load->view('templates/header');
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
-			$felder = array('user_oid','user_name','user_email','user_mid','user_pid','user_firmaid','user_level','user_password');
+			if($this->session->userdata('level')!='1'){
+				$user_id=$this->session->userdata('userid');
+				
+			}
+			$felder = array('user_oid','user_name','user_email','user_mid','user_pid','users_firmaid','user_level','user_password');
 		$this->form_validation->set_rules('user_name', 'Name', 'required');
 		//$this->form_validation->set_rules('beschreibung', 'Beschreibung', 'required');
 		
@@ -108,13 +112,19 @@ class Users extends CI_Controller {
 
 
 		} else {
-
+			$userpassword= $this->Users_model->get($user_id)['user_password'];
 			$user = array();
 			
 			foreach($felder as $feld) {
 				$user[$feld]=$this->input->post($feld);
 			}
-			$user['user_password']= md5($user['user_password']);
+			if($user['user_password']) {
+				$user['user_password']= md5($user['user_password']);
+			} else {
+				$user['user_password']=$userpassword;
+			}
+			
+
 			$this->Users_model->update($user,$user_id);
 				// get ortsid von neu angelegtem gerät damit redirect zu richtiger seite führt?!!
 			//$gortsid = $this->Geraete_model->get($gid);
@@ -131,7 +141,7 @@ class Users extends CI_Controller {
 	}
 
 	function delete($user_id) {
-		if(!$this->session->userdata('level')){
+		if($this->session->userdata('level')!='1'){
           $this->load->view('templates/header');
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
@@ -151,5 +161,8 @@ class Users extends CI_Controller {
 			redirect('users');
 		}
 	}
+
+	
 }
+
 		  }

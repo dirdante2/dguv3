@@ -24,14 +24,14 @@ class Pruefung_json extends CI_Controller {
 
 
 	
-		//output geraete/uebersicht/$oid als json format
+		//output pruefung/protokoll/$pruefung_id als json format
 		function json($pruefung_id="") {
 			
 			$pruefung = $this->Pruefung_model->getnotarray($pruefung_id);
 
-			$data['pruefung'] = $this->Pruefung_model->getnotarray($pruefung_id);
+			//$data['pruefung'] = $this->Pruefung_model->getnotarray($pruefung_id);
 			//$data['naechste_pruefung']= '+'.$this->config->item('dguv3_pruefungabgelaufen');
-			$pruefung_datum = $this->Pruefung_model->getnotarray($pruefung_id)['datum'];
+			$pruefung_datum = $pruefung['datum'];
 			$day     = $pruefung_datum;
 			$nextDay = strtotime("+1 year", strtotime($day));
 			$data['naechste_pruefung']= date("m.Y", $nextDay);
@@ -41,6 +41,8 @@ class Pruefung_json extends CI_Controller {
 			$y = $pruefung['RPEmax'];
 			if($pruefung['schutzleiter']===null || $pruefung['sichtpruefung']== '0') { 
 				$pruefung['bestanden_schutzleiter']='-';
+				$pruefung['schutzleiter']='-';
+				$pruefung['RPEmax']='0.3';
 			 } else {
 			 	if($pruefung['schutzleiter'] >= $y) {
 				$pruefung['bestanden_schutzleiter']='nein';
@@ -51,6 +53,7 @@ class Pruefung_json extends CI_Controller {
 
 			if($pruefung['isowiderstand']===null || $pruefung['sichtpruefung']== '0') { 
 				$pruefung['bestanden_isowiderstand']='-'; 
+				$pruefung['isowiderstand']='-';
 			 } else {
 				 if($pruefung['isowiderstand'] < $y) {
 					$pruefung['bestanden_isowiderstand']='nein'; 
@@ -61,6 +64,7 @@ class Pruefung_json extends CI_Controller {
 			$y = 0.50;
 			if($pruefung['schutzleiterstrom']===null || $pruefung['sichtpruefung']== '0') { 
 				$pruefung['bestanden_schutzleiterstrom']='-';  
+				$pruefung['schutzleiterstrom']='-';
 			} else {
 				if($pruefung['schutzleiterstrom'] >= $y) {
 					$pruefung['bestanden_schutzleiterstrom']='nein'; 
@@ -72,6 +76,7 @@ class Pruefung_json extends CI_Controller {
 			$y = 0.25;
 			if($pruefung['beruehrstrom']===null || $pruefung['sichtpruefung']== '0') { 
 				$pruefung['bestanden_beruehrstrom']='-';
+				$pruefung['beruehrstrom']='-';
 			} else {
 				if($pruefung['beruehrstrom'] >= $y) {
 					$pruefung['bestanden_beruehrstrom']='nein'; 
@@ -79,7 +84,7 @@ class Pruefung_json extends CI_Controller {
 					$pruefung['bestanden_beruehrstrom']='ja';  
 				}
 			}
-			$data['pruefung'] = $pruefung;
+			
 			//$data['ort'] = $this->Orte_model->get($pruefungid);
 			//$data['geraete'] = $this->Geraete_model->getByOid($pruefungid);
 			//$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_pdf_col');
@@ -88,8 +93,17 @@ class Pruefung_json extends CI_Controller {
 			$data['qrcode']= 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$this->config->config['base_url'].'/index.php/pruefung/index/'.$pruefung_id;
 			
 
-			//$data['adresse']= $this->config->item('dguv3_adresse');
 			
+			
+			//var die nicht in json nötig sind 
+			unset($pruefung['mid']);
+			unset($pruefung['pid']);
+			unset($pruefung['pruefung_firmaid']);
+			unset($pruefung['firmen_firmaid']);
+			unset($pruefung['geraete_firmaid']);
+			unset($pruefung['oid']);
+			unset($pruefung['name']);
+			$data['pruefung'] = $pruefung;
 			
 			echo json_encode($data);
 		}

@@ -60,7 +60,10 @@ echo validation_errors();
       <input type="password" class="form-control" name="user_password" id="user_password" value="">
     </div>
   </div>
-  
+  <?php if($this->session->userdata('level')=='1'){?>
+				
+				
+		
   <fieldset class="form-group">
     <div class="row">
       <legend class="col-form-label col-sm-5 pt-0">Level*</legend>
@@ -86,7 +89,29 @@ echo validation_errors();
       
     </div>
   </fieldset>
+  <div class="form-group row">
+    <label for="Firma" class="col-sm-5 col-form-label">Firma</label>
+    <div class="col-sm-7">
+       	<select name="users_firmaid">
+         <option value="0" selected> keins</option>
+    		<?php
+    		foreach($firmen as $f) {
+    		    echo '<option value="'.$f['firmen_firmaid'].'"';
+    		    
+    		   
+    		    	if($f['firmen_firmaid'] == $user['users_firmaid']){
+    		        echo ' selected';
+    		    	}
+    		    
 
+    				echo '>'.$f['firma_name'].'</option>';
+    		}
+    		?>
+    	</select>
+    </div>
+  </div>
+
+  <?php	}?>
   <div class="form-group row">
     <label for="orte" class="col-sm-5 col-form-label">Ort</label>
     <div class="col-sm-7">
@@ -139,27 +164,7 @@ echo validation_errors();
     	</select>
     </div>
   </div>
-  <div class="form-group row">
-    <label for="Firma" class="col-sm-5 col-form-label">Firma</label>
-    <div class="col-sm-7">
-       	<select name="user_firmaid">
-         <option value="0" selected> keins</option>
-    		<?php
-    		foreach($firmen as $f) {
-    		    echo '<option value="'.$f['firma_id'].'"';
-    		    
-    		   
-    		    	if($f['firma_id'] == $user['user_firmaid']){
-    		        echo ' selected';
-    		    	}
-    		    
-
-    				echo '>'.$f['firma_name'].'</option>';
-    		}
-    		?>
-    	</select>
-    </div>
-  </div>
+  
 
 <br>
 <input type="submit" class="btn btn-primary btn-lg btn-block" value="speichern"><br><br>

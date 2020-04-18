@@ -67,19 +67,33 @@
       			 
     </ul>
     <ul class="nav navbar-nav navbar-right">
-    	<?php if($this->session->userdata('level')) {?>
-    	<div class="d-flex align-items-center">
-		<a class="nav-link" href="<?php echo site_url('users/index/');?><?php echo $this->session->userdata('userid');?>"><?php echo $this->session->userdata('username');?></a>	
+	<div class="d-flex align-items-center">
+    	<?php if($this->session->userdata('level')) {
+			if($this->session->userdata('level')==1) {
+				$userroll='admin';
+			} elseif($this->session->userdata('level')==2) {
+				$userroll='Prüfer';
+			} elseif($this->session->userdata('level')==3) {
+				$userroll='Verwaltung';
+			} else {
+				$userroll='User';
+			}
+
+			?>
+    	
+		 
+		<a class="nav-link" href="<?php echo site_url('users/index/');?><?php echo $this->session->userdata('userid');?>"><?php echo $this->session->userdata('username');?> (<?php echo $userroll;?>)</a>	
 		
-    		</div>
+    		
     		
       <li class="nav-item"> <a class="nav-link" href="<?php echo site_url('login/logout');?>"><span class="iconify" data-icon="mdi:logout" data-width="20" data-height="20"></span> Logout</a></li>
-    	</div>
+    	
     <?php } else { ?>
      <li class="nav-item"><a class="nav-link" href="<?php echo site_url('login');?>"><span class="iconify" data-icon="mdi:logout" data-width="20" data-height="20"></span> Login</a></li>
     <?php } ?>
+	</div>
     </ul>
-  </div>
+  
 </nav>
 
 
