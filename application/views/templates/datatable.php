@@ -10,7 +10,22 @@ $(document).ready( function () {
       "bSort": true,
       "info": true,
       "iDisplayLength":25,
-      "order": [[ 0, "asc" ]]
+      "order": [[ 0, "desc" ]]
+      
+  
+           
+     } );
+     $('#tabledesc').DataTable( {
+		  "language": {
+            "url": "<?php echo base_url(); ?>lib/datatables/German.json"
+           } ,
+      "paging": true,
+      "bSmart": true,
+      "bFilter": true,
+      "bSort": true,
+      "info": true,
+      "iDisplayLength":25,
+      "order": [[ 0, "desc" ]]
       
   
            
@@ -19,7 +34,7 @@ $(document).ready( function () {
            
            
     $('#table_print').DataTable( {
-        "order": [[ 0, "desc" ]],
+        //"order": [[ 0, "desc" ]],
         "paging": false,
       	"bFilter": false,
       	"bSort": true,
@@ -31,6 +46,7 @@ $(document).ready( function () {
     			
     			
     } );
+
     
     
     
@@ -65,6 +81,12 @@ $('#suche_baldabgelaufen').on( 'click', function () {
         .search( "3")
         .draw();
 } );
+$('#suche_failed').on( 'click', function () {
+    table
+        .columns( 1 )
+        .search( "4")
+        .draw();
+} );
 $('#suche_alle').on( 'click', function () {
     table
         .columns( 1 )
@@ -72,6 +94,40 @@ $('#suche_alle').on( 'click', function () {
         .draw();
 } );
 
+  var table2 = $('#tabledesc').DataTable();
+ 
+// #column3_search is a <input type="text"> element
+$('#suche_inaktiv').on( 'click', function () {
+    table2
+        .columns( 1 )
+        .search( "1")
+        .draw();
+} );
+$('#suche_abgelaufen').on( 'click', function () {
+    table2
+        .columns( 1 )
+        .search( "2")
+        .draw();
+} );
+
+$('#suche_baldabgelaufen').on( 'click', function () {
+    table2
+        .columns( 1 )
+        .search( "3")
+        .draw();
+} );
+$('#suche_failed').on( 'click', function () {
+    table2
+        .columns( 1 )
+        .search( "4")
+        .draw();
+} );
+$('#suche_alle').on( 'click', function () {
+    table2
+        .columns( 1 )
+        .search( "")
+        .draw();
+} );
 
 
 

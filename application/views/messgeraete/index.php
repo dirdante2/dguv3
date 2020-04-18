@@ -11,6 +11,7 @@
 		<th>ID</th>
 		<th>Name</th>
 		<th>Beschreiung</th>
+		<?php if($this->session->userdata('level')=='1'){?><th>Firma</th><?php } ?>
 		<th>Aktion</th>
 	</tr>
 </thead>
@@ -33,6 +34,7 @@ if(count($messgeraete)==0) {
 			<td><?php echo $messgeraet['mid']; ?></td>
 			<td><?php echo $messgeraet['name']; ?></td>
 			<td><?php echo $messgeraet['beschreibung']; ?></td>
+			<?php if($this->session->userdata('level')=='1'){?><td><?php echo $messgeraet['firma_name']; ?></td><?php } ?>
 			<td>
 				<a href="<?php echo site_url('messgeraete/edit/'.$messgeraet['mid']); ?>" class="btn btn-secondary"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span></a>
 				<a href="<?php echo site_url('messgeraete/delete/'.$messgeraet['mid']); ?>" class="btn btn-danger"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span></a>
