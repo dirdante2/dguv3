@@ -17,6 +17,8 @@
     $this->load->model('Firmen_model');
     if($this->session->userdata('logged_in') !== TRUE){
       //redirect('login');
+      $this->output->cache(30);
+
       $this->load->view('templates/header');
       $this->load->view('static/welcome');
       $this->load->view('templates/footer');
