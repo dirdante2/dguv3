@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: dd25120
--- Generation Time: Mar 30, 2020 at 12:09 AM
+-- Generation Time: Apr 19, 2020 at 03:21 PM
 -- Server version: 5.7.28-nmm1-log
 -- PHP Version: 7.1.33-nmm1
 
@@ -21,6 +21,23 @@ SET time_zone = "+00:00";
 --
 -- Database: `d03136eb`
 --
+CREATE DATABASE IF NOT EXISTS `d03136eb` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `d03136eb`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `firmen`
+--
+
+CREATE TABLE `firmen` (
+  `firmen_firmaid` int(11) NOT NULL,
+  `firma_name` varchar(40) NOT NULL,
+  `firma_strasse` varchar(30) DEFAULT NULL,
+  `firma_ort` varchar(30) DEFAULT NULL,
+  `firma_plz` varchar(30) DEFAULT NULL,
+  `firma_beschreibung` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -31,6 +48,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `geraete` (
   `gid` int(11) NOT NULL,
   `oid` int(11) NOT NULL COMMENT 'OrtsID',
+  `geraete_firmaid` int(11) NOT NULL DEFAULT '1',
   `name` varchar(30) NOT NULL,
   `hersteller` varchar(20) NOT NULL,
   `typ` varchar(20) NOT NULL,
@@ -50,36 +68,12 @@ CREATE TABLE `geraete` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `groups`
---
-
-CREATE TABLE `groups` (
-  `id` mediumint(8) UNSIGNED NOT NULL,
-  `name` varchar(20) NOT NULL,
-  `description` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `login_attempts`
---
-
-CREATE TABLE `login_attempts` (
-  `id` int(11) UNSIGNED NOT NULL,
-  `ip_address` varchar(45) NOT NULL,
-  `login` varchar(100) NOT NULL,
-  `time` int(11) UNSIGNED DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `messgeraete`
 --
 
 CREATE TABLE `messgeraete` (
   `mid` int(11) NOT NULL,
+  `messgeraete_firmaid` int(11) NOT NULL DEFAULT '1',
   `name` varchar(20) NOT NULL,
   `beschreibung` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -93,7 +87,8 @@ CREATE TABLE `messgeraete` (
 CREATE TABLE `orte` (
   `oid` int(11) NOT NULL,
   `name` varchar(20) NOT NULL,
-  `beschreibung` text NOT NULL
+  `beschreibung` text NOT NULL,
+  `orte_firmaid` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -104,6 +99,7 @@ CREATE TABLE `orte` (
 
 CREATE TABLE `pruefer` (
   `pid` int(11) NOT NULL,
+  `pruefer_firmaid` int(11) NOT NULL DEFAULT '1',
   `name` varchar(20) NOT NULL,
   `beschreibung` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -120,8 +116,11 @@ CREATE TABLE `pruefung` (
   `datum` date NOT NULL,
   `mid` int(11) NOT NULL,
   `pid` int(11) NOT NULL,
-  `sichtpruefung` tinyint(1) NOT NULL,
+  `oid` int(11) NOT NULL,
+  `pruefung_firmaid` int(11) NOT NULL,
+  `sichtpruefung` tinyint(1) DEFAULT NULL,
   `schutzleiter` decimal(5,2) DEFAULT NULL,
+  `RPEmax` decimal(5,2) DEFAULT NULL,
   `isowiderstand` decimal(5,2) DEFAULT NULL,
   `schutzleiterstrom` decimal(5,2) DEFAULT NULL,
   `beruehrstrom` decimal(5,2) DEFAULT NULL,
@@ -137,60 +136,32 @@ CREATE TABLE `pruefung` (
 --
 
 CREATE TABLE `users` (
-  `id` int(11) UNSIGNED NOT NULL,
-  `ip_address` varchar(45) NOT NULL,
-  `username` varchar(100) DEFAULT NULL,
-  `password` varchar(255) NOT NULL,
-  `email` varchar(254) NOT NULL,
-  `activation_selector` varchar(255) DEFAULT NULL,
-  `activation_code` varchar(255) DEFAULT NULL,
-  `forgotten_password_selector` varchar(255) DEFAULT NULL,
-  `forgotten_password_code` varchar(255) DEFAULT NULL,
-  `forgotten_password_time` int(11) UNSIGNED DEFAULT NULL,
-  `remember_selector` varchar(255) DEFAULT NULL,
-  `remember_code` varchar(255) DEFAULT NULL,
-  `created_on` int(11) UNSIGNED NOT NULL,
-  `last_login` int(11) UNSIGNED DEFAULT NULL,
-  `active` tinyint(1) UNSIGNED DEFAULT NULL,
-  `first_name` varchar(50) DEFAULT NULL,
-  `last_name` varchar(50) DEFAULT NULL,
-  `company` varchar(100) DEFAULT NULL,
-  `phone` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `users_groups`
---
-
-CREATE TABLE `users_groups` (
-  `id` int(11) UNSIGNED NOT NULL,
-  `user_id` int(11) UNSIGNED NOT NULL,
-  `group_id` mediumint(8) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `user_id` int(11) NOT NULL,
+  `user_pid` int(11) DEFAULT NULL,
+  `user_mid` int(11) DEFAULT NULL,
+  `user_name` varchar(20) NOT NULL,
+  `user_email` varchar(60) NOT NULL,
+  `user_password` varchar(40) NOT NULL,
+  `user_level` varchar(3) NOT NULL,
+  `users_firmaid` int(11) NOT NULL,
+  `user_oid` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Indexes for dumped tables
 --
 
 --
+-- Indexes for table `firmen`
+--
+ALTER TABLE `firmen`
+  ADD PRIMARY KEY (`firmen_firmaid`);
+
+--
 -- Indexes for table `geraete`
 --
 ALTER TABLE `geraete`
   ADD PRIMARY KEY (`gid`);
-
---
--- Indexes for table `groups`
---
-ALTER TABLE `groups`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `login_attempts`
---
-ALTER TABLE `login_attempts`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `messgeraete`
@@ -221,42 +192,23 @@ ALTER TABLE `pruefung`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `uc_email` (`email`),
-  ADD UNIQUE KEY `uc_activation_selector` (`activation_selector`),
-  ADD UNIQUE KEY `uc_forgotten_password_selector` (`forgotten_password_selector`),
-  ADD UNIQUE KEY `uc_remember_selector` (`remember_selector`);
-
---
--- Indexes for table `users_groups`
---
-ALTER TABLE `users_groups`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `uc_users_groups` (`user_id`,`group_id`),
-  ADD KEY `fk_users_groups_users1_idx` (`user_id`),
-  ADD KEY `fk_users_groups_groups1_idx` (`group_id`);
+  ADD PRIMARY KEY (`user_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
+-- AUTO_INCREMENT for table `firmen`
+--
+ALTER TABLE `firmen`
+  MODIFY `firmen_firmaid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `geraete`
 --
 ALTER TABLE `geraete`
   MODIFY `gid` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `groups`
---
-ALTER TABLE `groups`
-  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `login_attempts`
---
-ALTER TABLE `login_attempts`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `messgeraete`
@@ -286,24 +238,7 @@ ALTER TABLE `pruefung`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `users_groups`
---
-ALTER TABLE `users_groups`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `users_groups`
---
-ALTER TABLE `users_groups`
-  ADD CONSTRAINT `fk_users_groups_groups1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_users_groups_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -22,7 +22,7 @@ class Users extends CI_Controller {
 	}
 
 	function index($user_id=NULL) {
-		if(!$this->session->userdata('level')){
+		if($this->session->userdata('logged_in') !== TRUE){
 			$this->load->view('templates/header');
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
@@ -81,7 +81,10 @@ class Users extends CI_Controller {
 				
 			}
 			$felder = array('user_oid','user_name','user_email','user_mid','user_pid','users_firmaid','user_level','user_password');
-		$this->form_validation->set_rules('user_name', 'Name', 'required');
+			$this->form_validation->set_rules('user_name', 'Name', 'required');
+			$this->form_validation->set_rules('user_email', 'Email', 'required');
+			$this->form_validation->set_rules('user_level', 'Level', 'required');
+			$this->form_validation->set_rules('users_firmaid', 'Firma', 'required');
 		//$this->form_validation->set_rules('beschreibung', 'Beschreibung', 'required');
 		
 

@@ -18,7 +18,7 @@ class Messgeraete extends CI_Controller {
 	}
 
 	function index() {
-		if(!$this->session->userdata('level')){
+		if($this->session->userdata('logged_in') !== TRUE){
 			$this->load->view('templates/header');
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
@@ -40,7 +40,7 @@ class Messgeraete extends CI_Controller {
 	}
 
 	function edit($mid=0) {
-		if(!$this->session->userdata('level')){
+		if($this->session->userdata('logged_in') !== TRUE){
           $this->load->view('templates/header');
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');

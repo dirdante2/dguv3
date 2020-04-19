@@ -18,7 +18,7 @@ class Pruefer extends CI_Controller {
 	}
 
 	function index() {
-		if(!$this->session->userdata('level')){
+		if($this->session->userdata('logged_in') !== TRUE){
 			$this->load->view('templates/header');
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');

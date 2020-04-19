@@ -6,8 +6,8 @@ webserver dguv3
 server mit racketprogramm
 ->anmelden
     https://dguv3.qabc.eu/login/webauth/<name>/<password>
-    user userlevel4
-    password 111
+    user racketsys
+    password racketsys
     return login ok 1
     return error 0
     userinfo stehen im json

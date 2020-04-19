@@ -185,7 +185,7 @@
             
                     ?>
                     <!-- ordner und archiv existieren -->
-                    <a class="btn-sm btn-secondary" href="<?php echo base_url(); ?>pdf/<?php echo $firma['firmen_firmaid'].'/'.$file; ?>.zip"><?php echo $file; ?></a> <a href="<?php echo site_url('dguv3/create_archiv/'.$file); ?>" class="btn-sm btn-warning">neu</a> <?php echo $filetime; ?>
+                    <a class="btn-sm btn-secondary" href="<?php echo site_url('dguv3/download_archiv/'.$file); ?>"><?php echo $file; ?></a> <a href="<?php echo site_url('dguv3/create_archiv/'.$file); ?>" class="btn-sm btn-warning">neu</a> <?php echo $filetime; ?>
                     <?php } else {?>
                     <!--  ordner existiert aber kein zip archiv -->    
                     <a class="btn-sm btn-light" ><?php echo $file; ?></a> <a href="<?php echo site_url('dguv3/create_archiv/'.$file); ?>" class="btn-sm btn-success">neu</a>

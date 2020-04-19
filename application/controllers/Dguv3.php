@@ -80,14 +80,30 @@
   }
   
   function create_archiv($foldername) {
-    
+    if($this->session->userdata('logged_in') === TRUE){
     $this->Dguv3_model->createfiles($foldername);
 
 
-			redirect('Dguv3');
+      redirect('Dguv3');
+    }
 		
 	}
-       
+  function download_archiv($file) {
+    if($this->session->userdata('logged_in') === TRUE){
+    //automatischer download   
+    $Datei = 'pdf/'.$this->session->userdata('firmaid').'/'.$file.'.zip';
+
+    $Dateiname = basename($Datei);
+    $Groesse = filesize($Datei);
+    header("Content-Type: application/force-download");
+    header("Content-Disposition: attachment; filename=".$Dateiname);
+    header("Content-Length: $Groesse");
+    readfile($Datei);
+    redirect('Dguv3');
+    }
+  }
+
+
 
 }
 					
