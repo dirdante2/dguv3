@@ -99,12 +99,20 @@ class Pruefung_json extends CI_Controller {
 			unset($pruefung['mid']);
 			unset($pruefung['pid']);
 			unset($pruefung['pruefung_firmaid']);
-			unset($pruefung['firmen_firmaid']);
+			//unset($pruefung['firmen_firmaid']);
 			unset($pruefung['geraete_firmaid']);
 			unset($pruefung['oid']);
 			unset($pruefung['name']);
 			$data['pruefung'] = $pruefung;
 			
+			//json ausgabe ob eingeloggt
+			if($this->session->userdata('level')){
+				$data['login']['userame']= $this->session->userdata('username');
+				$data['login']['level']=$this->session->userdata('level');
+			} else {
+				$data['login']['userame']=null;
+				$data['login']['level']=null;
+			}
 			echo json_encode($data);
 		}
 

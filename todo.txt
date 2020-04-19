@@ -1,0 +1,48 @@
+arbeitsflow pdf erstellung
+webserver dguv3 
+->url call mit variable
+    <ortsid> oder <pruefungid>
+
+server mit racketprogramm
+->anmelden
+    https://dguv3.qabc.eu/login/webauth/<name>/<password>
+    user userlevel4
+    password 111
+    return login ok 1
+    return error 0
+    userinfo stehen im json
+
+->abholen der json info geräte übersicht
+    https://dguv3.qabc.eu/geraete/uebersicht/6
+    https://dguv3.qabc.eu/geraete_json/json/<ortsid>
+
+->abholen der json info protokoll datei
+    https://dguv3.qabc.eu/pruefung/protokoll/6
+    https://dguv3.qabc.eu/pruefung_json/json/<pruefungid>
+
+->tmp speichern der pdf datei 
+    /pdf/<firma_id>/<oid>/uebersicht.pdf
+    /pdf/<firma_id>/<oid>/<gid>/<pruefungid>.pdf
+
+
+
+webserver
+->download der pdf datei
+
+--------------------------------
+webserver
+->online status abfrage an racket programm
+    racket programm läuft 1/0
+
+--------------------------------
+
+mehr seiten layout
+https://dguv3.qabc.eu/geraete/uebersicht/29
+https://dguv3.qabc.eu/geraete_json/json/29
+
+--------------------------------
+prüfungen müssen mit messgerät und prüfer durchgeführt werden
+schutzklasse 4 braucht nur prüfer
+
+json und protokoll ausgabe auf firma und userlevel beschränken
+

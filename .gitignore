@@ -3,7 +3,8 @@ application/config/config.php
 application/config/config_dguv3.php
 application/bilder/logo.jpg
 dd25120.sql
-todo.txt
+
 .vscode
 .vs
 application/cache/*
+.htpasswd

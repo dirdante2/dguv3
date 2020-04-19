@@ -38,8 +38,15 @@ class Geraete_json extends CI_Controller {
 
 			//var die nicht in json nötig sind
 			unset($data['ort']['orte_firmaid']);
-			unset($data['ort']['firmen_firmaid']);
-			
+			//unset($data['ort']['firmen_firmaid']);
+			//json ausgabe ob eingeloggt
+			if($this->session->userdata('level')){
+				$data['login']['userame']= $this->session->userdata('username');
+				$data['login']['level']=$this->session->userdata('level');
+			} else {
+				$data['login']['userame']=null;
+				$data['login']['level']=null;
+			}
 			echo json_encode($data);
 		}
 

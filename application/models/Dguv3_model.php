@@ -14,10 +14,10 @@ class Dguv3_model extends CI_Model
     function __construct()
     {
         $this->load->database();
+    
+    $this->load->model('Firmen_model');
+    
     }
-    
-    
-    
     
     // gibt row anzahl wert zurück var1 tabellen name ; var2 tabellen spalte; var3 wert
     function getcountdata($tblName, $tblcol = NULL, $tblvar = NULL)
@@ -94,10 +94,88 @@ class Dguv3_model extends CI_Model
         }
         
         return $this->db->count_all_results();
+
+    }
+    
+    function getfiles($folder) {
+
+        $root = 'pdf/'.$this->session->userdata('firmaid').'/';
+        if (!file_exists($root)) {
+            return null;
+        } else {
+        $files = array_diff(scandir($root), array('.', '..'));
+       
+      
+        return $files;
+        }
+
+    }
+
+    function createfiles($folder=null) { 
+        $root = 'pdf/'.$this->session->userdata('firmaid').'/';
+        if($folder==NULL) {
+            
+            $directories = glob($root . '*' , GLOB_ONLYDIR);
+        } else {
+             $directories[0]= $root.$folder;
+        }
+
+        foreach ($directories as $folder) {
+
+        // file und dir counter
+        $fc = -1;
+        $dc = -1;
+
+        // die maximale Ausführzeit erhöhen
+        ini_set("max_execution_time", 300);
+        //if (!file_exists($folder.".zip")) { 
         
-   
-    
-    
-    
-		}
-	}
+        // Objekt erstellen und schauen, ob der Server zippen kann
+        $zip = new ZipArchive();
+        if ($zip->open($folder.".zip", ZIPARCHIVE::CREATE) !== TRUE) {
+        die ("Das Archiv konnte nicht erstellt werden!");
+        }
+
+        //echo "<pre>";
+        // Gehe durch die Ordner und füge alles dem Archiv hinzu
+        $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($folder));
+        foreach ($iterator as $key=>$value) {
+
+            if(!is_dir($key)) { // wenn es kein ordner sondern eine datei ist
+            // echo $key . " _ _ _ _Datei wurde übernommen</br>";
+            $zip->addFile(realpath($key), $key) or die ("FEHLER: Kann Datei nicht anfuegen: $key");
+            $fc++;
+
+            } elseif (count(scandir($key)) <= 2) { // der ordner ist bis auf . und .. leer
+            // echo $key . " _ _ _ _Leerer Ordner wurde übernommen</br>";
+            $zip->addEmptyDir(substr($key, -1*strlen($key),strlen($key)-1));
+            $dc++;
+
+            } elseif (substr($key, -2)=="/.") { // ordner .
+            $dc++; // nur für den bericht am ende
+
+            } elseif (substr($key, -3)=="/.."){ // ordner ..
+            // tue nichts
+
+            } else { // zeige andere ausgelassene Ordner (sollte eigentlich nicht vorkommen)
+            //echo $key . "WARNUNG: Der Ordner wurde nicht ins Archiv übernommen.</br>";
+            }
+        }
+        //echo "</pre>";
+
+        // speichert die Zip-Datei
+        $zip->close();
+
+        // bericht
+        //echo $folder.".zip wurde erstellt.";
+        //echo "<p>Ordner: " . $dc . "; Dateien: " . $fc . "</p>";
+
+        }
+        //}
+
+    } 
+
+
+
+
+}

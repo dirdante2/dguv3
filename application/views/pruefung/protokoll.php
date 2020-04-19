@@ -20,7 +20,9 @@
 		<table style="width:100%"><tr>
 		<td class="align-baseline">
 						<b>Kunde</b><br><br>
-						<?php echo $adresse; ?>
+						<?php echo $pruefung['firma_name']; ?><br>
+						<?php echo $pruefung['firma_strasse']; ?><br>
+    					<?php echo $pruefung['firma_plz']; ?> <?php echo $pruefung['firma_ort']; ?>
 				</td><td class="align-baseline">
 						<b>Objekt</b><br><br>
 						<table  class="table table-sm">

@@ -36,18 +36,9 @@ class Login extends CI_Controller{
             'logged_in' => TRUE
         );
         $this->session->set_userdata($sesdata);
-        // access login for admin
-        if($level === '1'){
+        
             redirect('Dguv3');
- 
-        // access login for staff
-        }elseif($level === '2'){
-            redirect('Dguv3');
- 
-        // access login for author
-        }else{
-            redirect('Dguv3');
-        }
+        
     }else{
         echo $this->session->set_flashdata('msg','Username or Password is Wrong');
         redirect('login');
@@ -58,7 +49,41 @@ class Login extends CI_Controller{
       $this->session->sess_destroy();
       redirect('Dguv3');
   }
- 
-  
+ //login per url /login/webauth/<name>/<password>
+  function webauth(){
+    $name =  $this->uri->segment(3);
+    $password =  $this->uri->segment(4);
+
+    $password = md5($password);
+    $validate = $this->login_model->validatename($name,$password);
+    if($validate->num_rows() > 0){
+        $data  = $validate->row_array();
+        $name  = $data['user_name'];
+        $userpid  = $data['user_pid'];
+        $usermid  = $data['user_mid'];
+        $email = $data['user_email'];
+        $level = $data['user_level'];
+        $firmaid = $data['users_firmaid'];
+        $userid = $data['user_id'];
+
+        $sesdata = array(
+            'username'  => $name,
+            'userpid'  => $userpid,
+            'usermid'  => $usermid,
+            'email'     => $email,
+            'level'     => $level,
+            'firmaid'     => $firmaid,
+            'userid'     => $userid,
+            'logged_in' => TRUE
+        );
+        $this->session->set_userdata($sesdata);
+        echo'1';
+            
+        
+    }else{
+        echo'0';
+        
+    }
+  }
 
 }
