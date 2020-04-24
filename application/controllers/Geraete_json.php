@@ -47,7 +47,32 @@ class Geraete_json extends CI_Controller {
 				$data['login']['userame']=null;
 				$data['login']['level']=null;
 			}
-			echo json_encode($data);
+			//echo json_encode($data);
+ 
+			//API Url
+			$url = 'http://example.com/api/JSON/create';
+			 
+			//Initiate cURL.
+			$ch = curl_init($url);
+
+			//Encode the array into JSON.
+			$jsonDataEncoded = json_encode($data);
+			 
+			//Tell cURL that we want to send a POST request.
+			curl_setopt($ch, CURLOPT_POST, 1);
+			 
+			//Attach our encoded JSON string to the POST fields.
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonDataEncoded);
+			 
+			//Set the content type to application/json
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json')); 
+			 
+			//Execute the request
+			$result = curl_exec($ch);
+
+			
+
+			echo $result;
 		}
 
 

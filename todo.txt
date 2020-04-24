@@ -1,33 +1,22 @@
 arbeitsflow pdf erstellung
 webserver dguv3 
-->url call mit variable
-    <ortsid> oder <pruefungid>
+->url call mit 
+    json info in post
+  
 
 server mit racketprogramm
-->anmelden
-    https://dguv3.qabc.eu/login/webauth/<name>/<password>
-    user racketsys
-    password racketsys
-    return login ok 1
-    return error 0
-    userinfo stehen im json
 
-->abholen der json info geräte übersicht
+-> rendern der json infos in pdf
+    für 
     https://dguv3.qabc.eu/geraete/uebersicht/6
-    https://dguv3.qabc.eu/geraete_json/json/<ortsid>
-
-->abholen der json info protokoll datei
+    und
     https://dguv3.qabc.eu/pruefung/protokoll/6
-    https://dguv3.qabc.eu/pruefung_json/json/<pruefungid>
-
-->tmp speichern der pdf datei 
-    /pdf/<firma_id>/<oid>/uebersicht.pdf
-    /pdf/<firma_id>/<oid>/<gid>/<pruefungid>.pdf
-
+    
+->zurücksenden der pdf datei
 
 
 webserver
-->download der pdf datei
+->download und speichern der pdf datei
 
 --------------------------------
 webserver
@@ -43,6 +32,13 @@ https://dguv3.qabc.eu/geraete_json/json/29
 --------------------------------
 prüfungen müssen mit messgerät und prüfer durchgeführt werden
 schutzklasse 4 braucht nur prüfer
+(leiter)
 
+-------
 json und protokoll ausgabe auf firma und userlevel beschränken
+--------------------------------
 
+csv import gas alarm?!
+weboberfläche form input für gasalarm
+speichern in sql
+senden der pdf an email adresse

@@ -19,7 +19,11 @@ class Pruefer extends CI_Controller {
 
 	function index() {
 		if($this->session->userdata('logged_in') !== TRUE){
-			$this->load->view('templates/header');
+			if($this->agent->is_mobile()){      
+				$this->load->view('templates/header_mobile');
+			} else {
+				$this->load->view('templates/header');
+			}
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{

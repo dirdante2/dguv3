@@ -6,9 +6,13 @@ class Login extends CI_Controller{
   }
  
   function index(){
-  	$this->load->view('templates/header');
+  	if($this->agent->is_mobile()){      
+      $this->load->view('templates/header_mobile');
+      $this->load->view('login_view_mobile');
+    } else {
+      $this->load->view('templates/header');
       $this->load->view('login_view');
-      $this->load->view('templates/footer');
+    }
     
   }
  
@@ -85,5 +89,7 @@ class Login extends CI_Controller{
         
     }
   }
+
+
 
 }

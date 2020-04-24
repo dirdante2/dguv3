@@ -22,7 +22,11 @@ class Firmen extends CI_Controller {
 
 	function index($firmen_firmaid=NULL) {
 		if($this->session->userdata('logged_in') !== TRUE){
-			$this->load->view('templates/header');
+			if($this->agent->is_mobile()){      
+				$this->load->view('templates/header_mobile');
+			} else {
+				$this->load->view('templates/header');
+			}
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{

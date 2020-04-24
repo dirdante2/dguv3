@@ -5,7 +5,7 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 
-:root {
+ :root {
     --blue: #007bff;
     --indigo: #6610f2;
     --purple: #6f42c1;
@@ -54,9 +54,9 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    font-size: 1rem;
+    font-size: 2rem;
     font-weight: 400;
-    line-height: 1.5;
+    line-height: 2;
     color: #212529;
     text-align: left;
     background-color: #fff
@@ -222,8 +222,8 @@ button:focus {
 button, input, optgroup, select, textarea {
     margin: 0;
     font-family: inherit;
-    font-size: inherit;
-    line-height: inherit
+    font-size: 100%;
+    line-height: 3.3
 }
 
 button, input {
@@ -235,7 +235,9 @@ button, select {
 }
 
 select {
-    word-wrap: normal
+    word-wrap: normal;
+    font-size: 4rem;
+    line-height: 4.3
 }
 
 [type=button], [type=reset], [type=submit], button {
@@ -253,11 +255,18 @@ select {
 
 input[type=checkbox], input[type=radio] {
     box-sizing: border-box;
-    padding: 0
+    padding: 0;
+    height: 50px;
+    width: 50px;
 }
 
 input[type=date], input[type=datetime-local], input[type=month], input[type=time] {
     -webkit-appearance: listbox
+}
+input[type=text] {
+    -webkit-appearance: listbox;
+    font-size: 3rem;
+    line-height: 2.2
 }
 
 textarea {
@@ -326,19 +335,19 @@ template {
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
     margin-bottom: .5rem;
     font-weight: 500;
-    line-height: 1.2
+    line-height: 2.2
 }
 
 .h1, h1 {
-    font-size: 2.5rem
+    font-size: 3.5rem
 }
 
 .h2, h2 {
-    font-size: 2rem
+    font-size: 3rem
 }
 
 .h3, h3 {
-    font-size: 1.75rem
+    font-size: 2.75rem
 }
 
 .h4, h4 {
@@ -1934,9 +1943,9 @@ pre code {
     width: 100%;
     height: calc(1.5em + .75rem + 2px);
     padding: .375rem .75rem;
-    font-size: 1rem;
+    font-size: 2rem;
     font-weight: 400;
-    line-height: 1.5;
+    line-height: 2.5;
     color: #495057;
     background-color: #fff;
     background-clip: padding-box;
@@ -2060,8 +2069,8 @@ select.form-control:focus::-ms-value {
 .form-control-lg {
     height: calc(1.5em + 1rem + 2px);
     padding: .5rem 1rem;
-    font-size: 1.25rem;
-    line-height: 1.5;
+    font-size: 2.25rem;
+    line-height: 2.5;
     border-radius: .3rem
 }
 
@@ -2113,7 +2122,12 @@ textarea.form-control {
 }
 
 .form-check-label {
-    margin-bottom: 0
+    margin-bottom: 1;
+    margin-left: 2.4rem;
+    margin-right: 2rem;
+    align-items: center;
+    vertical-align: center
+
 }
 
 .form-check-inline {
@@ -2410,7 +2424,7 @@ textarea.form-control {
     background-color: transparent;
     border: 1px solid transparent;
     padding: .375rem .75rem;
-    font-size: 1rem;
+    font-size: 2rem;
     line-height: 1.5;
     border-radius: .25rem;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out
@@ -2983,14 +2997,14 @@ a.btn.disabled, fieldset:disabled a.btn {
 
 .btn-group-lg>.btn, .btn-lg {
     padding: .5rem 1rem;
-    font-size: 1.25rem;
-    line-height: 1.5;
+    font-size: 3rem;
+    line-height: 3;
     border-radius: .3rem
 }
 
 .btn-group-sm>.btn, .btn-sm {
     padding: .25rem .5rem;
-    font-size: .875rem;
+    font-size: 1.875rem;
     line-height: 1.5;
     border-radius: .2rem
 }
@@ -3695,9 +3709,9 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     width: 100%;
     height: calc(1.5em + .75rem + 2px);
     padding: .375rem 1.75rem .375rem .75rem;
-    font-size: 1rem;
+    font-size: 2rem;
     font-weight: 400;
-    line-height: 1.5;
+    line-height: 2.5;
     color: #495057;
     vertical-align: middle;
     background: #fff url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right .75rem center/8px 10px;
@@ -3748,11 +3762,11 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 }
 
 .custom-select-lg {
-    height: calc(1.5em + 1rem + 2px);
+    height: calc(1.5em + 2rem + 2px);
     padding-top: .5rem;
     padding-bottom: .5rem;
     padding-left: 1rem;
-    font-size: 1.25rem
+    font-size: 2.25rem
 }
 
 .custom-file {
@@ -4116,7 +4130,7 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     padding-top: .3125rem;
     padding-bottom: .3125rem;
     margin-right: 1rem;
-    font-size: 1.25rem;
+    font-size: 2.25rem;
     line-height: inherit;
     white-space: nowrap
 }
@@ -4175,8 +4189,8 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
 
 .navbar-toggler-icon {
     display: inline-block;
-    width: 1.5em;
-    height: 1.5em;
+    width: 3.5em;
+    height: 3.5em;
     vertical-align: middle;
     content: "";
     background: no-repeat center center;

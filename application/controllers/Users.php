@@ -16,14 +16,21 @@ class Users extends CI_Controller {
 		$this->load->model('Messgeraete_model');
 		$this->load->model('Firmen_model');
 		$this->load->model('Orte_model');
+		$this->load->model('Login_model');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
+		//$this->load->library('Session_update');
+		
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 	}
 
 	function index($user_id=NULL) {
 		if($this->session->userdata('logged_in') !== TRUE){
-			$this->load->view('templates/header');
+			if($this->agent->is_mobile()){      
+				$this->load->view('templates/header_mobile');
+			} else {
+				$this->load->view('templates/header');
+			}
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
@@ -83,8 +90,8 @@ class Users extends CI_Controller {
 			$felder = array('user_oid','user_name','user_email','user_mid','user_pid','users_firmaid','user_level','user_password');
 			$this->form_validation->set_rules('user_name', 'Name', 'required');
 			$this->form_validation->set_rules('user_email', 'Email', 'required');
-			$this->form_validation->set_rules('user_level', 'Level', 'required');
-			$this->form_validation->set_rules('users_firmaid', 'Firma', 'required');
+			//$this->form_validation->set_rules('user_level', 'Level', 'required');
+			//$this->form_validation->set_rules('users_firmaid', 'Firma', 'required');
 		//$this->form_validation->set_rules('beschreibung', 'Beschreibung', 'required');
 		
 
@@ -116,6 +123,8 @@ class Users extends CI_Controller {
 
 		} else {
 			$userpassword= $this->Users_model->get($user_id)['user_password'];
+			$userlevel= $this->Users_model->get($user_id)['user_level'];
+			$userfirmaid= $this->Users_model->get($user_id)['users_firmaid'];
 			$user = array();
 			
 			foreach($felder as $feld) {
@@ -126,9 +135,20 @@ class Users extends CI_Controller {
 			} else {
 				$user['user_password']=$userpassword;
 			}
-			
 
+			if(!$user['users_firmaid']) {
+				
+				$user['users_firmaid']=$userfirmaid;
+			}
+			if(!$user['user_level']) {
+				
+				$user['user_level']=$userlevel;
+			}
+			
+			
 			$this->Users_model->update($user,$user_id);
+			$this->Login_model->update();
+			
 				// get ortsid von neu angelegtem gerät damit redirect zu richtiger seite führt?!!
 			//$gortsid = $this->Geraete_model->get($gid);
 			

@@ -15,13 +15,21 @@
     
     $this->load->model('Dguv3_model');
     $this->load->model('Firmen_model');
+    //$this->load->library('user_agent');
     if($this->session->userdata('logged_in') !== TRUE){
       //redirect('login');
-      $this->output->cache(30);
+      //$this->output->cache(30);
 
-      $this->load->view('templates/header');
-      $this->load->view('static/welcome');
-      $this->load->view('templates/footer');
+        if($this->agent->is_mobile()){      
+          $this->load->view('templates/header_mobile');
+          $this->load->view('login_view_mobile');
+        } else {
+          $this->load->view('templates/header');
+          $this->load->view('login_view');
+        }
+        
+        $this->load->view('templates/footer');
+
     }
     
     
@@ -71,8 +79,14 @@
       }
       //$data['adresse']= $this->config->item('dguv3_adresse');
 
-      $this->load->view('templates/header');
-      $this->load->view('dashboard_view',$data);
+      if($this->agent->is_mobile()){      
+        $this->load->view('templates/header_mobile');
+        $this->load->view('dashboard_view_mobile',$data);
+      } else {
+        $this->load->view('templates/header');
+        $this->load->view('dashboard_view',$data);
+      }
+      
       $this->load->view('templates/footer');
         
     

@@ -21,7 +21,11 @@ class Geraete extends CI_Controller {
 
 	function index($oid=NULL) {
 		if($this->session->userdata('logged_in') !== TRUE){
-			$this->load->view('templates/header');
+			if($this->agent->is_mobile()){      
+				$this->load->view('templates/header_mobile');
+			} else {
+				$this->load->view('templates/header');
+			}
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
 			
@@ -59,9 +63,17 @@ class Geraete extends CI_Controller {
 		$data['pruefungabgelaufen']= $this->config->item('dguv3_pruefungabgelaufen');
 		$data['pruefungbaldabgelaufen']= $this->config->item('dguv3_pruefungbaldabgelaufen');
 		/*$this->output->cache(5);*/
+
+		if($this->agent->is_mobile()){      
+		$this->load->view('templates/header_mobile');
+		$this->load->view('templates/scroll');
+		$this->load->view('geraete/index_mobile',$data);
+      } else {
 		$this->load->view('templates/header');
 		$this->load->view('templates/datatable');
 		$this->load->view('geraete/index',$data);
+      }
+		
 		$this->load->view('templates/footer');
 		}
 	}
@@ -124,6 +136,12 @@ class Geraete extends CI_Controller {
       }
 
 
+
+
+
+
+
+	  
 	/**
 	 * Checks if an oid exists
 	 * @param oid OID
@@ -147,7 +165,11 @@ class Geraete extends CI_Controller {
 		$this->form_validation->set_rules('oid', 'Ort', 'callback_oid_check'); //valid oid?
 
 		if($this->form_validation->run() === FALSE) {
-			$this->load->view('templates/header');
+			if($this->agent->is_mobile()){      
+				$this->load->view('templates/header_mobile');
+			  } else {
+				$this->load->view('templates/header');
+			  }
 
 			//Neues Gerät
 			if($gid==0) {
@@ -161,18 +183,39 @@ class Geraete extends CI_Controller {
 				$liste['nennspannung']='230';
 				$liste['schutzklasse']='2';
 				$liste['hinzugefuegt']=date('Y-m-d');
-				$this->load->view('geraete/form',array(
-					'geraet'=>$liste,
-					'firmen'=> $this->Firmen_model->get()
+
+				if($this->agent->is_mobile()){      
+					$this->load->view('geraete/form_mobile',array(
+						'geraet'=>$liste,
+						'firmen'=> $this->Firmen_model->get()
+					));
+				  } else {
+					$this->load->view('geraete/form',array(
+						'geraet'=>$liste,
+						'firmen'=> $this->Firmen_model->get()
+					));
+				  }
 				
-				));
+				
+				
 			}
 			//Vorhandeses Gerät
 			else {
-				$this->load->view('geraete/form',array(
-					'geraet'=>$this->Geraete_model->get($gid),
-					'firmen'=> $this->Firmen_model->get()
-				));
+
+				if($this->agent->is_mobile()){      
+					$this->load->view('geraete/form_mobile',array(
+						'geraet'=>$this->Geraete_model->get($gid),
+						'firmen'=> $this->Firmen_model->get()
+					));
+				  } else {
+					$this->load->view('geraete/form',array(
+						'geraet'=>$this->Geraete_model->get($gid),
+						'firmen'=> $this->Firmen_model->get()
+					));
+				  }
+				
+				
+				
 			}
 			$this->load->view('templates/footer');
 

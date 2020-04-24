@@ -19,7 +19,11 @@ class Orte extends CI_Controller {
 
 	function index() {
 		if($this->session->userdata('logged_in') !== TRUE){
-			$this->load->view('templates/header');
+			if($this->agent->is_mobile()){      
+				$this->load->view('templates/header_mobile');
+			} else {
+				$this->load->view('templates/header');
+			}
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
@@ -34,11 +38,22 @@ class Orte extends CI_Controller {
 		
 
 		$data['html2pdf_api_key']= $this->config->item('html2pdf_api_key');
-		$this->load->view('templates/header');
-		$this->load->view('templates/datatable');
-		$this->load->view('orte/index',$data);
-		$this->load->view('templates/footer');
-	}
+
+		if($this->agent->is_mobile()){      
+			$this->load->view('templates/header_mobile');
+			$this->load->view('templates/scroll');
+			$this->load->view('orte/index_mobile',$data);
+		  } else {
+			$this->load->view('templates/header');
+			$this->load->view('templates/datatable');
+			$this->load->view('orte/index',$data);
+		  }
+			
+			$this->load->view('templates/footer');
+			}
+
+
+		
 	}
 
 	function edit($oid=0) {
@@ -53,20 +68,47 @@ class Orte extends CI_Controller {
 		//$this->form_validation->set_rules('firmen_firmaid', 'Firma', 'required');
 
 		if($this->form_validation->run() === FALSE) {
-			$this->load->view('templates/header');
+			if($this->agent->is_mobile()){      
+				$this->load->view('templates/header_mobile');
+			  } else {
+				$this->load->view('templates/header');
+			  }
 
 			if($oid==0) {
-				$this->load->view('orte/form',array(
-					'ort'=>array('oid'=>0,'beschreibung'=>'','name'=>''),
-					'firmen'=> $this->Firmen_model->get()
-				));
-			} else {
-				$this->load->view('orte/form',array(
-					'ort'=>$this->Orte_model->get($oid),
-					'firmen'=> $this->Firmen_model->get()
+
+				if($this->agent->is_mobile()){      
+					$this->load->view('orte/form_mobile',array(
+						'ort'=>array('oid'=>0,'beschreibung'=>'','name'=>''),
+						'firmen'=> $this->Firmen_model->get()
+					));
+				  } else {
+					$this->load->view('orte/form',array(
+						'ort'=>array('oid'=>0,'beschreibung'=>'','name'=>''),
+						'firmen'=> $this->Firmen_model->get()
+					));
+				  }
+
 				
-				));
+			} else {
+
+				if($this->agent->is_mobile()){      
+					$this->load->view('orte/form_mobile',array(
+						'ort'=>$this->Orte_model->get($oid),
+						'firmen'=> $this->Firmen_model->get()
+					
+					));
+				  } else {
+					$this->load->view('orte/form',array(
+						'ort'=>$this->Orte_model->get($oid),
+						'firmen'=> $this->Firmen_model->get()
+					
+					));
+				  }
+
+				
 			}
+
+
 			$this->load->view('templates/footer');
 
 		} else {

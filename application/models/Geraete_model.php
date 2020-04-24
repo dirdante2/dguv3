@@ -27,7 +27,12 @@ class Geraete_model extends CI_Model {
 			$this->db->having('geraete.geraete_firmaid', $firmen_firmaid);
 		} 
 
+
+		$this->db->order_by('geraete.gid', 'DESC');
+		
+
 		if($gid===NULL) {
+			$this->db->limit(100);
 			return $this->db->get()->result_array();
 		}
 		$this->db->where('geraete.gid',$gid);
@@ -41,12 +46,13 @@ class Geraete_model extends CI_Model {
 	}
 
 	function getByOid($oid,$firmen_firmaid=NULL) {
-		$this->db->select('geraete.*, orte.name AS ortsname, pruefung.bestanden, pruefung.datum AS letztesdatum, (select count(*) from pruefung as pr where geraete.gid = pr.gid) AS anzahl, pruefer.name as pruefername');
+		$this->db->select('geraete.*, firmen.firmen_firmaid,firmen.firma_name,orte.name AS ortsname, pruefung.bestanden, pruefung.datum AS letztesdatum, (select count(*) from pruefung as pr where geraete.gid = pr.gid) AS anzahl, pruefer.name as pruefername');
 		$this->db->from('geraete');
 		$this->db->join('orte', 'geraete.oid = orte.oid');
+		$this->db->join('firmen', 'geraete.geraete_firmaid = firmen.firmen_firmaid', 'LEFT');
 		$this->db->join('pruefung','geraete.gid = pruefung.gid AND pruefung.pruefungid = (SELECT pruefungid from pruefung as pr where geraete.gid = pr.gid order by datum desc, pruefungid desc limit 1)','LEFT');
 		$this->db->join('pruefer', 'pruefung.pid = pruefer.pid', 'LEFT');
-		$this->db->join('firmen', 'pruefung.pruefung_firmaid = firmen.firmen_firmaid', 'LEFT');
+		
 		if($firmen_firmaid!==NULL) {
 			$this->db->having('geraete.geraete_firmaid', $firmen_firmaid);
 		} 

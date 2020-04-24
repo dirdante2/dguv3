@@ -23,7 +23,11 @@ class Pruefung extends CI_Controller {
 
 	function index($gid=NULL) {
 		if($this->session->userdata('logged_in') !== TRUE){
-          $this->load->view('templates/header');
+			if($this->agent->is_mobile()){      
+				$this->load->view('templates/header_mobile');
+			} else {
+				$this->load->view('templates/header');
+			}
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
@@ -47,12 +51,19 @@ class Pruefung extends CI_Controller {
 		$data['pruefungabgelaufen']= $this->config->item('dguv3_pruefungabgelaufen');
 		$data['pruefungbaldabgelaufen']= $this->config->item('dguv3_pruefungbaldabgelaufen');
 		
-
-		$this->load->view('templates/header');
-		$this->load->view('templates/datatable');
-		$this->load->view('pruefung/index',$data);
-		$this->load->view('templates/footer');
-	}
+		if($this->agent->is_mobile()){      
+			$this->load->view('templates/header_mobile');
+			$this->load->view('templates/scroll');
+			$this->load->view('pruefung/index_mobile',$data);
+		  } else {
+			$this->load->view('templates/header');
+			$this->load->view('templates/datatable');
+			$this->load->view('pruefung/index',$data);
+		  }
+			
+			$this->load->view('templates/footer');
+			}
+		
 	}
 
 	function protokoll($pruefung_id=NULL) {
