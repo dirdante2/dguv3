@@ -68,7 +68,7 @@ $i = 1;
 while($i < $page_pages) { ?>
 
 <li class="page-item <?php if($page_pages==$page_pageid) { echo 'active';} ?>">
-	<a class="page-link" href="<?php echo base_url(); ?>geraete/pagination/" tabindex="0"><?php echo $i; ?></a>
+	<a class="page-link" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $i; ?>/<?php echo $i; ?>" tabindex="0"><?php echo $i; ?></a>
 	</li>
 
 
