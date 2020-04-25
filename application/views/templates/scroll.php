@@ -1,29 +1,20 @@
 <script>
 
 jQuery(document).ready(function($) {
-	$('.scroll').click(function(){
+	var fixedHeaderHeight = 100;
 
-       console.log(event.srcElement.id);
-        var currentId = event.srcElement.id;
-        console.log(event.srcElement.className)
+	$('.card-header').click(function(event){
+		$('.scroll').off('shown.bs.collapse')
+			.on('shown.bs.collapse', function () {
+				$('.scroll').off('shown.bs.collapse');
 
-       
-        
-        //es gibt error wenn class nicht existiert
-        $('.scroll').on('shown.bs.collapse', function () {
-
-            currentId2 = "#heading" + currentId;
-		setTimeout(function() { //<-- delayed animation  
-			$('html, body').animate({
-				scrollTop: $(currentId2).offset().top - 100 //<-- This beacuse I have a fixed header
-			}, 500);
-		}, 200);
-})
-		
-         
-});
+				setTimeout(function() {
+					var top = $(event.delegateTarget).offset().top;
+					var scroll_top = top - fixedHeaderHeight;
+					$('html, body').animate({scrollTop: scroll_top}, 500);
+				}, 200);
+		});
+	});
 });
 
 </script>
-
-
