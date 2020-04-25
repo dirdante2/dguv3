@@ -288,6 +288,12 @@ class Geraete extends CI_Controller {
 			redirect('geraete');
 		}
 	}
+	function pagination($oid,$pageid) {
+
+
+
+			redirect('geraete/index/'.$oid.'/'.$pageid);
+		}
 
 
 

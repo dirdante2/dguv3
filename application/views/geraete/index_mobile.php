@@ -57,18 +57,27 @@
 <?php echo $page_pageid; ?> pageid<br>
 <?php echo $page_offset; ?> offset<br>
 
+<?php
+if(!$ort) {
+	$ortsid=0;
+} else {
+	$ortsid=$ort['oid'];
+}
+
+?>
+
 <nav aria-label="pagination">
   <ul class="pagination">
     <li class="page-item <?php if($page_pageid==0) { echo 'disabled';} ?>">
-      <a class="page-link" href="<?php echo base_url(); ?>geraete/pagination/pre" tabindex="0">Previous</a>
+      <a class="page-link" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $ortsid; ?>/<?php echo $page_pageid -1; ?>" tabindex="0">Previous</a>
     </li>
 
 <?php
-$i = 1;
+$i = 0;
 while($i < $page_pages) { ?>
 
-<li class="page-item <?php if($page_pages==$page_pageid) { echo 'active';} ?>">
-	<a class="page-link" href="<?php echo base_url(); ?>geraete/pagination/" tabindex="0"><?php echo $i; ?></a>
+<li class="page-item <?php if($i==$page_pageid) { echo 'active';} ?>">
+	<a class="page-link" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $ortsid; ?>/<?php echo $i; ?>" tabindex="0"><?php echo $i +1; ?></a>
 	</li>
 
 
@@ -80,7 +89,7 @@ while($i < $page_pages) { ?>
 }
 ?>
 <li class="page-item <?php if($page_pages==$page_pageid) { echo 'disabled';} ?>">
-	<a class="page-link" href="<?php echo base_url(); ?>geraete/pagination/nex" tabindex="0">next</a>
+	<a class="page-link" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $ortsid; ?>/<?php echo $page_pageid +1; ?>" tabindex="0">next</a>
     </li>
   </ul>
 </nav>
