@@ -95,8 +95,20 @@ echo validation_errors();
       <div class="col-sm-7">
         <div class="form-check">
 
-          <input class="form-check-input" type="checkbox" name="user_showlink1" id="1" value="1" <?php if($user['user_showlink1']=='1') { echo 'checked'; } ?> >
-          <label class="form-check-label" for="1">1 website link</label>
+		<input class="form-check-input" type="checkbox" name="user_showlink1" id="user_showlink1" value="1" <?php if($user['user_showlink1']=='1') { echo 'checked'; } ?> >
+          <label class="form-check-label" for="user_showlink11">1 website link</label>
+		  <br>
+		  <input class="form-check-input" type="checkbox" name="user_delete" id="user_delete" value="1" <?php if($user['user_delete']=='1') { echo 'checked'; } ?> >
+          <label class="form-check-label" for="user_delete">user_deletek</label>
+		  <br>
+		  <input class="form-check-input" type="checkbox" name="user_edit" id="user_edit" value="1" <?php if($user['user_edit']=='1') { echo 'checked'; } ?> >
+          <label class="form-check-label" for="user_edit">user_edit</label>
+		  <br>
+		  <input class="form-check-input" type="checkbox" name="user_new" id="user_new" value="1" <?php if($user['user_new']=='1') { echo 'checked'; } ?> >
+          <label class="form-check-label" for="user_new">user_new</label>
+		  <br>
+		  <input class="form-check-input" type="checkbox" name="user_edituser" id="user_edituser" value="1" <?php if($user['user_edituser']=='1') { echo 'checked'; } ?> >
+          <label class="form-check-label" for="user_edituser">user_edituser</label>
         </div>
 
 
@@ -207,6 +219,18 @@ echo validation_errors();
       Alles drüber<br>
       Darf nur eigene firma / Ort sehen<br>
       Nur eigene Geräte sehen bearbeiten</p>
+
+	  <b>delete</b><br>
+     	darf sachen löschen</p>
+
+	 <b>edit</b><br>
+     	darf sachen bearbeiten</p>
+
+		 <b>new</b><br>
+     darf sachen neu erstellen</p>
+
+	 <b>useredit</b><br>
+     darf user anlegen bearbeiten kleiner als selbst</p>
 
  </div>
 

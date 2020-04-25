@@ -87,7 +87,7 @@ class Users extends CI_Controller {
 				$user_id=$this->session->userdata('userid');
 
 			}
-			$felder = array('user_oid','user_name','user_email','user_mid','user_pid','users_firmaid','user_level','user_password','user_showlink1');
+			$felder = array('user_oid','user_name','user_email','user_mid','user_pid','users_firmaid','user_level','user_password','user_showlink1','user_delete','user_edit','user_new','user_edituser');
 			$this->form_validation->set_rules('user_name', 'Name', 'required');
 			$this->form_validation->set_rules('user_email', 'Email', 'required');
 			//$this->form_validation->set_rules('user_level', 'Level', 'required');
@@ -103,7 +103,17 @@ class Users extends CI_Controller {
 					'pruefer'=> $this->Pruefer_model->get(),
 					'messgeraete'=> $this->Messgeraete_model->get(),
 					'firmen'=> $this->Firmen_model->get(),
-					'user'=>array('user_id'=>0,'user_name'=>'','user_oid'=>'','ortsname'=>'','user_showlink1'=>'0')
+					'user'=>array(
+						'user_id'=>0,
+						'user_name'=>'',
+						'user_oid'=>'',
+						'ortsname'=>'',
+						'user_showlink1'=>'0',
+						'user_delete'=>'0',
+						'user_edit'=>'0',
+						'user_new'=>'0',
+						'user_edituser'=>'0',
+						)
 
 				));
 			} else {

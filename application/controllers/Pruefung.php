@@ -23,7 +23,7 @@ class Pruefung extends CI_Controller {
 
 	function index($gid=NULL) {
 		if($this->session->userdata('logged_in') !== TRUE){
-			if($this->agent->is_mobile()){      
+			if($this->agent->is_mobile()){
 				$this->load->view('templates/header_mobile');
 			} else {
 				$this->load->view('templates/header');
@@ -42,16 +42,16 @@ class Pruefung extends CI_Controller {
 			if($this->session->userdata('level')>='2'){
 				$firmen_firmaid=$this->session->userdata('firmaid');
 				$data['pruefung'] = $this->Pruefung_model->list($gid,$firmen_firmaid);
-				
+
 			} else {
 				$data['pruefung'] = $this->Pruefung_model->list($gid);
 			}
-			
-		
+
+
 		$data['pruefungabgelaufen']= $this->config->item('dguv3_pruefungabgelaufen');
 		$data['pruefungbaldabgelaufen']= $this->config->item('dguv3_pruefungbaldabgelaufen');
-		
-		if($this->agent->is_mobile()){      
+
+		if($this->agent->is_mobile()){
 			$this->load->view('templates/header_mobile');
 			$this->load->view('templates/scroll');
 			$this->load->view('pruefung/index_mobile',$data);
@@ -60,20 +60,20 @@ class Pruefung extends CI_Controller {
 			$this->load->view('templates/datatable');
 			$this->load->view('pruefung/index',$data);
 		  }
-			
+
 			$this->load->view('templates/footer');
 			}
-		
+
 	}
 
 	function protokoll($pruefung_id=NULL) {
 		if($pruefung_id) {
 			$data['pruefung'] = $this->Pruefung_model->getnotarray($pruefung_id);
 
-		
+
 		}
-		
-		
+
+
 
 		$data['logourl']= $this->config->item('dguv3_logourl');
 		$this->load->view('templates/print/header');
@@ -143,13 +143,13 @@ class Pruefung extends CI_Controller {
 
 		$gid = $this->getGid($pruefung_id);
 		$RPEmax = $this->Geraete_model->getRPEmax($gid);
-		
+
 		$schutzklasse = $this->Geraete_model->get($gid)['schutzklasse'];
 		$geraetename = $this->Geraete_model->get($gid)['name'];
 		$ortsid = $this->Geraete_model->get($gid)['oid'];
 		$ortsname = $this->Geraete_model->get($gid)['ortsname'];
-		
-		
+
+
 		if($this->form_validation->run() === FALSE) {
 			$this->load->view('templates/header');
 			$this->load->view('pruefung/form', array(
@@ -163,7 +163,7 @@ class Pruefung extends CI_Controller {
 		} else {
 			$pruefung = array();
 			$fields_request = array('sichtpruefung','schutzleiter','isowiderstand','schutzleiterstrom','beruehrstrom','funktion');
-			
+
 
 			foreach($felder as $feld) {
 				if($this->input->post($feld) == '') {
@@ -171,14 +171,14 @@ class Pruefung extends CI_Controller {
 				} else {
 					$pruefung[$feld]=$this->input->post($feld);
 				}
-			
+
 			}
 			if($schutzklasse!=4) {
-				
-				$pruefung['RPEmax'] = $RPEmax;		
+
+				$pruefung['RPEmax'] = $RPEmax;
 			}
 			$pruefung['bestanden'] = 1;
-			
+
 			//schutzklasse 4=Leiter
 			//Kriterein
 			if($pruefung['funktion']==0) {
@@ -186,15 +186,15 @@ class Pruefung extends CI_Controller {
 			}
 			if($pruefung['sichtpruefung']==0) {
 				$pruefung['bestanden'] = 0;
-			}			
+			}
 			if($pruefung['schutzleiter']>$RPEmax & $schutzklasse!=4) {
 				// sze: TODO check by dante
 				$pruefung['bestanden'] = 0;
-				
+
 			}
 			if($pruefung['isowiderstand']<2.0 & $schutzklasse!=4) {
 				$pruefung['bestanden'] = 0;
-				
+
 			}
 			if($pruefung['schutzleiterstrom']>=0.5 & $schutzklasse!=4) {
 				$pruefung['bestanden'] = 0;
@@ -202,11 +202,11 @@ class Pruefung extends CI_Controller {
 			if($pruefung['beruehrstrom']>0.25 & $schutzklasse!=4) {
 				$pruefung['bestanden'] = 0;
 			}
-			
+
 
 			$this->Pruefung_model->update($pruefung,$pruefung_id);
 			$prdatum = $this->Pruefung_model->get($pruefung_id)['datum'];
-			
+
 			//prüfung als pdf speichern
 					if($pruefung['bestanden']='1'){
 						$bestanden='ok';
@@ -218,16 +218,16 @@ class Pruefung extends CI_Controller {
 						$html2pdf_api_key= $this->config->item('html2pdf_api_key');
         		$html2pdf_user_pass= $this->config->item('html2pdf_user_pass');
         		if (!file_exists('pdf/'.$year.'/'.$ortsname)) { mkdir('pdf/'.$year.'/'.$ortsname, 0755, true); }
-        		
-           // echo "This is Button1 that is selected"; 
+
+           // echo "This is Button1 that is selected";
            // echo $ortsid;
             //$apikey = '93fa945c-3a01-4fff-a966-3a2f069a1539';
-           
+
 						$value = site_url('pruefung/protokoll/'.$pruefung_id); // a url starting with http or an HTML string.  see example #5 if you have a long HTML string
 						$result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($html2pdf_api_key) . "&value=" .$value . $html2pdf_user_pass);
-						file_put_contents('pdf/'.$year.'/'.$ortsname.'/GID'.$gid.'_'.$geraetename.'_PID'.$pruefung_id.'_'.$prdatum.'_'.$bestanden.'.pdf',$result);
-			
-			
+						file_put_contents('pdf/'.$firma_id.'/'.$year.'/'.$ortsname.'/GID'.$gid.'_'.$geraetename.'_PID'.$pruefung_id.'_'.$prdatum.'_'.$bestanden.'.pdf',$result);
+
+
 			redirect('pruefung/index/'.$gid);
 		}
 	}

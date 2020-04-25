@@ -6,7 +6,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-		
+
 class Pruefung_json extends CI_Controller {
 
 	function __construct() {
@@ -19,14 +19,14 @@ class Pruefung_json extends CI_Controller {
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 	}
 
-	
 
 
 
-	
+
+
 		//output pruefung/protokoll/$pruefung_id als json format
 		function json($pruefung_id="") {
-			
+
 			$pruefung = $this->Pruefung_model->getnotarray($pruefung_id);
 
 			//$data['pruefung'] = $this->Pruefung_model->getnotarray($pruefung_id);
@@ -37,65 +37,65 @@ class Pruefung_json extends CI_Controller {
 			$data['naechste_pruefung']= date("m.Y", $nextDay);
 
 
-			
+
 			$y = $pruefung['RPEmax'];
-			if($pruefung['schutzleiter']===null || $pruefung['sichtpruefung']== '0') { 
+			if($pruefung['schutzleiter']===null || $pruefung['sichtpruefung']== '0') {
 				$pruefung['bestanden_schutzleiter']='-';
 				$pruefung['schutzleiter']='-';
 				$pruefung['RPEmax']='0.3';
 			 } else {
 			 	if($pruefung['schutzleiter'] >= $y) {
 				$pruefung['bestanden_schutzleiter']='nein';
-			 	} else { 
-				$pruefung['bestanden_schutzleiter']='ja'; 
+			 	} else {
+				$pruefung['bestanden_schutzleiter']='ja';
 			 	}
 			}
 
-			if($pruefung['isowiderstand']===null || $pruefung['sichtpruefung']== '0') { 
-				$pruefung['bestanden_isowiderstand']='-'; 
+			if($pruefung['isowiderstand']===null || $pruefung['sichtpruefung']== '0') {
+				$pruefung['bestanden_isowiderstand']='-';
 				$pruefung['isowiderstand']='-';
 			 } else {
 				 if($pruefung['isowiderstand'] < $y) {
-					$pruefung['bestanden_isowiderstand']='nein'; 
-				 } else { 
-					$pruefung['bestanden_isowiderstand']='ja'; 
+					$pruefung['bestanden_isowiderstand']='nein';
+				 } else {
+					$pruefung['bestanden_isowiderstand']='ja';
 				 }
 			}
 			$y = 0.50;
-			if($pruefung['schutzleiterstrom']===null || $pruefung['sichtpruefung']== '0') { 
-				$pruefung['bestanden_schutzleiterstrom']='-';  
+			if($pruefung['schutzleiterstrom']===null || $pruefung['sichtpruefung']== '0') {
+				$pruefung['bestanden_schutzleiterstrom']='-';
 				$pruefung['schutzleiterstrom']='-';
 			} else {
 				if($pruefung['schutzleiterstrom'] >= $y) {
-					$pruefung['bestanden_schutzleiterstrom']='nein'; 
-				} else { 
-					$pruefung['bestanden_schutzleiterstrom']='ja'; 
+					$pruefung['bestanden_schutzleiterstrom']='nein';
+				} else {
+					$pruefung['bestanden_schutzleiterstrom']='ja';
 				}
 			}
 
 			$y = 0.25;
-			if($pruefung['beruehrstrom']===null || $pruefung['sichtpruefung']== '0') { 
+			if($pruefung['beruehrstrom']===null || $pruefung['sichtpruefung']== '0') {
 				$pruefung['bestanden_beruehrstrom']='-';
 				$pruefung['beruehrstrom']='-';
 			} else {
 				if($pruefung['beruehrstrom'] >= $y) {
-					$pruefung['bestanden_beruehrstrom']='nein'; 
-				} else { 
-					$pruefung['bestanden_beruehrstrom']='ja';  
+					$pruefung['bestanden_beruehrstrom']='nein';
+				} else {
+					$pruefung['bestanden_beruehrstrom']='ja';
 				}
 			}
-			
+
 			//$data['ort'] = $this->Orte_model->get($pruefungid);
 			//$data['geraete'] = $this->Geraete_model->getByOid($pruefungid);
 			//$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_pdf_col');
-			
+
 			$data['dguv3_logourl']= $this->config->config['base_url'].$this->config->item('dguv3_logourl');
 			$data['qrcode']= 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$this->config->config['base_url'].'/index.php/pruefung/index/'.$pruefung_id;
-			
 
-			
-			
-			//var die nicht in json nötig sind 
+
+
+
+			//var die nicht in json nötig sind
 			unset($pruefung['mid']);
 			unset($pruefung['pid']);
 			unset($pruefung['pruefung_firmaid']);
@@ -104,10 +104,10 @@ class Pruefung_json extends CI_Controller {
 			unset($pruefung['oid']);
 			unset($pruefung['name']);
 			$data['pruefung'] = $pruefung;
-			
+
 			//json ausgabe ob eingeloggt
 			if($this->session->userdata('level')){
-				$data['login']['userame']= $this->session->userdata('username');
+				$data['login']['username']= $this->session->userdata('username');
 				$data['login']['level']=$this->session->userdata('level');
 			} else {
 				$data['login']['userame']=null;
@@ -122,10 +122,10 @@ class Pruefung_json extends CI_Controller {
 
 
 
-	
-	
 
 
-	
-	
+
+
+
+
 }
