@@ -290,11 +290,6 @@ class Geraete extends CI_Controller {
 	}
 	function pagination($oid,$pageid) {
 
-		if($pageid=='pre') {
-			$pageid=$pageid -1;
-		} elseif($pageid=='nex') {
-			$pageid=$pageid +1;
-		}
 
 
 			redirect('geraete/index/'.$oid.'/'.$pageid);
