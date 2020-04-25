@@ -2,7 +2,7 @@
 <!--<title><?php if($ort) { echo $ort['name']; } ?> Geräte</title> -->
 <div class="row">
  <div class="col">
- 	 
+
 <?php	if($ort) { ?>
 <h1>Geräte für <?php echo $ort['name']; ?></h1>
 <h3><?php echo $ort['beschreibung']; ?></h3>
@@ -15,21 +15,21 @@
 <div class="btn-group pull-right">
 <a class="<?php if(!$ort) { echo "d-none"; } ?> btn btn-primary" href="<?php echo site_url('geraete'); ?>">Alle Geräte auflisten</a>
 <a class="btn btn-success <?php if($this->session->userdata('level')=='3') { echo " disabled"; }?>" href="<?php echo site_url('geraete/edit'); ?>"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neues Gerät hinzufügen</a>
-		
+
 <?php
-	if($ort) { 
-		
+	if($ort) {
+
 		$year=date("Y");
 		if (file_exists('pdf/'.$year.'/'. $ort['name'].'/liste_'.$ort['name'].'.pdf')) { ?>
 			<a href="<?php echo site_url('geraete/edit/'.$ort['oid']); ?>" class="btn btn-secondary <?php if($this->session->userdata('level')=='3') { echo " disabled"; }?>"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> Gerät bearbeiten</a>
 
 				<a href="<?php echo base_url('pdf/'.$year.'/'. $ort['name'].'/liste_'.$ort['name'].'.pdf');?>" target="_blank" class="btn btn-primary "><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
-				
+
 			<?php } ?>
 		<!--<a href="<?php echo site_url('geraete/geraete/'.$ort['oid']); ?>" class="btn btn-primary"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
 		-->
 		<a href="<?php echo base_url(); ?>index.php/geraete/html2pdf_liste/<?php echo $ort['oid']  ?>"  class="btn btn-primary <?php if($this->session->userdata('level')>='4') { echo " disabled"; }?>">Übersicht erstellen</a>
-       <!-- <form method="post"> 
+       <!-- <form method="post">
         <input type="submit" name="button1"
                 class="btn btn-primary" value="Übersicht erstellen" /></form> -->
 	<?php	} ?>
@@ -73,7 +73,7 @@
 				<th class="">Schutzklasse</th>
 				<th class="d-none">Kabel</th>
 				<th class="">Prüfung</th>
-				<th class="">Aktion</th>			
+				<th class="">Aktion</th>
 			</tr>
 </thead>
 <tbody>
@@ -101,8 +101,10 @@ if(count($geraete)==0) {
 
 		?>
 			<!--
+
+
 						<td class="d-none">
-						
+
 						sorting col
 						status
 							inaktiv=1 gray (aktiv==0)
@@ -113,16 +115,16 @@ if(count($geraete)==0) {
 
 						-->
 
-													
+
 		<tr class="<?php if($geraet['aktiv']=='0') { echo "table-secondary"; } elseif ($geraet['bestanden']=='0')  { echo "table-danger"; } elseif ($nextyear < $today)  { echo "table-warning"; } elseif ($nextyearfast < $today) { echo "table-info"; }?>">
 		<td class=""><?php echo $geraet['gid']; ?></td>
-			
+
 			<td class="d-none"><?php if($geraet['aktiv']=='0') { echo "1"; } elseif ($geraet['bestanden']=='0')  { echo "4"; } elseif ($nextyear < $today)  { echo "2"; } elseif ($nextyearfast < $today) { echo "3"; }?></td>
-			
-			
+
+
 				<td style="white-space:nowrap;" class="<?php if($ort) { echo "d-none"; } ?>"><?php echo $geraet['ortsname']; ?></td>
-				
-			<td class=""><?php echo $geraet['name']; ?><?php if($geraet['verlaengerungskabel']=='1') { ?> | <?php echo $geraet['kabellaenge']; ?>m<?php	} ?>	
+
+			<td class=""><?php echo $geraet['name']; ?><?php if($geraet['verlaengerungskabel']=='1') { ?> | <?php echo $geraet['kabellaenge']; ?>m<?php	} ?>
 				</td>
 			<td class=""><?php echo $geraet['hersteller']; ?></td>
 			<td class=""><?php echo $geraet['typ']; ?></td>
@@ -138,15 +140,15 @@ if(count($geraete)==0) {
 			<td class=""><?php echo $geraet['letztesdatum']?>    (<?php echo $geraet['anzahl']?>)</td>
 			<td class="">
 				<div class="text-right btn-group btn-group-sm" role="group" aria-label="options">
-					
+
 					<a href="<?php if($geraet) { echo site_url('pruefung/new/'.$geraet['gid']); } ?>" class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-success btn-sm <?php if($geraet['aktiv']=='0' || $this->session->userdata('level')>='3') { echo " disabled"; } ?>"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neue Prüfung</a>
 					<a href="<?php echo site_url('pruefung/index/'.$geraet['gid']); ?>" class="btn btn-primary btn-sm <?php if($geraet['aktiv']=='0') { echo " disabled"; } ?>"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span> prüfung</a>
 					<a href="<?php echo site_url('geraete/index/'.$geraet['oid']); ?>" class="<?php if($ort) { echo "d-none"; } ?> btn btn-primary btn-sm"><span class="iconify" data-icon="ic:baseline-room" data-width="20" data-height="20"></span> Ort</a>
 					<a href="<?php echo site_url('geraete/edit/'.$geraet['gid']); ?>" class="btn btn-secondary btn-sm <?php if($this->session->userdata('level')=='3') { echo " disabled"; }?>"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> edit</a>
 					<a href="<?php echo site_url('geraete/delete/'.$geraet['gid']); ?>" class="btn btn-danger btn-sm <?php if($this->session->userdata('level')>='2') { echo " disabled"; }?>"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span> delete</a>
 				</div>
-			
-		
+
+
 			</td>
 		</tr>
 		<?php

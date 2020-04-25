@@ -16,6 +16,7 @@
 		<th>prüfer</th>
 		<th>messgerät</th>
 		<th>ort</th>
+		<th>link1</th>
 		<th>Aktion</th>
 	</tr>
 </thead>
@@ -43,6 +44,7 @@ if(count($users)==0) {
 			<td><?php echo $user['pruefername']; ?></td>
 			<td><?php echo $user['messgeraetname']; ?></td>
 			<td><?php echo $user['ortsname']; ?></td>
+			<td><?php echo $user['user_showlink1']; ?></td>
 			<td>
 				<a href="<?php echo site_url('users/edit/'.$user['user_id']); ?>" class="btn btn-secondary"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span></a>
 				<a href="<?php echo site_url('users/delete/'.$user['user_id']); ?>" class="btn btn-danger"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span></a>

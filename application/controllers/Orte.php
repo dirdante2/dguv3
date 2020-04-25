@@ -19,7 +19,7 @@ class Orte extends CI_Controller {
 
 	function index() {
 		if($this->session->userdata('logged_in') !== TRUE){
-			if($this->agent->is_mobile()){      
+			if($this->agent->is_mobile()){
 				$this->load->view('templates/header_mobile');
 			} else {
 				$this->load->view('templates/header');
@@ -27,19 +27,19 @@ class Orte extends CI_Controller {
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
-			  //userlevel 2 oder höher kann nur orte mit eigener firma sehen
+			  //userlevel 2 oder höher kann nur orte mit eigener firma sehen 8
 			if($this->session->userdata('level')>='2'){
 				$firmen_firmaid=$this->session->userdata('firmaid');
 				$data['orte'] = $this->Orte_model->get(null,$firmen_firmaid);
-				
+
 			} else {
 				$data['orte'] = $this->Orte_model->get();
 			}
-		
+
 
 		$data['html2pdf_api_key']= $this->config->item('html2pdf_api_key');
 
-		if($this->agent->is_mobile()){      
+		if($this->agent->is_mobile()){
 			$this->load->view('templates/header_mobile');
 			$this->load->view('templates/scroll');
 			$this->load->view('orte/index_mobile',$data);
@@ -48,13 +48,14 @@ class Orte extends CI_Controller {
 			$this->load->view('templates/datatable');
 			$this->load->view('orte/index',$data);
 		  }
-			
+
 			$this->load->view('templates/footer');
 			}
 
 
-		
+
 	}
+
 
 	function edit($oid=0) {
 		//user level 4 oder höher darf keine orte erstellen oder bearbeiten
@@ -68,7 +69,7 @@ class Orte extends CI_Controller {
 		//$this->form_validation->set_rules('firmen_firmaid', 'Firma', 'required');
 
 		if($this->form_validation->run() === FALSE) {
-			if($this->agent->is_mobile()){      
+			if($this->agent->is_mobile()){
 				$this->load->view('templates/header_mobile');
 			  } else {
 				$this->load->view('templates/header');
@@ -76,7 +77,7 @@ class Orte extends CI_Controller {
 
 			if($oid==0) {
 
-				if($this->agent->is_mobile()){      
+				if($this->agent->is_mobile()){
 					$this->load->view('orte/form_mobile',array(
 						'ort'=>array('oid'=>0,'beschreibung'=>'','name'=>''),
 						'firmen'=> $this->Firmen_model->get()
@@ -88,31 +89,31 @@ class Orte extends CI_Controller {
 					));
 				  }
 
-				
+
 			} else {
 
-				if($this->agent->is_mobile()){      
+				if($this->agent->is_mobile()){
 					$this->load->view('orte/form_mobile',array(
 						'ort'=>$this->Orte_model->get($oid),
 						'firmen'=> $this->Firmen_model->get()
-					
+
 					));
 				  } else {
 					$this->load->view('orte/form',array(
 						'ort'=>$this->Orte_model->get($oid),
 						'firmen'=> $this->Firmen_model->get()
-					
+
 					));
 				  }
 
-				
+
 			}
 
 
 			$this->load->view('templates/footer');
 
 		} else {
-			
+
 			$ort = array (
 				'name' => $this->input->post('name'),
 				'beschreibung' => $this->input->post('beschreibung'),
@@ -120,7 +121,7 @@ class Orte extends CI_Controller {
 			);
 			if ($ort['orte_firmaid']==NULL) {
 				$ort['orte_firmaid']=$this->session->userdata('firmaid');
-				
+
 
 			}
 
@@ -164,14 +165,14 @@ class Orte extends CI_Controller {
 			 if($this->session->userdata('level')>='2'){
 				$firmen_firmaid=$this->session->userdata('firmaid');
 				$orte=$this->Orte_model->getByName($key,$firmen_firmaid);
-				
+
 			} else {
 				$orte=$this->Orte_model->getByName($key);
 			}
 
 
-			
-			
+
+
 
 			$response=array();
 			foreach($orte as $ort) {
@@ -184,32 +185,32 @@ class Orte extends CI_Controller {
 
 
 	function html2pdf_listen() {
-		
+
 		 		$orte = $this->Orte_model->get();
-		 		
+
 		 		$html2pdf_api_key= $this->config->item('html2pdf_api_key');
 				$html2pdf_user_pass= $this->config->item('html2pdf_user_pass');
 	 			foreach($orte as $ort) {
-	 				
+
 	 				$ortsname = $this->Orte_model->get($ort['oid'])['name'];
-	 				
+
 	 				$year=date("Y");
-      
-     
-      
-      
+
+
+
+
 	        if (!file_exists('pdf/'.$year.'/'.$ortsname)) { mkdir('pdf/'.$year.'/'.$ortsname, 0755, true); }
-	        		
-	           //echo "PDF Übersicht wurde erstellt"; 
-	            
-	            
+
+	           //echo "PDF Übersicht wurde erstellt";
+
+
 						$value = site_url('geraete/uebersicht/'.$ort['oid']); // a url starting with http or an HTML string.  see example #5 if you have a long HTML string
 						$result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($html2pdf_api_key) . "&value=" .$value . $html2pdf_user_pass);
 						file_put_contents('pdf/'.$year.'/'.$ortsname.'/liste_'.$ortsname.'.pdf',$result);
 				}
 				redirect('orte');
-				
-					
+
+
   }
 
 

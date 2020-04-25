@@ -20,13 +20,13 @@ class Users extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		//$this->load->library('Session_update');
-		
+
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 	}
 
 	function index($user_id=NULL) {
 		if($this->session->userdata('logged_in') !== TRUE){
-			if($this->agent->is_mobile()){      
+			if($this->agent->is_mobile()){
 				$this->load->view('templates/header_mobile');
 			} else {
 				$this->load->view('templates/header');
@@ -36,7 +36,7 @@ class Users extends CI_Controller {
           }else{
 			if($this->session->userdata('level')!='1'){
 				$user_id=$this->session->userdata('userid');
-				
+
 			}
 
 		if($user_id) {
@@ -64,7 +64,7 @@ class Users extends CI_Controller {
 		if($this->Users_model->get($user_id)) {
 			 //
 			 $users_firmaid = $this->Users_model->get($user_id)['users_firmaid'];
-			
+
 			$user_id = $this->Users_model->new(array(
 			'users_firmaid'=>$users_firmaid
 			//'oid'=>$oid,
@@ -85,26 +85,26 @@ class Users extends CI_Controller {
           }else{
 			if($this->session->userdata('level')!='1'){
 				$user_id=$this->session->userdata('userid');
-				
+
 			}
-			$felder = array('user_oid','user_name','user_email','user_mid','user_pid','users_firmaid','user_level','user_password');
+			$felder = array('user_oid','user_name','user_email','user_mid','user_pid','users_firmaid','user_level','user_password','user_showlink1');
 			$this->form_validation->set_rules('user_name', 'Name', 'required');
 			$this->form_validation->set_rules('user_email', 'Email', 'required');
 			//$this->form_validation->set_rules('user_level', 'Level', 'required');
 			//$this->form_validation->set_rules('users_firmaid', 'Firma', 'required');
 		//$this->form_validation->set_rules('beschreibung', 'Beschreibung', 'required');
-		
+
 
 		if($this->form_validation->run() === FALSE) {
 			$this->load->view('templates/header');
-			
+
 			if($user_id==0) {
 				$this->load->view('users/form',array(
 					'pruefer'=> $this->Pruefer_model->get(),
 					'messgeraete'=> $this->Messgeraete_model->get(),
 					'firmen'=> $this->Firmen_model->get(),
-					'user'=>array('user_id'=>0,'user_name'=>'','user_oid'=>'','ortsname'=>'')
-				
+					'user'=>array('user_id'=>0,'user_name'=>'','user_oid'=>'','ortsname'=>'','user_showlink1'=>'0')
+
 				));
 			} else {
 				$this->load->view('users/form',array(
@@ -112,12 +112,12 @@ class Users extends CI_Controller {
 					'messgeraete'=> $this->Messgeraete_model->get(),
 					'firmen'=> $this->Firmen_model->get(),
 					'user'=>$this->Users_model->get($user_id)
-				
+
 				));
 			}
 			$this->load->view('templates/footer');
-			
-			
+
+
 
 
 
@@ -126,7 +126,7 @@ class Users extends CI_Controller {
 			$userlevel= $this->Users_model->get($user_id)['user_level'];
 			$userfirmaid= $this->Users_model->get($user_id)['users_firmaid'];
 			$user = array();
-			
+
 			foreach($felder as $feld) {
 				$user[$feld]=$this->input->post($feld);
 			}
@@ -137,21 +137,21 @@ class Users extends CI_Controller {
 			}
 
 			if(!$user['users_firmaid']) {
-				
+
 				$user['users_firmaid']=$userfirmaid;
 			}
 			if(!$user['user_level']) {
-				
+
 				$user['user_level']=$userlevel;
 			}
-			
-			
+
+
 			$this->Users_model->update($user,$user_id);
 			$this->Login_model->update();
-			
+
 				// get ortsid von neu angelegtem gerät damit redirect zu richtiger seite führt?!!
 			//$gortsid = $this->Geraete_model->get($gid);
-			
+
 			//if($gid==0) {
 				redirect('users');
 			//	}
@@ -179,13 +179,13 @@ class Users extends CI_Controller {
 				'canceltarget' => 'Users'
 			));
 			$this->load->view('templates/footer');
-		} else {	
+		} else {
 			$this->Users_model->delete($user_id);
 			redirect('users');
 		}
 	}
 
-	
+
 }
 
 		  }

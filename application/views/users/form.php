@@ -14,14 +14,14 @@ $().ready(function() {
 		},
 		select: function( event, ui ) {
        	 	$( "#orte" ).val( ui.item.label );
-			$( "#user_oid" ).val( ui.item.value );			
+			$( "#user_oid" ).val( ui.item.value );
     	    return false;
 	    },
     	minLength: 2,
 	    delay: 100
 	});
-	
-    
+
+
 });
 </script>
 
@@ -39,7 +39,7 @@ echo validation_errors();
 <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
 <div class="row">
  <div class="col-md-6">
-	
+
 <form>
 
   <div class="form-group row">
@@ -61,9 +61,9 @@ echo validation_errors();
     </div>
   </div>
   <?php if($this->session->userdata('level')=='1'){?>
-				
-				
-		
+
+
+
   <fieldset class="form-group">
     <div class="row">
       <legend class="col-form-label col-sm-5 pt-0">Level*</legend>
@@ -84,9 +84,25 @@ echo validation_errors();
           <input class="form-check-input" type="radio" name="user_level" id="4" value="4" <?php if($user['user_level']=='4') { echo 'checked'; } ?>>
           <label class="form-check-label" for="4">4 User</label>
         </div>
-       
+
       </div>
-      
+
+    </div>
+  </fieldset>
+  <fieldset class="form-group">
+    <div class="row">
+      <legend class="col-form-label col-sm-5 pt-0">Show link1*</legend>
+      <div class="col-sm-7">
+        <div class="form-check">
+
+          <input class="form-check-input" type="checkbox" name="user_showlink1" id="1" value="1" <?php if($user['user_showlink1']=='1') { echo 'checked'; } ?> >
+          <label class="form-check-label" for="1">1 website link</label>
+        </div>
+
+
+
+      </div>
+
     </div>
   </fieldset>
   <div class="form-group row">
@@ -97,12 +113,12 @@ echo validation_errors();
     		<?php
     		foreach($firmen as $f) {
     		    echo '<option value="'.$f['firmen_firmaid'].'"';
-    		    
-    		   
+
+
     		    	if($f['firmen_firmaid'] == $user['users_firmaid']){
     		        echo ' selected';
     		    	}
-    		    
+
 
     				echo '>'.$f['firma_name'].'</option>';
     		}
@@ -121,7 +137,7 @@ echo validation_errors();
     </div>
   </div>
 
-  
+
   <div class="form-group row">
     <label for="Messgerät" class="col-sm-5 col-form-label">Messgerät</label>
     <div class="col-sm-7">
@@ -130,13 +146,13 @@ echo validation_errors();
     		<?php
     		foreach($messgeraete as $m) {
     		    echo '<option value="'.$m['mid'].'"';
-    		    
-    		    
+
+
     		    	if($m['mid'] == $user['user_mid']){
     		        echo ' selected';
     		    	}
 
-    		    
+
     		    echo '>'.$m['name'].'</option>';
     		}
     		?>
@@ -151,12 +167,12 @@ echo validation_errors();
     		<?php
     		foreach($pruefer as $p) {
     		    echo '<option value="'.$p['pid'].'"';
-    		    
-    		   
+
+
     		    	if($p['pid'] == $user['user_pid']){
     		        echo ' selected';
     		    	}
-    		    
+
 
     				echo '>'.$p['name'].'</option>';
     		}
@@ -164,7 +180,7 @@ echo validation_errors();
     	</select>
     </div>
   </div>
-  
+
 
 <br>
 <input type="submit" class="btn btn-primary btn-lg btn-block" value="speichern"><br><br>
@@ -186,7 +202,7 @@ echo validation_errors();
       darf keine Geräte löschen bearbeiten oder neu<br>
       Keine Prüfung löschen bearbeiten oder neu<br>
       keine orte löschen bearbeiten oder neu<br>
-      
+
       <b>4 User</b><br>
       Alles drüber<br>
       Darf nur eigene firma / Ort sehen<br>
