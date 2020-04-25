@@ -44,7 +44,7 @@ class Pruefung_model extends CI_Model {
 		$this->db->join('orte', 'geraete.oid = orte.oid', 'LEFT');
 		$this->db->join('firmen', 'pruefung.pruefung_firmaid = firmen.firmen_firmaid', 'LEFT');
 
-		
+
 
 		$this->db->where('pruefung.pruefungid',$pruefung_id);
 
@@ -55,8 +55,8 @@ class Pruefung_model extends CI_Model {
 			return NULL;
 		}
 	}
-
-	function list($gid=NULL,$firmen_firmaid=NULL) {
+	//var1 geräteid var2 firmenid var3 rowlimit var4 offset
+	function list($gid=NULL,$firmen_firmaid=NULL,$limit=null, $offset=null) {
 		$this->db->select('pruefung.*, firmen.firmen_firmaid,firmen.firma_name,geraete.*,orte.name as ortsname, messgeraete.name as messgeraetname, pruefer.name as pruefername, geraete.name as geraetename, geraete.kabellaenge as geraetekabellaenge');
 		$this->db->from('pruefung');
 		$this->db->join('geraete', 'pruefung.gid = geraete.gid', 'LEFT');
@@ -67,12 +67,15 @@ class Pruefung_model extends CI_Model {
 
 		if($firmen_firmaid!==NULL) {
 			$this->db->having('pruefung.pruefung_firmaid', $firmen_firmaid);
-		} 
+		}
 		if($gid!==NULL) {
 			$this->db->where('pruefung.gid',$gid);
 		}
+		$this->db->limit($limit,$offset);
 		return $this->db->get()->result_array();
 	}
+
+
 
 	function new($data) {
 		$this->db->insert('pruefung',$data);

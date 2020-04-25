@@ -1,7 +1,7 @@
-<title><?php if($geraet) { echo $geraet['name']; } ?> Prüfung</title> 
+<title><?php if($geraet) { echo $geraet['name']; } ?> Prüfung</title>
 <div class="row">
  <div class="col">
- 	 
+
 
 <h1>Prüfungen</h1>
 <?php
@@ -102,6 +102,43 @@
 <br><br>
 <!-- table-hover table-bordered table-sm table-striped -->
 
+<!-- <?php echo $page_total_rows; ?> total rows<br>
+<?php echo $page_show_rows; ?> show rows<br>
+<?php echo $page_pages; ?> pages<br>
+<?php echo $page_pageid; ?> pageid<br>
+<?php echo $page_offset; ?> offset<br> -->
+<?php
+if(!$geraet) {
+	$gid=0;
+} else {
+	$gid=$geraet['gid'];
+}
+
+?>
+<div class="" style="text-align: center;border: 0px solid #343a40;" role="group" aria-label="pagination">
+
+
+	<a class="btn btn-outline-dark <?php if($page_pageid==0) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>pruefung/pagination/<?php echo $gid; ?>/<?php echo $page_pageid -1; ?>">zurück</a>
+<?php
+$i = 0;
+while($i < $page_pages) { ?>
+
+
+	<a class="btn btn-outline-dark <?php if($i==$page_pageid) { echo 'active';} ?>" type="button" href="<?php echo base_url(); ?>pruefung/pagination/<?php echo $gid; ?>/<?php echo $i; ?>" tabindex="0"><?php echo $i +1; ?></a>
+
+	<?php
+
+   //echo "$i, ";
+
+   $i++;
+}
+
+?>
+<a class="btn btn-outline-dark <?php if($page_pageid+1==$page_pages) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>pruefung/pagination/<?php echo $gid; ?>/<?php echo $page_pageid +1; ?>">weiter</a>
+
+
+</div>
+<br>
 
 <?php
 
@@ -126,26 +163,26 @@ keine geräte vorhanden
 				$nextyear = date("Y-m-d", $nextyear);
 				$nextyearfast = date("Y-m-d", $nextyearfast);
 
-		?>	
-		<div class="card collapse multi-collapse show" style="border: 1px solid #343a40;" id='<?php if($pr['bestanden']=='0')  { echo "suche_failed"; } elseif ($nextyear < $today)  { echo "suche_abgelaufen"; } elseif ($nextyearfast < $today) { echo "suche_baldabgelaufen"; } else { echo 'suche_ok';} ?>'> 
-  
-		
+		?>
+		<div class="card collapse multi-collapse show" style="border: 1px solid #343a40;" id='<?php if($pr['bestanden']=='0')  { echo "suche_failed"; } elseif ($nextyear < $today)  { echo "suche_abgelaufen"; } elseif ($nextyearfast < $today) { echo "suche_baldabgelaufen"; } else { echo 'suche_ok';} ?>'>
+
+
 		<div id="heading<?php echo $pr['pruefungid']; ?>" class="card-header <?php if($pr['aktiv']=='0') { echo "bg-secondary"; } elseif ($pr['bestanden']=='0')  { echo "bg-danger"; } elseif ($nextyear < $today)  { echo "bg-warning"; } elseif ($nextyearfast < $today) { echo "bg-info"; }?>" data-toggle="collapse" data-target="#pruefung<?php echo $pr['pruefungid']; ?>" aria-expanded="true" aria-controls="pruefung<?php echo $pr['pruefungid']; ?>">
 
 			<h4 class="mb-0" >
-			<div class="row">	
+			<div class="row">
 			<div class="col-6 text-left" id="<?php echo $pr['pruefungid']; ?>"><?php  echo $pr['name']; ?> (<?php echo $pr['schutzklasse']; ?>) </div><div class="col-6 text-right" id="<?php echo $pr['pruefungid']; ?>"><?php if($this->session->userdata('level')=='1'){?><?php echo $pr['firma_name']; ?><?php } ?></div>
 			</div>
-				
+
 			</h4>
 			</div>
-			
+
 			<div id="pruefung<?php echo $pr['pruefungid']; ?>" class="collapse" aria-labelledby="heading<?php echo $pr['pruefungid']; ?>" data-parent="#accordion">
 			<div class="card-body bg-light">
 				<div class="row" id="<?php echo $pr['pruefungid']; ?>">
 
-				
-				
+
+
 				<div class="col-6">Name:</div><div class="col-4" style="white-space:nowrap;"><?php echo $pr['geraetename']; ?></div>
 				<?php if($pr['geraetekabellaenge']!='0') { ?>
 				<div class="col-6">Länge:</div><div class="col-4" style="white-space:nowrap;"><?php echo $pr['geraetekabellaenge']; ?></div>
@@ -179,11 +216,11 @@ keine geräte vorhanden
 				<div class="col-6">Bemerkung:</div><div class="col-4" style="white-space:nowrap;">
 				<?php echo $pr['bemerkung']; ?>
 </div>
-					
-                   
-                        
-                        
-												
+
+
+
+
+
 
 
 
@@ -193,12 +230,12 @@ keine geräte vorhanden
 
 					<div id="1" class="text-right btn-group" role="group" aria-label="options" style="width:100%">
 
-					<?php 
+					<?php
 						$timestamp = strtotime($pr['datum']);
-						$year = date("Y", $timestamp); 
+						$year = date("Y", $timestamp);
 						$prdatum = date("Y-m-d", $timestamp);
 						?>
-						
+
 
 					<a href="<?php echo base_url('pdf/'.$year.'/'.$pr['ortsname'].'/GID'.$pr['gid'].'_'.$pr['geraetename'].'_PID'.$pr['pruefungid'].'_'.$prdatum.'.pdf');?>" target="_blank" class="btn btn-primary<?php if (!file_exists('pdf/'.$year.'/'.$pr['ortsname'].'/GID'.$pr['gid'].'_'.$pr['geraetename'].'_PID'.$pr['pruefungid'].'_'.$prdatum.'.pdf')) { echo " disabled"; } ?>"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="50" data-height="50"></span> Übersicht</a>
 
@@ -207,14 +244,14 @@ keine geräte vorhanden
 					<a href="<?php echo site_url('pruefung/edit/'.$pr['pruefungid']); ?>" class="<?php if($this->session->userdata('level')>='3') { echo " disabled"; }?> btn btn-secondary"><span class="iconify icon:typcn:edit icon-width:50 icon-height:50"></span> edit</a>
 				<a href="<?php echo site_url('pruefung/delete/'.$pr['pruefungid']); ?>" class="<?php if($this->session->userdata('level')>='3') { echo " disabled"; }?> btn btn-danger"><span class="iconify icon:typcn:delete icon-width:50 icon-height:50"></span> delete</a>
 						</div>
-				
-					
+
+
 						</div>
 					</div>
 					</div>
-					
 
-			
+
+
 		<?php
 	} ?>
 	</div>

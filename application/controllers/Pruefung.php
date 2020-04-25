@@ -14,6 +14,7 @@ class Pruefung extends CI_Controller {
 		$this->load->model('Pruefung_model');
 		$this->load->model('Geraete_model');
 		$this->load->model('Pruefer_model');
+		$this->load->model('Dguv3_model');
 		$this->load->model('Messgeraete_model');
 		$this->load->model('Orte_model');
 		$this->load->helper('form');
@@ -32,19 +33,48 @@ class Pruefung extends CI_Controller {
 			$this->load->view('templates/footer');
           }else{
 
+
+			$pageid =  $this->uri->segment(4);
+			if(!$pageid) { $pageid =0;}
+
+
 			if($gid) {
 				$data['geraet'] = $this->Geraete_model->get($gid);
+				$data["page_total_rows"] = $this->Dguv3_model->getcountdata('pruefung','gid',$gid); // count prüfungen wenn auf gerät begrenzt
+
 			} else {
 				$data['geraet'] = NULL;
+				$data["page_total_rows"] = $this->Dguv3_model->getcountdata('pruefung');
 			}
+
+			$data["page_show_rows"] = '20';
+			$data['page_pages']=ceil($data["page_total_rows"] / $data["page_show_rows"]);
+			$data['page_pageid']=$pageid;
+			$data['page_offset']=$data["page_show_rows"] * $pageid ;
+
 
 			  //userlevel 2 oder höher kann nur orte mit eigener firma sehen
 			if($this->session->userdata('level')>='2'){
 				$firmen_firmaid=$this->session->userdata('firmaid');
-				$data['pruefung'] = $this->Pruefung_model->list($gid,$firmen_firmaid);
+
+				if($gid) {
+					$data['pruefung'] = $this->Pruefung_model->list($gid,$firmen_firmaid,$data["page_show_rows"],$data['page_offset']);
+				} else {
+					$data['pruefung'] = $this->Pruefung_model->list(null,$firmen_firmaid,$data["page_show_rows"],$data['page_offset']);
+				}
+
+				//$data['geraete'] = $this->Geraete_model->get(null,null,$data["page_show_rows"],$data['page_offset']);
+
 
 			} else {
-				$data['pruefung'] = $this->Pruefung_model->list($gid);
+				if($gid) {
+					//admin
+					$data['pruefung'] = $this->Pruefung_model->list($gid,null,$data["page_show_rows"],$data['page_offset']);
+				} else {
+					$data['pruefung'] = $this->Pruefung_model->list(null,null,$data["page_show_rows"],$data['page_offset']);
+
+				}
+				//$data['geraete'] = $this->Geraete_model->get(null,null,$data["page_show_rows"],$data['page_offset']);
 			}
 
 
@@ -257,6 +287,13 @@ class Pruefung extends CI_Controller {
 
 
 
+	}
+
+	function pagination($gid,$pageid) {
+
+
+
+		redirect('pruefung/index/'.$gid.'/'.$pageid);
 	}
 
 }

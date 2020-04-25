@@ -25,20 +25,20 @@ class Dguv3_model extends CI_Model
         $this->db->select('*');
         $this->db->from($tblName);
         if($this->session->userdata('level')>='2'){
-            $firmen_firmaid=$this->session->userdata('firmaid');
-            $this->db->where($tblName.'.'.$tblName.'_firmaid', $firmen_firmaid);
-        }
+			$firmen_firmaid=$this->session->userdata('firmaid');
 
+
+			$this->db->where($tblName.'.'.$tblName.'_firmaid', $firmen_firmaid);
+
+	}
 
         if ($tblvar !== NULL) {
-            $this->db->like($tblcol, $tblvar);
-        } else {
-            return $this->db->count_all_results();
+            $this->db->where($tblName.'.'.$tblcol, $tblvar);
         }
 
         return $this->db->count_all_results();
     }
-    
+
 
     // gibt anzahl geräte die bestanden sind zurück
 

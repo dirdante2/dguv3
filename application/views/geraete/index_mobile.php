@@ -51,11 +51,11 @@
 </div>
 <br><br>
 <!-- table-hover table-bordered table-sm table-striped -->
-<?php echo $page_total_rows; ?> total rows<br>
+<!-- <?php echo $page_total_rows; ?> total rows<br>
 <?php echo $page_show_rows; ?> show rows<br>
 <?php echo $page_pages; ?> pages<br>
 <?php echo $page_pageid; ?> pageid<br>
-<?php echo $page_offset; ?> offset<br>
+<?php echo $page_offset; ?> offset<br> -->
 
 <?php
 if(!$ort) {
@@ -65,21 +65,16 @@ if(!$ort) {
 }
 
 ?>
+<div class="" style="text-align: center;border: 0px solid #343a40;" role="group" aria-label="pagination">
 
-<nav aria-label="pagination">
-  <ul class="pagination">
-    <li class="page-item <?php if($page_pageid==0) { echo 'disabled';} ?>">
-      <a class="page-link" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $ortsid; ?>/<?php echo $page_pageid -1; ?>" tabindex="0">Previous</a>
-    </li>
 
+	<a class="btn btn-outline-dark <?php if($page_pageid==0) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $ortsid; ?>/<?php echo $page_pageid -1; ?>">zurück</a>
 <?php
 $i = 0;
 while($i < $page_pages) { ?>
 
-<li class="page-item <?php if($i==$page_pageid) { echo 'active';} ?>">
-	<a class="page-link" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $ortsid; ?>/<?php echo $i; ?>" tabindex="0"><?php echo $i +1; ?></a>
-	</li>
 
+	<a class="btn btn-outline-dark <?php if($i==$page_pageid) { echo 'active';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $ortsid; ?>/<?php echo $i; ?>" tabindex="0"><?php echo $i +1; ?></a>
 
 	<?php
 
@@ -88,12 +83,10 @@ while($i < $page_pages) { ?>
    $i++;
 }
 ?>
-<li class="page-item <?php if($page_pages==$page_pageid) { echo 'disabled';} ?>">
-	<a class="page-link" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $ortsid; ?>/<?php echo $page_pageid +1; ?>" tabindex="0">next</a>
-    </li>
-  </ul>
-</nav>
+<a class="btn btn-outline-dark <?php if($page_pageid+1==$page_pages) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $ortsid; ?>/<?php echo $page_pageid +1; ?>">weiter</a>
 
+
+</div>
 <br>
 
 <?php

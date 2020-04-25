@@ -24,8 +24,7 @@ class Geraete extends CI_Controller {
 
 	function index($oid=null) {
 
-		$pageid =  $this->uri->segment(4);
-		if(!$pageid) { $pageid =0;}
+
 
 
 		if($this->session->userdata('logged_in') !== TRUE){
@@ -39,8 +38,15 @@ class Geraete extends CI_Controller {
 
           }else{
 
-
+			$pageid =  $this->uri->segment(4);
+			if(!$pageid) { $pageid =0;}
+			if($oid) {
+			$data["page_total_rows"] = $this->Dguv3_model->getcountdata('geraete','oid',$oid);
+			} else{
 			$data["page_total_rows"] = $this->Dguv3_model->getcountdata('geraete');
+			}
+
+
 			$data["page_show_rows"] = '20';
 			$data['page_pages']=ceil($data["page_total_rows"] / $data["page_show_rows"]);
 			$data['page_pageid']=$pageid;
@@ -57,7 +63,7 @@ class Geraete extends CI_Controller {
 					$data['geraete'] = $this->Geraete_model->getByOid($oid,$firmen_firmaid);
 				} else {
 					$data['ort'] = NULL;
-					$data['geraete'] = $this->Geraete_model->get(null,$firmen_firmaid);
+					$data['geraete'] = $this->Geraete_model->get(null,$firmen_firmaid,$data["page_show_rows"],$data['page_offset']);
 				}
 
 			} else {
