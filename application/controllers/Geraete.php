@@ -47,7 +47,7 @@ class Geraete extends CI_Controller {
 			}
 
 
-			$data["page_show_rows"] = '20';
+			$data["page_show_rows"] = $this->config->item('dguv3_show_page_rows');
 			$data['page_pages']=ceil($data["page_total_rows"] / $data["page_show_rows"]);
 			$data['page_pageid']=$pageid;
 			$data['page_offset']=$data["page_show_rows"] * $pageid ;
@@ -84,7 +84,9 @@ class Geraete extends CI_Controller {
 
 		$data['html2pdf_api_key']= $this->config->item('html2pdf_api_key');
 		$data['html2pdf_user_pass']= $this->config->item('html2pdf_user_pass');
+//FIXME
 		$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_col');
+
 		$data['pruefungabgelaufen']= $this->config->item('dguv3_pruefungabgelaufen');
 		$data['pruefungbaldabgelaufen']= $this->config->item('dguv3_pruefungbaldabgelaufen');
 		/*$this->output->cache(5);*/
@@ -115,9 +117,11 @@ class Geraete extends CI_Controller {
 			$data['ort'] = NULL;
 			$data['geraete'] = $this->Geraete_model->get();
 		}
-
+//FIXME
 		$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_pdf_col');
 		$data['adresse']= $this->config->item('dguv3_adresse');
+
+
 		/*$this->output->cache(5);*/
 
 		//ob_start();

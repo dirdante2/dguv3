@@ -12,7 +12,7 @@ jQuery(document).ready(function($) {
 					var top = $(event.delegateTarget).offset().top;
 					var scroll_top = top - fixedHeaderHeight;
 					$('html, body').animate({scrollTop: scroll_top}, 500);
-				}, 200);
+				}, 0);
 		});
 	});
 });

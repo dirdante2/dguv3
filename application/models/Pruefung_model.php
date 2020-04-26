@@ -25,6 +25,7 @@ class Pruefung_model extends CI_Model {
 		if($pruefung_id!==NULL) {
 			$this->db->where('pruefung.pruefungid',$pruefung_id);
 		}
+		$this->db->order_by('pruefung.pruefungid', 'DESC');
 		$result = $this->db->get()->result_array();
 		if(!empty($result)) {
 			return $result[0];
@@ -47,6 +48,7 @@ class Pruefung_model extends CI_Model {
 
 
 		$this->db->where('pruefung.pruefungid',$pruefung_id);
+		$this->db->order_by('pruefung.pruefungid', 'DESC');
 
 		$result = $this->db->get()->result_array();
 		if(!empty($result)) {
@@ -71,6 +73,7 @@ class Pruefung_model extends CI_Model {
 		if($gid!==NULL) {
 			$this->db->where('pruefung.gid',$gid);
 		}
+		$this->db->order_by('pruefung.pruefungid', 'DESC');
 		$this->db->limit($limit,$offset);
 		return $this->db->get()->result_array();
 	}

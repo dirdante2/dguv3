@@ -48,7 +48,7 @@
 						<table  class="table table-sm">
 							<tr>
 								<td>Nennspannung</td>
-								<td><?php if($geraet['nennspannung']=='0' || $geraet['schutzklasse']='4') { echo "-"; } else { echo $geraet['nennspannung'].'V'; } ?></td>
+								<td><?php if($geraet['nennspannung']=='0' || $geraet['schutzklasse']=='4') { echo "-"; } else { echo $geraet['nennspannung'].'V'; } ?></td>
 							</tr>
 							<tr>
 								<td>Nennstrom</td>
@@ -114,31 +114,53 @@ if(!$geraet) {
 	$gid=$geraet['gid'];
 }
 
+if($page_total_rows<=$page_show_rows) {
+
+	$page_show_rows=$page_total_rows;
+}
+
+//wenn pages mehr als 5 dann kürze pagination ein
+if($page_pages>=5) {
+	if($page_pageid>=3) {
+		$page_start=$page_pageid -3;
+		$page_end=$page_pageid +4;
+	} else {
+		$page_start=0;
+		$page_end=7;
+	}
+} else {
+	$page_start=0;
+	$page_end=$page_pages;
+}
+//wenn ende pagination erreicht wird
+if($page_pages>=5 && $page_pageid+4>= $page_pages) {
+$page_end=$page_pages;
+$page_start=$page_end -7;
+}
+
 ?>
 <div class="" style="text-align: center;border: 0px solid #343a40;" role="group" aria-label="pagination">
 
 
-	<a class="btn btn-outline-dark <?php if($page_pageid==0) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>pruefung/pagination/<?php echo $gid; ?>/<?php echo $page_pageid -1; ?>">zurück</a>
+<a class="btn btn-outline-dark <?php if($page_pageid==0) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>pruefung/pagination/<?php echo $gid; ?>/0">start</a>
 <?php
-$i = 0;
-while($i < $page_pages) { ?>
+$i = $page_start;
+while($i < $page_end) { ?>
 
 
-	<a class="btn btn-outline-dark <?php if($i==$page_pageid) { echo 'active';} ?>" type="button" href="<?php echo base_url(); ?>pruefung/pagination/<?php echo $gid; ?>/<?php echo $i; ?>" tabindex="0"><?php echo $i +1; ?></a>
+<a class="btn <?php if($i==$page_pageid) { echo 'btn-dark disabled active';} else { echo 'btn-outline-dark';} ?>" type="button" href="<?php echo base_url(); ?>pruefung/pagination/<?php echo $gid; ?>/<?php echo $i; ?>" tabindex="0"><?php echo $i +1; ?></a>
 
-	<?php
+<?php
 
-   //echo "$i, ";
+//echo "$i, ";
 
-   $i++;
+$i++;
 }
-
 ?>
-<a class="btn btn-outline-dark <?php if($page_pageid+1==$page_pages) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>pruefung/pagination/<?php echo $gid; ?>/<?php echo $page_pageid +1; ?>">weiter</a>
-
+<a class="btn btn-outline-dark <?php if($page_pageid+1==$page_pages) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>pruefung/pagination/<?php echo $gid; ?>/<?php echo $page_pages-1; ?>">ende</a>
+<br>zeige <?php echo $page_show_rows; ?> von <?php echo $page_total_rows; ?> auf <?php echo $page_pages; ?> Seiten<br>
 
 </div>
-<br>
 
 <?php
 
@@ -162,6 +184,25 @@ keine geräte vorhanden
 				$nextyearfast = strtotime('+'.$pruefungbaldabgelaufen, strtotime($day));
 				$nextyear = date("Y-m-d", $nextyear);
 				$nextyearfast = date("Y-m-d", $nextyearfast);
+				if(!$geraet) {
+
+					if($pr['schutzklasse']==1) {
+						$schutzklasseicon='mdi:roman-numeral-1';
+
+					} elseif($pr['schutzklasse']==2) {
+						$schutzklasseicon='mdi:roman-numeral-2';
+
+					} elseif($pr['schutzklasse']==3) {
+						$schutzklasseicon='mdi:roman-numeral-3';
+
+					} elseif($pr['schutzklasse']==4) {
+						$schutzklasseicon='medical-icon:i-stairs';
+
+					} else {
+						$schutzklasseicon='';
+
+					}
+				} else {$schutzklasseicon='';}
 
 		?>
 		<div class="card collapse multi-collapse show" style="border: 1px solid #343a40;" id='<?php if($pr['bestanden']=='0')  { echo "suche_failed"; } elseif ($nextyear < $today)  { echo "suche_abgelaufen"; } elseif ($nextyearfast < $today) { echo "suche_baldabgelaufen"; } else { echo 'suche_ok';} ?>'>
@@ -171,7 +212,7 @@ keine geräte vorhanden
 
 			<h4 class="mb-0" >
 			<div class="row">
-			<div class="col-6 text-left" id="<?php echo $pr['pruefungid']; ?>"><?php  echo $pr['name']; ?> (<?php echo $pr['schutzklasse']; ?>) </div><div class="col-6 text-right" id="<?php echo $pr['pruefungid']; ?>"><?php if($this->session->userdata('level')=='1'){?><?php echo $pr['firma_name']; ?><?php } ?></div>
+			<div class="col-6 text-left" id="<?php echo $pr['pruefungid']; ?>"><?php  echo $pr['name']; ?> <span class="iconify" data-icon="<?php echo $schutzklasseicon; ?>" data-inline="false" data-width="50" data-height="50"></span></div><div class="col-6 text-right" id="<?php echo $pr['pruefungid']; ?>"><?php if($this->session->userdata('level')=='1'){?><?php echo $pr['firma_name']; ?><?php } ?></div>
 			</div>
 
 			</h4>
@@ -187,7 +228,7 @@ keine geräte vorhanden
 				<?php if($pr['geraetekabellaenge']!='0') { ?>
 				<div class="col-6">Länge:</div><div class="col-4" style="white-space:nowrap;"><?php echo $pr['geraetekabellaenge']; ?></div>
 				<?php } ?>
-				<div class="col-6">Schutzklasse:</div><div class="col-4" style="white-space:nowrap;"><?php echo $pr['schutzklasse']; ?></div>
+				<div class="col-6">Schutzklasse:</div><div class="col-4" style="white-space:nowrap;"><?php echo $pr['schutzklasse']; ?></span></div>
 				<div class="col-6">Datum:</div><div class="col-4" style="white-space:nowrap;"><?php $blubb = new DateTime($pr['datum']); echo $pr['datum']?$blubb->format('d.m.Y'):'';  ?></div>
 				<div class="col-6">Prüfer:</div><div class="col-4" style="white-space:nowrap;"><?php echo $pr['pruefername']; ?></div>
 				<div class="col-6">Messgerät:</div><div class="col-4" style="white-space:nowrap;"><?php echo $pr['messgeraetname']; ?></div>
@@ -240,9 +281,9 @@ keine geräte vorhanden
 					<a href="<?php echo base_url('pdf/'.$year.'/'.$pr['ortsname'].'/GID'.$pr['gid'].'_'.$pr['geraetename'].'_PID'.$pr['pruefungid'].'_'.$prdatum.'.pdf');?>" target="_blank" class="btn btn-primary<?php if (!file_exists('pdf/'.$year.'/'.$pr['ortsname'].'/GID'.$pr['gid'].'_'.$pr['geraetename'].'_PID'.$pr['pruefungid'].'_'.$prdatum.'.pdf')) { echo " disabled"; } ?>"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="50" data-height="50"></span> Übersicht</a>
 
 					<a href="<?php echo site_url('geraete/index/'.$pr['oid']); ?>" class="<?php if($geraet) { echo "d-none"; } ?> btn btn-primary"><span class="iconify" data-icon="ic:baseline-room" data-width="50" data-height="50"></span> Ort</a>
-					<a href="<?php echo site_url('pruefung/index/'.$pr['gid']); ?>" class="<?php if($geraet) { echo "d-none"; } ?> btn btn-primary"><span class="iconify icon:jam:plug icon-width:50 icon-height:50"></span> Gerät</a>
-					<a href="<?php echo site_url('pruefung/edit/'.$pr['pruefungid']); ?>" class="<?php if($this->session->userdata('level')>='3') { echo " disabled"; }?> btn btn-secondary"><span class="iconify icon:typcn:edit icon-width:50 icon-height:50"></span> edit</a>
-				<a href="<?php echo site_url('pruefung/delete/'.$pr['pruefungid']); ?>" class="<?php if($this->session->userdata('level')>='3') { echo " disabled"; }?> btn btn-danger"><span class="iconify icon:typcn:delete icon-width:50 icon-height:50"></span> delete</a>
+					<a href="<?php echo site_url('pruefung/index/'.$pr['gid']); ?>" class="<?php if($geraet) { echo "d-none"; } ?> btn btn-primary"><span class="iconify" data-icon="jam:plug" data-inline="false" data-width="50" data-height="50"></span> Gerät</a>
+					<a href="<?php echo site_url('pruefung/edit/'.$pr['pruefungid']); ?>" class="<?php if($this->session->userdata('level')>='3') { echo " disabled"; }?> btn btn-secondary"><span class="iconify" data-icon="typcn:edit" data-inline="false" data-width="50" data-height="50" ></span> edit</a>
+				<a href="<?php echo site_url('pruefung/delete/'.$pr['pruefungid']); ?>" class="<?php if($this->session->userdata('level')>='3') { echo " disabled"; }?> btn btn-danger"><span class="iconify" data-icon="typcn:delete" data-inline="false" data-width="50" data-height="50">></span> delete</a>
 						</div>
 
 

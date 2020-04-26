@@ -44,10 +44,10 @@ class Pruefung extends CI_Controller {
 
 			} else {
 				$data['geraet'] = NULL;
-				$data["page_total_rows"] = $this->Dguv3_model->getcountdata('pruefung');
+				$data["page_total_rows"] = $this->Dguv3_model->getcountdata('pruefung'); //count alle prüfungen
 			}
 
-			$data["page_show_rows"] = '20';
+			$data["page_show_rows"] = $this->config->item('dguv3_show_page_rows');
 			$data['page_pages']=ceil($data["page_total_rows"] / $data["page_show_rows"]);
 			$data['page_pageid']=$pageid;
 			$data['page_offset']=$data["page_show_rows"] * $pageid ;
@@ -58,23 +58,20 @@ class Pruefung extends CI_Controller {
 				$firmen_firmaid=$this->session->userdata('firmaid');
 
 				if($gid) {
-					$data['pruefung'] = $this->Pruefung_model->list($gid,$firmen_firmaid,$data["page_show_rows"],$data['page_offset']);
+					$data['pruefung'] = $this->Pruefung_model->list($gid,$firmen_firmaid,$data["page_show_rows"],$data['page_offset']); //prüfungen mit einer gid
 				} else {
-					$data['pruefung'] = $this->Pruefung_model->list(null,$firmen_firmaid,$data["page_show_rows"],$data['page_offset']);
+					$data['pruefung'] = $this->Pruefung_model->list(null,$firmen_firmaid,$data["page_show_rows"],$data['page_offset']); //alle prüfungen
 				}
-
-				//$data['geraete'] = $this->Geraete_model->get(null,null,$data["page_show_rows"],$data['page_offset']);
 
 
 			} else {
 				if($gid) {
 					//admin
-					$data['pruefung'] = $this->Pruefung_model->list($gid,null,$data["page_show_rows"],$data['page_offset']);
+					$data['pruefung'] = $this->Pruefung_model->list($gid,null,$data["page_show_rows"],$data['page_offset']); //prüfungen mit einer gid
 				} else {
-					$data['pruefung'] = $this->Pruefung_model->list(null,null,$data["page_show_rows"],$data['page_offset']);
+					$data['pruefung'] = $this->Pruefung_model->list(null,null,$data["page_show_rows"],$data['page_offset']); //alle prüfungen
 
 				}
-				//$data['geraete'] = $this->Geraete_model->get(null,null,$data["page_show_rows"],$data['page_offset']);
 			}
 
 
@@ -95,7 +92,7 @@ class Pruefung extends CI_Controller {
 			}
 
 	}
-
+//TODO abfrage ob user eingeloggt ist
 	function protokoll($pruefung_id=NULL) {
 		if($pruefung_id) {
 			$data['pruefung'] = $this->Pruefung_model->getnotarray($pruefung_id);
@@ -178,6 +175,7 @@ class Pruefung extends CI_Controller {
 		$geraetename = $this->Geraete_model->get($gid)['name'];
 		$ortsid = $this->Geraete_model->get($gid)['oid'];
 		$ortsname = $this->Geraete_model->get($gid)['ortsname'];
+		$firma_id = $this->Geraete_model->get($gid)['geraete_firmaid'];
 
 
 		if($this->form_validation->run() === FALSE) {
@@ -217,27 +215,29 @@ class Pruefung extends CI_Controller {
 			if($pruefung['sichtpruefung']==0) {
 				$pruefung['bestanden'] = 0;
 			}
-			if($pruefung['schutzleiter']>$RPEmax & $schutzklasse!=4) {
-				// sze: TODO check by dante
+			if($pruefung['schutzleiter']>$RPEmax && $schutzklasse!=4) {
 				$pruefung['bestanden'] = 0;
 
 			}
-			if($pruefung['isowiderstand']<2.0 & $schutzklasse!=4) {
+			if($pruefung['isowiderstand']<2.0 && $schutzklasse!=4) {
 				$pruefung['bestanden'] = 0;
 
 			}
-			if($pruefung['schutzleiterstrom']>=0.5 & $schutzklasse!=4) {
+			if($pruefung['schutzleiterstrom']>=0.5 && $schutzklasse!=4) {
 				$pruefung['bestanden'] = 0;
 			}
-			if($pruefung['beruehrstrom']>0.25 & $schutzklasse!=4) {
+			if($pruefung['beruehrstrom']>0.25 && $schutzklasse!=4) {
 				$pruefung['bestanden'] = 0;
 			}
+
+			//setze firma id auf die gleiche des gerätes
+			$pruefung['pruefung_firmaid'] =$firma_id;
 
 
 			$this->Pruefung_model->update($pruefung,$pruefung_id);
 			$prdatum = $this->Pruefung_model->get($pruefung_id)['datum'];
 
-			//prüfung als pdf speichern
+			/* //prüfung als pdf speichern
 					if($pruefung['bestanden']='1'){
 						$bestanden='ok';
 					} else {
@@ -256,7 +256,7 @@ class Pruefung extends CI_Controller {
 						$value = site_url('pruefung/protokoll/'.$pruefung_id); // a url starting with http or an HTML string.  see example #5 if you have a long HTML string
 						$result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($html2pdf_api_key) . "&value=" .$value . $html2pdf_user_pass);
 						file_put_contents('pdf/'.$firma_id.'/'.$year.'/'.$ortsname.'/GID'.$gid.'_'.$geraetename.'_PID'.$pruefung_id.'_'.$prdatum.'_'.$bestanden.'.pdf',$result);
-
+ */
 
 			redirect('pruefung/index/'.$gid);
 		}

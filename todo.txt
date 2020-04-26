@@ -1,17 +1,17 @@
 arbeitsflow pdf erstellung
-webserver dguv3 
-->url call mit 
+webserver dguv3
+->url call mit
     json info in post
-  
+
 
 server mit racketprogramm
 
 -> rendern der json infos in pdf
-    für 
+    für
     https://dguv3.qabc.eu/geraete/uebersicht/6
     und
     https://dguv3.qabc.eu/pruefung/protokoll/6
-    
+
 ->zurücksenden der pdf datei
 
 
@@ -42,3 +42,10 @@ csv import gas alarm?!
 weboberfläche form input für gasalarm
 speichern in sql
 senden der pdf an email adresse
+
+
+pagination anpassen max 10 pro seite
+
+
+last seen login
+CONFIG!!!!!

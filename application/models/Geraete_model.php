@@ -86,6 +86,7 @@ class Geraete_model extends CI_Model {
 		$rest_ratio = 1 / 7.5;
 
 		$rpe_max = min(0.3 + $rest * $rest_ratio * $rest_ohm, 1);
+		$rpe_max = round($rpe_max, 2);
 		return $rpe_max;
 	}
 

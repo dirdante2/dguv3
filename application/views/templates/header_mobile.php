@@ -11,12 +11,12 @@
 	<!--<script src="<?php echo base_url();?>lib/datatables/jquery.dataTables.min.js"></script>-->
 	<script src="https://code.iconify.design/1/1.0.4/iconify.min.js"></script>
 	<!-- <script defer src="<?php echo base_url();?>lib/navbar.js"></script> -->
-	
+
   <link
     href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&display=swap"
     rel="stylesheet"
   />
-	
+
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/bootstrap.min_mobile.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/jquery/jquery-ui.min.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/jquery/jquery-ui.structure.min.css">
@@ -28,7 +28,7 @@
 
 
 <body>
- 	
+
 
 
 <nav class="navbar sticky-top navbar-expand-xl bg-dark navbar-dark">
@@ -47,10 +47,10 @@
 			}
 
 			?>
-    	
-		 
-		<a class="nav-link" href="<?php echo site_url('users/index/');?><?php echo $this->session->userdata('userid');?>"><?php echo $this->session->userdata('username');?> (<?php echo $userroll;?>)</a>	
-		
+
+
+		<a class="nav-link" href="<?php echo site_url('users/index/');?><?php echo $this->session->userdata('userid');?>"><?php echo $this->session->userdata('username');?> (<?php echo $userroll;?>)</a>
+
 		</div>
 		</ul>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -59,10 +59,10 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-    	
-    	
-   
-      
+
+
+
+
       <li class="nav-item">
         			<a class="nav-link" href="<?php echo site_url('geraete'); ?>"><span class="iconify" data-icon="jam:plug" data-width="60" data-height="60"></span> Gerät</a>
       			</li>
@@ -84,17 +84,17 @@
 				  <li class="nav-item">
 	        		<a class="nav-link" href="<?php echo site_url('users'); ?>"><span class="iconify" data-icon="fa-solid:users" data-width="60" data-height="60"></span> User</a>
       			</li>
-      			 
+
     </ul>
     <ul class="nav navbar-nav navbar-right">
-	
-    		
-      <li class="nav-item"> <a class="nav-link" href="<?php echo site_url('login/logout');?>"><span class="iconify" data-icon="mdi:logout" data-width="60" data-height="60"></span> Logout</a></li>
-    	
+
+
+      <li class="nav-item"> <a class="nav-link" href="<?php echo site_url('login/logout');?>"><span class="iconify" data-icon="mdi:logout" data-width="60" data-height="60" data-inline="false" ></span> Logout</a></li>
+
     <?php } else { ?>
-     <li class="nav-item"><a class="nav-link" href="<?php echo site_url('login');?>"><span class="iconify" data-icon="mdi:logout" data-width="60" data-height="60"></span> Login</a></li>
+     <li class="nav-item"><a class="nav-link" href="<?php echo site_url('login');?>"><span class="iconify" data-icon="mdi:logout" data-width="60" data-height="60" data-inline="false"></span> Login</a></li>
     <?php } ?>
-	
+
     </ul>
 	</div>
 </nav>
