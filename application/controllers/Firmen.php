@@ -14,6 +14,7 @@ class Firmen extends CI_Controller {
 		$this->load->model('Geraete_model');
 		$this->load->model('Pruefer_model');
 		$this->load->model('Messgeraete_model');
+		$this->load->model('Pdf_model');
 		$this->load->model('Orte_model');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -22,7 +23,7 @@ class Firmen extends CI_Controller {
 
 	function index($firmen_firmaid=NULL) {
 		if($this->session->userdata('logged_in') !== TRUE){
-			if($this->agent->is_mobile()){      
+			if($this->agent->is_mobile()){
 				$this->load->view('templates/header_mobile');
 			} else {
 				$this->load->view('templates/header');
@@ -35,7 +36,7 @@ class Firmen extends CI_Controller {
 
 			if($this->session->userdata('level')!=1){
 				$firmen_firmaid=$this->session->userdata('firmaid');
-				
+
 			}
 
 		if($firmen_firmaid) {
@@ -62,7 +63,7 @@ class Firmen extends CI_Controller {
 			  //alle außer admin dürfen nur eigene firma bearbeiten
 			if($this->session->userdata('level')!='1'){
 				$firmen_firmaid=$this->session->userdata('firmaid');
-				
+
 			}
 		$this->form_validation->set_rules('firma_name', 'Name', 'required');
 		$this->form_validation->set_rules('firma_beschreibung', 'Beschreibung', 'required');
@@ -83,7 +84,7 @@ class Firmen extends CI_Controller {
 					'firma_beschreibung'=>''
 				)));
 			}
-			
+
 			else {
 				$this->load->view('firmen/form',array('firma'=>$this->Firmen_model->get($firmen_firmaid)));
 			}
@@ -98,6 +99,8 @@ class Firmen extends CI_Controller {
 				'firma_plz' => $this->input->post('firma_plz'),
 				'firma_beschreibung' => $this->input->post('firma_beschreibung'),
 			);
+			//generiere PDF übersicht
+			//$this->Pdf_model->genpdf($oid);
 
 			$this->Firmen_model->set($firma,$firmen_firmaid);
 			redirect('firmen');
@@ -122,7 +125,7 @@ class Firmen extends CI_Controller {
 				'canceltarget' => 'firmen'
 			));
 			$this->load->view('templates/footer');
-		} else {	
+		} else {
 			$this->Firmen_model->delete($firmen_firmaid);
 			redirect('firmen');
 		}
@@ -131,15 +134,15 @@ class Firmen extends CI_Controller {
 
 
 	}
-	
+
 	function json($key="") {
 	    $geraete=$this->Firmen_model->getByName($key);
 	    $response=array();
 	    foreach($geraete as $geraet) {
 	        $response[$geraet['gid']]="{$gereat['name']} {$gereat['beschreibung']}";
-	        
+
 	    }
-	    
+
 	    echo json_encode($response);
 	}
 }

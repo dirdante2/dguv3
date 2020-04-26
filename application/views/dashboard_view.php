@@ -31,15 +31,15 @@
                         <?php echo $geraete_aktiv_1; ?>
                     </td>
                 </tr>
-                
-                
+
+
                 <tr>
                     <td style="text-indent:30px;">ungeprüft</td>
                     <td>
                         <?php echo $geraete_count_geprueft_null; ?>
                     </td>
                 </tr>
-                
+
                 <tr>
                     <td style="text-indent:30px;">geprüft</td>
                     <td>
@@ -70,9 +70,9 @@
                         <?php echo $geraete_count_geprueft_baldabgelaufen; ?>
                     </td>
                 </tr>
-                
-                
-                
+
+
+
             </tbody>
         </table>
 
@@ -152,6 +152,9 @@
         </table>
 
     </div>
+
+
+
     <div class="col" style="width: 100%; max-width: 200px;">
         <h4>Anschrift</h4><br>
         <?php if ($this->session->userdata('firmaid')) { ?>
@@ -162,40 +165,52 @@
             keine Firma
         <?php } ?>
     </div>
+
+	<div class="col" style="width: 100%; max-width: 200px;">
+        <h4>PDF Server</h4><br>
+		<?php
+$server_status = file_get_contents('https://olive-copper-spitz-json2pdf.herokuapp.com/pdfgen/ping');
+//echo '_'.$server_status.'_';
+if(strpos($server_status, 'pong') !== false) { ?>
+
+<a href="" class="btn-sm btn-success">Status OK</a>
+<?php } ?>
+    </div>
+
     <div class="col" style="width: 90px; white-space: nowrap;">
         <h4>Archiv</h4><br>
-       
-        <?php 
+
+        <?php
          $root = 'pdf/'.$this->session->userdata('firmaid').'/';
         if (!$this->session->userdata('firmaid')) { ?>
             keine Firma
-           
+
         <?php } elseif (!file_exists($root)) { ?>
            keine pdf erstellt
         <?php } else { ?>
-            <?php foreach($archiv_ordner as $file) { 
+            <?php foreach($archiv_ordner as $file) {
                 if (is_dir('pdf/'.$firma['firmen_firmaid'].'/'.$file)) {
                 ?>
 
                 <span class="iconify" data-icon="whh:archive" data-width="20" data-height="20"></span>
 
-                    <?php if (file_exists('pdf/'.$firma['firmen_firmaid'].'/'.$file.'.zip')) { 
+                    <?php if (file_exists('pdf/'.$firma['firmen_firmaid'].'/'.$file.'.zip')) {
                     $filetime= date("d.m.y|H:i:s", filemtime('pdf/'.$firma['firmen_firmaid'].'/'.$file.'.zip'));
-            
-            
+
+
                     ?>
                     <!-- ordner und archiv existieren -->
-                    <a class="btn-sm btn-secondary" href="<?php echo site_url('dguv3/download_archiv/'.$file); ?>"><?php echo $file; ?></a> <a href="<?php echo site_url('dguv3/create_archiv/'.$file); ?>" class="btn-sm btn-warning">neu</a> <?php echo $filetime; ?>
+                    <a class="btn-sm btn-secondary" href="<?php echo site_url('dguv3/download_file/'.$file.'/.zip'); ?>"><?php echo $file; ?></a> <a href="<?php echo site_url('dguv3/create_archiv/'.$file); ?>" class="btn-sm btn-warning">neu</a> <?php echo $filetime; ?>
                     <?php } else {?>
-                    <!--  ordner existiert aber kein zip archiv -->    
+                    <!--  ordner existiert aber kein zip archiv -->
                     <a class="btn-sm btn-light" ><?php echo $file; ?></a> <a href="<?php echo site_url('dguv3/create_archiv/'.$file); ?>" class="btn-sm btn-success">neu</a>
 
 
                     <?php } ?>
                 <br>
-                <?php } 
+                <?php }
 
-            } 
+            }
 
          } ?>
 

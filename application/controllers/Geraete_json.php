@@ -47,7 +47,8 @@ class Geraete_json extends CI_Controller {
 		unset($data['filename']);
 
 		$this->Pdf_model->generate_pdf('uebersicht', $data, $filename);
-		echo $filename;
+		//echo $filename;
+		redirect('orte');
 	}
 
 	function json($oid="") {

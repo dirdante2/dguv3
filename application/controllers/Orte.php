@@ -12,6 +12,8 @@ class Orte extends CI_Controller {
 		parent::__construct();
 		$this->load->model('Orte_model');
 		$this->load->model('Firmen_model');
+		$this->load->model('Pdf_model');
+		$this->load->model('File_model');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -125,6 +127,9 @@ class Orte extends CI_Controller {
 
 			}
 
+			//generiere PDF übersicht
+			$this->Pdf_model->genpdf($oid);
+
 			$this->Orte_model->set($ort,$oid);
 			redirect('orte');
 		}
@@ -213,7 +218,19 @@ class Orte extends CI_Controller {
 
   }
 
+  function download_file($oid=null) {
 
+	$test=$this->input->post('name');
+
+	echo $test;
+	echo $oid;
+	if($pfad==null) {
+		$pfad='';
+	}
+	//$this->File_model->download_file($file,$typ,$pfad);
+
+
+}
 
 
 

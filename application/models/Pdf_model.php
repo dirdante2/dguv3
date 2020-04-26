@@ -13,7 +13,10 @@ class Pdf_model extends CI_Model
 
     function __construct()
     {
-        $this->load->database();
+		$this->load->database();
+		$this->load->model('Geraete_model');
+		$this->load->model('Orte_model');
+		$this->load->model('Pdf_model');
 
 
 
@@ -26,7 +29,7 @@ class Pdf_model extends CI_Model
 		}
 
 		//API Url
-		$url = 'http://92.116.79.230:8000/pdfgen/'.$kind;
+		$url = 'https://olive-copper-spitz-json2pdf.herokuapp.com/pdfgen/'.$kind;
 
 		//Initiate cURL.
 		$ch = curl_init($url);
@@ -51,6 +54,44 @@ class Pdf_model extends CI_Model
 		file_put_contents($filename, $result, LOCK_EX);
 
 	}
+
+// aufruf geräte pdf
+	private function data($oid="") {
+		$data['ort'] = $this->Orte_model->get($oid);
+		$data['geraete'] = $this->Geraete_model->getByOid($oid);
+		$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_pdf_col');
+		$data['dguv3_logourl']= $this->config->config['base_url'].$this->config->item('dguv3_logourl');
+		$data['qrcode']= 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$this->config->config['base_url'].'/index.php/geraete/index/'.$oid;
+
+		// generate filename
+		$year = date("Y");
+		$ortsname = $data['ort']['name'];
+		$firma_id = $data['ort']['orte_firmaid'];
+		$filename = 'pdf/'.$firma_id.'/'.$year.'/'.$ortsname.'_'.$oid.'/'.$ortsname.'_liste.pdf';
+		$data['filename'] = $filename;
+
+		//var die nicht in json nötig sind
+		unset($data['ort']['orte_firmaid']);
+
+		return $data;
+	}
+
+	//output geraete/uebersicht/$oid als json format
+	function genpdf($oid="") {
+		$data = $this->data($oid);
+		$filename = $data['filename'];
+		unset($data['filename']);
+
+		$this->generate_pdf('uebersicht', $data, $filename);
+		//echo $filename;
+		//redirect('orte');
+	}
+
+	function json($oid="") {
+		$data = $this->data($oid);
+		echo json_encode($data);
+	}
+
 
 
 

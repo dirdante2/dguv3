@@ -12,6 +12,7 @@ class Pruefer extends CI_Controller {
 		parent::__construct();
 		$this->load->model('Pruefer_model');
 		$this->load->model('Firmen_model');
+		$this->load->model('Pdf_model');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -19,7 +20,7 @@ class Pruefer extends CI_Controller {
 
 	function index() {
 		if($this->session->userdata('logged_in') !== TRUE){
-			if($this->agent->is_mobile()){      
+			if($this->agent->is_mobile()){
 				$this->load->view('templates/header_mobile');
 			} else {
 				$this->load->view('templates/header');
@@ -30,13 +31,13 @@ class Pruefer extends CI_Controller {
 			  //userlevel 2 oder höher kann nur orte mit eigener firma sehen
 			if($this->session->userdata('level')>='2'){
 				$firmen_firmaid=$this->session->userdata('firmaid');
-				
+
 				$data['pruefer'] = $this->Pruefer_model->get(null,$firmen_firmaid);
-				
+
 			} else {
 				$data['pruefer'] = $this->Pruefer_model->get();
 			}
-		
+
 
 		$this->load->view('templates/header');
 		$this->load->view('templates/datatable');
@@ -52,8 +53,8 @@ class Pruefer extends CI_Controller {
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
-			  
-	
+
+
 			$this->form_validation->set_rules('name', 'Name', 'required');
 			$this->form_validation->set_rules('beschreibung', 'Beschreibung', 'required');
 
@@ -70,7 +71,7 @@ class Pruefer extends CI_Controller {
 					$this->load->view('pruefer/form',array(
 						'pruefer'=>$this->Pruefer_model->get($pid),
 						'firmen'=> $this->Firmen_model->get()
-					
+
 					));
 				}
 				$this->load->view('templates/footer');
@@ -84,13 +85,14 @@ class Pruefer extends CI_Controller {
 				);
 				if ($pruefer['pruefer_firmaid']==NULL) {
 					$pruefer['pruefer_firmaid']=$this->session->userdata('firmaid');
-					
-	
-				}
 
+
+				}
+				//generiere PDF übersicht
+				//$this->Pdf_model->genpdf($oid);
 				$this->Pruefer_model->set($pruefer,$pid);
 				redirect('pruefer');
-				
+
 			}
 		}
 	}

@@ -12,6 +12,7 @@ class Messgeraete extends CI_Controller {
 		parent::__construct();
 		$this->load->model('Messgeraete_model');
 		$this->load->model('Firmen_model');
+		$this->load->model('Pdf_model');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -19,7 +20,7 @@ class Messgeraete extends CI_Controller {
 
 	function index() {
 		if($this->session->userdata('logged_in') !== TRUE){
-			if($this->agent->is_mobile()){      
+			if($this->agent->is_mobile()){
 				$this->load->view('templates/header_mobile');
 			} else {
 				$this->load->view('templates/header');
@@ -59,15 +60,15 @@ class Messgeraete extends CI_Controller {
 				$this->load->view('messgeraete/form',array(
 					'messgeraet'=>array('mid'=>0,'beschreibung'=>'','name'=>''),
 					'firmen'=> $this->Firmen_model->get()
-				
+
 				));
 			}
-			
+
 			else {
 				$this->load->view('messgeraete/form',array(
 					'messgeraet'=>$this->Messgeraete_model->get($mid),
 					'firmen'=> $this->Firmen_model->get()
-				
+
 				));
 			}
 			$this->load->view('templates/footer');
@@ -81,10 +82,12 @@ class Messgeraete extends CI_Controller {
 			);
 			if ($messgeraet['messgeraete_firmaid']==NULL) {
 				$messgeraet['messgeraete_firmaid']=$this->session->userdata('firmaid');
-				
+
 
 			}
-			
+
+			//generiere PDF übersicht
+			//$this->Pdf_model->genpdf($oid);
 
 			$this->Messgeraete_model->set($messgeraet,$mid);
 			redirect('messgeraete');
@@ -108,7 +111,7 @@ class Messgeraete extends CI_Controller {
 				'canceltarget' => 'messgeraete'
 			));
 			$this->load->view('templates/footer');
-		} else {	
+		} else {
 			$this->Messgeraete_model->delete($mid);
 			redirect('messgeraete');
 		}
@@ -117,15 +120,15 @@ class Messgeraete extends CI_Controller {
 
 
 	}
-	
+
 	function json($key="") {
 	    $geraete=$this->Messgeraete_model->getByName($key);
 	    $response=array();
 	    foreach($geraete as $geraet) {
 	        $response[$geraet['gid']]="{$gereat['name']} {$gereat['beschreibung']}";
-	        
+
 	    }
-	    
+
 	    echo json_encode($response);
 	}
 }

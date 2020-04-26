@@ -16,6 +16,7 @@ class Pruefung extends CI_Controller {
 		$this->load->model('Pruefer_model');
 		$this->load->model('Dguv3_model');
 		$this->load->model('Messgeraete_model');
+		$this->load->model('Pdf_model');
 		$this->load->model('Orte_model');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -257,6 +258,8 @@ class Pruefung extends CI_Controller {
 						$result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($html2pdf_api_key) . "&value=" .$value . $html2pdf_user_pass);
 						file_put_contents('pdf/'.$firma_id.'/'.$year.'/'.$ortsname.'/GID'.$gid.'_'.$geraetename.'_PID'.$pruefung_id.'_'.$prdatum.'_'.$bestanden.'.pdf',$result);
  */
+			//generiere PDF übersicht
+			$this->Pdf_model->genpdf($ortsid);
 
 			redirect('pruefung/index/'.$gid);
 		}
