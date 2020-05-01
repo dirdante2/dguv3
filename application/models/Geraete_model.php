@@ -103,7 +103,42 @@ class Geraete_model extends CI_Model {
 		return $this->db->delete('geraete');
 	}
 
+// aufruf geräte pdf
+function pdfdata($oid="") {
+	$data['ort'] = $this->Orte_model->get($oid);
+	$geraete = $this->Geraete_model->getByOid($oid);
+	$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_pdf_col');
+	$data['dguv3_logourl']= $this->config->config['base_url'].$this->config->item('dguv3_logourl');
+	$data['qrcode']= 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$this->config->config['base_url'].'/index.php/geraete/index/'.$oid;
 
+/* foreach($geraete as $geraet) {
+
+	if($geraet['bestanden']=='0') {
+
+		$geraete[$geraet['gid']]['bestanden']='nein';
+	} else {
+		$geraete[$geraet['gid']]['bestanden']='ja';
+	}
+
+
+} */
+
+
+
+	$data['geraete'] =$geraete;
+	// generate filename
+	$year = date("Y");
+	$ortsname = $data['ort']['name'];
+	$firma_id = $data['ort']['orte_firmaid'];
+	//TODO get file name von funktion
+	//$filename = 'pdf/'.$firma_id.'/'.$year.'/'.$oid.'_'.$ortsname.'/'.$ortsname.'_liste.pdf';
+	//$data['filename'] = $filename;
+
+	//var die nicht in json nötig sind
+	unset($data['ort']['orte_firmaid']);
+
+	return $data;
+}
 
 
 

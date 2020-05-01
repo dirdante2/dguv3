@@ -74,7 +74,13 @@ class Pruefung extends CI_Controller {
 
 				}
 			}
+			$pdffile_data=array();
+			foreach($data['pruefung'] as $pruefung) {
+				$pdf_pfad=$this->File_model->get_file_pfad('2',$pruefung['pruefungid']);
+				$pdffile_data[$pruefung['pruefungid']]=$pdf_pfad;
 
+			}
+			$data['pdf_data']=$pdffile_data;
 
 		$data['pruefungabgelaufen']= $this->config->item('dguv3_pruefungabgelaufen');
 		$data['pruefungbaldabgelaufen']= $this->config->item('dguv3_pruefungbaldabgelaufen');
@@ -259,7 +265,8 @@ class Pruefung extends CI_Controller {
 						file_put_contents('pdf/'.$firma_id.'/'.$year.'/'.$ortsname.'/GID'.$gid.'_'.$geraetename.'_PID'.$pruefung_id.'_'.$prdatum.'_'.$bestanden.'.pdf',$result);
  */
 			//generiere PDF übersicht
-			$this->Pdf_model->genpdf($ortsid);
+			$this->Pdf_model->genpdf_uebersicht($ortsid);
+			$this->Pdf_model->genpdf_protokoll($pruefung_id);
 
 			redirect('pruefung/index/'.$gid);
 		}

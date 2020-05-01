@@ -15,7 +15,8 @@ class Geraete extends CI_Controller {
 		$this->load->model('Orte_model');
 		$this->load->model('Firmen_model');
 		$this->load->model('Dguv3_model');
-
+		$this->load->model('Pdf_model');
+		$this->load->model('File_model');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 
@@ -72,20 +73,28 @@ class Geraete extends CI_Controller {
 				if($oid) {
 					$data['ort'] = $this->Orte_model->get($oid);
 					$data['geraete'] = $this->Geraete_model->getByOid($oid);
+
+					$pdf_pfad=$this->File_model->get_file_pfad('1',$oid);
+					$pdffile_data[$oid]=$pdf_pfad;
+					$data['pdf_data']=$pdffile_data;
+
+
 				} else {
 					$data['ort'] = NULL;
 					$data['geraete'] = $this->Geraete_model->get(null,null,$data["page_show_rows"],$data['page_offset']);
+
 					//$data['geraete'] = $this->Geraete_model->get();
 				}
 			}
+
 //$config["per_page"], $page
 			//$pagination['target']= 0;
 			//$data['pagination']=$pagination['target'];
 
-		$data['html2pdf_api_key']= $this->config->item('html2pdf_api_key');
-		$data['html2pdf_user_pass']= $this->config->item('html2pdf_user_pass');
-//FIXME
-		$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_col');
+
+
+
+
 
 		$data['pruefungabgelaufen']= $this->config->item('dguv3_pruefungabgelaufen');
 		$data['pruefungbaldabgelaufen']= $this->config->item('dguv3_pruefungbaldabgelaufen');
@@ -164,7 +173,9 @@ class Geraete extends CI_Controller {
 					redirect('geraete/index/'.$oid);
 
 
-      }
+	  }
+
+
 
 
 
@@ -266,14 +277,15 @@ class Geraete extends CI_Controller {
 
 			$this->Geraete_model->set($geraet,$gid);
 				// get ortsid von neu angelegtem gerät damit redirect zu richtiger seite führt?!!
-			$gortsid = $this->Geraete_model->get($gid);
+			$gortsid = $this->Geraete_model->get($gid)['oid'];
 
+			$this->Pdf_model->genpdf_uebersicht($gortsid);
 			if($gid==0) {
 				redirect('geraete');
 				}
 			//Vorhandeses Gerät
 			else {
-			redirect('geraete/index/'.$gortsid['oid']);
+			redirect('geraete/index/'.$gortsid);
 
 			}
 

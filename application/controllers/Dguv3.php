@@ -70,15 +70,13 @@
       $data['pruefung_bestanden_0']= $this->Dguv3_model->getcountdata('pruefung','bestanden', '0');
       //$this->output->cache(5);
       if ($this->session->userdata('firmaid')) {
-
-
-      $data['archiv_zip']= $this->Dguv3_model->getfiles('zip');
-      $data['archiv_ordner']= $this->Dguv3_model->getfiles('ordner');
-
-
-      $data['firma'] = $this->Firmen_model-> get($this->session->userdata('firmaid'));
+		$data['archiv_ordner']= $this->Dguv3_model->getfiles('ordner');
+		$data['firma'] = $this->Firmen_model-> get($this->session->userdata('firmaid'));
       }
-      //$data['adresse']= $this->config->item('dguv3_adresse');
+	  $data['pdfserver']= $this->config->item('dguv3_pdf_server');
+	 
+
+
 
       if($this->agent->is_mobile()){
         $this->load->view('templates/header_mobile');

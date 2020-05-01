@@ -37,9 +37,16 @@ class Orte extends CI_Controller {
 			} else {
 				$data['orte'] = $this->Orte_model->get();
 			}
+foreach($data['orte'] as $ort) {
+	$pdf_pfad=$this->File_model->get_file_pfad('1',$ort['oid']);
+	$pdffile_data[$ort['oid']]=$pdf_pfad;
+
+}
+$data['pdf_data']=$pdffile_data;
 
 
-		$data['html2pdf_api_key']= $this->config->item('html2pdf_api_key');
+
+		//$data['filename'] = $this->File_model->get_file_pfad();
 
 		if($this->agent->is_mobile()){
 			$this->load->view('templates/header_mobile');
@@ -128,7 +135,7 @@ class Orte extends CI_Controller {
 			}
 
 			//generiere PDF übersicht
-			$this->Pdf_model->genpdf($oid);
+			$this->Pdf_model->genpdf_uebersicht($oid);
 
 			$this->Orte_model->set($ort,$oid);
 			redirect('orte');
@@ -218,19 +225,14 @@ class Orte extends CI_Controller {
 
   }
 
-  function download_file($oid=null) {
+  function download_file($typ,$id) {
 
-	$test=$this->input->post('name');
 
-	echo $test;
-	echo $oid;
-	if($pfad==null) {
-		$pfad='';
-	}
-	//$this->File_model->download_file($file,$typ,$pfad);
+	$this->File_model->download_file($typ,$id);
 
 
 }
+
 
 
 

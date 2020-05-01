@@ -64,23 +64,24 @@ if(count($orte)==0) {
 		//$filename = 'pdf/'.$firma_id.'/'.$year.'/'.$ortsname.'_'.$oid.'/'.$ortsname.'_liste.pdf';
 
 		?>
+
 		<tr>
 			<td><?php echo $ort['oid']; ?></td>
 			<td><?php echo $ort['name']; ?></td>
 			<td><?php echo $ort['beschreibung']; ?></td>
 			<td><?php echo $ort['geraeteanzahl']; ?></td>
 			<?php if($this->session->userdata('level')=='1'){?><td><?php echo $ort['firma_name']; ?></td><?php } ?>
-			<td><?php if (file_exists('pdf/'. $ort['orte_firmaid'].'/'.$year.'/'.$ort['name'].'_'.$ort['oid'].'/'.$ort['name'].'_liste.pdf')) { echo date("d.m.Y", filemtime('pdf/'. $ort['orte_firmaid'].'/'.$year.'/'.$ort['name'].'_'.$ort['oid'].'/'.$ort['name'].'_liste.pdf')); } else { echo 'no file';} ?></td>
+
+			<td><?php if (file_exists('pdf/'. $ort['orte_firmaid'].'/'.$year.'/'.$ort['oid'].'_'.$ort['name'].'/'.$ort['name'].'_liste.pdf')) { echo date("d.m.Y", filemtime('pdf/'. $ort['orte_firmaid'].'/'.$year.'/'.$ort['oid'].'_'.$ort['name'].'/'.$ort['name'].'_liste.pdf')); } else { echo 'no file';} ?></td>
 			<td>
 				<div class="btn-group btn-group-sm" role="group" aria-label="options">
 				<a href="<?php echo site_url('geraete/index/'.$ort['oid']); ?>" class="btn btn-primary"><span class="iconify" data-icon="jam:plug" data-width="20" data-height="20"></span> Geräte</a>
 				<!--<a href="<?php echo site_url('geraete/geraete/'.$ort['oid']); ?>" class="btn btn-primary"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
 				-->
 				<!-- <a href='<?php echo site_url('geraete_json/genpdf/'.$ort['oid']); ?>'  class="btn btn-primary">Übersichten erstellen</a> -->
-				<!-- TODO datei ausgabe über download script ...direkter zugriff ist gesperrt -->
-				<!-- <a href="<?php echo base_url('orte/download_file/'. $ort['orte_firmaid'].'/'.$year.'/'.$ort['name'].'_'.$ort['oid'].'/'.$ort['name'].'_liste.pdf');?>" target="_blank" class="btn btn-primary <?php if (!file_exists('pdf/'. $ort['orte_firmaid'].'/'.$year.'/'.$ort['name'].'_'.$ort['oid'].'/'.$ort['name'].'_liste.pdf')) { echo "disabled"; } ?>"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a> -->
+				<a href="<?php echo base_url('orte/download_file/1/'.$ort['oid']);?>" target="_blank" class="btn btn-primary <?php if (!file_exists($pdf_data[ $ort['oid']])) { echo "disabled"; } ?>"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
 
-
+				<!-- <?php if (!file_exists('pdf/'. $ort['orte_firmaid'].'/'.$year.'/'.$ort['name'].'_'.$ort['oid'].'/'.$ort['name'].'_liste.pdf')) { echo "disabled"; } ?> -->
 				<a href="<?php echo site_url('orte/edit/'.$ort['oid']); ?>" class="<?php if($this->session->userdata('level')>='4') { echo " disabled"; }?> btn btn-secondary"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> edit</a>
 				<a href="<?php echo site_url('orte/delete/'.$ort['oid']); ?>" class="<?php if($this->session->userdata('level')>='2') { echo " disabled"; }?> btn btn-danger"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span> delete</a>
 

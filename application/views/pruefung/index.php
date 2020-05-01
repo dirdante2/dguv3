@@ -197,7 +197,7 @@ if(count($pruefung)==0) {
 
 
 
-						<a href="<?php echo base_url('pdf/'.$year.'/'.$pr['ortsname'].'/GID'.$pr['gid'].'_'.$pr['geraetename'].'_PID'.$pr['pruefungid'].'_'.$prdatum.'.pdf');?>" target="_blank" class="btn btn-primary<?php if (!file_exists('pdf/'.$year.'/'.$pr['ortsname'].'/GID'.$pr['gid'].'_'.$pr['geraetename'].'_PID'.$pr['pruefungid'].'_'.$prdatum.'.pdf')) { echo " disabled"; } ?>"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
+<a href="<?php echo base_url('orte/download_file/2/'.$pr['pruefungid']);?>" target="_blank" class="btn btn-primary <?php if (!file_exists($pdf_data[ $pr['pruefungid']])) { echo "disabled"; } ?>"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Protokoll</a>
 
 
 

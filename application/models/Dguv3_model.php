@@ -20,7 +20,7 @@ class Dguv3_model extends CI_Model
     }
 
     // gibt row anzahl wert zurück var1 tabellen name ; var2 tabellen spalte; var3 wert
-    function getcountdata($tblName, $tblcol = NULL, $tblvar = NULL)
+    function getcountdata($tblName, $tblcol = NULL, $tblvar = NULL,$firmaid=null)
     {
         $this->db->select('*');
         $this->db->from($tblName);
@@ -30,6 +30,8 @@ class Dguv3_model extends CI_Model
 
 			$this->db->where($tblName.'.'.$tblName.'_firmaid', $firmen_firmaid);
 
+	} elseif($firmaid) {
+		$this->db->where($tblName.'.'.$tblName.'_firmaid', $firmaid);
 	}
 
         if ($tblvar !== NULL) {
@@ -96,17 +98,30 @@ class Dguv3_model extends CI_Model
         return $this->db->count_all_results();
 
     }
-
+	//listet alle ordner in $root
     function getfiles($folder) {
+		$dguv3_show_list_archiv= $this->config->item('dguv3_show_list_archiv');
 
         $root = 'pdf/'.$this->session->userdata('firmaid').'/';
         if (!file_exists($root)) {
             return null;
         } else {
-        $files = array_diff(scandir($root), array('.', '..'));
+		$files = array_diff(scandir($root, 1), array('.', '..'));
 
-
-        return $files;
+		$return=array();
+		$i='0';
+		$maxi=$dguv3_show_list_archiv;
+		// füge nur order der liste hinzu
+		foreach($files as $file) {
+			if($i==$maxi) {
+				break;
+			}
+			if (is_dir($root.$file)) {
+				$i++;
+				array_push($return, $file);
+			}
+		}
+        return $return;
         }
 
     }
@@ -123,8 +138,10 @@ class Dguv3_model extends CI_Model
         foreach ($directories as $folder) {
 
         // file und dir counter
-        $fc = -1;
-        $dc = -1;
+        $filecounter = -1;
+		$dircounter = -1;
+		$file_list_counter = 0;
+		$file_protokoll_counter = 0;
 
         // die maximale Ausführzeit erhöhen
         ini_set("max_execution_time", 300);
@@ -144,15 +161,25 @@ class Dguv3_model extends CI_Model
             if(!is_dir($key)) { // wenn es kein ordner sondern eine datei ist
             // echo $key . " _ _ _ _Datei wurde übernommen</br>";
             $zip->addFile(realpath($key), $key) or die ("FEHLER: Kann Datei nicht anfuegen: $key");
-            $fc++;
+			$filecounter++;
+			//wenn file eine übersicht-pdf ist
+			if (strpos($key, '_liste.pdf') !== false) {
+				$file_list_counter++;
+				//file_put_contents('filename_liste'.$file_list_counter.'.txt', $key);
 
+			//wenn file ein protokoll ist
+			} elseif (strpos($key, '.pdf') !== false) {
+				$file_protokoll_counter++;
+				//file_put_contents('filename_protokoll'.$file_protokoll_counter.'.txt', $key);
+
+			}
             } elseif (count(scandir($key)) <= 2) { // der ordner ist bis auf . und .. leer
             // echo $key . " _ _ _ _Leerer Ordner wurde übernommen</br>";
             $zip->addEmptyDir(substr($key, -1*strlen($key),strlen($key)-1));
-            $dc++;
+            $dircounter++;
 
             } elseif (substr($key, -2)=="/.") { // ordner .
-            $dc++; // nur für den bericht am ende
+            $dircounter++; // nur für den bericht am ende
 
             } elseif (substr($key, -3)=="/.."){ // ordner ..
             // tue nichts
@@ -164,11 +191,17 @@ class Dguv3_model extends CI_Model
         //echo "</pre>";
 
         // speichert die Zip-Datei
-        $zip->close();
+		$zip->close();
+		$orte_count= $this->getcountdata('orte','orte_firmaid', $this->session->userdata('firmaid'));
+		$geraete_aktiv_1= $this->getcountdata('geraete','aktiv', '1', $this->session->userdata('firmaid') );
+
+		file_put_contents($folder.'.txt', 'Übersicht: '.$file_list_counter.' von '.$orte_count.'<br>');
+		file_put_contents($folder.'.txt', PHP_EOL .  'Protokolle: '.$file_protokoll_counter.' von '.$geraete_aktiv_1, FILE_APPEND);
+
 
         // bericht
         //echo $folder.".zip wurde erstellt.";
-        //echo "<p>Ordner: " . $dc . "; Dateien: " . $fc . "</p>";
+        //echo "<p>Ordner: " . $dircounter . "; Dateien: " . $filecounter . "</p>";
 
         }
         //}

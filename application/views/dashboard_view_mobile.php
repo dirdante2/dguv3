@@ -1,15 +1,33 @@
 <h1>Willkommen!</h1>
 
-<b>Statistiken \o/</b>
-<br>
 <div class="row">
-    <div class="col-auto" style="width: 100%;">
 
-        <table class="table">
-            <thead>
-                <th><span class="iconify" data-icon="jam:plug" data-width="50" data-height="50"></span> Geräte</th>
-                <th></th>
-            </thead>
+
+  <div class="card-header" id="collaps_header_statistik" style="width: 100%;">
+
+	  <button class="btn" data-toggle="collapse" data-target="#collaps_statistik" aria-expanded="true" aria-controls="collaps_statistik">
+	  <span class="iconify" data-icon="whh:statistics" data-width="50" data-height="50"></span> <b>Statistiken \o/</b>
+	  </button>
+
+  </div>
+  <div class="collapse" id="collaps_statistik" style="width: 100%;">
+	<div class="card card-body" >
+
+
+	<div id="accordion" >
+	<div class="card">
+    <div class="card-header" id="haedinggeraete">
+        <button class="btn" data-toggle="collapse" data-target="#collapsegeraete" aria-expanded="true" aria-controls="collapsegeraete">
+		<span class="iconify" data-icon="jam:plug" data-width="50" data-height="50"></span> <b>Geräte</b>
+        </button>
+
+    </div>
+
+    <div id="collapsegeraete" class="collapse show" aria-labelledby="haedinggeraete" data-parent="#accordion">
+      <div class="card-body" >
+
+	  <table class="table">
+
             <tbody>
                 <tr>
                     <td>Gesamt</td>
@@ -74,15 +92,22 @@
             </tbody>
         </table>
 
+      </div>
+    </div>
+  </div>
+
+
+  <div class="card">
+    <div class="card-header" id="haedingpruefung">
+        <button class="btn" data-toggle="collapse" data-target="#collapsepruefung" aria-expanded="true" aria-controls="collapsepruefung">
+		<span class="iconify" data-icon="typcn:clipboard" data-width="50" data-height="50"></span> <b>Prüfung</b>
+        </button>
+
     </div>
 
-    <div class="col-auto" style="width: 100%;">
-    <br>
-        <table class="table">
-            <thead>
-                <th><span class="iconify" data-icon="typcn:clipboard" data-width="50" data-height="50"></span> Prüfungen</th>
-                <th></th>
-            </thead>
+    <div id="collapsepruefung" class="collapse" aria-labelledby="haedingpruefung" data-parent="#accordion">
+      <div class="card-body" >
+	  <table class="table">
             <tbody>
                 <tr>
                     <td>Gesamt</td>
@@ -106,15 +131,23 @@
             </tbody>
         </table>
 
+
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" id="haedingrest">
+        <button class="btn" data-toggle="collapse" data-target="#collapserest" aria-expanded="true" aria-controls="collapserest">
+		<span class="iconify" data-icon="vaadin:ellipsis-dots-h" data-width="50" data-height="50"></span>  <b>Rest</b>
+        </button>
+
     </div>
 
-    <div class="col-auto" style="width: 100%;">
-<br>
-        <table class="table">
-            <thead>
-                <th>Rest</th>
-                <th></th>
-            </thead>
+    <div id="collapserest" class="collapse" aria-labelledby="haedingrest" data-parent="#accordion">
+      <div class="card-body" >
+
+	  <table class="table">
             <tbody>
                 <tr>
                     <td><span class="iconify" data-icon="ic:baseline-account-circle" data-width="50" data-height="50"></span> Prüfer</td>
@@ -149,7 +182,17 @@
             </tbody>
         </table>
 
+      </div>
     </div>
+  </div>
+
+
+  </div>
+
+</div></div>
+
+
+
     <div class="col-auto" style="width: 100%;">
     <br>
         <b>Anschrift</b><br>
@@ -162,55 +205,87 @@
         <?php } ?>
     </div>
 
-	<div class="col-auto" style="width: 100%;">
-	<br>
-        <b>PDF Server</b><br>
+	<div class="col" style="width: 100%;">
+	<br><b>PDF Server</b><br>
+		<div class="btn-group-vertical" role="group" style="width: 50%;">
 		<?php
-$server_status = file_get_contents('https://olive-copper-spitz-json2pdf.herokuapp.com/pdfgen/ping');
-//echo '_'.$server_status.'_';
-if(strpos($server_status, 'pong') !== false) { ?>
+		$i=0;
+		foreach($pdfserver as $serverurl) {
+			$i++;?>
 
-<a href="" class="btn btn-success">Status OK</a>
-<?php } ?>
+			<?php
+			if($socket =@ fsockopen($serverurl[0], $serverurl[1], $errno, $errstr, 30)) { ?>
+				 <a  href="http://<?php echo $serverurl[0].':'.$serverurl[1]; ?>" target="_blank" role="button" class="btn btn-sm btn-success">Server <?php echo $i; ?> OK</a>
+				<?php fclose($socket);
+				} else { ?>
+				<!-- <button type="button" class="btn btn-sm btn-danger">Server <?php echo $i; ?> Error</button> -->
+				<a  href="http://<?php echo $serverurl[0].':'.$serverurl[1]; ?>" target="_blank" role="button" class="btn btn-sm btn-danger">Server <?php echo $i; ?> Error</a>
+				<?php } }?>
+
+				</div>
+
     </div>
 
-    <div class="col-auto" style="width: 100%;">
+    <div class="col-auto" style="width: 100%; border: 0px solid #000;">
     <br>
         <b>Archiv</b><br>
 
-        <?php
+		<?php
+
          $root = 'pdf/'.$this->session->userdata('firmaid').'/';
         if (!$this->session->userdata('firmaid')) { ?>
             keine Firma
 
         <?php } elseif (!file_exists($root)) { ?>
            keine pdf erstellt
-        <?php } else { ?>
+        <?php } else {
+			//print_r($archiv_ordner);
+			$year=date('Y');
+			?>
+
+
             <?php foreach($archiv_ordner as $file) {
-                if (is_dir('pdf/'.$firma['firmen_firmaid'].'/'.$file)) {
-                ?>
 
-                <span class="iconify" data-icon="whh:archive" data-width="50" data-height="50"></span>
+				if (is_dir('pdf/'.$firma['firmen_firmaid'].'/'.$file)) {
 
-                    <?php if (file_exists('pdf/'.$firma['firmen_firmaid'].'/'.$file.'.zip')) {
-                    $filetime= date("d.m.y|H:i:s", filemtime('pdf/'.$firma['firmen_firmaid'].'/'.$file.'.zip'));
+				?>
+				<div class="row" style="width: 100%; border: 0px solid #000;">
 
 
-                    ?>
-                    <!-- ordner und archiv existieren -->
-                    <a class="btn-lg btn-secondary" href="<?php echo site_url('dguv3/download_file/'.$file.'/.zip'); ?>"><?php echo $file; ?></a> <a href="<?php echo site_url('dguv3/create_archiv/'.$file); ?>" class="btn-lg btn-warning">neu</a> <?php echo $filetime; ?>
-                    <?php } else {?>
-                    <!--  ordner existiert aber kein zip archiv -->
-                    <a class="btn-lg btn-light" ><?php echo $file; ?></a> <a href="<?php echo site_url('dguv3/create_archiv/'.$file); ?>" class="btn-lg btn-success">neu</a>
+
+					<?php if (file_exists('pdf/'.$firma['firmen_firmaid'].'/'.$file.'.zip')) {
+						$details = file_get_contents('pdf/'.$firma['firmen_firmaid'].'/'.$file.'.txt', true);
+
+					$filetime= date("d.m.y|H:i:s", filemtime('pdf/'.$firma['firmen_firmaid'].'/'.$file.'.zip'));
 
 
-                    <?php } ?>
-                <br>
-                <?php }
+					?>
+					<div class="col">
+					<span class="iconify" data-icon="whh:archive" data-width="50" data-height="50"></span>
+					<!-- ordner und archiv existieren -->
+					<a class="btn-lg btn-secondary" href="<?php echo site_url('dguv3/download_file/3/'.$file); ?>"><?php echo $file; ?></a>
+					<!-- $file+1 wenn in vergangenheit neuerstellen -->
+					<?php if($file >= $year) { ?>
+					<a href="<?php echo site_url('dguv3/create_archiv/'.$file); ?>" class="btn-lg btn-warning">neu</a>
+					<?php } ?>
+					<?php echo $filetime; ?>
+					<br><?php echo $details; ?>
+					</div>
+					<?php } else {?>
+						<div class="col">
+						<span class="iconify" data-icon="whh:archive" data-width="50" data-height="50"></span>
+					<!--  ordner existiert aber kein zip archiv -->
+					<a class="btn-lg btn-light" ><?php echo $file; ?></a> <a href="<?php echo site_url('dguv3/create_archiv/'.$file); ?>" class="btn-lg btn-success">neu</a>
+				</div>
 
-            }
 
-         } ?>
+					<?php } ?>
+				<br></div>
+				<?php } ?>
+
+				<?php  } ?>
+
+				<?php } ?>
 
     </div>
 

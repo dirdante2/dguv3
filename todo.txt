@@ -44,8 +44,11 @@ speichern in sql
 senden der pdf an email adresse
 
 
-pagination anpassen max 10 pro seite
+
 
 
 last seen login
 CONFIG!!!!!
+
+
+pdf übersicht spalte name größer dafür spalte prüfer und seriennummer kleiner

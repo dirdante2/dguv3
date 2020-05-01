@@ -2,7 +2,7 @@
 <br>
 <br>
 
-<h2>Statistiken \o/</h2>
+<h2><span class="iconify" data-icon="whh:statistics" data-width="30" data-height="30"></span> Statistiken \o/</h2>
 <br>
 <div class="row">
     <div class="col" style="width: 100%; max-width: 300px;">
@@ -114,7 +114,7 @@
 
         <table class="table">
             <thead>
-                <th>Rest</th>
+                <th><span class="iconify" data-icon="vaadin:ellipsis-dots-h" data-width="20" data-height="20"></span> Rest</th>
                 <th></th>
             </thead>
             <tbody>
@@ -166,53 +166,93 @@
         <?php } ?>
     </div>
 
+
+
 	<div class="col" style="width: 100%; max-width: 200px;">
         <h4>PDF Server</h4><br>
+		<div class="btn-group-vertical" role="group" style="width: 100%;">
 		<?php
-$server_status = file_get_contents('https://olive-copper-spitz-json2pdf.herokuapp.com/pdfgen/ping');
-//echo '_'.$server_status.'_';
-if(strpos($server_status, 'pong') !== false) { ?>
+		$i=0;
+		foreach($pdfserver as $serverurl) {
+			$i++;?>
 
-<a href="" class="btn-sm btn-success">Status OK</a>
-<?php } ?>
+			<?php
+			if($socket =@ fsockopen($serverurl[0], $serverurl[1], $errno, $errstr, 30)) { ?>
+				 <a  href="http://<?php echo $serverurl[0].':'.$serverurl[1]; ?>" target="_blank" role="button" class="btn btn-sm btn-success">Server <?php echo $i; ?> OK</a>
+				<?php fclose($socket);
+				} else { ?>
+				<!-- <button type="button" class="btn btn-sm btn-danger">Server <?php echo $i; ?> Error</button> -->
+				<a  href="http://<?php echo $serverurl[0].':'.$serverurl[1]; ?>" target="_blank" role="button" class="btn btn-sm btn-danger">Server <?php echo $i; ?> Error</a>
+				<?php } }?>
+
+				</div>
+
     </div>
 
-    <div class="col" style="width: 90px; white-space: nowrap;">
+    <div class="col" style="width: 100px; white-space: nowrap; border: 0px solid #000;">
         <h4>Archiv</h4><br>
 
-        <?php
+
+		<?php
+
          $root = 'pdf/'.$this->session->userdata('firmaid').'/';
         if (!$this->session->userdata('firmaid')) { ?>
             keine Firma
 
         <?php } elseif (!file_exists($root)) { ?>
            keine pdf erstellt
-        <?php } else { ?>
-            <?php foreach($archiv_ordner as $file) {
-                if (is_dir('pdf/'.$firma['firmen_firmaid'].'/'.$file)) {
-                ?>
+        <?php } else {
+			//print_r($archiv_ordner);
+			$year=date('Y');
+			?>
 
-                <span class="iconify" data-icon="whh:archive" data-width="20" data-height="20"></span>
+
+
+
+
+
+            <?php foreach($archiv_ordner as $file) {
+
+                if (is_dir('pdf/'.$firma['firmen_firmaid'].'/'.$file)) {
+
+                ?>
+				<div class="row" style="width: 270px; white-space: nowrap; border: 0px solid #000;">
+
+
 
                     <?php if (file_exists('pdf/'.$firma['firmen_firmaid'].'/'.$file.'.zip')) {
+						$details = file_get_contents('pdf/'.$firma['firmen_firmaid'].'/'.$file.'.txt', true);
+
                     $filetime= date("d.m.y|H:i:s", filemtime('pdf/'.$firma['firmen_firmaid'].'/'.$file.'.zip'));
 
 
                     ?>
+					<div class="col">
+					<span class="iconify" data-icon="whh:archive" data-width="20" data-height="20"></span>
                     <!-- ordner und archiv existieren -->
-                    <a class="btn-sm btn-secondary" href="<?php echo site_url('dguv3/download_file/'.$file.'/.zip'); ?>"><?php echo $file; ?></a> <a href="<?php echo site_url('dguv3/create_archiv/'.$file); ?>" class="btn-sm btn-warning">neu</a> <?php echo $filetime; ?>
-                    <?php } else {?>
+                    <a class="btn-sm btn-secondary" href="<?php echo site_url('dguv3/download_file/3/'.$file); ?>"><?php echo $file; ?></a>
+					<!-- $file+1 wenn in vergangenheit neuerstellen -->
+					<?php if($file >= $year) { ?>
+					<a href="<?php echo site_url('dguv3/create_archiv/'.$file); ?>" class="btn-sm btn-warning">neu</a>
+					<?php } ?>
+					<?php echo $filetime; ?>
+                    <br><?php echo $details; ?>
+					</div>
+					<?php } else {?>
+						<div class="col">
+						<span class="iconify" data-icon="whh:archive" data-width="20" data-height="20"></span>
                     <!--  ordner existiert aber kein zip archiv -->
                     <a class="btn-sm btn-light" ><?php echo $file; ?></a> <a href="<?php echo site_url('dguv3/create_archiv/'.$file); ?>" class="btn-sm btn-success">neu</a>
+</div>
 
 
                     <?php } ?>
-                <br>
-                <?php }
+                <br></div><br>
+                <?php } ?>
 
-            }
+<?php  } ?>
 
-         } ?>
+        <?php } ?>
 
     </div>
 

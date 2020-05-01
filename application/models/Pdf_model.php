@@ -17,6 +17,7 @@ class Pdf_model extends CI_Model
 		$this->load->model('Geraete_model');
 		$this->load->model('Orte_model');
 		$this->load->model('Pdf_model');
+		$this->load->model('File_model');
 
 
 
@@ -27,9 +28,33 @@ class Pdf_model extends CI_Model
 		if (!file_exists($dir)) {
 			mkdir($dir, 0777, true);
 		}
+		$pdfserver= $this->config->item('dguv3_pdf_server');
+		$i=0;
+		foreach($pdfserver as $serverurl) {
+			$i++;
 
-		//API Url
-		$url = 'https://olive-copper-spitz-json2pdf.herokuapp.com/pdfgen/'.$kind;
+
+			$urlprefix='';
+				if($serverurl[1]=='443') {
+					$urlprefix='https://';
+				} else {
+					$urlprefix='http://';
+				}
+				//echo $urlprefix.$serverurl[0].':'.$serverurl[1].'/pdfgen/'.$kind;
+
+
+			if($socket =@ fsockopen($serverurl[0], $serverurl[1], $errno, $errstr, 30)) {
+
+				//API Url
+				$url = $urlprefix.$serverurl[0].':'.$serverurl[1].'/pdfgen/'.$kind;
+
+				 fclose($socket);
+				break;
+			}
+		}
+
+
+
 
 		//Initiate cURL.
 		$ch = curl_init($url);
@@ -55,43 +80,53 @@ class Pdf_model extends CI_Model
 
 	}
 
-// aufruf geräte pdf
-	private function data($oid="") {
-		$data['ort'] = $this->Orte_model->get($oid);
-		$data['geraete'] = $this->Geraete_model->getByOid($oid);
-		$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_pdf_col');
-		$data['dguv3_logourl']= $this->config->config['base_url'].$this->config->item('dguv3_logourl');
-		$data['qrcode']= 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$this->config->config['base_url'].'/index.php/geraete/index/'.$oid;
 
-		// generate filename
-		$year = date("Y");
-		$ortsname = $data['ort']['name'];
-		$firma_id = $data['ort']['orte_firmaid'];
-		$filename = 'pdf/'.$firma_id.'/'.$year.'/'.$ortsname.'_'.$oid.'/'.$ortsname.'_liste.pdf';
-		$data['filename'] = $filename;
-
-		//var die nicht in json nötig sind
-		unset($data['ort']['orte_firmaid']);
-
-		return $data;
-	}
 
 	//output geraete/uebersicht/$oid als json format
-	function genpdf($oid="") {
-		$data = $this->data($oid);
-		$filename = $data['filename'];
-		unset($data['filename']);
+	function genpdf_uebersicht($oid="") {
+		$data = $this->Geraete_model->pdfdata($oid);
+		$typ='1'; //übersicht pdf
+		$filename = $this->File_model->get_file_pfad($typ,$oid);
+		//$filename = $data['filename'];
+		//unset($data['filename']);
 
 		$this->generate_pdf('uebersicht', $data, $filename);
 		//echo $filename;
 		//redirect('orte');
 	}
 
-	function json($oid="") {
-		$data = $this->data($oid);
+	function genpdf_protokoll($pruefung_id="") {
+		$data = $this->Pruefung_model->pdfdata($pruefung_id);
+
+		$typ='2'; //protokoll pdf
+		$filename = $this->File_model->get_file_pfad($typ,$pruefung_id);
+		//$filename = $data['filename'];
+		//unset($data['filename']);
+
+
+
+
+		$this->generate_pdf('protokoll', $data, $filename);
+		//echo $filename;
+		//redirect('orte');
+	}
+
+
+
+
+	function json_uebersicht($oid="") {
+		$data = $this->Geraete_model->pdfdata($oid);
 		echo json_encode($data);
 	}
 
+
+
+
+
+	function json_protokoll($pruefung_id="") {
+		$data = $this->data($pruefung_id);
+		echo json_encode($data);
+	}
 
 
 
