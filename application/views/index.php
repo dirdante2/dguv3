@@ -1,7 +1,6 @@
-<title><?php if($geraet) { echo $geraet['name']; } ?> Prüfung</title> 
 <div class="row">
  <div class="col">
- 	 
+
 
 <h1>Prüfungen</h1>
 <?php
@@ -106,7 +105,7 @@
 <table class="table-hover table-bordered table-sm table-striped" id="tabledesc" style="width:100%">
 <thead>
 <tr>
-	
+
 <th class="d-none">id</th>
 <th class="d-none">status</th>
 	<th class="<?php if($geraet) { echo "d-none"; } ?>">Gerät</th>
@@ -137,70 +136,70 @@ if(count($pruefung)==0) {
 
 } else {
 	foreach($pruefung as $pr) {
-		
+
 				$today = date("Y-m-d");
 				$day     = $pr['datum'];
 				$nextyear = strtotime('+'.$pruefungabgelaufen, strtotime($day));
 				$nextyearfast = strtotime('+'.$pruefungbaldabgelaufen, strtotime($day));
 				$nextyear = date("Y-m-d", $nextyear);
 				$nextyearfast = date("Y-m-d", $nextyearfast);
-				
+
 
 		?>
-		
-					
 
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
 		<!--
 		prüfung durchgefallen = 2 rot  table-danger
 		prüfung abgelaufen = gelb 2  table-warning
 		letzte prüfung älter als 3 jahr = blue table-info
-		
-		
+
+
 		-->
 		<tr class="<?php if($pr['bestanden']=='0') { echo "table-danger"; } elseif ($nextyear < $today)  { echo "table-warning"; } elseif ($nextyearfast < $today) { echo "table-info"; } ?>">
 		<td class="d-none"><?php echo $pr['pruefungid']; ?></td>
-		
+
 		<td class="d-none"><?php if($pr['bestanden']=='0') { echo "4"; } elseif ($nextyear < $today)  { echo "2"; } elseif ($nextyearfast < $today) { echo "3"; } ?></td>
 			<td class="<?php if($geraet) { echo "d-none"; } ?>"><?php echo $pr['geraetename']; ?>(<?php echo $pr['schutzklasse']; ?>)</td>
 			<td><?php $blubb = new DateTime($pr['datum']); echo $pr['datum']?$blubb->format('d.m.Y'):'';  ?></td>
-			<td><?php echo $pr['pruefername']; ?><br>(<?php echo $pr['messgeraetname']; ?>)</td>	
-                   
+			<td><?php echo $pr['pruefername']; ?><br>(<?php echo $pr['messgeraetname']; ?>)</td>
+
                         <td><?php if($pr['sichtpruefung']=='1') { echo "ja"; } else { echo "nein"; } ?> <?php if($pr['sichtpruefung']=='1') {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
-                        
+
                         <td><?php if($pr['schutzleiter']===NULL) { echo "-"; } else { echo $pr['schutzleiter']; } ?> <?php $y = $pr['RPEmax']; if($pr['schutzleiter']===NULL) { echo ""; } elseif($pr['schutzleiter'] <= $y)  {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?><?php if($pr['RPEmax']===NULL) { echo ""; } else { echo '('.$pr['RPEmax'].')'; } ?></td>
-                        
+
                         <td><?php if($pr['isowiderstand']===NULL) { echo "-"; } else { echo $pr['isowiderstand']; } ?> <?php $y = 2.0; if($pr['isowiderstand']===NULL) { echo ""; } elseif($pr['isowiderstand'] >= $y) {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
 												<td><?php if($pr['schutzleiterstrom']===NULL) { echo "-"; } else { echo $pr['schutzleiterstrom']; } ?> <?php $y = 0.5; if($pr['schutzleiterstrom']===NULL) { echo ""; } elseif($pr['schutzleiterstrom'] <= $y) {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
 												<td><?php if($pr['beruehrstrom']===NULL) { echo "-"; } else { echo $pr['beruehrstrom']; } ?> <?php $y = 0.25; if($pr['beruehrstrom']===NULL) { echo ""; } elseif($pr['beruehrstrom'] <= $y) {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
-												
+
 												<td><?php if($pr['funktion']=='1') { echo "ja"; } else { echo "nein"; } ?> <?php if($pr['funktion']=='1') {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
                         <td><?php if($pr['bestanden']=='1') { echo "ja"; } else { echo "nein"; } ?> <?php if($pr['bestanden']=='1') {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
                         <td><?php echo $pr['bemerkung']; ?></td>
-			
-			
+
+
 			<td>
 				<div class="btn-group btn-group-sm" role="group" aria-label="options">
 					<!--<a href="<?php echo site_url('pruefung/protokoll/'.$pr['pruefungid']); ?>" class="btn btn-primary btn-sm"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> PDF</a>
 					-->
-					<?php 
+					<?php
 						$timestamp = strtotime($pr['datum']);
-						$year = date("Y", $timestamp); 
+						$year = date("Y", $timestamp);
 						$prdatum = date("Y-m-d", $timestamp);
 						?>
-						
-					
-						
-						
-						
+
+
+
+
+
 						<a href="<?php echo base_url('pdf/'.$year.'/'.$pr['ortsname'].'/GID'.$pr['gid'].'_'.$pr['geraetename'].'_PID'.$pr['pruefungid'].'_'.$prdatum.'.pdf');?>" target="_blank" class="btn btn-primary<?php if (!file_exists('pdf/'.$year.'/'.$pr['ortsname'].'/GID'.$pr['gid'].'_'.$pr['geraetename'].'_PID'.$pr['pruefungid'].'_'.$prdatum.'.pdf')) { echo " disabled"; } ?>"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
-					
-					
-					
+
+
+
 					<a href="<?php echo site_url('geraete/index/'.$pr['oid']); ?>" class="<?php if($geraet) { echo "d-none"; } ?> btn btn-primary btn-sm"><span class="iconify" data-icon="ic:baseline-room" data-width="20" data-height="20"></span> Ort</a>
 					<a href="<?php echo site_url('pruefung/index/'.$pr['gid']); ?>" class="<?php if($geraet) { echo "d-none"; } ?> btn btn-primary btn-sm"><span class="iconify icon:jam:plug icon-width:20 icon-height:20"></span> Gerät</a>
 					<a href="<?php echo site_url('pruefung/edit/'.$pr['pruefungid']); ?>" class="<?php if($this->session->userdata('level')>='3') { echo " disabled"; }?> btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> edit</a>

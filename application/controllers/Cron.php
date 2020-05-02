@@ -61,7 +61,12 @@ class Cron extends CI_Controller {
 			//listen übersicht als pdf anfordern
 			foreach($cron_liste as $ortsid) {
 
+				$firmaid = file_get_contents($cron_liste_pfad.$ortsid, true);
 				$filename= $this->Pdf_model->genpdf_uebersicht($ortsid);
+				echo $filename;
+				echo '<br>';
+				echo $firmaid;
+				echo '<br>';
 
 				if (!unlink($cron_liste_pfad.$ortsid)) {
 					$error='Fehler '.$filename;
@@ -72,7 +77,15 @@ class Cron extends CI_Controller {
 			// protokoll als pdf anfordern
 			foreach($cron_protokoll as $pruefung_id) {
 
+				$firmaid = file_get_contents($cron_protokoll_pfad.$pruefung_id, true);
+
 				$filename= $this->Pdf_model->genpdf_protokoll($pruefung_id);
+				echo '<br>';
+
+				echo $filename;
+				echo '<br>';
+				echo $firmaid;
+
 
 				if (!unlink($cron_protokoll_pfad.$pruefung_id)) {
 					$error='Fehler '.$filename;
@@ -83,10 +96,10 @@ class Cron extends CI_Controller {
 				//aktuelles jahr wird als zip neu erstellt wenn änderungen sind
 				$year=date('Y');
 				if(!empty($cron_liste) || !empty($cron_protokoll)){
-				$this->File_model->createfiles($year);
+				$this->File_model->createfiles($year,$firmaid);
 				}
 
-
+				echo '<br>';
 			if(empty($errordata)){
 				echo 'OK';
 				echo '<br>Übersicht ';

@@ -1,4 +1,3 @@
-<title><?php if($geraet) { echo $geraet['name']; } ?> Prüfung</title>
 <div class="row">
  <div class="col">
 

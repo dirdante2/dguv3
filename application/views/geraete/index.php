@@ -1,5 +1,4 @@
 
-<!--<title><?php if($ort) { echo $ort['name']; } ?> Geräte</title> -->
 <div class="row">
  <div class="col">
 

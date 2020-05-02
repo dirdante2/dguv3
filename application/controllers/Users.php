@@ -17,6 +17,7 @@ class Users extends CI_Controller {
 		$this->load->model('Firmen_model');
 		$this->load->model('Orte_model');
 		$this->load->model('Login_model');
+		$this->load->model('File_model');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		//$this->load->library('Session_update');
@@ -45,8 +46,9 @@ class Users extends CI_Controller {
 			$data['users'] = $this->Users_model->list();
 		}
 		//$this->output->cache(10);
+		$header['cronjobs']= $this->File_model->getfiles('cronjob');
 
-		$this->load->view('templates/header');
+		$this->load->view('templates/header',$header);
 		$this->load->view('templates/datatable');
 		$this->load->view('users/index',$data);
 		$this->load->view('templates/footer');
@@ -83,6 +85,8 @@ class Users extends CI_Controller {
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
+			$header['cronjobs']= $this->File_model->getfiles('cronjob');
+
 			if($this->session->userdata('level')!='1'){
 				$user_id=$this->session->userdata('userid');
 
@@ -96,7 +100,7 @@ class Users extends CI_Controller {
 
 
 		if($this->form_validation->run() === FALSE) {
-			$this->load->view('templates/header');
+			$this->load->view('templates/header',$header);
 
 			if($user_id==0) {
 				$this->load->view('users/form',array(
@@ -179,10 +183,12 @@ class Users extends CI_Controller {
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
+			$header['cronjobs']= $this->File_model->getfiles('cronjob');
+
 		$this->form_validation->set_rules('confirm', 'Bestätigung', 'required');
 
 		if($this->form_validation->run() === FALSE) {
-			$this->load->view('templates/header');
+			$this->load->view('templates/header',$header);
 			$this->load->view('templates/confirm',array(
 				'beschreibung' => 'Messgerät wirklich löschen?',
 				'target' => 'users/delete/'.$user_id,

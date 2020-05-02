@@ -37,9 +37,12 @@ class Pruefer extends CI_Controller {
 			} else {
 				$data['pruefer'] = $this->Pruefer_model->get();
 			}
+			$header['title']= 'Prüfer';
+
+			$header['cronjobs']= $this->File_model->getfiles('cronjob');
 
 
-		$this->load->view('templates/header');
+		$this->load->view('templates/header',$header);
 		$this->load->view('templates/datatable');
 		$this->load->view('pruefer/index',$data);
 		$this->load->view('templates/footer');
@@ -54,12 +57,13 @@ class Pruefer extends CI_Controller {
 			$this->load->view('templates/footer');
           }else{
 
+			$header['cronjobs']= $this->File_model->getfiles('cronjob');
 
 			$this->form_validation->set_rules('name', 'Name', 'required');
 			$this->form_validation->set_rules('beschreibung', 'Beschreibung', 'required');
 
 			if($this->form_validation->run() === FALSE) {
-				$this->load->view('templates/header');
+				$this->load->view('templates/header',$header);
 
 				if($pid==0) {
 					$this->load->view('pruefer/form',array(
@@ -103,10 +107,12 @@ class Pruefer extends CI_Controller {
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
+			$header['cronjobs']= $this->File_model->getfiles('cronjob');
+
 		$this->form_validation->set_rules('confirm', 'Bestätigung', 'required');
 
 		if($this->form_validation->run() === FALSE) {
-			$this->load->view('templates/header');
+			$this->load->view('templates/header',$header);
 			$this->load->view('templates/confirm',array(
 				'beschreibung' => 'Prüfer wirklich löschen?',
 				'target' => 'pruefer/delete/'.$pid,

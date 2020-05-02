@@ -42,10 +42,12 @@ class Pruefung extends CI_Controller {
 			if($gid) {
 				$data['geraet'] = $this->Geraete_model->get($gid);
 				$data["page_total_rows"] = $this->Dguv3_model->getcountdata('pruefung','gid',$gid); // count prüfungen wenn auf gerät begrenzt
-
+				$header['title']= 'Prüfung '.$data['geraet']['name'];
 			} else {
 				$data['geraet'] = NULL;
 				$data["page_total_rows"] = $this->Dguv3_model->getcountdata('pruefung'); //count alle prüfungen
+				$header['title']= 'Prüfung';
+
 			}
 
 			if($this->agent->is_mobile()){
@@ -65,8 +67,10 @@ class Pruefung extends CI_Controller {
 
 				if($gid) {
 					$data['pruefung'] = $this->Pruefung_model->list($gid,$firmen_firmaid,$data["page_show_rows"],$data['page_offset']); //prüfungen mit einer gid
+
 				} else {
 					$data['pruefung'] = $this->Pruefung_model->list(null,$firmen_firmaid,$data["page_show_rows"],$data['page_offset']); //alle prüfungen
+
 				}
 
 
@@ -74,6 +78,7 @@ class Pruefung extends CI_Controller {
 				if($gid) {
 					//admin
 					$data['pruefung'] = $this->Pruefung_model->list($gid,null,$data["page_show_rows"],$data['page_offset']); //prüfungen mit einer gid
+
 				} else {
 					$data['pruefung'] = $this->Pruefung_model->list(null,null,$data["page_show_rows"],$data['page_offset']); //alle prüfungen
 
@@ -89,13 +94,15 @@ class Pruefung extends CI_Controller {
 
 		$data['pruefungabgelaufen']= $this->config->item('dguv3_pruefungabgelaufen');
 		$data['pruefungbaldabgelaufen']= $this->config->item('dguv3_pruefungbaldabgelaufen');
+		//$this->output->enable_profiler(TRUE);
+		$header['cronjobs']= $this->File_model->getfiles('cronjob');
 
 		if($this->agent->is_mobile()){
-			$this->load->view('templates/header_mobile');
+			$this->load->view('templates/header_mobile',$header);
 			$this->load->view('templates/scroll');
 			$this->load->view('pruefung/index_mobile',$data);
 		  } else {
-			$this->load->view('templates/header');
+			$this->load->view('templates/header',$header);
 			$this->load->view('templates/datatable');
 			$this->load->view('pruefung/index',$data);
 		  }
@@ -107,7 +114,7 @@ class Pruefung extends CI_Controller {
 //TODO abfrage ob user eingeloggt ist
 	function protokoll($pruefung_id=NULL) {
 		if($pruefung_id) {
-			$data['pruefung'] = $this->Pruefung_model->getnotarray($pruefung_id);
+			$data['pruefung'] = $this->Pruefung_model->get($pruefung_id);
 
 
 		}
@@ -144,6 +151,7 @@ class Pruefung extends CI_Controller {
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
+
 		if($this->Geraete_model->get($gid)) {
 			 $oid = $this->Geraete_model->get($gid)['oid'];
 			$pruefung_id = $this->Pruefung_model->new(array(
@@ -170,6 +178,9 @@ class Pruefung extends CI_Controller {
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
+
+			$header['cronjobs']= $this->File_model->getfiles('cronjob');
+
 		if(!$this->Pruefung_model->get($pruefung_id)) {
 			show_error('Prüfung mit der id "'.$pruefung_id.'" existiert nicht.', 404);
 			return NULL;
@@ -190,8 +201,10 @@ class Pruefung extends CI_Controller {
 		$firma_id = $this->Geraete_model->get($gid)['geraete_firmaid'];
 
 
+		$header['title']= 'Prüfung '.$geraetename;
+
 		if($this->form_validation->run() === FALSE) {
-			$this->load->view('templates/header');
+			$this->load->view('templates/header',$header);
 			$this->load->view('pruefung/form', array(
 					'pruefer'=> $this->Pruefer_model->get(),
 					'messgeraete'=> $this->Messgeraete_model->get(),
@@ -271,10 +284,10 @@ class Pruefung extends CI_Controller {
  */
 			//generiere PDF übersicht
 			//$this->Pdf_model->genpdf_uebersicht($ortsid);
-			file_put_contents('cron/liste/'.$ortsid,'');
+			file_put_contents('cron/liste/'.$ortsid,$pruefung['pruefung_firmaid']);
 
 			//$this->Pdf_model->genpdf_protokoll($pruefung_id);
-			file_put_contents('cron/protokoll/'.$pruefung_id,'');
+			file_put_contents('cron/protokoll/'.$pruefung_id,$pruefung['pruefung_firmaid']);
 			redirect('pruefung/index/'.$gid);
 		}
 	}
@@ -286,10 +299,12 @@ class Pruefung extends CI_Controller {
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
+			$header['cronjobs']= $this->File_model->getfiles('cronjob');
+
 		$this->form_validation->set_rules('confirm', 'Bestätigung', 'required');
 
 		if($this->form_validation->run() === FALSE) {
-			$this->load->view('templates/header');
+			$this->load->view('templates/header',$header);
 			$this->load->view('templates/confirm',array(
 				'beschreibung' => 'Prüfung wirklich löschen?',
 				'target' => 'pruefung/delete/'.$pruefung_id,

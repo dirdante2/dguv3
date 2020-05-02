@@ -36,6 +36,7 @@ class Orte extends CI_Controller {
 
 			} else {
 				$data['orte'] = $this->Orte_model->get();
+
 			}
 foreach($data['orte'] as $ort) {
 	$pdf_pfad=$this->File_model->get_file_pfad('1',$ort['oid']);
@@ -44,16 +45,18 @@ foreach($data['orte'] as $ort) {
 }
 $data['pdf_data']=$pdffile_data;
 
+$header['cronjobs']= $this->File_model->getfiles('cronjob');
+$header['title']= 'Orte';
 
 
 		//$data['filename'] = $this->File_model->get_file_pfad();
 
 		if($this->agent->is_mobile()){
-			$this->load->view('templates/header_mobile');
+			$this->load->view('templates/header_mobile',$header);
 			$this->load->view('templates/scroll');
 			$this->load->view('orte/index_mobile',$data);
 		  } else {
-			$this->load->view('templates/header');
+			$this->load->view('templates/header',$header);
 			$this->load->view('templates/datatable');
 			$this->load->view('orte/index',$data);
 		  }
@@ -73,15 +76,17 @@ $data['pdf_data']=$pdffile_data;
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
+			$header['cronjobs']= $this->File_model->getfiles('cronjob');
+
 		$this->form_validation->set_rules('name', 'Name', 'required');
 		$this->form_validation->set_rules('beschreibung', 'Beschreibung', 'required');
 		//$this->form_validation->set_rules('firmen_firmaid', 'Firma', 'required');
 
 		if($this->form_validation->run() === FALSE) {
 			if($this->agent->is_mobile()){
-				$this->load->view('templates/header_mobile');
+				$this->load->view('templates/header_mobile',$header);
 			  } else {
-				$this->load->view('templates/header');
+				$this->load->view('templates/header',$header);
 			  }
 
 			if($oid==0) {
@@ -137,7 +142,15 @@ $data['pdf_data']=$pdffile_data;
 			//generiere PDF übersicht
 			//$this->Pdf_model->genpdf_uebersicht($oid);
 
-			file_put_contents('cron/liste/'.$oid,'');
+			file_put_contents('cron/liste/'.$oid,$ort['orte_firmaid']);
+			$typ='1';
+			$filename = $this->File_model->get_file_pfad($typ,$oid);
+
+
+
+			$toast_content['filename']=$filename;
+			$toast_content['ortsname']=$ort['name'];
+			file_put_contents('toast/'.$this->session->userdata('userid').'/'.$oid.'.txt', json_encode($toast_content));
 
 			$this->Orte_model->set($ort,$oid);
 			redirect('orte');
@@ -152,10 +165,12 @@ $data['pdf_data']=$pdffile_data;
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
+			$header['cronjobs']= $this->File_model->getfiles('cronjob');
+
 		$this->form_validation->set_rules('confirm', 'Bestätigung', 'required');
 
 		if($this->form_validation->run() === FALSE) {
-			$this->load->view('templates/header');
+			$this->load->view('templates/header',$header);
 			$this->load->view('templates/confirm',array(
 				'beschreibung' => 'Ort wirklich löschen?',
 				'target' => 'orte/delete/'.$oid,
@@ -171,7 +186,7 @@ $data['pdf_data']=$pdffile_data;
 
 	function json($key="") {
 		if($this->session->userdata('logged_in') !== TRUE){
-			$this->load->view('templates/header');
+			$this->load->view('templates/header',$header);
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
 		}else{

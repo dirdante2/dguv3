@@ -19,7 +19,7 @@ class Geraete_model extends CI_Model {
         return $this->db->count_all_results();
 	}
 
-	function get($gid=NULL,$firmen_firmaid=NULL,$limit=null, $offset=null) {
+	function get($gid=NULL,$oid=null,$firmen_firmaid=NULL,$limit=null, $offset=null) {
 		$this->db->select('geraete.*, firmen.firmen_firmaid,firmen.firma_name,orte.name AS ortsname, pruefung.bestanden, pruefung.datum AS letztesdatum, (select count(*) from pruefung as pr where geraete.gid = pr.gid) AS anzahl, pruefer.name as pruefername');
 		$this->db->from('geraete');
 		$this->db->join('orte', 'geraete.oid = orte.oid');
@@ -30,44 +30,30 @@ class Geraete_model extends CI_Model {
 
 
 
-		if($firmen_firmaid!==NULL) {
+		if($firmen_firmaid) {
 			$this->db->having('geraete.geraete_firmaid', $firmen_firmaid);
 		}
-
-
 		$this->db->order_by('geraete.gid', 'DESC');
 
-
-		if($gid===NULL) {
-			$this->db->limit($limit,$offset);
-			return $this->db->get()->result_array();
+		if($gid) { // einzel gerät
+			$this->db->where('geraete.gid',$gid);
+		} elseif($oid) { //ortsliste
+			$this->db->where('orte.oid',$oid);
 		}
-
-		$this->db->where('geraete.gid',$gid);
-		//$this->db->limit($limit,$offset);
-
+		$this->db->limit($limit,$offset);
 		$result = $this->db->get()->result_array();
+
 		if(!empty($result)) {
-			return $result[0];
+			if($gid) {
+				return $result[0];
+			} else {
+				return $result;
+			}
 		} else {
 			return NULL;
 		}
 	}
 
-	function getByOid($oid,$firmen_firmaid=NULL) {
-		$this->db->select('geraete.*, firmen.firmen_firmaid,firmen.firma_name,orte.name AS ortsname, pruefung.bestanden, pruefung.datum AS letztesdatum, (select count(*) from pruefung as pr where geraete.gid = pr.gid) AS anzahl, pruefer.name as pruefername');
-		$this->db->from('geraete');
-		$this->db->join('orte', 'geraete.oid = orte.oid');
-		$this->db->join('firmen', 'geraete.geraete_firmaid = firmen.firmen_firmaid', 'LEFT');
-		$this->db->join('pruefung','geraete.gid = pruefung.gid AND pruefung.pruefungid = (SELECT pruefungid from pruefung as pr where geraete.gid = pr.gid order by datum desc, pruefungid desc limit 1)','LEFT');
-		$this->db->join('pruefer', 'pruefung.pid = pruefer.pid', 'LEFT');
-
-		if($firmen_firmaid!==NULL) {
-			$this->db->having('geraete.geraete_firmaid', $firmen_firmaid);
-		}
-		$this->db->where('orte.oid',$oid);
-		return $this->db->get()->result_array();
-	}
 
 
 	/*Verlängerungskabel
@@ -106,7 +92,7 @@ class Geraete_model extends CI_Model {
 // aufruf geräte pdf
 function pdfdata($oid="") {
 	$data['ort'] = $this->Orte_model->get($oid);
-	$geraete = $this->Geraete_model->getByOid($oid);
+	$geraete = $this->Geraete_model->get(null,$oid);
 	//$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_pdf_col');
 	$data['dguv3_logourl']= $this->config->config['base_url'].$this->config->item('dguv3_logourl');
 	$data['qrcode']= 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$this->config->config['base_url'].'/index.php/geraete/index/'.$oid;

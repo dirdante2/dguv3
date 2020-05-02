@@ -9,7 +9,10 @@
 <span class="iconify" data-icon="vaadin:qrcode" data-width="20" data-height="20"></span> <a class="link" target="_blank" href="http://goqr.me/de/">http://goqr.me</a><br>
 
 <br>
-    Entwickler Fahrplan, SZE, Dirdante
+    Entwickler Fahrplan, SZE, Dirdante<br>
+	Loading time <?php echo $this->benchmark->elapsed_time();?><br>
+	memory <?php echo $this->benchmark->memory_usage();?><br>
+
 </div>
 <br><br>
 

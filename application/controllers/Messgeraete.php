@@ -36,8 +36,9 @@ class Messgeraete extends CI_Controller {
 				$data['messgeraete'] = $this->Messgeraete_model->get();
 			}
 
+			$header['cronjobs']= $this->File_model->getfiles('cronjob');
 
-		$this->load->view('templates/header');
+		$this->load->view('templates/header',$header);
 		$this->load->view('templates/datatable');
 		$this->load->view('messgeraete/index',$data);
 		$this->load->view('templates/footer');
@@ -50,11 +51,13 @@ class Messgeraete extends CI_Controller {
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
+			$header['cronjobs']= $this->File_model->getfiles('cronjob');
+
 		$this->form_validation->set_rules('name', 'Name', 'required');
 		$this->form_validation->set_rules('beschreibung', 'Beschreibung', 'required');
 
 		if($this->form_validation->run() === FALSE) {
-			$this->load->view('templates/header');
+			$this->load->view('templates/header',$header);
 
 			if($mid==0) {
 				$this->load->view('messgeraete/form',array(
@@ -101,10 +104,12 @@ class Messgeraete extends CI_Controller {
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
+			$header['cronjobs']= $this->File_model->getfiles('cronjob');
+
 		$this->form_validation->set_rules('confirm', 'Bestätigung', 'required');
 
 		if($this->form_validation->run() === FALSE) {
-			$this->load->view('templates/header');
+			$this->load->view('templates/header',$header);
 			$this->load->view('templates/confirm',array(
 				'beschreibung' => 'Messgerät wirklich löschen?',
 				'target' => 'messgeraete/delete/'.$mid,

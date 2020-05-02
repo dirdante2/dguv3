@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+<?php if(isset($title) && $title) { ?>
+<title><?php echo $title; ?></title>
+<?php } ?>
 	<meta charset="UTF-8">
 	<script src="<?php echo base_url();?>lib/jquery/jquery-3.4.1.min.js"></script>
-	<script src="<?php echo base_url();?>lib/jquery/jquery-ui.min.js"></script>
+	<!-- <script src="<?php echo base_url();?>lib/jquery/jquery-ui.min.js"></script> -->
 	<script src="<?php echo base_url();?>lib/bootstrap/bootstrap.min.js"></script>
-	<script src="<?php echo base_url();?>lib/datatables/datatables.js"></script>
+	<!-- <script src="<?php echo base_url();?>lib/datatables/datatables.js"></script> -->
 	<!--<script src="<?php echo base_url();?>lib/datatables/datatables.min.js"></script>-->
 	<!--<script src="<?php echo base_url();?>lib/datatables/jquery.dataTables.min.js"></script>-->
 	<script src="https://code.iconify.design/1/1.0.4/iconify.min.js"></script>
@@ -18,11 +20,11 @@
   />
 
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/bootstrap.min_mobile.css">
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/jquery/jquery-ui.min.css">
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/jquery/jquery-ui.structure.min.css">
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/jquery/jquery-ui.theme.min.css">
+	<!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/jquery/jquery-ui.min.css"> -->
+	<!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/jquery/jquery-ui.structure.min.css"> -->
+	<!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/jquery/jquery-ui.theme.min.css"> -->
 	<!--<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/datatables/datatables.min.css">-->
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/datatables/datatables.css">
+	<!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/datatables/datatables.css"> -->
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/dguv3.css">
 </head>
 
@@ -32,7 +34,11 @@
 
 
 <nav class="navbar sticky-top navbar-expand-xl bg-dark navbar-dark">
-  <a class="navbar-brand" href="<?php echo site_url('Dguv3'); ?>">DGUV3</a>
+  <a class="navbar-brand" href="<?php echo site_url('Dguv3'); ?>">DGUV3
+  <?php if(isset($cronjobs) && $cronjobs) { ?>
+	<span class="badge badge-danger"><?php echo $cronjobs; ?></span>
+	<?php } ?>
+	</a>
   <ul class="nav navbar-nav navbar-right">
   <div class="d-flex align-items-right">
     	<?php if($this->session->userdata('level')) {
@@ -105,3 +111,4 @@
 <!--; border: 1px solid #000;-->
 
 	<div id="test" class="container-fluid" style="width:100%">
+

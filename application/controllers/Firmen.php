@@ -16,6 +16,7 @@ class Firmen extends CI_Controller {
 		$this->load->model('Messgeraete_model');
 		$this->load->model('Pdf_model');
 		$this->load->model('Orte_model');
+		$this->load->model('File_model');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -45,8 +46,9 @@ class Firmen extends CI_Controller {
 			$data['firmen'] = $this->Firmen_model->list();
 		}
 		//$this->output->cache(10);
+		$header['cronjobs']= $this->File_model->getfiles('cronjob');
 
-		$this->load->view('templates/header');
+		$this->load->view('templates/header',$header);
 		$this->load->view('templates/datatable');
 		$this->load->view('firmen/index',$data);
 		$this->load->view('templates/footer');
@@ -70,9 +72,11 @@ class Firmen extends CI_Controller {
 		$this->form_validation->set_rules('firma_ort', 'Ort', 'required');
 		$this->form_validation->set_rules('firma_plz', 'PLZ', 'required');
 		$this->form_validation->set_rules('firma_strasse', 'Strasse', 'required');
+		$header['cronjobs']= $this->File_model->getfiles('cronjob');
+
 
 		if($this->form_validation->run() === FALSE) {
-			$this->load->view('templates/header');
+			$this->load->view('templates/header',$header);
 
 			if($firmen_firmaid==0) {
 				$this->load->view('firmen/form',array('firma'=>array(
@@ -116,9 +120,10 @@ class Firmen extends CI_Controller {
 			$this->load->view('templates/footer');
           }else{
 		$this->form_validation->set_rules('confirm', 'Bestätigung', 'required');
+		$header['cronjobs']= $this->File_model->getfiles('cronjob');
 
 		if($this->form_validation->run() === FALSE) {
-			$this->load->view('templates/header');
+			$this->load->view('templates/header',$header);
 			$this->load->view('templates/confirm',array(
 				'beschreibung' => 'Messgerät wirklich löschen?',
 				'target' => 'firmen/delete/'.$firmen_firmaid,

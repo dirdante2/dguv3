@@ -228,8 +228,12 @@
 
     <div class="col-auto" style="width: 100%; border: 0px solid #000;">
     <br>
-        <b>Archiv</b><br>
+        <b>Archiv</b>
+		<?php if($cronjobs) { ?><br>
 
+Fehlende Aufgaben: <span class="badge badge-danger"><?php echo $cronjobs; ?></span>
+<?php } ?>
+<br>
 		<?php
 
          $root = 'pdf/'.$this->session->userdata('firmaid').'/';

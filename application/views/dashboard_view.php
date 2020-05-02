@@ -1,7 +1,6 @@
 <h1>Willkommen!</h1>
 <br>
 <br>
-
 <h2><span class="iconify" data-icon="whh:statistics" data-width="30" data-height="30"></span> Statistiken \o/</h2>
 <br>
 <div class="row">
@@ -190,9 +189,12 @@
     </div>
 
     <div class="col" style="width: 100px; white-space: nowrap; border: 0px solid #000;">
-        <h4>Archiv</h4><br>
+        <h4>Archiv</h4>
+		<?php if($cronjobs) { ?>
 
-
+			Fehlende Aufgaben: <span class="badge badge-danger"><?php echo $cronjobs; ?></span><br>
+		<?php } ?>
+		<br>
 		<?php
 
          $root = 'pdf/'.$this->session->userdata('firmaid').'/';

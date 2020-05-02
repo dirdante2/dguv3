@@ -19,7 +19,7 @@
     //$this->load->library('user_agent');
     if($this->session->userdata('logged_in') !== TRUE){
       //redirect('login');
-      //$this->output->cache(30);
+     // $this->output->cache(60);
 
         if($this->agent->is_mobile()){
           $this->load->view('templates/header_mobile');
@@ -71,6 +71,11 @@
       //$this->output->cache(5);
       if ($this->session->userdata('firmaid')) {
 		$data['archiv_ordner']= $this->File_model->getfiles();
+		$data['cronjobs']= $this->File_model->getfiles('cronjob');
+		$header['cronjobs']= $this->File_model->getfiles('cronjob');
+
+
+
 		$data['firma'] = $this->Firmen_model-> get($this->session->userdata('firmaid'));
       }
 	  $data['pdfserver']= $this->config->item('dguv3_pdf_server');
@@ -79,12 +84,14 @@
 
 
       if($this->agent->is_mobile()){
-        $this->load->view('templates/header_mobile');
+        $this->load->view('templates/header_mobile',$header);
         $this->load->view('dashboard_view_mobile',$data);
       } else {
-        $this->load->view('templates/header');
+		$this->load->view('templates/header', $header);
+		$this->load->view('templates/toast');
+
         $this->load->view('dashboard_view',$data);
-      }
+	  }
 
       $this->load->view('templates/footer');
 
@@ -116,5 +123,32 @@
 
 	}
 
+	function get_toast() {
+
+		if($this->session->userdata('logged_in') === TRUE){
+
+			$toasts_files= $this->File_model->getfiles(null,'toast');
+			//print_r($toasts_files);
+
+
+			$toastarray=array();
+foreach($toasts_files as $toastobj) {
+		$details = file_get_contents('toast/'.$this->session->userdata('userid').'/'.$toastobj, true);
+
+		$toasts=json_decode($details, TRUE);
+		//print_r($toasts);
+		array_push($toastarray,$toasts);
+
+		}
+
+$data['toasts']=$toastarray;
+//print_r($toastarray);
+		$this->load->view('templates/toast_view',$data);
+//return $data;
+
+		}
 
 	}
+
+
+}

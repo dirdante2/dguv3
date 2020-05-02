@@ -1,22 +1,21 @@
 
-<title>GID <?php echo $pruefung['gid']; ?> Protokoll <?php echo $pruefung['pruefungid']; ?></title> 
 
- 	
+
 
 <table style="width:100%"><tr>
 	<td class="text-left">QR<br><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo base_url();?>index.php/pruefung/index/<?php echo $pruefung['gid']; ?>" width="80px" alt="Responsive image"></td>
 	<td class="text-right"><img src="<?php echo base_url();?>application/bilder/logo.jpg" width="280px" alt="Responsive image" ></td>
-	
+
 	</tr></table>
 
 <br>
 
 <div style="border: 2px solid #000;" class="container-fluid" style="width:100%">
-	
+
 		<div class="row" style="border: 1px solid #000;">
 			<div class="col"><h4>Prüfprotokoll elektrischer Geräte gemäß DIN VDE 0701/0702,<br>BetrSichV, DGUV Vorschrift 3</h4></div>
 		</div><br>
-		
+
 		<table style="width:100%"><tr>
 		<td class="align-baseline">
 						<b>Kunde</b><br><br>
@@ -55,8 +54,8 @@
 								<td><?php if($pruefung['geraetebeschreibung']==NULL) { echo "-"; } else { echo $pruefung['geraetebeschreibung']; } ?></td>
 							</tr>
 						</table>
-						
-				</td><td class="align-baseline">	
+
+				</td><td class="align-baseline">
 						<br><br>
 						<table  class="table table-sm">
 							<tr>
@@ -84,14 +83,14 @@
 								<td><?php if($pruefung['aktiv']=='0') { echo "Nein"; } else { echo "Ja"; } ?></td>
 							</tr>
 						</table>
-						
-				</td>	
+
+				</td>
 				</tr></table>
-			
+
 		<hr>
 		<div class="row">
-			
-				
+
+
 				<div class="col">
 						<b>Angaben zur Prüfung</b><br><br>
 						<table  class="table table-sm">
@@ -121,15 +120,15 @@
 										?>
 								</td>
 							</tr>
-							
+
 						</table>
-						
-				</div>	
-	
+
+				</div>
+
 		</div><hr>
 		<div class="row">
-			
-				
+
+
 				<div class="col">
 						<b>Prüfung</b><br><br>
 						<table  class="table table-sm">
@@ -152,15 +151,15 @@
 								<td>Schutzleiterwiderstand</td>
 								<td>max <?php echo $pruefung['RPEmax']; ?> &#8486;</td>
 								<td><?php if($pruefung['schutzleiter']===null || $pruefung['sichtpruefung']== '0') { echo "-"; } else { echo $pruefung['schutzleiter'].' &#8486;'; } ?></td>
-								<td><?php 
+								<td><?php
 									$y = $pruefung['RPEmax'];
-									if($pruefung['schutzleiter']===null || $pruefung['sichtpruefung']== '0') { 
-									       echo "-"; 
+									if($pruefung['schutzleiter']===null || $pruefung['sichtpruefung']== '0') {
+									       echo "-";
 									} else {
     									if($pruefung['schutzleiter'] >= $y) {
-    									      echo "Nein"; 
-    									} else { 
-    									    echo "Ja"; 
+    									      echo "Nein";
+    									} else {
+    									    echo "Ja";
     								    }
 									}?></td>
 							</tr>
@@ -168,15 +167,15 @@
 								<td>Isolationsprüfung 500V</td>
 								<td>min 2.00 M&#8486;</td>
 								<td><?php if($pruefung['isowiderstand']===null || $pruefung['sichtpruefung']== '0') { echo "-"; } else { echo $pruefung['isowiderstand'].' M&#8486;'; } ?></td>
-								<td><?php 
+								<td><?php
 									$y = 2.0;
-									if($pruefung['isowiderstand']===null || $pruefung['sichtpruefung']== '0') { 
-									       echo "-"; 
+									if($pruefung['isowiderstand']===null || $pruefung['sichtpruefung']== '0') {
+									       echo "-";
 									} else {
     									if($pruefung['isowiderstand'] < $y) {
-    									      echo "Nein"; 
-    									} else { 
-    									    echo "Ja"; 
+    									      echo "Nein";
+    									} else {
+    									    echo "Ja";
     								    }
 									}?></td>
 							</tr>
@@ -184,32 +183,32 @@
 								<td>Schutzleiterstrom</td>
 								<td>max 0.50 mA</td>
 								<td><?php if($pruefung['schutzleiterstrom']===null || $pruefung['sichtpruefung']== '0') { echo "-"; } else { echo $pruefung['schutzleiterstrom'].' mA'; } ?></td>
-								<td><?php 
+								<td><?php
 									$y = 0.50;
-									if($pruefung['schutzleiterstrom']===null || $pruefung['sichtpruefung']== '0') { 
-									       echo "-"; 
+									if($pruefung['schutzleiterstrom']===null || $pruefung['sichtpruefung']== '0') {
+									       echo "-";
 									} else {
     									if($pruefung['schutzleiterstrom'] >= $y) {
-    									      echo "Nein"; 
-    									} else { 
-    									    echo "Ja"; 
+    									      echo "Nein";
+    									} else {
+    									    echo "Ja";
     								    }
 									}?></td>
 							</tr>
-							
+
 							<tr>
 								<td>Berührungstrom</td>
 								<td>max 0.25 mA</td>
 								<td><?php if($pruefung['beruehrstrom']===null || $pruefung['sichtpruefung']== '0') { echo "-"; } else { echo $pruefung['beruehrstrom'].'mA'; } ?></td>
-								<td><?php 
+								<td><?php
 									$y = 0.25;
-									if($pruefung['beruehrstrom']===null || $pruefung['sichtpruefung']== '0') { 
-									       echo "-"; 
+									if($pruefung['beruehrstrom']===null || $pruefung['sichtpruefung']== '0') {
+									       echo "-";
 									} else {
     									if($pruefung['beruehrstrom'] >= $y) {
-    									      echo "Nein"; 
-    									} else { 
-    									    echo "Ja"; 
+    									      echo "Nein";
+    									} else {
+    									    echo "Ja";
     								    }
 									}?></td>
 							</tr>
@@ -233,22 +232,22 @@
 							</tr>
 						</tbody>
 						</table>
-						
-				</div>	
-				
-				
-			
+
+				</div>
+
+
+
 		</div><hr>
 		<div class="row">
-			
-				
+
+
 				<div class="col">
 						<b>Bemerkung</b><br>
 						<?php if($pruefung['bemerkung']=='') { echo "<br><br>"; } else { echo $pruefung['bemerkung']; }?>
-				</div>	
-				
-		
-			
+				</div>
+
+
+
 		</div><hr>
 		Die Prüfung wurde ordnungsgemäß durchgeführt
 		<br><br>
@@ -256,15 +255,15 @@
 			<td><?php $blubb = new DateTime($pruefung['datum']); echo $blubb->format('d.m.Y');  ?></td>
 			<td></td>
 			</tr></table>
-		
-			
-		
-		<hr>	
+
+
+
+		<hr>
 		<table style="width:100%"><tr>
 			<td>Datum</td>
 			<td class="text-center">Unterschrift</td>
 			</tr></table>
-		
+
 
 </div>
 <center>Dieses Prüfprotokoll wurde maschinell erstellt und ist auch ohne Unterschrift gültig!</center>

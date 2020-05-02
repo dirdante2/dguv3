@@ -61,15 +61,15 @@ class Geraete extends CI_Controller {
 			if($this->session->userdata('level')>='2'){
 				$firmen_firmaid=$this->session->userdata('firmaid');
 
-
-
 				if($oid) {
 					$data['ort'] = $this->Orte_model->get($oid);
-					$data['geraete'] = $this->Geraete_model->getByOid($oid,$firmen_firmaid);
+					$data['geraete'] = $this->Geraete_model->get(null,$oid,$firmen_firmaid);
 					$data['pdf_data'] = $this->File_model->get_file_pfad('1',$oid);
+					$header['title']= 'Geräte '.$data['ort']['name'];
 				} else {
 					$data['ort'] = NULL;
-					$data['geraete'] = $this->Geraete_model->get(null,$firmen_firmaid,$data["page_show_rows"],$data['page_offset']);
+					$data['geraete'] = $this->Geraete_model->get(null,null,$firmen_firmaid,$data["page_show_rows"],$data['page_offset']); //$gid=NULL,$oid=null,$firmen_firmaid=NULL,$limit=null, $offset=null
+					$header['title']= 'Geräte';
 				}
 
 			} else {
@@ -77,44 +77,31 @@ class Geraete extends CI_Controller {
 
 				if($oid) {
 					$data['ort'] = $this->Orte_model->get($oid);
-					$data['geraete'] = $this->Geraete_model->getByOid($oid);
-
-					//$pdf_pfad=$this->File_model->get_file_pfad('1',$oid);
+					$data['geraete'] = $this->Geraete_model->get(null,$oid);
+					$header['title']= 'Geräte '.$data['ort']['name'];
 
 					$data['pdf_data'] = $this->File_model->get_file_pfad('1',$oid);
-
-
-
-
 				} else {
 					$data['ort'] = NULL;
-					$data['geraete'] = $this->Geraete_model->get(null,null,$data["page_show_rows"],$data['page_offset']);
-
-					//$data['geraete'] = $this->Geraete_model->get();
+					$data['geraete'] = $this->Geraete_model->get(null,null,null,$data["page_show_rows"],$data['page_offset']); //$gid=NULL,$oid=null,$firmen_firmaid=NULL,$limit=null, $offset=null
+					$header['title']= 'Geräte';
 				}
 			}
-
-//$config["per_page"], $page
-			//$pagination['target']= 0;
-			//$data['pagination']=$pagination['target'];
-
-
-
-
 
 
 		$data['pruefungabgelaufen']= $this->config->item('dguv3_pruefungabgelaufen');
 		$data['pruefungbaldabgelaufen']= $this->config->item('dguv3_pruefungbaldabgelaufen');
 		/*$this->output->cache(5);*/
 
+		$header['cronjobs']= $this->File_model->getfiles('cronjob');
 
 
 		if($this->agent->is_mobile()){
-		$this->load->view('templates/header_mobile');
+		$this->load->view('templates/header_mobile',$header);
 		$this->load->view('templates/scroll');
 		$this->load->view('geraete/index_mobile',$data);
       } else {
-		$this->load->view('templates/header');
+		$this->load->view('templates/header',$header);
 		$this->load->view('templates/datatable');
 		$this->load->view('geraete/index',$data);
       }
@@ -128,7 +115,7 @@ class Geraete extends CI_Controller {
 
 		if($oid) {
 			$data['ort'] = $this->Orte_model->get($oid);
-			$data['geraete'] = $this->Geraete_model->getByOid($oid);
+			$data['geraete'] = $this->Geraete_model->get(null,$oid);
 		} else {
 			$data['ort'] = NULL;
 			$data['geraete'] = $this->Geraete_model->get();
@@ -179,12 +166,13 @@ class Geraete extends CI_Controller {
 		$this->form_validation->set_rules('typ', 'Typ', 'required');
 		$this->form_validation->set_rules('oid', 'Orts-ID', 'required');
 		$this->form_validation->set_rules('oid', 'Ort', 'callback_oid_check'); //valid oid?
+		$header['cronjobs']= $this->File_model->getfiles('cronjob');
 
 		if($this->form_validation->run() === FALSE) {
 			if($this->agent->is_mobile()){
-				$this->load->view('templates/header_mobile');
+				$this->load->view('templates/header_mobile',$header);
 			  } else {
-				$this->load->view('templates/header');
+				$this->load->view('templates/header',$header);
 			  }
 
 			//Neues Gerät
@@ -254,7 +242,8 @@ class Geraete extends CI_Controller {
 			$ortsid = $this->Geraete_model->get($gid)['oid'];
 
 			//$this->Pdf_model->genpdf_uebersicht($gortsid);
-			file_put_contents('cron/liste/'.$ortsid,'');
+			file_put_contents('cron/liste/'.$ortsid,$geraet['geraete_firmaid']);
+
 			if($gid==0) {
 				redirect('geraete');
 				}
@@ -271,9 +260,10 @@ class Geraete extends CI_Controller {
 
 	function delete($gid) {
 		$this->form_validation->set_rules('confirm', 'Bestätigung', 'required');
-
+		$header['cronjobs']= $this->File_model->getfiles('cronjob');
+//TODO userabfrage
 		if($this->form_validation->run() === FALSE) {
-			$this->load->view('templates/header');
+			$this->load->view('templates/header',$header);
 			$this->load->view('templates/confirm',array(
 				'beschreibung' => 'Geraet wirklich löschen?',
 				'target' => 'geraete/delete/'.$gid,
@@ -294,7 +284,12 @@ class Geraete extends CI_Controller {
 
 		function json($oid="") {
 			$data = $this->Geraete_model->pdfdata($oid);
-			echo json_encode($data);
+
+			$this->output
+       			 ->set_content_type('application/json', 'utf-8')
+					->set_output(json_encode(array($data)));
+
+			//echo json_encode($data);
 		}
 
 
