@@ -135,7 +135,9 @@ $data['pdf_data']=$pdffile_data;
 			}
 
 			//generiere PDF übersicht
-			$this->Pdf_model->genpdf_uebersicht($oid);
+			//$this->Pdf_model->genpdf_uebersicht($oid);
+
+			file_put_contents('cron/liste/'.$oid,'');
 
 			$this->Orte_model->set($ort,$oid);
 			redirect('orte');
@@ -196,34 +198,7 @@ $data['pdf_data']=$pdffile_data;
 	}
 
 
-	function html2pdf_listen() {
 
-		 		$orte = $this->Orte_model->get();
-
-		 		$html2pdf_api_key= $this->config->item('html2pdf_api_key');
-				$html2pdf_user_pass= $this->config->item('html2pdf_user_pass');
-	 			foreach($orte as $ort) {
-
-	 				$ortsname = $this->Orte_model->get($ort['oid'])['name'];
-
-	 				$year=date("Y");
-
-
-
-
-	        if (!file_exists('pdf/'.$year.'/'.$ortsname)) { mkdir('pdf/'.$year.'/'.$ortsname, 0755, true); }
-
-	           //echo "PDF Übersicht wurde erstellt";
-
-
-						$value = site_url('geraete/uebersicht/'.$ort['oid']); // a url starting with http or an HTML string.  see example #5 if you have a long HTML string
-						$result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($html2pdf_api_key) . "&value=" .$value . $html2pdf_user_pass);
-						file_put_contents('pdf/'.$year.'/'.$ortsname.'/liste_'.$ortsname.'.pdf',$result);
-				}
-				redirect('orte');
-
-
-  }
 
   function download_file($typ,$id) {
 

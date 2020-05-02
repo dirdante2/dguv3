@@ -257,13 +257,23 @@
 						$details = file_get_contents('pdf/'.$firma['firmen_firmaid'].'/'.$file.'.txt', true);
 
 					$filetime= date("d.m.y|H:i:s", filemtime('pdf/'.$firma['firmen_firmaid'].'/'.$file.'.zip'));
+					//Get the file size in bytes.
+					$fileSizeBytes = filesize('pdf/'.$firma['firmen_firmaid'].'/'.$file.'.zip');
+
+					//Convert the bytes into MB.
+					$fileSizeMB = ($fileSizeBytes / 1024 / 1024);
+
+					//269,708 bytes is 0.2572135925293 MB
+
+					//Format it so that only 2 decimal points are displayed.
+					$fileSizeMB = number_format($fileSizeMB, 2);
 
 
 					?>
 					<div class="col">
 					<span class="iconify" data-icon="whh:archive" data-width="50" data-height="50"></span>
 					<!-- ordner und archiv existieren -->
-					<a class="btn-lg btn-secondary" href="<?php echo site_url('dguv3/download_file/3/'.$file); ?>"><?php echo $file; ?></a>
+					<a class="btn-lg btn-secondary" href="<?php echo site_url('dguv3/download_file/3/'.$file); ?>"><?php echo $file; ?> (<?php echo $fileSizeMB; ?>MB)</a>
 					<!-- $file+1 wenn in vergangenheit neuerstellen -->
 					<?php if($file >= $year) { ?>
 					<a href="<?php echo site_url('dguv3/create_archiv/'.$file); ?>" class="btn-lg btn-warning">neu</a>

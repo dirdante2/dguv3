@@ -107,7 +107,7 @@ class Geraete_model extends CI_Model {
 function pdfdata($oid="") {
 	$data['ort'] = $this->Orte_model->get($oid);
 	$geraete = $this->Geraete_model->getByOid($oid);
-	$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_pdf_col');
+	//$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_pdf_col');
 	$data['dguv3_logourl']= $this->config->config['base_url'].$this->config->item('dguv3_logourl');
 	$data['qrcode']= 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$this->config->config['base_url'].'/index.php/geraete/index/'.$oid;
 
@@ -122,17 +122,47 @@ function pdfdata($oid="") {
 
 
 } */
+//print_r($geraete);
+$i='0';
+foreach($geraete as $geraet) {
+
+	unset($geraete[$i]['firmen_firmaid']);
+	unset($geraete[$i]['firma_name']);
+	unset($geraete[$i]['geraete_firmaid']);
+	unset($geraete[$i]['oid']);
+
+	if(!$geraet['anzahl']=='0') {
+		$geraete[$i]['letztesdatum']='';
+		$geraete[$i]['pruefername']='';
+	}
+
+if(!$geraet['bestanden']=='1') {
+	$geraete[$i]['bestanden']='nein';
+} else {
+	$geraet[$i]['bestanden']='ja';
+}
+if($geraet['aktiv']=='1') {
+	$geraete[$i]['aktiv']='ja';
+} else {
+	$geraet[$i]['aktiv']='nein';
+}
+
+$i++;
+}
 
 
 
-	$data['geraete'] =$geraete;
+
+
 	// generate filename
 	$year = date("Y");
 	$ortsname = $data['ort']['name'];
 	$firma_id = $data['ort']['orte_firmaid'];
-	//TODO get file name von funktion
-	//$filename = 'pdf/'.$firma_id.'/'.$year.'/'.$oid.'_'.$ortsname.'/'.$ortsname.'_liste.pdf';
-	//$data['filename'] = $filename;
+	$typ='1'; //übersicht pdf
+	$filename = $this->File_model->get_file_pfad($typ,$oid);
+
+	$data['filename'] = $filename;
+	$data['geraete'] =$geraete;
 
 	//var die nicht in json nötig sind
 	unset($data['ort']['orte_firmaid']);

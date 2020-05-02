@@ -17,13 +17,16 @@
 <a class="btn btn-success <?php if($this->session->userdata('level')=='3') { echo " disabled"; }?>" href="<?php echo site_url('geraete/edit'); ?>"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neues Gerät hinzufügen</a>
 
 <?php
-	if($ort) { ?>
+	if($ort) {
+
+
+		?>
 
 			<a href="<?php echo site_url('orte/edit/'.$ort['oid']); ?>" class="btn btn-secondary <?php if($this->session->userdata('level')=='3') { echo " disabled"; }?>"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> Ort bearbeiten</a>
 
 
 
-		<a href="<?php echo base_url('orte/download_file/1/'.$ort['oid']);?>" target="_blank" class="btn btn-primary <?php if (!file_exists($pdf_data[ $ort['oid']])) { echo "disabled"; } ?>"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
+		<a href="<?php echo base_url('orte/download_file/1/'.$ort['oid']);?>" target="_blank" class="btn btn-primary <?php if (!file_exists($pdf_data)) { echo "disabled"; } ?>"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
 		<?php } ?>
 </div>
 </div>
@@ -39,7 +42,65 @@
 
 <button id="suche_alle" class="btn btn-info filter">Alle</button>
 </div>
-<br>
+<br><br>
+
+
+<?php
+if(!$ort) {
+	$ortsid=0;
+} else {
+	$ortsid=$ort['oid'];
+}
+if($page_total_rows<=$page_show_rows) {
+
+	$page_show_rows=$page_total_rows;
+}
+
+//wenn pages mehr als 5 dann kürze pagination ein
+if($page_pages>=5) {
+	if($page_pageid>=3) {
+		$page_start=$page_pageid -3;
+		$page_end=$page_pageid +4;
+	} else {
+		$page_start=0;
+		$page_end=7;
+	}
+} else {
+	$page_start=0;
+	$page_end=$page_pages;
+}
+if($page_pages>=5 && $page_pageid+4>= $page_pages) {
+$page_end=$page_pages;
+$page_start=$page_end -7;
+}
+
+?>
+<!--
+<?php echo $page_start; ?> start<br>
+<?php echo $page_end; ?> end<br> -->
+<div class="" style="text-align: center;border: 0px solid #343a40;" role="group" aria-label="pagination">
+
+
+	<a class="btn btn-outline-dark <?php if($page_pageid==0) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $ortsid; ?>/0">start</a>
+<?php
+$i = $page_start;
+while($i < $page_end) { ?>
+
+
+	<a class="btn <?php if($i==$page_pageid) { echo 'btn-dark disabled active';} else { echo 'btn-outline-dark';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $ortsid; ?>/<?php echo $i; ?>" tabindex="0"><?php echo $i +1; ?></a>
+
+	<?php
+
+   //echo "$i, ";
+
+   $i++;
+}
+?>
+<a class="btn btn-outline-dark <?php if($page_pageid+1==$page_pages) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $ortsid; ?>/<?php echo $page_pages-1; ?>">ende</a>
+<br>zeige <?php echo $page_show_rows; ?> von <?php echo $page_total_rows; ?> auf <?php echo $page_pages; ?> Seiten<br>
+
+</div>
+
 <br>
 <!-- table-hover table-bordered table-sm table-striped -->
 

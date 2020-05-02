@@ -93,6 +93,7 @@ class Pdf_model extends CI_Model
 		$this->generate_pdf('uebersicht', $data, $filename);
 		//echo $filename;
 		//redirect('orte');
+		return  $filename;
 	}
 
 	function genpdf_protokoll($pruefung_id="") {
@@ -105,10 +106,10 @@ class Pdf_model extends CI_Model
 
 
 
-
 		$this->generate_pdf('protokoll', $data, $filename);
 		//echo $filename;
 		//redirect('orte');
+		return  $filename;
 	}
 
 

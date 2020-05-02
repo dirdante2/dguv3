@@ -12,6 +12,12 @@ server mit racketprogramm
     und
     https://dguv3.qabc.eu/pruefung/protokoll/6
 
+beispiel json ausgaben
+https://dguv3.d-systems.us/pruefung/json/25
+https://dguv3.d-systems.us/geraete/json/25
+
+
+
 ->zurücksenden der pdf datei
 
 
@@ -19,9 +25,7 @@ webserver
 ->download und speichern der pdf datei
 
 --------------------------------
-webserver
-->online status abfrage an racket programm
-    racket programm läuft 1/0
+
 
 --------------------------------
 
@@ -44,11 +48,107 @@ speichern in sql
 senden der pdf an email adresse
 
 
-
-
-
 last seen login
 CONFIG!!!!!
 
+email senden überhaupt
 
-pdf übersicht spalte name größer dafür spalte prüfer und seriennummer kleiner
+log datein für alles mögliche
+
+########################################################################
+
+beispiel json
+
+prüfung
+########################################################################
+{
+   "dguv3_logourl":"https:\/\/dguv3.d-systems.us\/application\/bilder\/logo.jpg",
+   "qrcode":"https:\/\/api.qrserver.com\/v1\/create-qr-code\/?size=150x150&data=https:\/\/dguv3.d-systems.us\/index.php\/pruefung\/index\/25",
+   "filename":"pdf\/1\/2020\/25_BO-EC 7000\/Gid174_25_Entsorgungsger\u00e4t.pdf",
+   "pruefung":{
+      "pruefungid":"25",
+      "gid":"174",
+      "datum":"2020-04-20",
+      "sichtpruefung":"nein",
+      "schutzleiter":"-",
+      "RPEmax":"0.3",
+      "isowiderstand":"-",
+      "schutzleiterstrom":"-",
+      "beruehrstrom":"-",
+      "funktion":"nein",
+      "bestanden":"nein",
+      "bemerkung":"",
+      "hersteller":"Promax",
+      "typ":"RG 3000 E",
+      "seriennummer":"181100013790",
+      "nennspannung":"230",
+      "nennstrom":"0.00",
+      "leistung":"0",
+      "hinzugefuegt":"2020-04-08",
+      "beschreibung":"",
+      "aktiv":"ja",
+      "schutzklasse":"1",
+      "wiederholung":"0",
+      "verlaengerungskabel":"0",
+      "kabellaenge":"0",
+      "firma_name":"emcot group GmbH",
+      "firma_strasse":"Vienhovenweg 2a",
+      "firma_ort":"Bochum",
+      "firma_plz":"44867",
+      "firma_beschreibung":"firma1",
+      "messgeraetname":"Testboy 441",
+      "pruefername":"Florian Starke",
+      "ortsname":"BO-EC 7000",
+      "geraetename":"Entsorgungsger\u00e4t",
+      "geraetebeschreibung":"",
+      "naechste_pruefung":"04.2021",
+      "bestanden_schutzleiter":"-",
+      "bestanden_isowiderstand":"-",
+      "bestanden_schutzleiterstrom":"-",
+      "bestanden_beruehrstrom":"-"
+   }
+}
+übersicht
+########################################################################
+{
+   "ort":{
+      "oid":"25",
+      "name":"BO-EC 7000",
+      "beschreibung":"S. Fuchs",
+      "firmen_firmaid":"1",
+      "firma_name":"emcot group GmbH",
+      "firma_strasse":"Vienhovenweg 2a",
+      "firma_ort":"Bochum",
+      "firma_plz":"44867",
+      "firma_beschreibung":"firma1",
+      "geraeteanzahl":"6"
+   },
+   "dguv3_logourl":"https:\/\/dguv3.d-systems.us\/application\/bilder\/logo.jpg",
+   "qrcode":"https:\/\/api.qrserver.com\/v1\/create-qr-code\/?size=150x150&data=https:\/\/dguv3.d-systems.us\/index.php\/geraete\/index\/25",
+   "filename":"pdf\/1\/2020\/25_BO-EC 7000\/BO-EC 7000_liste.pdf",
+   "geraete":[
+      {
+         "gid":"174",
+         "name":"Entsorgungsger\u00e4t",
+         "hersteller":"Promax",
+         "typ":"RG 3000 E",
+         "seriennummer":"181100013790",
+         "nennspannung":"230",
+         "nennstrom":"0.00",
+         "leistung":"0",
+         "hinzugefuegt":"2020-04-08",
+         "beschreibung":"",
+         "aktiv":"ja",
+         "schutzklasse":"1",
+         "wiederholung":"0",
+         "verlaengerungskabel":"0",
+         "kabellaenge":"0",
+         "ortsname":"BO-EC 7000",
+         "bestanden":"nein",
+         "letztesdatum":"",
+         "anzahl":"2",
+         "pruefername":""
+      }
+
+   ]
+}

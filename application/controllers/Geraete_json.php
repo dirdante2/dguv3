@@ -51,9 +51,6 @@ class Geraete_json extends CI_Controller {
 		redirect('orte');
 	}
 
-	function json($oid="") {
-		$data = $this->data($oid);
-		echo json_encode($data);
-	}
+
 
 }

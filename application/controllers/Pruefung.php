@@ -48,7 +48,12 @@ class Pruefung extends CI_Controller {
 				$data["page_total_rows"] = $this->Dguv3_model->getcountdata('pruefung'); //count alle prüfungen
 			}
 
-			$data["page_show_rows"] = $this->config->item('dguv3_show_page_rows');
+			if($this->agent->is_mobile()){
+				$data["page_show_rows"] = $this->config->item('dguv3_show_page_rows_mobile');
+			} else {
+				$data["page_show_rows"] = $this->config->item('dguv3_show_page_rows_desktop');
+
+			}
 			$data['page_pages']=ceil($data["page_total_rows"] / $data["page_show_rows"]);
 			$data['page_pageid']=$pageid;
 			$data['page_offset']=$data["page_show_rows"] * $pageid ;
@@ -265,9 +270,11 @@ class Pruefung extends CI_Controller {
 						file_put_contents('pdf/'.$firma_id.'/'.$year.'/'.$ortsname.'/GID'.$gid.'_'.$geraetename.'_PID'.$pruefung_id.'_'.$prdatum.'_'.$bestanden.'.pdf',$result);
  */
 			//generiere PDF übersicht
-			$this->Pdf_model->genpdf_uebersicht($ortsid);
-			$this->Pdf_model->genpdf_protokoll($pruefung_id);
+			//$this->Pdf_model->genpdf_uebersicht($ortsid);
+			file_put_contents('cron/liste/'.$ortsid,'');
 
+			//$this->Pdf_model->genpdf_protokoll($pruefung_id);
+			file_put_contents('cron/protokoll/'.$pruefung_id,'');
 			redirect('pruefung/index/'.$gid);
 		}
 	}
@@ -304,6 +311,11 @@ class Pruefung extends CI_Controller {
 
 
 		redirect('pruefung/index/'.$gid.'/'.$pageid);
+	}
+
+	function json($pruefung_id="") {
+		$data = $this->Pruefung_model->pdfdata($pruefung_id);
+		echo json_encode($data);
 	}
 
 }

@@ -90,7 +90,127 @@ class File_model extends CI_Model
 	  }
 	}
 
+	//listet alle ordner in $root
+    function getfiles($folder=null) {
+		$dguv3_show_list_archiv= $this->config->item('dguv3_show_list_archiv');
 
+		$root = 'pdf/'.$this->session->userdata('firmaid').'/';
+		if (!file_exists($root)) {
+			return null;
+		}
+
+		if($folder) {
+			$files[0]=$folder;
+		} else{
+		$files = array_diff(scandir($root, 1), array('.', '..'));
+		}
+
+		$return=array();
+		$i='0';
+		$maxi=$dguv3_show_list_archiv;
+		// füge nur order der liste hinzu
+		foreach($files as $file) {
+			if($i==$maxi) {
+				break;
+			}
+			if (is_dir($root.$file)) {
+				$i++;
+				array_push($return, $file);
+			}
+		}
+        return $return;
+
+
+    }
+
+    function createfiles($folder=null) {
+        $root = 'pdf/'.$this->session->userdata('firmaid').'/';
+        if($folder==NULL) {
+
+            $directories = glob($root . '*' , GLOB_ONLYDIR);
+        } else {
+             $directories[0]= $root.$folder;
+        }
+
+        foreach ($directories as $folder) {
+
+			if (file_exists($folder.".zip")) {
+				if (!unlink($folder.".zip")) {
+					echo 'error';
+				break;
+				}
+			}
+
+        // file und dir counter
+        $filecounter = -1;
+		$dircounter = -1;
+		$file_list_counter = 0;
+		$file_protokoll_counter = 0;
+
+        // die maximale Ausführzeit erhöhen
+        ini_set("max_execution_time", 300);
+        //if (!file_exists($folder.".zip")) {
+
+        // Objekt erstellen und schauen, ob der Server zippen kann
+        $zip = new ZipArchive();
+        if ($zip->open($folder.".zip", ZIPARCHIVE::CREATE) !== TRUE) {
+        die ("Das Archiv konnte nicht erstellt werden!");
+        }
+
+        //echo "<pre>";
+        // Gehe durch die Ordner und füge alles dem Archiv hinzu
+        $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($folder));
+        foreach ($iterator as $key=>$value) {
+
+            if(!is_dir($key)) { // wenn es kein ordner sondern eine datei ist
+            // echo $key . " _ _ _ _Datei wurde übernommen</br>";
+            $zip->addFile(realpath($key), $key) or die ("FEHLER: Kann Datei nicht anfuegen: $key");
+			$filecounter++;
+			//wenn file eine übersicht-pdf ist
+			if (strpos($key, '_liste.pdf') !== false) {
+				$file_list_counter++;
+				//file_put_contents('filename_liste'.$file_list_counter.'.txt', $key);
+
+			//wenn file ein protokoll ist
+			} elseif (strpos($key, '.pdf') !== false) {
+				$file_protokoll_counter++;
+				//file_put_contents('filename_protokoll'.$file_protokoll_counter.'.txt', $key);
+
+			}
+            } elseif (count(scandir($key)) <= 2) { // der ordner ist bis auf . und .. leer
+            // echo $key . " _ _ _ _Leerer Ordner wurde übernommen</br>";
+            $zip->addEmptyDir(substr($key, -1*strlen($key),strlen($key)-1));
+            $dircounter++;
+
+            } elseif (substr($key, -2)=="/.") { // ordner .
+            $dircounter++; // nur für den bericht am ende
+
+            } elseif (substr($key, -3)=="/.."){ // ordner ..
+            // tue nichts
+
+            } else { // zeige andere ausgelassene Ordner (sollte eigentlich nicht vorkommen)
+            //echo $key . "WARNUNG: Der Ordner wurde nicht ins Archiv übernommen.</br>";
+            }
+        }
+        //echo "</pre>";
+
+        // speichert die Zip-Datei
+		$zip->close();
+		$orte_count= $this->Dguv3_model->getcountdata('orte','orte_firmaid', $this->session->userdata('firmaid'));
+		$geraete_aktiv_1= $this->Dguv3_model->getcountdata('geraete','aktiv', '1', $this->session->userdata('firmaid') );
+
+		file_put_contents($folder.'.txt', 'Übersicht: '.$file_list_counter.' von '.$orte_count.'<br>');
+		file_put_contents($folder.'.txt', PHP_EOL .  'Protokolle: '.$file_protokoll_counter.' von '.$geraete_aktiv_1, FILE_APPEND);
+
+
+        // bericht
+        //echo $folder.".zip wurde erstellt.";
+        //echo "<p>Ordner: " . $dircounter . "; Dateien: " . $filecounter . "</p>";
+
+        }
+        //}
+
+    }
 
 
 

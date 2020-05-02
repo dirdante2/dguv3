@@ -47,8 +47,12 @@ class Geraete extends CI_Controller {
 			$data["page_total_rows"] = $this->Dguv3_model->getcountdata('geraete');
 			}
 
+			if($this->agent->is_mobile()){
+				$data["page_show_rows"] = $this->config->item('dguv3_show_page_rows_mobile');
+			} else {
+				$data["page_show_rows"] = $this->config->item('dguv3_show_page_rows_desktop');
 
-			$data["page_show_rows"] = $this->config->item('dguv3_show_page_rows');
+			}
 			$data['page_pages']=ceil($data["page_total_rows"] / $data["page_show_rows"]);
 			$data['page_pageid']=$pageid;
 			$data['page_offset']=$data["page_show_rows"] * $pageid ;
@@ -62,6 +66,7 @@ class Geraete extends CI_Controller {
 				if($oid) {
 					$data['ort'] = $this->Orte_model->get($oid);
 					$data['geraete'] = $this->Geraete_model->getByOid($oid,$firmen_firmaid);
+					$data['pdf_data'] = $this->File_model->get_file_pfad('1',$oid);
 				} else {
 					$data['ort'] = NULL;
 					$data['geraete'] = $this->Geraete_model->get(null,$firmen_firmaid,$data["page_show_rows"],$data['page_offset']);
@@ -74,9 +79,11 @@ class Geraete extends CI_Controller {
 					$data['ort'] = $this->Orte_model->get($oid);
 					$data['geraete'] = $this->Geraete_model->getByOid($oid);
 
-					$pdf_pfad=$this->File_model->get_file_pfad('1',$oid);
-					$pdffile_data[$oid]=$pdf_pfad;
-					$data['pdf_data']=$pdffile_data;
+					//$pdf_pfad=$this->File_model->get_file_pfad('1',$oid);
+
+					$data['pdf_data'] = $this->File_model->get_file_pfad('1',$oid);
+
+
 
 
 				} else {
@@ -149,39 +156,6 @@ class Geraete extends CI_Controller {
 
 
 		}
-
-	function html2pdf_liste($oid) {
-
-		 		$html2pdf_api_key= $this->config->item('html2pdf_api_key');
-				$html2pdf_user_pass= $this->config->item('html2pdf_user_pass');
-
-		 		$ortsname = $this->Orte_model->get($oid)['name'];
-		 		$year=date("Y");
-
-
-
-
-        if (!file_exists('pdf/'.$year.'/'.$ortsname)) { mkdir('pdf/'.$year.'/'.$ortsname, 0755, true); }
-
-           //echo "PDF Übersicht wurde erstellt";
-
-
-					$value = site_url('geraete/uebersicht/'.$oid); // a url starting with http or an HTML string.  see example #5 if you have a long HTML string
-					$result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($html2pdf_api_key) . "&value=" .$value . $html2pdf_user_pass);
-					file_put_contents('pdf/'.$year.'/'.$ortsname.'/liste_'.$ortsname.'.pdf',$result);
-
-					redirect('geraete/index/'.$oid);
-
-
-	  }
-
-
-
-
-
-
-
-
 
 
 	/**
@@ -277,15 +251,16 @@ class Geraete extends CI_Controller {
 
 			$this->Geraete_model->set($geraet,$gid);
 				// get ortsid von neu angelegtem gerät damit redirect zu richtiger seite führt?!!
-			$gortsid = $this->Geraete_model->get($gid)['oid'];
+			$ortsid = $this->Geraete_model->get($gid)['oid'];
 
-			$this->Pdf_model->genpdf_uebersicht($gortsid);
+			//$this->Pdf_model->genpdf_uebersicht($gortsid);
+			file_put_contents('cron/liste/'.$ortsid,'');
 			if($gid==0) {
 				redirect('geraete');
 				}
 			//Vorhandeses Gerät
 			else {
-			redirect('geraete/index/'.$gortsid);
+			redirect('geraete/index/'.$ortsid);
 
 			}
 
@@ -317,6 +292,10 @@ class Geraete extends CI_Controller {
 			redirect('geraete/index/'.$oid.'/'.$pageid);
 		}
 
+		function json($oid="") {
+			$data = $this->Geraete_model->pdfdata($oid);
+			echo json_encode($data);
+		}
 
 
 

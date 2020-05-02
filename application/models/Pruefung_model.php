@@ -13,6 +13,7 @@ class Pruefung_model extends CI_Model {
 
 	function __construct() {
 		$this->load->database();
+		$this->load->model('File_model');
 	}
 
 	function get($pruefung_id=NULL) {
@@ -22,10 +23,15 @@ class Pruefung_model extends CI_Model {
 		$this->db->join('messgeraete', 'pruefung.mid = messgeraete.mid', 'LEFT');
 		$this->db->join('pruefer', 'pruefung.pid = pruefer.pid', 'LEFT');
 		$this->db->join('orte', 'geraete.oid = orte.oid', 'LEFT');
-		if($pruefung_id!==NULL) {
+		$this->db->order_by('pruefung.pruefungid', 'DESC');
+		if($pruefung_id===NULL) {
+			return $this->db->get()->result_array();
+		} else {
 			$this->db->where('pruefung.pruefungid',$pruefung_id);
 		}
-		$this->db->order_by('pruefung.pruefungid', 'DESC');
+
+
+
 		$result = $this->db->get()->result_array();
 		if(!empty($result)) {
 			return $result[0];
@@ -78,6 +84,26 @@ class Pruefung_model extends CI_Model {
 		return $this->db->get()->result_array();
 	}
 
+	//gibt nur geräte mit prüfung zurück
+	// gibt nur eine prüfung pro gerät zurück
+	function get_geraete_pruefung() {
+
+$year=date('Y');
+		$this->db->select('geraete.*, letztepruefung.*');
+		$this->db->from('(select gid,pid,mid,bestanden,pruefungid , max(datum) as letztesdatum from pruefung group by gid) as letztepruefung');
+		$this->db->join('geraete', 'letztepruefung.gid = geraete.gid', 'LEFT');
+		$this->db->where('letztesdatum >', $year);
+
+		$this->db->order_by('geraete.gid', 'DESC');
+		$result = $this->db->get()->result_array();
+		if(!empty($result)) {
+			return $result;
+		} else {
+			return NULL;
+		}
+
+	}
+
 
 
 	function new($data) {
@@ -105,10 +131,11 @@ class Pruefung_model extends CI_Model {
 	$pruefung_datum = $pruefung['datum'];
 	$day     = $pruefung_datum;
 	$nextDay = strtotime("+1 year", strtotime($day));
-	$data['naechste_pruefung']= date("m.Y", $nextDay);
+	$pruefung['naechste_pruefung']= date("m.Y", $nextDay);
 
 
 
+	$pruefung['bestanden']='ja';
 	$y = $pruefung['RPEmax'];
 	if($pruefung['schutzleiter']===null || $pruefung['sichtpruefung']== '0') {
 		$pruefung['bestanden_schutzleiter']='-';
@@ -117,6 +144,7 @@ class Pruefung_model extends CI_Model {
 		} else {
 		if($pruefung['schutzleiter'] >= $y) {
 		$pruefung['bestanden_schutzleiter']='nein';
+		$pruefung['bestanden']='nein';
 		} else {
 		$pruefung['bestanden_schutzleiter']='ja';
 		}
@@ -128,6 +156,7 @@ class Pruefung_model extends CI_Model {
 		} else {
 			if($pruefung['isowiderstand'] < $y) {
 			$pruefung['bestanden_isowiderstand']='nein';
+			$pruefung['bestanden']='nein';
 			} else {
 			$pruefung['bestanden_isowiderstand']='ja';
 			}
@@ -139,6 +168,7 @@ class Pruefung_model extends CI_Model {
 	} else {
 		if($pruefung['schutzleiterstrom'] >= $y) {
 			$pruefung['bestanden_schutzleiterstrom']='nein';
+			$pruefung['bestanden']='nein';
 		} else {
 			$pruefung['bestanden_schutzleiterstrom']='ja';
 		}
@@ -151,9 +181,28 @@ class Pruefung_model extends CI_Model {
 	} else {
 		if($pruefung['beruehrstrom'] >= $y) {
 			$pruefung['bestanden_beruehrstrom']='nein';
+			$pruefung['bestanden']='nein';
 		} else {
 			$pruefung['bestanden_beruehrstrom']='ja';
 		}
+	}
+
+	if($pruefung['aktiv']=='1') {
+		$pruefung['aktiv']='ja';
+	} else {
+		$pruefung['aktiv']='nein';
+	}
+	if($pruefung['funktion']=='1') {
+		$pruefung['funktion']='ja';
+	} else {
+		$pruefung['funktion']='nein';
+		$pruefung['bestanden']='nein';
+	}
+	if($pruefung['sichtpruefung']=='1') {
+		$pruefung['sichtpruefung']='ja';
+	} else {
+		$pruefung['sichtpruefung']='nein';
+		$pruefung['bestanden']='nein';
 	}
 
 	//$data['ort'] = $this->Orte_model->get($pruefungid);
@@ -165,11 +214,10 @@ class Pruefung_model extends CI_Model {
 
 
 	// generate filename
-	$firma_id = $pruefung['pruefung_firmaid'];
-	$year = date("Y", strtotime($pruefung_datum));
-	$oid = $pruefung['oid'];
-	$ortsname = $pruefung['ortsname'];
-	$filename = 'pdf/'.$firma_id.'/'.$year.'/'.$ortsname.'_'.$oid.'/'.$ortsname.'_'.$pruefung_id.'_pruefung.pdf';
+
+		$typ='2'; //protokoll pdf
+		$filename = $this->File_model->get_file_pfad($typ,$pruefung_id);
+
 	$data['filename'] = $filename;
 
 	//var die nicht in json nötig sind
@@ -177,6 +225,7 @@ class Pruefung_model extends CI_Model {
 	unset($pruefung['pid']);
 	unset($pruefung['pruefung_firmaid']);
 	unset($pruefung['geraete_firmaid']);
+	unset($pruefung['firmen_firmaid']);
 	unset($pruefung['oid']);
 	unset($pruefung['name']);
 	// unset($pruefung['orte_firmaid']);

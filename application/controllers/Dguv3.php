@@ -70,11 +70,11 @@
       $data['pruefung_bestanden_0']= $this->Dguv3_model->getcountdata('pruefung','bestanden', '0');
       //$this->output->cache(5);
       if ($this->session->userdata('firmaid')) {
-		$data['archiv_ordner']= $this->Dguv3_model->getfiles('ordner');
+		$data['archiv_ordner']= $this->File_model->getfiles();
 		$data['firma'] = $this->Firmen_model-> get($this->session->userdata('firmaid'));
       }
 	  $data['pdfserver']= $this->config->item('dguv3_pdf_server');
-	 
+
 
 
 
@@ -96,7 +96,7 @@
 
   function create_archiv($foldername) {
     if($this->session->userdata('logged_in') === TRUE){
-    $this->Dguv3_model->createfiles($foldername);
+    $this->File_model->createfiles($foldername);
 
 
       redirect('Dguv3');
