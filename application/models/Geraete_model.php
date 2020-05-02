@@ -131,7 +131,7 @@ foreach($geraete as $geraet) {
 	unset($geraete[$i]['geraete_firmaid']);
 	unset($geraete[$i]['oid']);
 
-	if(!$geraet['anzahl']=='0') {
+	if($geraet['anzahl']=='0') {
 		$geraete[$i]['letztesdatum']='';
 		$geraete[$i]['pruefername']='';
 	}
