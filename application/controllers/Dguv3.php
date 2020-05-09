@@ -21,15 +21,7 @@
       //redirect('login');
      // $this->output->cache(60);
 
-        if($this->agent->is_mobile()){
-          $this->load->view('templates/header_mobile');
-          $this->load->view('login_view_mobile');
-        } else {
-          $this->load->view('templates/header');
-          $this->load->view('login_view');
-        }
-
-        $this->load->view('templates/footer');
+	 redirect('login');
 
     }
 
@@ -79,7 +71,7 @@
 		$data['firma'] = $this->Firmen_model-> get($this->session->userdata('firmaid'));
       }
 	  $data['pdfserver']= $this->config->item('dguv3_pdf_server');
-
+	  //echo $this->input->cookie('dguv3',true);
 
 
 

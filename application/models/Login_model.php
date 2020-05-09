@@ -1,6 +1,6 @@
 <?php
 class Login_model extends CI_Model{
- 
+
   function validate($email,$password){
     $this->db->where('user_email',$email);
     $this->db->where('user_password',$password);
@@ -9,14 +9,19 @@ class Login_model extends CI_Model{
   }
   function getuserinfo($userid){
     $this->db->where('user_id',$userid);
-   
+
     $result = $this->db->get('users',1);
     return $result;
   }
-  //login per url /login/webauth/<name>/<password>
-  function validatename($name,$password){
-    $this->db->where('user_name',$name);
-    $this->db->where('user_password',$password);
+
+
+
+
+  //login per cookie userid und cookiepass
+  function validatecookie($userid,$cookieid){
+	$this->db->where('user_cookie',$cookieid);
+
+    $this->db->where('user_id',$userid);
     $result = $this->db->get('users',1);
     return $result;
   }
@@ -25,7 +30,7 @@ class Login_model extends CI_Model{
   // update session data bei user edit
   function update(){
 
-    
+
     $userid = $this->session->userdata('userid');
   $validate = $this->getuserinfo($userid);
   if($validate->num_rows() > 0){
@@ -36,7 +41,8 @@ class Login_model extends CI_Model{
       $email = $data['user_email'];
       $level = $data['user_level'];
       $firmaid = $data['users_firmaid'];
-      $userid = $data['user_id'];
+	  $userid = $data['user_id'];
+	  $userlastlogin = $data['user_lastlogin'];
       $sesdata = array(
           'username'  => $name,
           'userpid'  => $userpid,
@@ -44,7 +50,8 @@ class Login_model extends CI_Model{
           'email'     => $email,
           'level'     => $level,
           'firmaid'     => $firmaid,
-          'userid'     => $userid,
+		  'userid'     => $userid,
+		  'lastseen'     => $userlastlogin,
           'logged_in' => TRUE
       );
       $this->session->set_userdata($sesdata);

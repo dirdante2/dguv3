@@ -24,7 +24,7 @@ class Users_model extends CI_Model {
 		if($user_id!==NULL) {
 			$this->db->having('users.user_id',$user_id);
 		}
-		
+
 		$result = $this->db->get()->result_array();
 
 		if(!empty($result)) {

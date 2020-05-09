@@ -14,8 +14,9 @@
 		<th>level</th>
 		<th>firmaid</th>
 		<th>prüfer</th>
-		<th>messgerät</th>
-		<th>ort</th>
+
+
+		<th>Login</th>
 		<th>link1</th>
 		<th>Aktion</th>
 	</tr>
@@ -40,10 +41,13 @@ if(count($users)==0) {
 			<td><?php echo $user['user_name']; ?></td>
 			<td><?php echo $user['user_email']; ?></td>
 			<td><?php echo $user['user_level']; ?></td>
-			<td><?php echo $user['firma_name']; ?></td>
-			<td><?php echo $user['pruefername']; ?></td>
-			<td><?php echo $user['messgeraetname']; ?></td>
-			<td><?php echo $user['ortsname']; ?></td>
+			<td><?php echo $user['firma_name']; ?><br>
+			<a href="<?php echo site_url('geraete/index/'.$user['user_oid']); ?>"><?php echo $user['ortsname']; ?></a>
+			</td>
+			<td><?php echo $user['pruefername']; ?><br><?php echo $user['messgeraetname']; ?></td>
+
+
+			<td><?php echo $user['user_lastlogin']; ?></td>
 			<td>
 				link1 <?php echo $user['user_showlink1']; ?><br>
 				delete <?php echo $user['user_delete']; ?><br>

@@ -3,7 +3,12 @@
        <div class="col-md-4 col-md-offset-4">
          <form class="form-signin" action="<?php echo site_url('login/auth');?>" method="post">
            <h2 class="form-signin-heading">Bitte anmelden</h2><br>
-           <?php echo $this->session->flashdata('msg');?>
+		   <?php if($this->session->flashdata('msg')){ ?>
+			<div class="alert alert-danger" role="alert">
+           <?php echo $this->session->flashdata('msg');?></div>
+
+			<?php } ?>
+
            <label for="username" class="sr-only">Username</label><br>
            <input type="email" name="email" class="form-control" placeholder="Email" required autofocus>
            <label for="password" class="sr-only">Password</label><br>
@@ -17,4 +22,4 @@
          </form>
        </div>
 
-    
+

@@ -27,7 +27,7 @@ class File_model extends CI_Model
 	//typ 3 zip
 	function get_file_pfad($typ,$id=null) {
 
-
+		// file übersicht
 		if($typ=='1') {
 
 			$data['ort'] = $this->Orte_model->get($id);
@@ -39,7 +39,7 @@ class File_model extends CI_Model
 
 
 
-
+		//file protokoll
 		} elseif($typ=='2') {
 			$data['pruefung'] = $this->Pruefung_model->get($id);
 			$blubb = new DateTime( $data['pruefung']['datum']);
@@ -52,6 +52,7 @@ class File_model extends CI_Model
 
 			$filename = 'pdf/'.$firma_id.'/'.$datum.'/'.$ortsid.'_'.$ortsname.'/Gid'.$geraeteid.'_'.$pruefungid.'_'.$data['pruefung']['geraetename'].'.pdf';
 
+		//file archiv
 		} elseif($typ=='3') {
 			$filename= 'pdf/'.$this->session->userdata('firmaid').'/'.$id.'.zip';
 		}
@@ -82,6 +83,8 @@ class File_model extends CI_Model
 			header("Content-Disposition: attachment; filename=".$Dateiname);
 			header("Content-Length: $Groesse");
 			readfile($filename);
+
+			file_put_contents('application/privat_logs/'.date('Y-m-d').'.php', PHP_EOL .  date('Y-m-d H:i:s').' Download: '.$filename.' '.$Groesse, FILE_APPEND);
 			redirect('Dguv3');
 		} else {
 			//return 'error';
@@ -228,6 +231,9 @@ class File_model extends CI_Model
 
 				file_put_contents($folder.'.txt', 'Übersicht: '.$file_list_counter.' von '.$orte_count.'<br>');
 				file_put_contents($folder.'.txt', PHP_EOL .  'Protokolle: '.$file_protokoll_counter.' von '.$geraete_aktiv_1, FILE_APPEND);
+
+				file_put_contents('application/privat_logs/'.date('Y-m-d').'.php', PHP_EOL .  date('Y-m-d H:i:s').' createZIP: '.$folder.'.zip ', FILE_APPEND);
+
 
 
 				// bericht

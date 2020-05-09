@@ -1,4 +1,5 @@
 <h1>Willkommen!</h1>
+Letzter login: <?php echo $this->session->userdata('lastseen');?>
 
 <div class="row">
 

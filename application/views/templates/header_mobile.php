@@ -26,6 +26,8 @@
 	<!--<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/datatables/datatables.min.css">-->
 	<!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/datatables/datatables.css"> -->
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/dguv3.css">
+
+<link rel="shortcut icon" href="/favicon.ico">
 </head>
 
 

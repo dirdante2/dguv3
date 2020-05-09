@@ -29,6 +29,9 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/dguv3.css">
 
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.3/toastr.css">
+
+
+<link rel="shortcut icon" href="/favicon.ico">
 </head>
 
 <body>
@@ -72,6 +75,9 @@
       			</li>
 				  <li class="nav-item">
 	        		<a class="nav-link" href="<?php echo site_url('users'); ?>"><span class="iconify" data-icon="fa-solid:users" data-width="20" data-height="20"></span> User</a>
+      			</li>
+				  <li class="nav-item">
+	        		<a class="nav-link" href="<?php echo site_url('log'); ?>"><span class="iconify" data-icon="carbon:catalog" data-width="20" data-height="20"></span> Logs</a>
       			</li>
 
     </ul>
