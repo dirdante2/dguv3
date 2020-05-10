@@ -13,9 +13,9 @@ class Log extends CI_Controller {
 
 		$this->load->model('Log_model');
 		$this->load->model('File_model');
-		$this->load->helper('form');
-		$this->load->library('form_validation');
-		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+		//$this->load->helper('form');
+		//$this->load->library('form_validation');
+		//$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 	}
 
 

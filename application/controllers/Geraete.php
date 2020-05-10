@@ -17,6 +17,7 @@ class Geraete extends CI_Controller {
 		$this->load->model('Dguv3_model');
 		$this->load->model('Pdf_model');
 		$this->load->model('File_model');
+		$this->load->model('Log_model');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 
@@ -243,7 +244,10 @@ class Geraete extends CI_Controller {
 
 			//$this->Pdf_model->genpdf_uebersicht($gortsid);
 			file_put_contents('cron/liste/'.$ortsid,$geraet['geraete_firmaid']);
-			file_put_contents('application/privat_logs/'.date('Y-m-d').'.php', PHP_EOL .  date('Y-m-d H:i:s').' Gerät edit name '.$geraet['name'].' gid '.$gid.' oid '.$geraet['oid'], FILE_APPEND);
+
+			$context='Gerät bearbeitet name '.$geraet['name'].' gid '.$gid.' oid '.$geraet['oid'];
+			$this->Log_model->privatlog($context);
+
 
 			if($gid==0) {
 				redirect('geraete');
@@ -262,7 +266,7 @@ class Geraete extends CI_Controller {
 	function delete($gid) {
 		$this->form_validation->set_rules('confirm', 'Bestätigung', 'required');
 		$header['cronjobs']= $this->File_model->getfiles('cronjob');
-		$data = $this->Geraete_model->get($gid);
+		$geraet = $this->Geraete_model->get($gid);
 //TODO userabfrage
 		if($this->form_validation->run() === FALSE) {
 			$this->load->view('templates/header',$header);
@@ -276,7 +280,9 @@ class Geraete extends CI_Controller {
 		} else {
 			$this->Geraete_model->delete($gid);
 
-			file_put_contents('application/privat_logs/'.date('Y-m-d').'.php', PHP_EOL .  date('Y-m-d H:i:s').' Gerät delete name '.$data['name'].' gid '.$gid.' oid '.$data['oid'].' von '.$this->session->userdata('username'), FILE_APPEND);
+
+			$context='Gerät gelöscht name '.$geraet['name'].' gid '.$gid.' oid '.$geraet['oid'];
+			$this->Log_model->privatlog($context);
 
 			redirect('geraete');
 		}

@@ -18,6 +18,7 @@ class Users extends CI_Controller {
 		$this->load->model('Orte_model');
 		$this->load->model('Login_model');
 		$this->load->model('File_model');
+		$this->load->model('Log_model');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		//$this->load->library('Session_update');
@@ -163,6 +164,14 @@ class Users extends CI_Controller {
 			$this->Users_model->update($user,$user_id);
 			$this->Login_model->update();
 
+
+			$user = $this->Users_model->get($user_id);
+
+			$context='User bearbeitet name '.$user['user_name'].' userid '.$user['user_id'].' email '.$user['user_email'];
+			$this->Log_model->privatlog($context);
+
+
+
 				// get ortsid von neu angelegtem gerät damit redirect zu richtiger seite führt?!!
 			//$gortsid = $this->Geraete_model->get($gid);
 
@@ -197,6 +206,12 @@ class Users extends CI_Controller {
 			$this->load->view('templates/footer');
 		} else {
 			$this->Users_model->delete($user_id);
+
+			$user = $this->Users_model->get($user_id);
+
+			$context='User gelöscht name '.$user['user_name'].' userid '.$user['user_id'].' email '.$user['user_email'];
+			$this->Log_model->privatlog($context);
+
 			redirect('users');
 		}
 	}

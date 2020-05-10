@@ -13,6 +13,7 @@ class Pruefer extends CI_Controller {
 		$this->load->model('Pruefer_model');
 		$this->load->model('Firmen_model');
 		$this->load->model('Pdf_model');
+		$this->load->model('Log_model');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -95,6 +96,11 @@ class Pruefer extends CI_Controller {
 				//generiere PDF übersicht
 				//$this->Pdf_model->genpdf($oid);
 				$this->Pruefer_model->set($pruefer,$pid);
+
+				$pruefer = $this->Pruefer_model->get($pid);
+				$context='Prüfer bearbeitet name '.$pruefer['name'].' pid '.$pruefer['pid'];
+				$this->Log_model->privatlog($context);
+
 				redirect('pruefer');
 
 			}
@@ -121,6 +127,11 @@ class Pruefer extends CI_Controller {
 			$this->load->view('templates/footer');
 		} else {
 			$this->Pruefer_model->delete($pid);
+
+			$pruefer = $this->Pruefer_model->get($pid);
+			$context='Prüfer gelöscht name '.$pruefer['name'].' pid '.$pruefer['pid'];
+			$this->Log_model->privatlog($context);
+
 			redirect('pruefer');
 		}
 	}

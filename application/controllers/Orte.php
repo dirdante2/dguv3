@@ -14,6 +14,7 @@ class Orte extends CI_Controller {
 		$this->load->model('Firmen_model');
 		$this->load->model('Pdf_model');
 		$this->load->model('File_model');
+		$this->load->model('Log_model');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -153,6 +154,11 @@ $header['title']= 'Orte';
 			file_put_contents('toast/'.$this->session->userdata('userid').'/'.$oid.'.txt', json_encode($toast_content));
 
 			$this->Orte_model->set($ort,$oid);
+
+			$ort = $this->Orte_model->get($oid);
+			$context='Ort bearbeitet name '.$ort['name'].' oid '.$ort['oid'];
+			$this->Log_model->privatlog($context);
+
 			redirect('orte');
 		}
 	}
@@ -179,6 +185,10 @@ $header['title']= 'Orte';
 			$this->load->view('templates/footer');
 		} else {
 			$this->Orte_model->delete($oid);
+			$ort = $this->Orte_model->get($oid);
+			$context='Ort gelöscht name '.$ort['name'].' oid '.$ort['oid'];
+			$this->Log_model->privatlog($context);
+
 			redirect('orte');
 		}
 	}

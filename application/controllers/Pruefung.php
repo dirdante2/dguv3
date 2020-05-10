@@ -260,34 +260,19 @@ class Pruefung extends CI_Controller {
 
 
 			$this->Pruefung_model->update($pruefung,$pruefung_id);
-			$prdatum = $this->Pruefung_model->get($pruefung_id)['datum'];
 
-			/* //prüfung als pdf speichern
-					if($pruefung['bestanden']='1'){
-						$bestanden='ok';
-					} else {
-						$bestanden='fail';
-					}
-						$timestamp = strtotime($prdatum);
-						$year = date("Y", $timestamp);
-						$html2pdf_api_key= $this->config->item('html2pdf_api_key');
-        		$html2pdf_user_pass= $this->config->item('html2pdf_user_pass');
-        		if (!file_exists('pdf/'.$year.'/'.$ortsname)) { mkdir('pdf/'.$year.'/'.$ortsname, 0755, true); }
-
-           // echo "This is Button1 that is selected";
-           // echo $ortsid;
-            //$apikey = '93fa945c-3a01-4fff-a966-3a2f069a1539';
-
-						$value = site_url('pruefung/protokoll/'.$pruefung_id); // a url starting with http or an HTML string.  see example #5 if you have a long HTML string
-						$result = file_get_contents("http://api.html2pdfrocket.com/pdf?apikey=" . urlencode($html2pdf_api_key) . "&value=" .$value . $html2pdf_user_pass);
-						file_put_contents('pdf/'.$firma_id.'/'.$year.'/'.$ortsname.'/GID'.$gid.'_'.$geraetename.'_PID'.$pruefung_id.'_'.$prdatum.'_'.$bestanden.'.pdf',$result);
- */
 			//generiere PDF übersicht
 			//$this->Pdf_model->genpdf_uebersicht($ortsid);
 			file_put_contents('cron/liste/'.$ortsid,$pruefung['pruefung_firmaid']);
 
 			//$this->Pdf_model->genpdf_protokoll($pruefung_id);
 			file_put_contents('cron/protokoll/'.$pruefung_id,$pruefung['pruefung_firmaid']);
+
+			$pruefung = $this->Pruefung_model->get($pruefung_id);
+
+			$context='Prüfung bearbeitet name '.$pruefung['geraetename'].' pruefungid '.$pruefung['pruefungid'].' ort '.$pruefung['ortsname'];
+			$this->Log_model->privatlog($context);
+
 			redirect('pruefung/index/'.$gid);
 		}
 	}
@@ -313,6 +298,11 @@ class Pruefung extends CI_Controller {
 			$this->load->view('templates/footer');
 		} else {
 			$this->Pruefung_model->delete($pruefung_id);
+
+			$pruefung = $this->Pruefung_model->get($pruefung_id);
+			$context='Prüfung gelöscht name '.$pruefung['geraetename'].' pruefungid '.$pruefung['pruefungid'].' ort '.$pruefung['ortsname'];
+			$this->Log_model->privatlog($context);
+
 			redirect('pruefung');
 		}
 		}

@@ -18,6 +18,8 @@ class File_model extends CI_Model
 		$this->load->model('Orte_model');
 		$this->load->model('Pruefung_model');
 		$this->load->model('Pdf_model');
+		$this->load->model('Log_model');
+
 
 
 
@@ -84,7 +86,12 @@ class File_model extends CI_Model
 			header("Content-Length: $Groesse");
 			readfile($filename);
 
-			file_put_contents('application/privat_logs/'.date('Y-m-d').'.php', PHP_EOL .  date('Y-m-d H:i:s').' Download: '.$filename.' '.$Groesse, FILE_APPEND);
+			//file_put_contents('application/privat_logs/'.date('Y-m-d').'.php', PHP_EOL .  date('Y-m-d H:i:s').' --> Download: '.$filename.' '.$Groesse, FILE_APPEND);
+
+			$context='Download: '.$filename.' '.$Groesse;
+			$this->Log_model->privatlog($context);
+
+
 			redirect('Dguv3');
 		} else {
 			//return 'error';
@@ -232,8 +239,14 @@ class File_model extends CI_Model
 				file_put_contents($folder.'.txt', 'Übersicht: '.$file_list_counter.' von '.$orte_count.'<br>');
 				file_put_contents($folder.'.txt', PHP_EOL .  'Protokolle: '.$file_protokoll_counter.' von '.$geraete_aktiv_1, FILE_APPEND);
 
-				file_put_contents('application/privat_logs/'.date('Y-m-d').'.php', PHP_EOL .  date('Y-m-d H:i:s').' createZIP: '.$folder.'.zip ', FILE_APPEND);
 
+				if($this->session->userdata('username')){
+					$context= 'createZIP: '.$folder.'.zip von '.$this->session->userdata('username');
+				} else {
+					$context= 'createZIP: '.$folder.'.zip von cronjob';
+				}
+
+				$this->Log_model->privatlog($context);
 
 
 				// bericht

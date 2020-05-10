@@ -17,6 +17,7 @@ class Firmen extends CI_Controller {
 		$this->load->model('Pdf_model');
 		$this->load->model('Orte_model');
 		$this->load->model('File_model');
+		$this->load->model('Log_model');
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -107,8 +108,17 @@ class Firmen extends CI_Controller {
 			//$this->Pdf_model->genpdf($oid);
 
 			$this->Firmen_model->set($firma,$firmen_firmaid);
+
+
+			$firma = $this->Firmen_model->get($firmen_firmaid);
+
+			$context='Firma bearbeitet name '.$firma['firma_name'].' firmaid '.$firma['firmen_firmaid'];
+			$this->Log_model->privatlog($context);
+
+
 			redirect('firmen');
 		}
+
 	}
 	}
 
@@ -132,6 +142,12 @@ class Firmen extends CI_Controller {
 			$this->load->view('templates/footer');
 		} else {
 			$this->Firmen_model->delete($firmen_firmaid);
+
+			$firma = $this->Firmen_model->get($firmen_firmaid);
+
+			$context='Firma bearbeitet name '.$firma['firma_name'].' firmaid '.$firma['firmen_firmaid'];
+			$this->Log_model->privatlog($context);
+
 			redirect('firmen');
 		}
 	}
