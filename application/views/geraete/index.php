@@ -131,7 +131,7 @@ while($i < $page_end) { ?>
 <tbody>
 <?php
 
-if(count($geraete)==0) {
+if($geraete==NULL) {
 
 ?>
 

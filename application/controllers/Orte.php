@@ -39,13 +39,15 @@ class Orte extends CI_Controller {
 				$data['orte'] = $this->Orte_model->get();
 
 			}
+			if(count($data['orte'])!=0) {
 foreach($data['orte'] as $ort) {
 	$pdf_pfad=$this->File_model->get_file_pfad('1',$ort['oid']);
 	$pdffile_data[$ort['oid']]=$pdf_pfad;
 
 }
-$data['pdf_data']=$pdffile_data;
 
+$data['pdf_data']=$pdffile_data;
+			}
 $header['cronjobs']= $this->File_model->getfiles('cronjob');
 $header['title']= 'Orte';
 
@@ -155,9 +157,9 @@ $header['title']= 'Orte';
 
 			$this->Orte_model->set($ort,$oid);
 
-			$ort = $this->Orte_model->get($oid);
-			$context='Ort bearbeitet name '.$ort['name'].' oid '.$ort['oid'];
-			$this->Log_model->privatlog($context);
+			
+			// $context='Ort bearbeitet name '.$ort['name'].' oid '.$ort['oid'];
+			// $this->Log_model->privatlog($context);
 
 			redirect('orte');
 		}

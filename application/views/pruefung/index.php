@@ -42,9 +42,10 @@
 						</table>
 </div>
 <div class="col-3">
-						<b> </b><br><br><?php echo $geraet['schutzklasse']; ?>
+						<b> </b><br><br>
 
 						<table  class="table table-sm">
+						
 							<tr>
 								<td>Nennspannung</td>
 								<td><?php if($geraet['nennspannung']=='0' || $geraet['schutzklasse']=='4') { echo "-"; } else { echo $geraet['nennspannung'].'V'; } ?></td>

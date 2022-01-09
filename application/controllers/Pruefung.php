@@ -39,8 +39,21 @@ class Pruefung extends CI_Controller {
 			if(!$pageid) { $pageid =0;}
 
 
+
+			$data['geraet'] = $this->Geraete_model->get($gid);
+			# bei oid ohne eintrag setze auf null
+			#print_r($data['geraet']);
+			#var_dump(count($data['geraet']));
+
+			if($data['geraet']===NULL) {
+
+			 
+				echo "gid soll null ";
+				$gid = NULL;}
+			
+
 			if($gid) {
-				$data['geraet'] = $this->Geraete_model->get($gid);
+				#$data['geraet'] = $this->Geraete_model->get($gid);
 				$data["page_total_rows"] = $this->Dguv3_model->getcountdata('pruefung','gid',$gid); // count prüfungen wenn auf gerät begrenzt
 				$header['title']= 'Prüfung '.$data['geraet']['name'];
 			} else {

@@ -19,7 +19,7 @@ class Geraete_model extends CI_Model {
         return $this->db->count_all_results();
 	}
 
-	function get($gid=NULL,$oid=null,$firmen_firmaid=NULL,$limit=null, $offset=null) {
+	function get($gid=NULL,$oid=null,$firmen_firmaid=null,$limit=null, $offset=null) {
 		$this->db->select('geraete.*, firmen.firmen_firmaid,firmen.firma_name,orte.name AS ortsname, pruefung.bestanden, pruefung.datum AS letztesdatum, (select count(*) from pruefung as pr where geraete.gid = pr.gid) AS anzahl, pruefer.name as pruefername');
 		$this->db->from('geraete');
 		$this->db->join('orte', 'geraete.oid = orte.oid');
@@ -32,6 +32,8 @@ class Geraete_model extends CI_Model {
 
 		if($firmen_firmaid) {
 			$this->db->having('geraete.geraete_firmaid', $firmen_firmaid);
+			//FIXME bei nicht admins soll nur geräte aus der richtigen firma angeeigt werden es werden aber alle geräte angezeigt =?!
+			echo $firmen_firmaid;
 		}
 		$this->db->order_by('geraete.gid', 'DESC');
 
@@ -90,7 +92,7 @@ class Geraete_model extends CI_Model {
 	}
 
 // aufruf geräte pdf
-function pdfdata($oid="") {
+function pdfdata($oid) {
 	$data['ort'] = $this->Orte_model->get($oid);
 	$geraete = $this->Geraete_model->get(null,$oid);
 	//$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_pdf_col');
@@ -110,7 +112,10 @@ function pdfdata($oid="") {
 } */
 //print_r($geraete);
 $i='0';
-foreach($geraete as $geraet) {
+
+foreach((array) $geraete as $geraet) {
+
+	
 
 	unset($geraete[$i]['firmen_firmaid']);
 	unset($geraete[$i]['firma_name']);
@@ -132,7 +137,7 @@ if($geraet['aktiv']=='1') {
 } else {
 	$geraet[$i]['aktiv']='nein';
 }
-
+	
 $i++;
 }
 

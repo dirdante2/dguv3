@@ -37,10 +37,10 @@ $(document).ready( function () {
         //"order": [[ 0, "desc" ]],
         "paging": false,
       	"bFilter": false,
-      	"bSort": true,
+      	"bSort": false,
         "info": false,
       	"columnDefs": [ {
-			      "targets": 'nosort',
+			      "targets": 'no-sort',
 			      "orderable": false
     			} ]
     			

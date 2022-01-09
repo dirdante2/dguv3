@@ -25,104 +25,84 @@ class Geraete extends CI_Controller {
 	}
 
 	function index($oid=null) {
-
-
-
+		if($this->agent->is_mobile()){$useragent = 'mobile';} else {$useragent = 'desktop';}
 
 		if($this->session->userdata('logged_in') !== TRUE){
-			if($this->agent->is_mobile()){
-				$this->load->view('templates/header_mobile');
-			} else {
-				$this->load->view('templates/header');
-			}
+			$this->load->view('templates/header_'.$useragent);
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
 
           }else{
 
 			$pageid =  $this->uri->segment(4);
-			if(!$pageid) { $pageid =0;}
-			if($oid) {
-			$data["page_total_rows"] = $this->Dguv3_model->getcountdata('geraete','oid',$oid);
-			} else{
-			$data["page_total_rows"] = $this->Dguv3_model->getcountdata('geraete');
-			}
+			$data['ort'] = $this->Orte_model->get($oid);
 
-			if($this->agent->is_mobile()){
-				$data["page_show_rows"] = $this->config->item('dguv3_show_page_rows_mobile');
+			if(!$pageid) { $pageid =0;}		
+			if($data['ort']===NULL) {$oid = NULL;}
+
+			if(!$oid) {
+				$data['ort'] = NULL; $haeder_ortsname=NULL;
+				$data["page_total_rows"] = $this->Dguv3_model->getcountdata('geraete');
+			
 			} else {
-				$data["page_show_rows"] = $this->config->item('dguv3_show_page_rows_desktop');
-
+				$haeder_ortsname=$data['ort']['name'];
+				$data["page_total_rows"] = $this->Dguv3_model->getcountdata('geraete','oid',$oid);
 			}
+
+		
+
+			$data["page_show_rows"] = $this->config->item('dguv3_show_page_rows_'.$useragent);
 			$data['page_pages']=ceil($data["page_total_rows"] / $data["page_show_rows"]);
 			$data['page_pageid']=$pageid;
 			$data['page_offset']=$data["page_show_rows"] * $pageid ;
 
+			
+			#print_r($data['ort']);
+			
 			  //userlevel 2 oder höher kann nur orte mit eigener firma sehen
-			if($this->session->userdata('level')>='2'){
-				$firmen_firmaid=$this->session->userdata('firmaid');
+			if($this->session->userdata('level')>='2'){$firmen_firmaid=$this->session->userdata('firmaid');} else {$firmen_firmaid= NULL;}
 
-				if($oid) {
-					$data['ort'] = $this->Orte_model->get($oid);
-					$data['geraete'] = $this->Geraete_model->get(null,$oid,$firmen_firmaid);
-					$data['pdf_data'] = $this->File_model->get_file_pfad('1',$oid);
-					$header['title']= 'Geräte '.$data['ort']['name'];
-				} else {
-					$data['ort'] = NULL;
-					$data['geraete'] = $this->Geraete_model->get(null,null,$firmen_firmaid,$data["page_show_rows"],$data['page_offset']); //$gid=NULL,$oid=null,$firmen_firmaid=NULL,$limit=null, $offset=null
-					$header['title']= 'Geräte';
-				}
+			$data['geraete'] = $this->Geraete_model->get(null,$oid,$firmen_firmaid,$data["page_show_rows"],$data['page_offset']); //$gid=NULL,$oid=null,$firmen_firmaid=NULL,$limit=null, $offset=null
+			$data['pdf_data'] = $this->File_model->get_file_pfad('1',$oid);
+			$header['title']= 'Geräte '.$haeder_ortsname;
+				
 
-			} else {
-				//admin ansicht
-
-				if($oid) {
-					$data['ort'] = $this->Orte_model->get($oid);
-					$data['geraete'] = $this->Geraete_model->get(null,$oid);
-					$header['title']= 'Geräte '.$data['ort']['name'];
-
-					$data['pdf_data'] = $this->File_model->get_file_pfad('1',$oid);
-				} else {
-					$data['ort'] = NULL;
-					$data['geraete'] = $this->Geraete_model->get(null,null,null,$data["page_show_rows"],$data['page_offset']); //$gid=NULL,$oid=null,$firmen_firmaid=NULL,$limit=null, $offset=null
-					$header['title']= 'Geräte';
-				}
-			}
+			
 
 
-		$data['pruefungabgelaufen']= $this->config->item('dguv3_pruefungabgelaufen');
-		$data['pruefungbaldabgelaufen']= $this->config->item('dguv3_pruefungbaldabgelaufen');
-		/*$this->output->cache(5);*/
+			$data['pruefungabgelaufen']= $this->config->item('dguv3_pruefungabgelaufen');
+			$data['pruefungbaldabgelaufen']= $this->config->item('dguv3_pruefungbaldabgelaufen');
+			/*$this->output->cache(5);*/
 
-		$header['cronjobs']= $this->File_model->getfiles('cronjob');
-
-
-		if($this->agent->is_mobile()){
-		$this->load->view('templates/header_mobile',$header);
-		$this->load->view('templates/scroll');
-		$this->load->view('geraete/index_mobile',$data);
-      } else {
-		$this->load->view('templates/header',$header);
-		$this->load->view('templates/datatable');
-		$this->load->view('geraete/index',$data);
-      }
-
-		$this->load->view('templates/footer');
+			$header['cronjobs']= $this->File_model->getfiles('cronjob');
+			$this->load->view('templates/header_'.$useragent,$header);
+			$this->load->view('templates/'.$useragent);
+			$this->load->view('geraete/index_'.$useragent,$data);
+			$this->load->view('templates/footer');
 		}
 	}
 
 
 	function uebersicht($oid=NULL) {
 
+		$data['ort'] = $this->Orte_model->get($oid);
+		#print_r($data['ort']);
+		# bei oid ohne eintrag setze auf null
+		if($data['ort']===NULL) { 
+			$oid = NULL;
+			
+		
+		}
+
 		if($oid) {
-			$data['ort'] = $this->Orte_model->get($oid);
+			#$data['ort'] = $this->Orte_model->get($oid);
 			$data['geraete'] = $this->Geraete_model->get(null,$oid);
 		} else {
 			$data['ort'] = NULL;
 			$data['geraete'] = $this->Geraete_model->get();
 		}
 //FIXME
-		$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_pdf_col');
+		
 		$data['adresse']= $this->config->item('dguv3_adresse');
 
 

@@ -42,83 +42,64 @@
 
 <!-- table-hover table-bordered table-sm table-striped -->
 
-		<table class="table-bordered table-striped" id="table_print" style="width:100%" >
+		<table class="table-bordered table-striped no-sort" id="table_print" style="width:100%" >
 		<thead>
-			<tr>
-				<th class="<?php if($dguv3_show_geraete_col[0][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[0][0]; ?></th>
-				<th class="<?php if($dguv3_show_geraete_col[1][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[1][0]; ?></th>
-				<th class="<?php if($ort || $dguv3_show_geraete_col[2][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[2][0]; ?></th>
-				<th class="<?php if($dguv3_show_geraete_col[3][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[3][0]; ?></th>
-				<th class="<?php if($dguv3_show_geraete_col[4][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[4][0]; ?></th>
-				<th class="<?php if($dguv3_show_geraete_col[5][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[5][0]; ?></th>
-				<th class="<?php if($dguv3_show_geraete_col[6][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[6][0]; ?></th>
-				<th class="<?php if($dguv3_show_geraete_col[7][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[7][0]; ?></th>
-				<th class="<?php if($dguv3_show_geraete_col[8][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[8][0]; ?></th>
-				<th class="<?php if($dguv3_show_geraete_col[9][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[9][0]; ?></th>
-				<th class="<?php if($dguv3_show_geraete_col[10][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[10][0]; ?></th>
-				<th class="<?php if($dguv3_show_geraete_col[11][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[11][0]; ?></th>
-				<th class="<?php if($dguv3_show_geraete_col[12][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[12][0]; ?></th>
-				<th class="<?php if($dguv3_show_geraete_col[13][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[13][0]; ?></th>
-				<th class="<?php if($dguv3_show_geraete_col[14][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[14][0]; ?></th>
-				<th class="<?php if($dguv3_show_geraete_col[15][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[15][0]; ?></th>
-				<th class="<?php if($dguv3_show_geraete_col[16][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[16][0]; ?></th>
-				<th class="<?php if($dguv3_show_geraete_col[17][1]=='0') { echo "d-none"; } ?>"><?php echo $dguv3_show_geraete_col[17][0]; ?></th>
-
+		<tr>
+				<th class="">ID</th>
+				<th class="d-none">status</th>
+				<th style="" class="<?php if($ort) { echo "d-none"; } ?>">Ort</th>
+				<th class="">Name</th>
+				<th class="">Hersteller</th>
+				<th class="">Typ</th>
+				<th class="">Seriennummer</th>
+				<th class="d-none">aktiv</th>
+				<th class="">Beschreibung</th>
+				<th class="">hinzugefügt</th>
+				
+				
+				
+				<th class="">Prüfung</th>
+				
 			</tr>
 		</thead>
 		<tbody>
 		<?php
 
-		if(count($geraete)==0) {
+if(count($geraete)==0) {
 
-		?>
+	?>
+	
+	<td colspan="15">Es sind noch keine Geräte vorhanden.</td>
+	
+	<?php
+	
+	} else {
+		foreach($geraete as $geraet) {
+	
+			
+	
+	
+	
+			?>
+		<tr class="">
+		<td class=""><?php echo $geraet['gid']; ?></td>
 
-		<td colspan="15">Es sind noch keine Geräte vorhanden.</td>
-
-		<?php
-
-		} else {
-			foreach($geraete as $geraet) {
+			<td class="d-none"></td>
 
 
+				<td style="white-space:nowrap" class="<?php if($ort) { echo "d-none"; } ?>"><?php echo $geraet['ortsname']; ?></td>
 
-					?>
-		<tr>
-			<td class="<?php if($dguv3_show_geraete_col[0][1]=='0') { echo "d-none"; } ?>"><?php echo $geraet['gid']; ?></td>
-
-			<td class="<?php if($dguv3_show_geraete_col[1][1]=='0') { echo "d-none"; } ?>"><?php if($geraet['aktiv']=='0') { echo "1"; } elseif ($geraet['bestanden']=='0')  { echo "4"; } elseif ($nextyear < $today)  { echo "2"; } elseif ($nextyearfast < $today) { echo "3"; }?></td>
-
-
-				<td class="<?php if($ort || $dguv3_show_geraete_col[2][1]=='0') { echo "d-none"; } ?>"><?php echo $geraet['ortsname']; ?></td>
-
-			<td class="<?php if($dguv3_show_geraete_col[3][1]=='0') { echo "d-none"; } ?>"><?php echo $geraet['name']; ?><?php if($geraet['verlaengerungskabel']=='1') { ?> | <?php echo $geraet['kabellaenge']; ?>m<?php	} ?>
+			<td class=""><?php echo $geraet['name']; ?><?php if($geraet['verlaengerungskabel']=='1') { ?> | <?php echo $geraet['kabellaenge']; ?>m<?php	} ?>
 				</td>
-			<td class="<?php if($dguv3_show_geraete_col[4][1]=='0') { echo "d-none"; } ?>"><?php echo $geraet['hersteller']; ?></td>
-			<td class="<?php if($dguv3_show_geraete_col[5][1]=='0') { echo "d-none"; } ?>"><?php echo $geraet['typ']; ?></td>
-			<td class="<?php if($dguv3_show_geraete_col[6][1]=='0') { echo "d-none"; } ?>"><?php echo $geraet['seriennummer']; ?></td>
-			<td class="<?php if($dguv3_show_geraete_col[7][1]=='0') { echo "d-none"; } ?>"><?php if($geraet['aktiv']=='0') { echo "nein"; } else { echo "ja"; } ?></td>
-			<td class="<?php if($dguv3_show_geraete_col[8][1]=='0') { echo "d-none"; } ?>"><?php echo $geraet['beschreibung']; ?></td>
-			<td class="<?php if($dguv3_show_geraete_col[9][1]=='0') { echo "d-none"; } ?>"><?php $blubb = new DateTime($geraet['hinzugefuegt']); echo $blubb->format('d.m.Y');  ?></td>
-			<td class="<?php if($dguv3_show_geraete_col[10][1]=='0') { echo "d-none"; } ?>"><?php if($geraet['nennspannung']=='0') { echo "-"; } else { echo $geraet['nennspannung'].'V'; } ?></td>
-			<td class="<?php if($dguv3_show_geraete_col[11][1]=='0') { echo "d-none"; } ?>"><?php if($geraet['nennstrom']=='0.00') { echo "-"; } else { echo $geraet['nennstrom'].'A'; } ?></td>
-			<td class="<?php if($dguv3_show_geraete_col[12][1]=='0') { echo "d-none"; } ?>"><?php if($geraet['leistung']=='0') { echo "-"; } else { echo $geraet['leistung'].'W'; } ?></td>
-			<td class="<?php if($dguv3_show_geraete_col[13][1]=='0') { echo "d-none"; } ?>"><?php echo $geraet['schutzklasse']; ?></td>
-			<td class="<?php if($dguv3_show_geraete_col[14][1]=='0') { echo "d-none"; } ?>"><?php if($geraet['verlaengerungskabel']=='0') { ?>  <?php } else { ?><?php echo $geraet['kabellaenge']; ?>m</td><?php	} ?>
-			<td class="<?php if($dguv3_show_geraete_col[15][1]=='0') { echo "d-none"; } ?>"><?php if($geraet['letztesdatum']) {$blubb = new DateTime($geraet['letztesdatum']); echo $blubb->format('d.m.Y');}  ?></td>
-			<td class="<?php if($dguv3_show_geraete_col[16][1]=='0') { echo "d-none"; } ?>"><?php if($geraet['bestanden']=='1') { echo "ja"; } elseif($geraet['bestanden']=='0') { echo "nein"; } ?></td>
-			<td class="<?php if($dguv3_show_geraete_col[17][1]=='0') { echo "d-none"; } ?>"><?php echo $geraet['pruefername']; ?></td>
-			<td class="<?php if($dguv3_show_geraete_col[18][1]=='0') { echo "d-none"; } ?>">
-				<div class="text-right btn-group btn-group-sm" role="group" aria-label="options">
-
-					<a href="<?php if($geraet) { echo site_url('pruefung/new/'.$geraet['gid']); } ?>" class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-success btn-sm <?php if($geraet['aktiv']=='0') { echo " disabled"; } ?>"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neue Prüfung</a>
-					<a href="<?php echo site_url('pruefung/index/'.$geraet['gid']); ?>" class="btn btn-primary btn-sm <?php if($geraet['aktiv']=='0') { echo " disabled"; } ?>"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span> prüfung</a>
-					<a href="<?php echo site_url('geraete/index/'.$geraet['oid']); ?>" class="<?php if($ort) { echo "d-none"; } ?> btn btn-primary btn-sm"><span class="iconify" data-icon="ic:baseline-room" data-width="20" data-height="20"></span> Ort</a>
-					<a href="<?php echo site_url('geraete/edit/'.$geraet['gid']); ?>" class="btn btn-secondary btn-sm"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> edit</a>
-					<a href="<?php echo site_url('geraete/delete/'.$geraet['gid']); ?>" class="btn btn-danger btn-sm"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span> delete</a>
-				</div>
-
-
-			</td>
+			<td class=""><?php echo $geraet['hersteller']; ?></td>
+			<td class=""><?php echo $geraet['typ']; ?></td>
+			<td class=""><?php echo $geraet['seriennummer']; ?></td>
+			<td class="d-none"><?php if($geraet['aktiv']=='0') { echo "nein"; } else { echo "ja"; } ?></td>
+			<td class=""><?php echo $geraet['beschreibung']; ?></td>
+			<td class=""><?php $blubb = new DateTime($geraet['hinzugefuegt']); echo $blubb->format('d.m.Y');  ?></td>
+			
+			<td class=""><?php echo $geraet['letztesdatum']?>    (<?php echo $geraet['anzahl']?>)</td>
+			
 		</tr>
 					<?php
 

@@ -157,6 +157,10 @@ echo validation_errors();
           <input class="form-check-input" type="radio" name="schutzklasse" id="4" value="4" <?php if($geraet['schutzklasse']=='4') { echo 'checked'; } ?>>
           <label class="form-check-label" for="4">Leiter</label>
         </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="schutzklasse" id="5" value="5" <?php if($geraet['schutzklasse']=='5') { echo 'checked'; } ?>>
+          <label class="form-check-label" for="5">Anderes Gerät</label>
+        </div>
        
       </div>
     </div>

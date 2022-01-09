@@ -25,7 +25,7 @@ class Cron extends CI_Controller {
 			if($this->session->userdata('level')=='1'){
 
 				$orte = $this->Orte_model->get();
-
+				
 
 				foreach($orte as $ort) {
 					// nur fürs aktuelle jahr
@@ -57,12 +57,16 @@ class Cron extends CI_Controller {
 			$cron_liste = array_diff(scandir($cron_liste_pfad, 1), array('.', '..'));
 			$cron_protokoll = array_diff(scandir($cron_protokoll_pfad, 1), array('.', '..'));
 			$errordata=array();
-
+			
 			//listen übersicht als pdf anfordern
 			foreach($cron_liste as $ortsid) {
 
 				$firmaid = file_get_contents($cron_liste_pfad.$ortsid, true);
 				$filename= $this->Pdf_model->genpdf_uebersicht($ortsid);
+				if($filename===null){
+echo 'error kein server';
+return null;
+				}
 				echo $filename;
 				echo '<br>';
 				echo $firmaid;

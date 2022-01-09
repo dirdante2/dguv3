@@ -86,11 +86,12 @@ class Pdf_model extends CI_Model
 
 	//output geraete/uebersicht/$oid als json format
 
-	function genpdf_uebersicht($oid="") {
+	function genpdf_uebersicht($oid) {
 		$data = $this->Geraete_model->pdfdata($oid);
 		$typ='1'; //übersicht pdf
-		$filename = $this->File_model->get_file_pfad($typ,$oid);
-		//$filename = $data['filename'];
+
+		//$filename = $this->File_model->get_file_pfad($typ,$oid);
+		$filename = $data['filename'];
 		//unset($data['filename']);
 
 		$this->generate_pdf('uebersicht', $data, $filename);
@@ -102,15 +103,13 @@ class Pdf_model extends CI_Model
 
 
 
-	function genpdf_protokoll($pruefung_id="") {
+	function genpdf_protokoll($pruefung_id) {
 		$data = $this->Pruefung_model->pdfdata($pruefung_id);
 
 		$typ='2'; //protokoll pdf
-		$filename = $this->File_model->get_file_pfad($typ,$pruefung_id);
-		//$filename = $data['filename'];
+		//$filename = $this->File_model->get_file_pfad($typ,$pruefung_id);
+		$filename = $data['filename'];
 		//unset($data['filename']);
-
-
 
 		$this->generate_pdf('protokoll', $data, $filename);
 

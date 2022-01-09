@@ -20,10 +20,10 @@ class Pruefung_json extends CI_Controller {
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 	}
 
-//TODO delete funktion ist in pruefung_model
+
 	//output pruefung/protokoll/$pruefung_id als json format
 	private function data($pruefung_id) {
-		$pruefung = $this->Pruefung_model->get($pruefung_id);
+		$pruefung = $this->Pruefung_model->getnotarray($pruefung_id);
 
 		//$data['pruefung'] = $this->Pruefung_model->getnotarray($pruefung_id);
 		//$data['naechste_pruefung']= '+'.$this->config->item('dguv3_pruefungabgelaufen');

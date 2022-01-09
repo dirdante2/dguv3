@@ -30,7 +30,7 @@ class Log extends CI_Controller {
 			$this->load->view('templates/footer');
         } else{
 
-			if($this->session->userdata('level')=='1'){
+			if($this->session->userdata('level')<='4'){
 
 
 				$header['cronjobs']= $this->File_model->getfiles('cronjob');

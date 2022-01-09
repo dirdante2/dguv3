@@ -18,8 +18,6 @@ class File_model extends CI_Model
 		$this->load->model('Orte_model');
 		$this->load->model('Pruefung_model');
 		$this->load->model('Pdf_model');
-		$this->load->model('Log_model');
-
 
 
 
@@ -27,8 +25,11 @@ class File_model extends CI_Model
 	//typ 1 übersicht $oid
 	//typ 2 protokoll $pruefungid
 	//typ 3 zip
-	function get_file_pfad($typ,$id=null) {
+	function get_file_pfad($typ,$id) {
 
+		if($id===NULL) {return;}
+
+		
 		// file übersicht
 		if($typ=='1') {
 
@@ -86,12 +87,7 @@ class File_model extends CI_Model
 			header("Content-Length: $Groesse");
 			readfile($filename);
 
-			//file_put_contents('application/privat_logs/'.date('Y-m-d').'.php', PHP_EOL .  date('Y-m-d H:i:s').' --> Download: '.$filename.' '.$Groesse, FILE_APPEND);
-
-			$context='Download: '.$filename.' '.$Groesse;
-			$this->Log_model->privatlog($context);
-
-
+			file_put_contents('application/privat_logs/'.date('Y-m-d').'.php', PHP_EOL .  date('Y-m-d H:i:s').' Download: '.$filename.' '.$Groesse, FILE_APPEND);
 			redirect('Dguv3');
 		} else {
 			//return 'error';
@@ -119,6 +115,13 @@ class File_model extends CI_Model
 		}
 
 		if($cronjobs) { // anstehende cronjobs als number
+
+			if (!file_exists('cron/liste/')) {
+				mkdir('cron/liste/', 0777, true);
+			}
+			if (!file_exists('cron/protokoll/')) {
+				mkdir('cron/protokoll/', 0777, true);
+			}
 			$files_liste = count(array_diff(scandir('cron/liste/', 1), array('.', '..')));
 			$files_protokoll = count(array_diff(scandir('cron/protokoll/', 1), array('.', '..')));
 
@@ -239,14 +242,8 @@ class File_model extends CI_Model
 				file_put_contents($folder.'.txt', 'Übersicht: '.$file_list_counter.' von '.$orte_count.'<br>');
 				file_put_contents($folder.'.txt', PHP_EOL .  'Protokolle: '.$file_protokoll_counter.' von '.$geraete_aktiv_1, FILE_APPEND);
 
+				file_put_contents('application/privat_logs/'.date('Y-m-d').'.php', PHP_EOL .  date('Y-m-d H:i:s').' createZIP: '.$folder.'.zip ', FILE_APPEND);
 
-				if($this->session->userdata('username')){
-					$context= 'createZIP: '.$folder.'.zip von '.$this->session->userdata('username');
-				} else {
-					$context= 'createZIP: '.$folder.'.zip von cronjob';
-				}
-
-				$this->Log_model->privatlog($context);
 
 
 				// bericht

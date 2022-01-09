@@ -169,7 +169,7 @@ Letzter login: <?php echo $this->session->userdata('lastseen');?>
 
 
 
-	<div class="col" style="width: 100%; max-width: 200px;">
+	<div class="col" style="width: 100%; max-width: 160px;">
         <h4>PDF Server</h4><br>
 		<div class="btn-group-vertical" role="group" style="width: 100%;">
 		<?php
@@ -178,9 +178,21 @@ Letzter login: <?php echo $this->session->userdata('lastseen');?>
 			$i++;?>
 
 			<?php
-			if($socket =@ fsockopen($serverurl[0], $serverurl[1], $errno, $errstr, 30)) { ?>
+
+$ch = curl_init();
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //Set curl to return the data instead of printing it to the browser.
+		curl_setopt($ch, CURLOPT_URL, $serverurl[0].':'.$serverurl[1].'/pdfgen/ping');
+		$data = curl_exec($ch);
+        curl_close($ch);
+        if(strpos($data, 'pong!')){
+
+
+
+
+			 ?>
 				 <a  href="http://<?php echo $serverurl[0].':'.$serverurl[1]; ?>" target="_blank" role="button" class="btn btn-sm btn-success">Server <?php echo $i; ?> OK</a>
-				<?php fclose($socket);
+				<?php
 				} else { ?>
 				<!-- <button type="button" class="btn btn-sm btn-danger">Server <?php echo $i; ?> Error</button> -->
 				<a  href="http://<?php echo $serverurl[0].':'.$serverurl[1]; ?>" target="_blank" role="button" class="btn btn-sm btn-danger">Server <?php echo $i; ?> Error</a>
@@ -188,9 +200,10 @@ Letzter login: <?php echo $this->session->userdata('lastseen');?>
 
 				</div>
 
-    </div>
+                </div>
+                </div> <div class="row" >
 
-    <div class="col" style="width: 100px; white-space: nowrap; border: 0px solid #000;">
+    <div class="col" style="width: 100px; white-space: nowrap; border: 0px solid #000;max-width: 500px;">
         <h4>Archiv</h4>
 		<?php if($cronjobs) { ?>
 

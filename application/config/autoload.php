@@ -133,4 +133,4 @@ $autoload['language'] = array('db','form_validation','email','date','number','up
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array();
+$autoload['model'] = array('File_model', 'Log_model', 'Pdf_model');
