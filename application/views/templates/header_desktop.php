@@ -5,7 +5,7 @@
 <title><?php echo $title; ?></title>
 <?php } ?>
 	<meta charset="UTF-8">
-	<script src="<?php echo base_url();?>lib/jquery/jquery-3.4.1.min.js"></script>
+	<script src="<?php echo base_url();?>lib/jquery/jquery-3.6.0.min.js"></script>
 	<script src="<?php echo base_url();?>lib/jquery/jquery-ui.min.js"></script>
 	<script src="<?php echo base_url();?>lib/bootstrap/bootstrap.min.js"></script>
 	<script src="<?php echo base_url();?>lib/datatables/datatables.js"></script>
