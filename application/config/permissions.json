@@ -1,0 +1,27 @@
+{
+    "orte_edit": {
+        "user_edit": "1",
+        "user_level": [
+            { "user_level": "1" },
+            { "user_level": "2" },
+            { "user_level": "3" }
+        ]
+    },
+    "user_edit": {
+
+        "user_level": [
+            { "user_level": "1" },
+            { "user_level": "2" }
+
+        ]
+    },
+    "geraete_edit": {
+        "user_edit": "1",
+        "user_level": [
+            { "user_level": "1" },
+            { "user_level": "2" }
+
+        ]
+
+    }
+}
