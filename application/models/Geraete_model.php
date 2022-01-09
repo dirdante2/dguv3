@@ -27,13 +27,13 @@ class Geraete_model extends CI_Model {
 		$this->db->join('pruefung','geraete.gid = pruefung.gid AND pruefung.pruefungid = (SELECT pruefungid from pruefung as pr where geraete.gid = pr.gid order by datum desc, pruefungid desc limit 1)','LEFT');
 		$this->db->join('pruefer', 'pruefung.pid = pruefer.pid', 'LEFT');
 
-
+		
 
 
 		if($firmen_firmaid) {
-			$this->db->having('geraete.geraete_firmaid', $firmen_firmaid);
-			//FIXME bei nicht admins soll nur geräte aus der richtigen firma angeeigt werden es werden aber alle geräte angezeigt =?!
-			echo $firmen_firmaid;
+			
+			$this->db->where('geraete.geraete_firmaid', $firmen_firmaid);
+			
 		}
 		$this->db->order_by('geraete.gid', 'DESC');
 
@@ -96,7 +96,9 @@ function pdfdata($oid) {
 	$data['ort'] = $this->Orte_model->get($oid);
 	$geraete = $this->Geraete_model->get(null,$oid);
 	//$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_pdf_col');
-	$data['dguv3_logourl']= $this->config->config['base_url'].$this->config->item('dguv3_logourl');
+		// -> aktuell $data['dguv3_logourl']= $this->config->config['base_url'].$this->config->item('dguv3_logourl');
+		$data['dguv3_logourl']='https://dguv3.d-systems.us/application/bilder/logo.jpg';
+
 	$data['qrcode']= 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$this->config->config['base_url'].'/index.php/geraete/index/'.$oid;
 
 /* foreach($geraete as $geraet) {
@@ -110,7 +112,7 @@ function pdfdata($oid) {
 
 
 } */
-//print_r($geraete);
+#print_r($geraete);
 $i='0';
 
 foreach((array) $geraete as $geraet) {

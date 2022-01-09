@@ -54,7 +54,7 @@ class Pdf_model extends CI_Model
 		}
 
 
-
+	
 
 		//Initiate cURL.
 		$ch = curl_init($url);
@@ -91,7 +91,13 @@ class Pdf_model extends CI_Model
 		$typ='1'; //übersicht pdf
 
 		//$filename = $this->File_model->get_file_pfad($typ,$oid);
+		
+		
+		
 		$filename = $data['filename'];
+
+
+
 		//unset($data['filename']);
 
 		$this->generate_pdf('uebersicht', $data, $filename);

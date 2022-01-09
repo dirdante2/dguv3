@@ -189,7 +189,8 @@ $year=date('Y');
 	//$data['geraete'] = $this->Geraete_model->getByOid($pruefungid);
 	//$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_pdf_col');
 
-	$data['dguv3_logourl']= $this->config->config['base_url'].$this->config->item('dguv3_logourl');
+	//$data['dguv3_logourl']= $this->config->config['base_url'].$this->config->item('dguv3_logourl');
+	$data['dguv3_logourl']='https://dguv3.d-systems.us/application/bilder/logo.jpg';
 	$data['qrcode']= 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$this->config->config['base_url'].'/index.php/pruefung/index/'.$pruefung_id;
 
 

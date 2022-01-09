@@ -25,6 +25,7 @@ class Geraete extends CI_Controller {
 	}
 
 	function index($oid=null) {
+		
 		if($this->agent->is_mobile()){$useragent = 'mobile';} else {$useragent = 'desktop';}
 
 		if($this->session->userdata('logged_in') !== TRUE){
@@ -57,7 +58,7 @@ class Geraete extends CI_Controller {
 			$data['page_offset']=$data["page_show_rows"] * $pageid ;
 
 			
-			#print_r($data['ort']);
+			
 			
 			  //userlevel 2 oder höher kann nur orte mit eigener firma sehen
 			if($this->session->userdata('level')>='2'){$firmen_firmaid=$this->session->userdata('firmaid');} else {$firmen_firmaid= NULL;}
@@ -110,8 +111,8 @@ class Geraete extends CI_Controller {
 
 		//ob_start();
 
-		$this->load->view('templates/print/header');
-		$this->load->view('templates/datatable');
+		$this->load->view('templates/print/header_desktop');
+		$this->load->view('templates/desktop');
 		$this->load->view('geraete/uebersicht',$data);
 		$this->load->view('templates/print/footer');
 //$content = ob_get_contents();
@@ -141,7 +142,11 @@ class Geraete extends CI_Controller {
 	}
 
 
-	function edit($gid=0) {
+	function edit($gid=0,$oid=NULL) {
+
+		$data['ort'] = $this->Orte_model->get($oid);
+		if($this->agent->is_mobile()){$useragent = 'mobile';} else {$useragent = 'desktop';}
+
 		$felder = array('oid','geraete_firmaid','hersteller','name','typ','seriennummer','nennstrom','nennspannung','leistung','hinzugefuegt','beschreibung','aktiv','schutzklasse','verlaengerungskabel','kabellaenge');
 
 		$this->form_validation->set_rules('typ', 'Typ', 'required');
@@ -150,11 +155,7 @@ class Geraete extends CI_Controller {
 		$header['cronjobs']= $this->File_model->getfiles('cronjob');
 
 		if($this->form_validation->run() === FALSE) {
-			if($this->agent->is_mobile()){
-				$this->load->view('templates/header_mobile',$header);
-			  } else {
-				$this->load->view('templates/header',$header);
-			  }
+			$this->load->view('templates/header_'.$useragent,$header);
 
 			//Neues Gerät
 			if($gid==0) {
@@ -162,24 +163,24 @@ class Geraete extends CI_Controller {
 					$liste[$feld]="";
 				}
 				$liste['gid']=0;
-				$liste['ortsname']='';
+					if($oid) {
+					$liste['ortsname']=$data['ort']['name'].' ('.$data['ort']['beschreibung'].')';
+					$liste['oid']=$oid;
+					} else {$liste['ortsname']='';}
+
 				$liste['geraete_firmaid']=$this->session->userdata('firmaid');
 				$liste['aktiv']=TRUE;
 				$liste['nennspannung']='230';
 				$liste['schutzklasse']='2';
 				$liste['hinzugefuegt']=date('Y-m-d');
 
-				if($this->agent->is_mobile()){
-					$this->load->view('geraete/form_mobile',array(
-						'geraet'=>$liste,
-						'firmen'=> $this->Firmen_model->get()
-					));
-				  } else {
-					$this->load->view('geraete/form',array(
-						'geraet'=>$liste,
-						'firmen'=> $this->Firmen_model->get()
-					));
-				  }
+
+				$this->load->view('geraete/form_'.$useragent,array(
+					'geraet'=>$liste,
+					'firmen'=> $this->Firmen_model->get()
+				));
+				
+				
 
 
 
@@ -187,17 +188,12 @@ class Geraete extends CI_Controller {
 			//Vorhandeses Gerät
 			else {
 
-				if($this->agent->is_mobile()){
-					$this->load->view('geraete/form_mobile',array(
-						'geraet'=>$this->Geraete_model->get($gid),
-						'firmen'=> $this->Firmen_model->get()
-					));
-				  } else {
-					$this->load->view('geraete/form',array(
-						'geraet'=>$this->Geraete_model->get($gid),
-						'firmen'=> $this->Firmen_model->get()
-					));
-				  }
+				
+
+				  $this->load->view('geraete/form_'.$useragent,array(
+					'geraet'=>$this->Geraete_model->get($gid),
+					'firmen'=> $this->Firmen_model->get()
+				));
 
 
 

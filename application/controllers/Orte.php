@@ -217,7 +217,7 @@ $header['title']= 'Orte';
 
 			$response=array();
 			foreach($orte as $ort) {
-				$response[$ort['oid']]="{$ort['name']} {$ort['beschreibung']}";
+				$response[$ort['oid']]="{$ort['name']} ({$ort['beschreibung']})";
 			}
 
 			echo json_encode($response);

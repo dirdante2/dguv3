@@ -44,7 +44,7 @@ echo validation_errors();
     <label for="orte" class="col-sm-5 col-form-label">Ort*</label>
     <div class="col-sm-7">
       <input type="text" class="form-control" id="orte" value="<?php echo $geraet['ortsname']; ?>" required>
-      <input type="text" id="oid" name="oid" value="<?php echo $geraet['oid']; ?>">
+      <input type="hidden" id="oid" name="oid" value="<?php echo $geraet['oid']; ?>">
     </div>
   </div>
   <div class="form-group row">
