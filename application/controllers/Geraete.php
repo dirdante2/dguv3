@@ -118,12 +118,7 @@ class Geraete extends CI_Controller {
 //$content = ob_get_contents();
     //ob_clean();
 
-    //$content=serialize($content);
-
-		//$this->Html2pdf_model->html2pdfget($content);
-		//$this->Geraete_model->downloadUrlToFile('https://dguv3.qabc.eu/index.php/geraete/geraete/'.$oid);
-
-
+    
 		}
 
 
@@ -146,7 +141,7 @@ class Geraete extends CI_Controller {
 
 		$data['ort'] = $this->Orte_model->get($oid);
 		if($this->agent->is_mobile()){$useragent = 'mobile';} else {$useragent = 'desktop';}
-
+		#$useragent = 'desktop';
 		$felder = array('oid','geraete_firmaid','hersteller','name','typ','seriennummer','nennstrom','nennspannung','leistung','hinzugefuegt','beschreibung','aktiv','schutzklasse','verlaengerungskabel','kabellaenge');
 
 		$this->form_validation->set_rules('typ', 'Typ', 'required');
@@ -215,8 +210,10 @@ class Geraete extends CI_Controller {
 
 
 			$this->Geraete_model->set($geraet,$gid);
+			#print_r($geraet['oid']);
+
 				// get ortsid von neu angelegtem gerät damit redirect zu richtiger seite führt?!!
-			$ortsid = $this->Geraete_model->get($gid)['oid'];
+			$ortsid = $geraet['oid'];
 
 			//$this->Pdf_model->genpdf_uebersicht($gortsid);
 			file_put_contents('cron/liste/'.$ortsid,$geraet['geraete_firmaid']);
@@ -225,7 +222,7 @@ class Geraete extends CI_Controller {
 			$this->Log_model->privatlog($context);
 
 
-			if($gid==0) {
+			if($ortsid===NULL) {
 				redirect('geraete');
 				}
 			//Vorhandeses Gerät
@@ -260,7 +257,8 @@ class Geraete extends CI_Controller {
 			$context='Gerät gelöscht name '.$geraet['name'].' gid '.$gid.' oid '.$geraet['oid'];
 			$this->Log_model->privatlog($context);
 
-			redirect('geraete');
+
+			redirect('geraete/index/'.$geraet['oid']);
 		}
 	}
 	function pagination($oid,$pageid) {
@@ -270,14 +268,55 @@ class Geraete extends CI_Controller {
 			redirect('geraete/index/'.$oid.'/'.$pageid);
 		}
 
-		function json($oid="") {
+		function jsonout($oid="") {
 			$data = $this->Geraete_model->pdfdata($oid);
+			
 
-			$this->output
-       			 ->set_content_type('application/json', 'utf-8')
-					->set_output(json_encode(array($data)));
+			// $this->output
+       		// 	 ->set_content_type('application/json', 'utf-8')
+			// 		->set_output(json_encode(array($data)));
 
-			//echo json_encode($data);
+			echo json_encode($data);
+		}
+
+		function json($key="") {
+
+			if($this->session->userdata('logged_in') !== TRUE){
+				$this->load->view('templates/header',$header);
+				$this->load->view('static/denied');
+				$this->load->view('templates/footer');
+			}else{
+				
+				
+				
+
+				 //userlevel 2 oder höher kann nur orte mit eigener firma sehen
+				 if($this->session->userdata('level')>='2'){
+					$firmen_firmaid=$this->session->userdata('firmaid');
+					$geraete=$this->Geraete_model->getByName($key,$firmen_firmaid);
+	
+				} else {
+					$geraete=$this->Geraete_model->getByName($key);
+				}
+	
+				#print_r($geraete);
+	
+				
+				$response=array();
+				//FIXME umlaute werden nicht erkannt und zurückgeben ->fehler
+				foreach($geraete as $geraet) {
+					
+
+					#$response[$geraet['name']]="1 {$geraet['name']} ({$geraet['hersteller']} {$geraet['typ']})";
+					$response[$geraet['name']]="{$geraet['typ']}";
+					
+
+				}
+				#
+				#print_r($response);
+
+				echo json_encode($response);
+			}
 		}
 
 

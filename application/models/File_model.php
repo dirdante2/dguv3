@@ -18,6 +18,7 @@ class File_model extends CI_Model
 		$this->load->model('Orte_model');
 		$this->load->model('Pruefung_model');
 		$this->load->model('Pdf_model');
+		$this->load->model('Firmen_model');
 
 
 
@@ -83,7 +84,7 @@ class File_model extends CI_Model
 			$Dateiname = basename($filename);
 			$Groesse = filesize($filename);
 			header("Content-Type: application/force-download");
-			header("Content-Disposition: attachment; filename=".$Dateiname);
+			header("Content-Disposition: attachment; filename=Prüfprotokolle_".$Dateiname);
 			header("Content-Length: $Groesse");
 			readfile($filename);
 

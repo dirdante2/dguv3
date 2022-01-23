@@ -26,11 +26,15 @@ class Pruefung_model extends CI_Model {
 		$this->db->join('firmen', 'pruefung.pruefung_firmaid = firmen.firmen_firmaid', 'LEFT');
 		$this->db->order_by('pruefung.pruefungid', 'DESC');
 
+
+
+		
+
 		if($pruefung_id) {
 			$this->db->where('pruefung.pruefungid',$pruefung_id);
 		}
 		$result = $this->db->get()->result_array();
-
+		
 
 		if(!empty($result)) {
 			if($pruefung_id) {
@@ -107,6 +111,10 @@ $year=date('Y');
 	function pdfdata($pruefung_id) {
 	$pruefung = $this->Pruefung_model->get($pruefung_id);
 
+	//FIXME wird bei sql abfrage falsch zugeordnet "prueferbeschreibung" wird zu "beschreibung"
+
+	$pruefung['beschreibung']=$pruefung['geraetebeschreibung'];
+	
 	//$data['naechste_pruefung']= '+'.$this->config->item('dguv3_pruefungabgelaufen');
 	$pruefung_datum = $pruefung['datum'];
 	$day     = $pruefung_datum;
@@ -172,12 +180,14 @@ $year=date('Y');
 	} else {
 		$pruefung['aktiv']='nein';
 	}
+
 	if($pruefung['funktion']=='1') {
 		$pruefung['funktion']='ja';
 	} else {
 		$pruefung['funktion']='nein';
 		$pruefung['bestanden']='nein';
 	}
+
 	if($pruefung['sichtpruefung']=='1') {
 		$pruefung['sichtpruefung']='ja';
 	} else {
@@ -185,13 +195,31 @@ $year=date('Y');
 		$pruefung['bestanden']='nein';
 	}
 
+	if($pruefung['verlaengerungskabel']=='1') {
+		$pruefung['verlaengerungskabel']='ja ('.$pruefung['kabellaenge'].'m)';
+	} else {
+		$pruefung['verlaengerungskabel']='nein';
+	}
+
 	//$data['ort'] = $this->Orte_model->get($pruefungid);
 	//$data['geraete'] = $this->Geraete_model->getByOid($pruefungid);
 	//$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_pdf_col');
 
-	//$data['dguv3_logourl']= $this->config->config['base_url'].$this->config->item('dguv3_logourl');
-	$data['dguv3_logourl']='https://dguv3.d-systems.us/application/bilder/logo.jpg';
-	$data['qrcode']= 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$this->config->config['base_url'].'/index.php/pruefung/index/'.$pruefung_id;
+	
+
+	if($pruefung['schutzklasse']<='3') {
+		//elektro geräte
+		$data['dguv3_header']= $this->config->item('dguv3_protokoll_header1');
+	} elseif ($pruefung['schutzklasse']=='4') {
+		//leitern
+		$data['dguv3_header']= $this->config->item('dguv3_protokoll_header2');
+	} else {
+		$data['dguv3_header']= 'Diese Prüfung ist ungültig weil es keine überschrift gibt?!';
+	}
+	
+	
+	$data['dguv3_logourl']= $this->config->item('dguv3_logourl');
+	$data['qrcode']= 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$this->config->config['base_url'].'/pruefung/index/'.$pruefung_id;
 
 
 	// generate filename
@@ -211,6 +239,8 @@ $year=date('Y');
 	unset($pruefung['name']);
 	// unset($pruefung['orte_firmaid']);
 	$data['pruefung'] = $pruefung;
+
+	
 
 	return $data;
 }

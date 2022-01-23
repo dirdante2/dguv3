@@ -56,6 +56,36 @@ class Geraete_model extends CI_Model {
 		}
 	}
 
+	function getByName($name,$firmen_firmaid=NULL) {
+
+		$this->db->select('geraete.*, firmen.firmen_firmaid,firmen.firma_name,orte.name AS ortsname, pruefung.bestanden, pruefung.datum AS letztesdatum, (select count(*) from pruefung as pr where geraete.gid = pr.gid) AS anzahl, pruefer.name as pruefername');
+		$this->db->from('geraete');
+		$this->db->join('orte', 'geraete.oid = orte.oid');
+		$this->db->join('firmen', 'geraete.geraete_firmaid = firmen.firmen_firmaid', 'LEFT');
+		$this->db->join('pruefung','geraete.gid = pruefung.gid AND pruefung.pruefungid = (SELECT pruefungid from pruefung as pr where geraete.gid = pr.gid order by datum desc, pruefungid desc limit 1)','LEFT');
+		$this->db->join('pruefer', 'pruefung.pid = pruefer.pid', 'LEFT');
+		if($firmen_firmaid!==NULL) {
+			//$this->db->where('orte.orte_firmaid', $firmen_firmaid);
+			$this->db->having('orte.orte_firmaid', $firmen_firmaid);
+		} 
+
+		#$search = array("Ä", "Ö", "Ü", "ä", "ö", "ü", "ß", "´");
+		#$replace = array("Ae", "Oe", "Ue", "ae", "oe", "ue", "ss", "");
+		#$string= str_replace($search, $replace, $string);
+
+		$this->db->like('geraete.typ', $name); 
+		$this->db->or_like('geraete.name', $name);
+
+		$this->db->limit(10);
+		$this->db->order_by('geraete.typ');
+		$result = $this->db->get()->result_array();
+		if (!empty($result)) {
+			return $result;
+		} else {
+			return NULL;
+		}
+	}
+
 
 
 	/*Verlängerungskabel
@@ -97,9 +127,9 @@ function pdfdata($oid) {
 	$geraete = $this->Geraete_model->get(null,$oid);
 	//$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_pdf_col');
 		// -> aktuell $data['dguv3_logourl']= $this->config->config['base_url'].$this->config->item('dguv3_logourl');
-		$data['dguv3_logourl']='https://dguv3.d-systems.us/application/bilder/logo.jpg';
+		$data['dguv3_logourl']= $this->config->item('dguv3_logourl');
 
-	$data['qrcode']= 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$this->config->config['base_url'].'/index.php/geraete/index/'.$oid;
+	$data['qrcode']= 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$this->config->config['base_url'].'/geraete/index/'.$oid;
 
 /* foreach($geraete as $geraet) {
 
@@ -117,7 +147,29 @@ $i='0';
 
 foreach((array) $geraete as $geraet) {
 
+	//FIXME beschreibung verursacht absturz in json2pdf server
+	$geraete[$i]['beschreibung']='0';
+
+ //gleiches problem json2pdf stürzt ab wenn velängerungskabel im name verkommt
+ //geräte name länger als 20 zeichen führt zu absturz
+ if($geraete[$i]['name']=='Verlängerungskabel') {
+	$geraete[$i]['name']='Kabel';
+ }
+
+ 
+	#if($geraete[$i]['verlaengerungskabel']=='1') {
+		
+		#$geraete[$i]['name']=$geraete[$i]['name'].' | '.$geraete[$i]['kabellaenge'];
+
+		//$geraete[$i]['kabellaenge']='0';
+		//$geraete[$i]['verlaengerungskabel']='0';
+		//unset($geraete[$i]['kabellaenge']);
+		//unset($geraete[$i]['verlaengerungskabel']);
+
+	#}
 	
+
+
 
 	unset($geraete[$i]['firmen_firmaid']);
 	unset($geraete[$i]['firma_name']);

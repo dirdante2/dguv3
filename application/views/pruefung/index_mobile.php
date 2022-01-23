@@ -156,7 +156,7 @@ while($i < $page_end) { ?>
 $i++;
 }
 ?>
-<a class="btn btn-outline-dark <?php if($page_pageid+1==$page_pages) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>pruefung/pagination/<?php echo $gid; ?>/<?php echo $page_pages-1; ?>">ende</a>
+<a class="btn btn-outline-dark <?php if($page_pageid+1==$page_pages || $page_pages==0) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>pruefung/pagination/<?php echo $gid; ?>/<?php echo $page_pages-1; ?>">ende</a>
 <br>zeige <?php echo $page_show_rows; ?> von <?php echo $page_total_rows; ?> auf <?php echo $page_pages; ?> Seiten<br>
 
 </div>
@@ -211,7 +211,7 @@ keine geräte vorhanden
 
 			<h4 class="mb-0" >
 			<div class="row">
-			<div class="col-6 text-left" id="<?php echo $pr['pruefungid']; ?>"><?php  echo $pr['name']; ?> <span class="iconify" data-icon="<?php echo $schutzklasseicon; ?>" data-inline="false" data-width="50" data-height="50"></span></div><div class="col-6 text-right" id="<?php echo $pr['pruefungid']; ?>"><?php if($this->session->userdata('level')=='1'){?><?php echo $pr['firma_name']; ?><?php } ?></div>
+			<div class="col-6 text-left" id="<?php echo $pr['pruefungid']; ?>"><?php  echo $pr['ortsname']; ?> <?php  echo $pr['name']; ?> <span class="iconify" data-icon="<?php echo $schutzklasseicon; ?>" data-inline="false" data-width="50" data-height="50"></span></div><div class="col-6 text-right" id="<?php echo $pr['pruefungid']; ?>"><?php if($this->session->userdata('level')=='1'){?><?php echo $pr['firma_name']; ?><?php } ?></div>
 			</div>
 
 			</h4>

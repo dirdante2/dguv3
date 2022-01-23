@@ -5,27 +5,25 @@
 <title><?php echo $title; ?></title>
 <?php } ?>
 	<meta charset="UTF-8">
-	<script src="<?php echo base_url();?>lib/jquery/jquery-3.4.1.min.js"></script>
-	<!-- <script src="<?php echo base_url();?>lib/jquery/jquery-ui.min.js"></script> -->
+	<script src="<?php echo base_url();?>lib/jquery/jquery-3.6.0.min.js"></script>
 	<script src="<?php echo base_url();?>lib/bootstrap/bootstrap.min.js"></script>
-	<!-- <script src="<?php echo base_url();?>lib/datatables/datatables.js"></script> -->
-	<!--<script src="<?php echo base_url();?>lib/datatables/datatables.min.js"></script>-->
-	<!--<script src="<?php echo base_url();?>lib/datatables/jquery.dataTables.min.js"></script>-->
 	<script src="https://code.iconify.design/1/1.0.4/iconify.min.js"></script>
-	<!-- <script defer src="<?php echo base_url();?>lib/navbar.js"></script> -->
+	<script src="<?php echo base_url();?>lib/jquery/jquery-ui.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.3/toastr.min.js"></script>
 
   <link
     href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&display=swap"
     rel="stylesheet"
   />
 
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/bootstrap/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/jquery/jquery-ui.min.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/jquery/jquery-ui.structure.min.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/jquery/jquery-ui.theme.min.css">
+	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/bootstrap.min_mobile.css">
-	<!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/jquery/jquery-ui.min.css"> -->
-	<!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/jquery/jquery-ui.structure.min.css"> -->
-	<!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/jquery/jquery-ui.theme.min.css"> -->
-	<!--<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/datatables/datatables.min.css">-->
-	<!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/datatables/datatables.css"> -->
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/dguv3.css">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.3/toastr.css">
+	
 
 <link rel="shortcut icon" href="/favicon.ico">
 </head>

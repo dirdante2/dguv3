@@ -20,6 +20,27 @@ $().ready(function() {
 	    delay: 100
 	});
 	
+  $('#name').autocomplete({
+	    source: function (request, response) {
+        	$.getJSON("<?php echo site_url(); ?>/geraete/json/" + request.term, function (data) {
+	            response($.map(data, function (value, key) {
+                	return {
+	                    label: value,
+                    	value: key
+                	};
+            	}));
+			})
+		},
+    
+		select: function( event, ui ) {
+       	 	$( "#typ" ).val( ui.item.label );
+			$( "#name" ).val( ui.item.value );			
+    	    return false;
+	    },
+    	minLength: 2,
+	    delay: 100
+	});
+
     $( "#hinzugefuegt" ).datepicker({ dateFormat: 'yy-mm-dd' });
 });
 </script>
@@ -43,7 +64,7 @@ echo validation_errors();
   <div class="form-group row">
     <label for="orte" class="col-sm-5 col-form-label">Ort*</label>
     
-      <input type="text" class="form-control form-control-lg" id="orte" value="<?php echo $geraet['ortsname']; ?>" required>
+      <input type="text" class="form-control form-control-lg" id="orte" placeholder="name eingeben zum suchen" value="<?php echo $geraet['ortsname']; ?>" required>
       <input type="hidden" id="oid" name="oid" value="<?php echo $geraet['oid']; ?>">
     
   </div>
@@ -51,7 +72,7 @@ echo validation_errors();
   <div class="form-group row">
     <label for="name" class="col-sm-5 col-form-label">Name*</label>
    
-      <input type="text" class="form-control form-control-lg" name="name" id="name" value="<?php echo $geraet['name']; ?>" required>
+      <input type="text" maxlength="20" class="form-control form-control-lg" name="name" id="name" placeholder="Typ oder name eingeben zum suchen" value="<?php echo $geraet['name']; ?>" required>
     
   </div>
   <br>

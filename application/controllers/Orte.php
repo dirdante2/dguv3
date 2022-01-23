@@ -105,7 +105,7 @@ $header['title']= 'Orte';
 						'firmen'=> $this->Firmen_model->get()
 					));
 				  }
-
+				 
 
 			} else {
 
@@ -122,6 +122,24 @@ $header['title']= 'Orte';
 
 					));
 				  }
+
+				  //generiere PDF übersicht
+			//$this->Pdf_model->genpdf_uebersicht($oid);
+			$ort = $this->Orte_model->get($oid);
+			file_put_contents('cron/liste/'.$oid,$ort['orte_firmaid']);
+			// $typ='1';
+			// $filename = $this->File_model->get_file_pfad($typ,$oid);
+
+
+			//FIXME fehler weil ordner nicht verfügbar ist w
+			// $toast_content['filename']=$filename;
+			// $toast_content['ortsname']=$ort['name'];
+			// file_put_contents('toast/'.$this->session->userdata('userid').'/'.$oid.'.txt', json_encode($toast_content));
+
+			
+
+			
+			
 
 
 			}
@@ -141,25 +159,21 @@ $header['title']= 'Orte';
 
 
 			}
-
-			//generiere PDF übersicht
-			//$this->Pdf_model->genpdf_uebersicht($oid);
-
-			file_put_contents('cron/liste/'.$oid,$ort['orte_firmaid']);
-			$typ='1';
-			$filename = $this->File_model->get_file_pfad($typ,$oid);
-
-
-
-			$toast_content['filename']=$filename;
-			$toast_content['ortsname']=$ort['name'];
-			file_put_contents('toast/'.$this->session->userdata('userid').'/'.$oid.'.txt', json_encode($toast_content));
-
 			$this->Orte_model->set($ort,$oid);
+			
+
+			if($oid==0) {				
+			
+			  $context='Ort neu erstellt '.$ort['name'].' besschreibung '.$ort['beschreibung'].' oid ';
+			  $this->Log_model->privatlog($context);
+
+			} else {
+				$context='Ort bearbeitet name '.$ort['name'].' besschreibung '.$ort['beschreibung'].' oid '.$oid;
+				$this->Log_model->privatlog($context);
+
+			}
 
 			
-			// $context='Ort bearbeitet name '.$ort['name'].' oid '.$ort['oid'];
-			// $this->Log_model->privatlog($context);
 
 			redirect('orte');
 		}
@@ -174,6 +188,7 @@ $header['title']= 'Orte';
 			$this->load->view('templates/footer');
           }else{
 			$header['cronjobs']= $this->File_model->getfiles('cronjob');
+			$ort = $this->Orte_model->get($oid);
 
 		$this->form_validation->set_rules('confirm', 'Bestätigung', 'required');
 
@@ -187,7 +202,8 @@ $header['title']= 'Orte';
 			$this->load->view('templates/footer');
 		} else {
 			$this->Orte_model->delete($oid);
-			$ort = $this->Orte_model->get($oid);
+			
+
 			$context='Ort gelöscht name '.$ort['name'].' oid '.$ort['oid'];
 			$this->Log_model->privatlog($context);
 

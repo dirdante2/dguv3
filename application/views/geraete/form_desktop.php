@@ -1,6 +1,6 @@
 <script>
 $().ready(function() {
-		$('#orte').autocomplete({
+  $('#orte').autocomplete({
 	    source: function (request, response) {
         	$.getJSON("<?php echo site_url(); ?>/orte/json/" + request.term, function (data) {
 	            response($.map(data, function (value, key) {
@@ -11,9 +11,31 @@ $().ready(function() {
             	}));
 			})
 		},
+    
 		select: function( event, ui ) {
        	 	$( "#orte" ).val( ui.item.label );
 			$( "#oid" ).val( ui.item.value );			
+    	    return false;
+	    },
+    	minLength: 2,
+	    delay: 100
+	});
+
+  $('#name').autocomplete({
+	    source: function (request, response) {
+        	$.getJSON("<?php echo site_url(); ?>/geraete/json/" + request.term, function (data) {
+	            response($.map(data, function (value, key) {
+                	return {
+	                    label: value,
+                    	value: key
+                	};
+            	}));
+			})
+		},
+    
+		select: function( event, ui ) {
+       	 	$( "#typ" ).val( ui.item.label );
+			$( "#name" ).val( ui.item.value );			
     	    return false;
 	    },
     	minLength: 2,
@@ -43,14 +65,14 @@ echo validation_errors();
   <div class="form-group row">
     <label for="orte" class="col-sm-5 col-form-label">Ort*</label>
     <div class="col-sm-7">
-      <input type="text" class="form-control" id="orte" value="<?php echo $geraet['ortsname']; ?>" required>
+      <input type="text" class="form-control" id="orte" placeholder="name eingeben zum suchen" value="<?php echo $geraet['ortsname']; ?>" required>
       <input type="hidden" id="oid" name="oid" value="<?php echo $geraet['oid']; ?>">
     </div>
   </div>
   <div class="form-group row">
     <label for="name" class="col-sm-5 col-form-label">Name*</label>
     <div class="col-sm-7">
-      <input type="text" class="form-control" name="name" id="name" value="<?php echo $geraet['name']; ?>" required>
+      <input type="text" maxlength="20" class="form-control" name="name" id="name" placeholder="Typ oder name eingeben zum suchen" value="<?php echo $geraet['name']; ?>" required>
     </div>
   </div>
   <div class="form-group row">

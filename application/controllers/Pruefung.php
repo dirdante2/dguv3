@@ -48,7 +48,7 @@ class Pruefung extends CI_Controller {
 			if($data['geraet']===NULL) {
 
 			 
-				echo "gid soll null ";
+				
 				$gid = NULL;}
 			
 

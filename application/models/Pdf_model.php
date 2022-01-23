@@ -24,6 +24,7 @@ class Pdf_model extends CI_Model
     }
 
 	function generate_pdf($kind, $data, $filename) {
+		
 		$dir = dirname($filename);
 		if (!file_exists($dir)) {
 			mkdir($dir, 0777, true);
@@ -43,7 +44,7 @@ class Pdf_model extends CI_Model
 				//echo $urlprefix.$serverurl[0].':'.$serverurl[1].'/pdfgen/'.$kind;
 
 
-			if($socket =@ fsockopen($serverurl[0], $serverurl[1], $errno, $errstr, 30)) {
+			if($socket =@ fsockopen($serverurl[0], $serverurl[1], $errno, $errstr, $timeout = 10)) {
 
 				//API Url
 				$url = $urlprefix.$serverurl[0].':'.$serverurl[1].'/pdfgen/'.$kind;
@@ -93,15 +94,18 @@ class Pdf_model extends CI_Model
 		//$filename = $this->File_model->get_file_pfad($typ,$oid);
 		
 		
-		
+		print_r($data);
+		echo '<br><br>';
+
 		$filename = $data['filename'];
 
 
+		if($data['ort']['geraeteanzahl']!='0') {
 
 		//unset($data['filename']);
 
 		$this->generate_pdf('uebersicht', $data, $filename);
-
+		}
 		//echo $filename;
 		//redirect('orte');
 		return  $filename;

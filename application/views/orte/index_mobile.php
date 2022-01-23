@@ -54,7 +54,7 @@ keine geräte vorhanden
 
 			<h4 class="mb-0" >
 			<div class="row">
-			<div class="col-6 text-left" id="<?php echo $ort['oid']; ?>"><?php  echo $ort['name']; ?> </div><div class="col-6 text-right" id="<?php echo $ort['oid']; ?>"><?php if($this->session->userdata('level')=='1'){?><?php echo $ort['firma_name']; ?><?php } ?></div>
+			<div class="col-6 text-left" id="<?php echo $ort['oid']; ?>"><?php  echo $ort['name']; ?> <?php  echo $ort['beschreibung']; ?> </div><div class="col-6 text-right" id="<?php echo $ort['oid']; ?>"><?php if($this->session->userdata('level')=='1'){?><?php echo $ort['firma_name']; ?><?php } ?></div>
 			</div>
 
 			</h4>
