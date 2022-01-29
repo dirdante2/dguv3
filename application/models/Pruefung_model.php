@@ -109,8 +109,15 @@ $year=date('Y');
 
 //output pruefung/protokoll/$pruefung_id als json format
 	function pdfdata($pruefung_id) {
-	$pruefung = $this->Pruefung_model->get($pruefung_id);
 
+		
+	$pruefung = $this->Pruefung_model->get($pruefung_id);
+	if($pruefung===NULL) {
+
+		return null;
+	}
+
+	#print_r($pruefung);
 	//FIXME wird bei sql abfrage falsch zugeordnet "prueferbeschreibung" wird zu "beschreibung"
 
 	$pruefung['beschreibung']=$pruefung['geraetebeschreibung'];
@@ -218,8 +225,10 @@ $year=date('Y');
 	}
 	
 	
+
+
 	$data['dguv3_logourl']= $this->config->item('dguv3_logourl');
-	$data['qrcode']= 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$this->config->config['base_url'].'/pruefung/index/'.$pruefung_id;
+	$data['qrcode']= 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data='.$this->config->config['base_url'].'/pruefung/index/'.$pruefung['gid'];
 
 
 	// generate filename

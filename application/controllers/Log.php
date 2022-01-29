@@ -36,6 +36,7 @@ class Log extends CI_Controller {
 				$header['cronjobs']= $this->File_model->getfiles('cronjob');
 				$data['errorlog_files']= $this->Log_model->getlogs('1');
 				$data['privatelog_files']= $this->Log_model->getlogs('2');
+				$data['cron_files']= $this->Log_model->getlogs('3');
 
 				$this->load->view('templates/header',$header);
 

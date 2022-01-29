@@ -25,8 +25,9 @@ $().ready(function() {
 	    source: function (request, response) {
         	$.getJSON("<?php echo site_url(); ?>/geraete/json/" + request.term, function (data) {
 	            response($.map(data, function (value, key) {
+               
                 	return {
-	                    label: value,
+	                    label: value.dummyname,
                     	value: key
                 	};
             	}));
@@ -34,8 +35,35 @@ $().ready(function() {
 		},
     
 		select: function( event, ui ) {
-       	 	$( "#typ" ).val( ui.item.label );
-			$( "#name" ).val( ui.item.value );			
+
+      $.getJSON("<?php echo site_url(); ?>/geraete/jsongid/" + ui.item.value, function (data) {
+	            
+                console.log(data);
+                
+                $( "#typ" ).val( data.typ );
+		          	$( "#name" ).val( data.name );
+                $( "#hersteller" ).val( data.hersteller );
+                $( "#leistung" ).val( data.leistung );	
+                $( "#nennspannung" ).val( data.nennspannung );	
+                $( "#nennstrom" ).val( data.nennstrom );
+                
+                $( "#verlaengerungskabel" ).val( data.verlaengerungskabel );
+                $( "#kabellaenge" ).val( data.kabellaenge );
+                $( "#verlaengerungskabel" ).val( data.verlaengerungskabel );
+
+                $("input:schutzklasse").val( data.schutzklasse ) == "true"
+
+                $("#id_of_radiobutton").prop("checked", true);
+                $('input[name=foo]').prop('checked', true);
+
+
+            	
+            });
+
+
+
+
+
     	    return false;
 	    },
     	minLength: 2,
@@ -61,7 +89,7 @@ echo validation_errors();
 <div class="row">
  <div class="col-md-6">
 	
-<form>
+<form id="gdetails" name="gdetails">
   <div class="form-group row">
     <label for="orte" class="col-sm-5 col-form-label">Ort*</label>
     <div class="col-sm-7">
@@ -72,7 +100,7 @@ echo validation_errors();
   <div class="form-group row">
     <label for="name" class="col-sm-5 col-form-label">Name*</label>
     <div class="col-sm-7">
-      <input type="text" maxlength="20" class="form-control" name="name" id="name" placeholder="Typ oder name eingeben zum suchen" value="<?php echo $geraet['name']; ?>" required>
+      <input type="text" maxlength="40" class="form-control" name="name" id="name" placeholder="Typ oder name eingeben zum suchen" value="<?php echo $geraet['name']; ?>" required>
     </div>
   </div>
   <div class="form-group row">
@@ -192,11 +220,11 @@ echo validation_errors();
       <legend class="col-form-label col-sm-5 pt-0">Verlängerungskabel</legend>
       <div class="col-sm-7">
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="verlaengerungskabel" id="verlaengerungskabel0" data-toggle="collapse" data-target=".collapseOne.show" value="0" <?php if(!$geraet['verlaengerungskabel']) { echo 'checked'; } ?>>
+          <input class="form-check-input" type="radio" name="verlaengerungskabel" id="verlaengerungskabel0" data-toggle="collapse" data-target=".collapseOne.show" value="0" <?php if($geraet['verlaengerungskabel']=='0') { echo 'checked'; } ?>>
           <label class="form-check-label" for="verlaengerungskabel0">nein</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="verlaengerungskabel" id="verlaengerungskabel1" data-toggle="collapse" data-target=".collapseOne:not(.show)" value="1" <?php if($geraet['verlaengerungskabel']) { echo 'checked'; } ?>>
+          <input class="form-check-input" type="radio" name="verlaengerungskabel" id="verlaengerungskabel1" data-toggle="collapse" data-target=".collapseOne:not(.show)" value="1" <?php if($geraet['verlaengerungskabel']=='1') { echo 'checked'; } ?>>
           <label class="form-check-label" for="verlaengerungskabel1">ja</label>
         </div>
        
@@ -204,13 +232,13 @@ echo validation_errors();
     </div>
      
   </fieldset>
-   <div class="collapseOne panel-collapse collapse">
+   <!-- <div class="collapseOne panel-collapse collapse"> -->
   <div class="form-group row">
     <label for="kabellaenge" class="col-sm-5 col-form-label">Kabellänge (m)</label>
     <div class="col-sm-7">
       <input type="text" class="form-control" name="kabellaenge" id="kabellaenge" value="<?php echo $geraet['kabellaenge']; ?>">
     </div>
-  </div>
+  <!-- </div> -->
 </div>
   <div class="form-group row">
     <label for="beschreibung" class="col-sm-5 col-form-label">Beschreibung</label>

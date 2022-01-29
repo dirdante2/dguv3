@@ -306,10 +306,13 @@ class Geraete extends CI_Controller {
 				//FIXME umlaute werden nicht erkannt und zurückgeben ->fehler
 				foreach($geraete as $geraet) {
 					
-
+					$geraet['dummyname']="{$geraet['name']} ({$geraet['hersteller']})({$geraet['typ']})";
 					#$response[$geraet['name']]="1 {$geraet['name']} ({$geraet['hersteller']} {$geraet['typ']})";
-					$response[$geraet['name']]="{$geraet['typ']}";
-					
+					$response[$geraet['gid']]=$geraet;
+
+					#$response[$geraet['typ']]=array();
+
+					#$response[$geraet['name']]['']=
 
 				}
 				#
@@ -318,6 +321,24 @@ class Geraete extends CI_Controller {
 				echo json_encode($response);
 			}
 		}
+		function jsongid($gid) {
+
+			if($this->session->userdata('logged_in') !== TRUE){
+				$this->load->view('templates/header',$header);
+				$this->load->view('static/denied');
+				$this->load->view('templates/footer');
+			}else{
+
+			$geraete=$this->Geraete_model->get($gid);
+			
+
+		
+			#print_r($geraete);
+			
+			echo json_encode($geraete);
+			}
+		}
+
 
 
 

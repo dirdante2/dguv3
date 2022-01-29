@@ -75,10 +75,22 @@ class Pdf_model extends CI_Model
 
 		//Execute the request
 		$result = curl_exec($ch);
+		$code = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+
 		curl_close($ch);
 
-		file_put_contents($filename, $result, LOCK_EX);
+		#print_r($code);
 
+		if($code=='200') {
+		file_put_contents($filename, $result, LOCK_EX);
+	
+		} else {
+			echo '<br>';
+			print_r($result);
+			echo '<br>';
+		}
+		return $code;
+		
 	}
 
 
@@ -89,12 +101,15 @@ class Pdf_model extends CI_Model
 
 	function genpdf_uebersicht($oid) {
 		$data = $this->Geraete_model->pdfdata($oid);
-		$typ='1'; //übersicht pdf
+		
 
 		//$filename = $this->File_model->get_file_pfad($typ,$oid);
 		
-		
-		print_r($data);
+		if($data===NULL) {
+			return null;
+				}
+
+		#print_r($data);
 		echo '<br><br>';
 
 		$filename = $data['filename'];
@@ -104,11 +119,23 @@ class Pdf_model extends CI_Model
 
 		//unset($data['filename']);
 
-		$this->generate_pdf('uebersicht', $data, $filename);
-		}
+		#echo json_encode($data);
+		
+		$code = $this->generate_pdf('uebersicht', $data, $filename);
+
+		
 		//echo $filename;
 		//redirect('orte');
+		if($code=='200') {
+
 		return  $filename;
+		} else { 
+			echo 'error';
+			print_r($code);
+			echo '<br>';
+
+			return null;}
+		}
 	}
 
 
@@ -116,16 +143,28 @@ class Pdf_model extends CI_Model
 	function genpdf_protokoll($pruefung_id) {
 		$data = $this->Pruefung_model->pdfdata($pruefung_id);
 
-		$typ='2'; //protokoll pdf
+		if($data===NULL) {
+			return null;
+		}
+
+		
 		//$filename = $this->File_model->get_file_pfad($typ,$pruefung_id);
 		$filename = $data['filename'];
 		//unset($data['filename']);
 
-		$this->generate_pdf('protokoll', $data, $filename);
+
+		#echo json_encode($data);
+
+		$code = $this->generate_pdf('protokoll', $data, $filename);
 
 		//echo $filename;
 		//redirect('orte');
-		return  $filename;
+		if($code=='200') {
+
+			return  $filename;
+			} else { 
+				print_r($code);
+				return null;}
 	}
 
 

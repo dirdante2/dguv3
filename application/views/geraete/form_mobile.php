@@ -72,7 +72,7 @@ echo validation_errors();
   <div class="form-group row">
     <label for="name" class="col-sm-5 col-form-label">Name*</label>
    
-      <input type="text" maxlength="20" class="form-control form-control-lg" name="name" id="name" placeholder="Typ oder name eingeben zum suchen" value="<?php echo $geraet['name']; ?>" required>
+      <input type="text" maxlength="40" class="form-control form-control-lg" name="name" id="name" placeholder="Typ oder name eingeben zum suchen" value="<?php echo $geraet['name']; ?>" required>
     
   </div>
   <br>

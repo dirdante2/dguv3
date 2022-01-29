@@ -13,7 +13,7 @@
 <div style="border: 2px solid #000;" class="container-fluid" style="width:100%">
 
 		<div class="row" style="border: 1px solid #000;">
-			<div class="col"><h4>Prüfprotokoll elektrischer Geräte gemäß DIN VDE 0701/0702,<br>BetrSichV, DGUV Vorschrift 3</h4></div>
+			<div class="col"><h4><?php echo $dguv3_header; ?></h4></div>
 		</div><br>
 
 		<table style="width:100%"><tr>
@@ -72,7 +72,7 @@
 							</tr>
 							<tr>
 								<td>Schutzklasse</td>
-								<td><?php if($pruefung['schutzklasse']=='4') { echo "-"; } else { echo $pruefung['schutzklasse']; } ?></td>
+								<td><?php if($pruefung['schutzklasse']=='4') { echo "Leiter"; } else { echo $pruefung['schutzklasse']; } ?></td>
 							</tr>
 							<tr>
 								<td>Verlängerungskabel</td>

@@ -201,13 +201,15 @@ $ch = curl_init();
 				</div>
 
                 </div>
-                </div> <div class="row" >
+                </div> 
+                <div class="row" style="white-space: nowrap; border: 0px solid #000;">
 
     <div class="col" style="width: 100px; white-space: nowrap; border: 0px solid #000;max-width: 500px;">
         <h4>Archiv</h4>
 		<?php if($cronjobs) { ?>
 
 			Fehlende Aufgaben: <span class="badge badge-danger"><?php echo $cronjobs; ?></span><br>
+            <a href="<?php echo site_url('cron/create_pdf_3/'); ?>" class="btn-sm btn-warning">PDF erstellen</a><br>
 		<?php } ?>
 		<br>
 		<?php
@@ -282,6 +284,16 @@ $ch = curl_init();
 
         <?php } ?>
 
+    </div>
+    <div class="col" style="width: 100%; max-width: 570px;border: 0px solid #000;">
+        <h4>Letzte Aufgaben</h4><br>
+        <?php  
+        $details_cronjob = file_get_contents('application/cron_log/cron_cronjob.php', true);
+        
+echo $details_cronjob;
+        
+        ?>
+            
     </div>
 
 </div>

@@ -15,13 +15,14 @@ class Cron extends CI_Controller {
 		$this->load->model('File_model');
 		$this->load->model('Orte_model');
 		$this->load->model('Pruefung_model');
+		$this->load->model('Log_model');
 	}
 	//modus 1 bulk Orte neu erstellen
 	//modus 2 bulk protokolle neu erstellen
 	//modus 3 cronjob alle anstehenden aufgaben abarbeiten
 	//modus 1+2 nur für debug zwecke und nur für admin
-	function create_pdf($modus,$oid=null) {
-		if($modus=='1'){
+	function create_pdf_1($oid=null) {
+		
 			if($this->session->userdata('level')=='1'){
 				if($oid===NULL) {
 				$orte = $this->Orte_model->get();
@@ -32,6 +33,7 @@ class Cron extends CI_Controller {
 					$filename= $this->Pdf_model->genpdf_uebersicht($ort['oid']);
 					if (file_exists($filename)) {
 						echo $filename.round(filesize($filename)/1024,2). ' KB';
+						$create_pdf_output.= $filename.' '.round(filesize($filename)/1024,2). ' KB<br>';
 					} else {echo $filename;}
 					
 					echo '<br>';
@@ -43,14 +45,20 @@ class Cron extends CI_Controller {
 
 					$filename= $this->Pdf_model->genpdf_uebersicht($oid);
 					echo $filename.round(filesize($filename)/1024,2). ' KB';
+					$create_pdf_output.= $filename.' '.round(filesize($filename)/1024,2). ' KB<br>';
 					echo '<br>';
 				}
 
-				
+					$this->Log_model->cronjoblog($create_pdf_output, 'uebersicht');
+					redirect('Dguv3');
 			}
-		}elseif($modus=='2'){
-
+		}
+		
+			function create_pdf_2($prid=null) {
+				
 			if($this->session->userdata('level')=='1'){
+				
+				if($prid===NULL) {
 
 				//gibt nur eine prüfung pro gerät zurück && die im aktuellen jahr gemacht wurde
 				$protokolle = $this->Pruefung_model->get_geraete_pruefung();
@@ -59,12 +67,38 @@ class Cron extends CI_Controller {
 				
 				foreach($protokolle as $protokoll) {
 					$filename= $this->Pdf_model->genpdf_protokoll($protokoll['pruefungid']);
-					echo $filename.round(filesize($filename)/1024,2). ' KB';
+					echo $filename.round(filesize($filename)/1024,2).' KB';
+					$create_pdf_output.= $filename.' '.round(filesize($filename)/1024,2). ' KB<br>';
 					echo '<br>';
 					echo $protokoll['pruefungid'].' '.$protokoll['gid'].'<br>';
 				}
+			} else {
+
+					$filename= $this->Pdf_model->genpdf_protokoll($prid);
+					
+					#echo '1'.$filename.' 1';
+					
+
+					if (file_exists($filename)) {
+
+					
+					echo $filename.round(filesize($filename)/1024,2).' KB';
+					$create_pdf_output.= $filename.' '.round(filesize($filename)/1024,2). ' KB<br>';
+					echo '<br>';
+					echo $prid.' <br>';
+
+					
 			}
-		}elseif($modus=='3'){
+			
+				
+			
+			}
+					$this->Log_model->cronjoblog($create_pdf_output, 'protokoll');
+					redirect('Dguv3');
+			}
+			}
+			function create_pdf_3() {
+				$create_pdf_output= '';
 
 			$cron_liste_pfad = 'cron/liste/';
 			$cron_protokoll_pfad = 'cron/protokoll/';
@@ -78,7 +112,7 @@ class Cron extends CI_Controller {
 
 				if($this->Orte_model->get($ortsid)) {
 					
-				echo 'ort existiert '.$ortsid.'<br>';
+					echo 'ort existiert '.$ortsid.'<br>';
 				
 
 
@@ -89,9 +123,9 @@ class Cron extends CI_Controller {
 						echo 'error kein server';
 						return null;
 					}
-					echo $filename.round(filesize($filename)/1024,2). ' KB';
+					$create_pdf_output.= $filename.' '.round(filesize($filename)/1024,2). ' KB<br>';
 					
-					echo '<br>';
+					
 					
 
 					
@@ -114,9 +148,13 @@ class Cron extends CI_Controller {
 					$filename= $this->Pdf_model->genpdf_protokoll($pruefung_id);
 					echo '<br>';
 
-					echo $filename.round(filesize($filename)/1024,2). ' KB';
-					echo '<br>';
+					if($filename!==null){
+						
 					
+
+						$create_pdf_output.= $filename.' '.round(filesize($filename)/1024,2).' KB<br>';
+					echo '<br>';
+					}
 
 
 					
@@ -149,9 +187,11 @@ class Cron extends CI_Controller {
 				print_r($errordata);
 			}
 
-
+			$this->Log_model->cronjoblog($create_pdf_output, 'cron');
+			redirect('Dguv3');
 		}
-	}
+	
+	
 
 
 }

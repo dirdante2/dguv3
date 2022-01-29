@@ -132,6 +132,18 @@ class Pruefung extends CI_Controller {
 
 		}
 
+		#print_r($data['pruefung']['schutzklasse']);
+		$data['dguv3_logourl']= $this->config->item('dguv3_logourl');
+
+		if($data['pruefung']['schutzklasse']<='3') {
+			//elektro geräte
+			$data['dguv3_header']= $this->config->item('dguv3_protokoll_header1');
+		} elseif ($data['pruefung']['schutzklasse']=='4') {
+			//leitern
+			$data['dguv3_header']= $this->config->item('dguv3_protokoll_header2');
+		} else {
+			$data['dguv3_header']= 'Diese Prüfung ist ungültig weil es keine überschrift gibt?!';
+		}
 
 
 		$data['logourl']= $this->config->item('dguv3_logourl');
@@ -149,6 +161,8 @@ class Pruefung extends CI_Controller {
 			return FALSE;
 		}
 	}
+
+
 	public function pid_check($pid) {
 		if($this->Pruefer_model->get($pid)) {
 			return TRUE;

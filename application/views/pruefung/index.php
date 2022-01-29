@@ -60,7 +60,7 @@
 							</tr>
 							<tr>
 								<td>Schutzklasse</td>
-								<td><?php if($geraet['schutzklasse']=='4') { echo "-"; } else { echo $geraet['schutzklasse']; } ?></td>
+								<td><?php if($geraet['schutzklasse']=='4') { echo "Leiter"; } else { echo $geraet['schutzklasse']; } ?></td>
 							</tr>
 							<tr>
 								<td>Verlängerungskabel</td>

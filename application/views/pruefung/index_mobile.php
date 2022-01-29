@@ -211,7 +211,7 @@ keine geräte vorhanden
 
 			<h4 class="mb-0" >
 			<div class="row">
-			<div class="col-6 text-left" id="<?php echo $pr['pruefungid']; ?>"><?php  echo $pr['ortsname']; ?> <?php  echo $pr['name']; ?> <span class="iconify" data-icon="<?php echo $schutzklasseicon; ?>" data-inline="false" data-width="50" data-height="50"></span></div><div class="col-6 text-right" id="<?php echo $pr['pruefungid']; ?>"><?php if($this->session->userdata('level')=='1'){?><?php echo $pr['firma_name']; ?><?php } ?></div>
+			<div class="col-8 text-left" id="<?php echo $pr['pruefungid']; ?>"><?php $blubb = new DateTime($pr['datum']); echo $pr['datum']?$blubb->format('d.m.Y'):'';  ?> <?php  echo $pr['ortsname']; ?> <?php  echo $pr['name']; ?> <span class="iconify" data-icon="<?php echo $schutzklasseicon; ?>" data-inline="false" data-width="50" data-height="50"></span></div><div class="col-6 text-right" id="<?php echo $pr['pruefungid']; ?>"></div>
 			</div>
 
 			</h4>

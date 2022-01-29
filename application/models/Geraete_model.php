@@ -124,10 +124,20 @@ class Geraete_model extends CI_Model {
 // aufruf geräte pdf
 function pdfdata($oid) {
 	$data['ort'] = $this->Orte_model->get($oid);
+
+
+	if($data['ort']===NULL) {
+return NULL;
+	}
 	$geraete = $this->Geraete_model->get(null,$oid);
+
 	//$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_pdf_col');
 		// -> aktuell $data['dguv3_logourl']= $this->config->config['base_url'].$this->config->item('dguv3_logourl');
 		$data['dguv3_logourl']= $this->config->item('dguv3_logourl');
+		//unötig
+		#$data['dguv3_pdf_titel']= $this->config->item('dguv3_protokoll_header1');
+
+		
 
 	$data['qrcode']= 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='.$this->config->config['base_url'].'/geraete/index/'.$oid;
 
@@ -152,9 +162,10 @@ foreach((array) $geraete as $geraet) {
 
  //gleiches problem json2pdf stürzt ab wenn velängerungskabel im name verkommt
  //geräte name länger als 20 zeichen führt zu absturz
- if($geraete[$i]['name']=='Verlängerungskabel') {
-	$geraete[$i]['name']='Kabel';
- }
+ 
+//  if($geraete[$i]['name']=='Verlängerungskabel') {
+// 	$geraete[$i]['name']='Kabel';
+//  }
 
  
 	#if($geraete[$i]['verlaengerungskabel']=='1') {
@@ -169,7 +180,7 @@ foreach((array) $geraete as $geraet) {
 	#}
 	
 
-
+	#print_r($geraet['bestanden']);
 
 	unset($geraete[$i]['firmen_firmaid']);
 	unset($geraete[$i]['firma_name']);
@@ -181,10 +192,11 @@ foreach((array) $geraete as $geraet) {
 		$geraete[$i]['pruefername']='';
 	}
 
-if(!$geraet['bestanden']=='1') {
+if($geraet['bestanden']=='0') {
 	$geraete[$i]['bestanden']='nein';
 } else {
-	$geraet[$i]['bestanden']='ja';
+	$geraete[$i]['bestanden']='ja';
+	
 }
 if($geraet['aktiv']=='1') {
 	$geraete[$i]['aktiv']='ja';

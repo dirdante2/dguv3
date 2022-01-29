@@ -30,9 +30,15 @@ class Log_model extends CI_Model {
 			//liste mit log files
 			$log_files = array_diff(scandir('application/privat_logs/', 1), array('.', '..', 'index.html'));
 			//print_r($log_files);
+		} elseif($var=='3') {
+
+			//liste mit log files
+			$log_files = array_diff(scandir('application/cron_log/', 1), array('.', '..', 'index.html'));
+			//print_r($log_files);
 		} else {
 			return null;
 		}
+
 
 		//öffne jedes logfile und füge line zu array hinzu
 		foreach($log_files as $file) {
@@ -43,6 +49,8 @@ class Log_model extends CI_Model {
 				$handle = fopen('application/logs/'.$file, "r");
 			} elseif($var=='2') {
 				$handle = fopen('application/privat_logs/'.$file, "r");
+			} elseif($var=='3') {
+				$handle = fopen('application/cron_log/'.$file, "r");
 			}
 			if ($handle) {
 
@@ -139,14 +147,28 @@ class Log_model extends CI_Model {
 
 	function privatlog($context){
 
-if($this->session->userdata('username')){
-	$user=$this->session->userdata('username');
-} else {
-	$user='cron';
-}
+		if($this->session->userdata('username')){
+			$user=$this->session->userdata('username');
+		} else {
+			$user='cron';
+		}
+		
+		
+				file_put_contents('application/privat_logs/'.date('Y-m-d').'.php', PHP_EOL .  date('Y-m-d H:i:s').' --> '.$context.' von '.$user, FILE_APPEND);
+		
+		
+			}
+	function cronjoblog($context,$typ){
+
+		if($this->session->userdata('username')){
+			$user=$this->session->userdata('username');
+		} else {
+			$user='cron';
+		}
 
 
-		file_put_contents('application/privat_logs/'.date('Y-m-d').'.php', PHP_EOL .  date('Y-m-d H:i:s').' --> '.$context.' von '.$user, FILE_APPEND);
+
+		file_put_contents('application/cron_log/'.$typ.'_cronjob.php', $context);
 
 
 	}
