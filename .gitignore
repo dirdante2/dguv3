@@ -4,6 +4,7 @@ application/config/config.php
 application/config/config_dguv3.php
 application/bilder/logo.jpg
 application/logs/*
+application/cron_log/*
 application/privat_logs/*
 dd25120.sql
 todo.txt
