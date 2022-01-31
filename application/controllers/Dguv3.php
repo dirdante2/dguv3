@@ -15,7 +15,9 @@
 
 	$this->load->model('Dguv3_model');
 	$this->load->model('File_model');
-    $this->load->model('Firmen_model');
+  $this->load->model('Firmen_model');
+  $this->load->model('Users_model');
+
     //$this->load->library('user_agent');
     if($this->session->userdata('logged_in') !== TRUE){
       //redirect('login');
@@ -29,9 +31,14 @@
   }
 
   function index(){
+    
 
     if($this->session->userdata('logged_in') === TRUE){
 
+      $data['userdata']= $this->Users_model->get($this->session->userdata('userid'));
+      unset($data['userdata']['user_password']);
+      unset($data['userdata']['user_cookie']);
+      #print_r( $data['userdata']);
       $data['geraete_count']= $this->Dguv3_model->getcountdata('geraete');
       $data['geraete_aktiv_1']= $this->Dguv3_model->getcountdata('geraete','aktiv', '1');
       $data['geraete_aktiv_0']= $this->Dguv3_model->getcountdata('geraete','aktiv', '0');

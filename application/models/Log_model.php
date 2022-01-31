@@ -30,16 +30,12 @@ class Log_model extends CI_Model {
 			//liste mit log files
 			$log_files = array_diff(scandir('application/privat_logs/', 1), array('.', '..', 'index.html'));
 			//print_r($log_files);
-		} elseif($var=='3') {
-
-			//liste mit log files
-			$log_files = array_diff(scandir('application/cron_log/', 1), array('.', '..', 'index.html'));
-			//print_r($log_files);
 		} else {
 			return null;
 		}
 
 
+		
 		//öffne jedes logfile und füge line zu array hinzu
 		foreach($log_files as $file) {
 			$handle=null;
@@ -49,8 +45,6 @@ class Log_model extends CI_Model {
 				$handle = fopen('application/logs/'.$file, "r");
 			} elseif($var=='2') {
 				$handle = fopen('application/privat_logs/'.$file, "r");
-			} elseif($var=='3') {
-				$handle = fopen('application/cron_log/'.$file, "r");
 			}
 			if ($handle) {
 

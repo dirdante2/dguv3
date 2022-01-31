@@ -22,6 +22,7 @@ class Cron extends CI_Controller {
 	//modus 3 cronjob alle anstehenden aufgaben abarbeiten
 	//modus 1+2 nur für debug zwecke und nur für admin
 	function create_pdf_1($oid=null) {
+		$create_pdf_output= '';
 		
 			if($this->session->userdata('level')=='1'){
 				if($oid===NULL) {
@@ -32,7 +33,7 @@ class Cron extends CI_Controller {
 
 					$filename= $this->Pdf_model->genpdf_uebersicht($ort['oid']);
 					if (file_exists($filename)) {
-						echo $filename.round(filesize($filename)/1024,2). ' KB';
+						echo $filename.' '.round(filesize($filename)/1024,2). ' KB';
 						$create_pdf_output.= $filename.' '.round(filesize($filename)/1024,2). ' KB<br>';
 					} else {echo $filename;}
 					
@@ -44,17 +45,18 @@ class Cron extends CI_Controller {
 				} else {
 
 					$filename= $this->Pdf_model->genpdf_uebersicht($oid);
-					echo $filename.round(filesize($filename)/1024,2). ' KB';
+					echo $filename.' '.round(filesize($filename)/1024,2). ' KB';
 					$create_pdf_output.= $filename.' '.round(filesize($filename)/1024,2). ' KB<br>';
 					echo '<br>';
 				}
 
 					$this->Log_model->cronjoblog($create_pdf_output, 'uebersicht');
-					redirect('Dguv3');
+					#redirect('Dguv3');
 			}
 		}
 		
 			function create_pdf_2($prid=null) {
+				$create_pdf_output= '';
 				
 			if($this->session->userdata('level')=='1'){
 				
@@ -67,7 +69,7 @@ class Cron extends CI_Controller {
 				
 				foreach($protokolle as $protokoll) {
 					$filename= $this->Pdf_model->genpdf_protokoll($protokoll['pruefungid']);
-					echo $filename.round(filesize($filename)/1024,2).' KB';
+					echo $filename.' '.round(filesize($filename)/1024,2).' KB';
 					$create_pdf_output.= $filename.' '.round(filesize($filename)/1024,2). ' KB<br>';
 					echo '<br>';
 					echo $protokoll['pruefungid'].' '.$protokoll['gid'].'<br>';
@@ -82,7 +84,7 @@ class Cron extends CI_Controller {
 					if (file_exists($filename)) {
 
 					
-					echo $filename.round(filesize($filename)/1024,2).' KB';
+					echo $filename.' '.round(filesize($filename)/1024,2).' KB';
 					$create_pdf_output.= $filename.' '.round(filesize($filename)/1024,2). ' KB<br>';
 					echo '<br>';
 					echo $prid.' <br>';
@@ -94,7 +96,7 @@ class Cron extends CI_Controller {
 			
 			}
 					$this->Log_model->cronjoblog($create_pdf_output, 'protokoll');
-					redirect('Dguv3');
+					#redirect('Dguv3');
 			}
 			}
 			function create_pdf_3() {
@@ -188,7 +190,7 @@ class Cron extends CI_Controller {
 			}
 
 			$this->Log_model->cronjoblog($create_pdf_output, 'cron');
-			redirect('Dguv3');
+			#redirect('Dguv3');
 		}
 	
 	
