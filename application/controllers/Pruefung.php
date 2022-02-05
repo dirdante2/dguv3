@@ -324,11 +324,19 @@ class Pruefung extends CI_Controller {
 			));
 			$this->load->view('templates/footer');
 		} else {
+			$pruefung = $this->Pruefung_model->get($pruefung_id);
 			$this->Pruefung_model->delete($pruefung_id);
 
-			$pruefung = $this->Pruefung_model->get($pruefung_id);
+			$cron_protokoll_pfad = 'cron/protokoll/';
+
+			if (file_exists($cron_protokoll_pfad.$pruefung_id)) {
+			unlink($cron_protokoll_pfad.$pruefung_id);
+			}
+
+			
 			$context='Prüfung gelöscht name '.$pruefung['geraetename'].' pruefungid '.$pruefung['pruefungid'].' ort '.$pruefung['ortsname'];
 			$this->Log_model->privatlog($context);
+
 
 			redirect('pruefung');
 		}

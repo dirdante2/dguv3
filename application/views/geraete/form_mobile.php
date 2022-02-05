@@ -1,6 +1,6 @@
 <script>
 $().ready(function() {
-		$('#orte').autocomplete({
+  $('#orte').autocomplete({
 	    source: function (request, response) {
         	$.getJSON("<?php echo site_url(); ?>/orte/json/" + request.term, function (data) {
 	            response($.map(data, function (value, key) {
@@ -11,6 +11,7 @@ $().ready(function() {
             	}));
 			})
 		},
+    
 		select: function( event, ui ) {
        	 	$( "#orte" ).val( ui.item.label );
 			$( "#oid" ).val( ui.item.value );			
@@ -19,13 +20,14 @@ $().ready(function() {
     	minLength: 2,
 	    delay: 100
 	});
-	
+
   $('#name').autocomplete({
 	    source: function (request, response) {
         	$.getJSON("<?php echo site_url(); ?>/geraete/json/" + request.term, function (data) {
 	            response($.map(data, function (value, key) {
+               
                 	return {
-	                    label: value,
+	                    label: value.dummyname,
                     	value: key
                 	};
             	}));
@@ -33,14 +35,41 @@ $().ready(function() {
 		},
     
 		select: function( event, ui ) {
-       	 	$( "#typ" ).val( ui.item.label );
-			$( "#name" ).val( ui.item.value );			
+
+      $.getJSON("<?php echo site_url(); ?>/geraete/jsongid/" + ui.item.value, function (data) {
+	            
+                console.log(data);
+                
+                $( "#typ" ).val( data.typ );
+		          	$( "#name" ).val( data.name );
+                $( "#hersteller" ).val( data.hersteller );
+                $( "#leistung" ).val( data.leistung );	
+                $( "#nennspannung" ).val( data.nennspannung );	
+                $( "#nennstrom" ).val( data.nennstrom );
+                
+                $( "#verlaengerungskabel" ).val( data.verlaengerungskabel );
+                $( "#kabellaenge" ).val( data.kabellaenge );
+                $( "#verlaengerungskabel" ).val( data.verlaengerungskabel );
+
+                $("input:schutzklasse").val( data.schutzklasse ) == "true"
+
+                $("#id_of_radiobutton").prop("checked", true);
+                $('input[name=foo]').prop('checked', true);
+
+
+            	
+            });
+
+
+
+
+
     	    return false;
 	    },
     	minLength: 2,
 	    delay: 100
 	});
-
+	
     $( "#hinzugefuegt" ).datepicker({ dateFormat: 'yy-mm-dd' });
 });
 </script>
