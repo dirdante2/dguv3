@@ -186,6 +186,8 @@ foreach((array) $geraete as $geraet) {
 	unset($geraete[$i]['firma_name']);
 	unset($geraete[$i]['geraete_firmaid']);
 	unset($geraete[$i]['oid']);
+	unset($geraete[$i]['geraete_produktfoto']);
+	
 
 	if($geraet['anzahl']=='0') {
 		$geraete[$i]['letztesdatum']='';

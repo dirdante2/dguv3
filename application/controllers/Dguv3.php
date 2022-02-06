@@ -38,7 +38,8 @@
       $data['userdata']= $this->Users_model->get($this->session->userdata('userid'));
       unset($data['userdata']['user_password']);
       unset($data['userdata']['user_cookie']);
-      #print_r( $data['userdata']);
+     # print_r( $data['userdata']);
+
       $data['geraete_count']= $this->Dguv3_model->getcountdata('geraete');
       $data['geraete_aktiv_1']= $this->Dguv3_model->getcountdata('geraete','aktiv', '1');
       $data['geraete_aktiv_0']= $this->Dguv3_model->getcountdata('geraete','aktiv', '0');

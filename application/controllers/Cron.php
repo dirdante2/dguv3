@@ -121,11 +121,13 @@ class Cron extends CI_Controller {
 					$firmaid = file_get_contents($cron_liste_pfad.$ortsid, true);
 
 					$filename= $this->Pdf_model->genpdf_uebersicht($ortsid);
-					if($filename===null){
-						echo 'error kein server';
-						return null;
-					}
-					$create_pdf_output.= $filename.' '.round(filesize($filename)/1024,2). ' KB<br>';
+
+					if (file_exists($filename)) {
+						$create_pdf_output.= $filename.' '.round(filesize($filename)/1024,2). ' KB<br>';
+					
+						
+					} else { echo 'error kein datei zurück<br>';}
+					
 					
 					
 					
@@ -150,7 +152,7 @@ class Cron extends CI_Controller {
 					$filename= $this->Pdf_model->genpdf_protokoll($pruefung_id);
 					echo '<br>';
 
-					if($filename!==null){
+					if (file_exists($filename)) {
 						
 					
 

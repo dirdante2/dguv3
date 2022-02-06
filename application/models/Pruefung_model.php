@@ -246,6 +246,9 @@ $year=date('Y');
 	unset($pruefung['firmen_firmaid']);
 	unset($pruefung['oid']);
 	unset($pruefung['name']);
+	unset($pruefung['geraete_produktfoto']);
+	unset($pruefung['pruefung_foto']);
+
 	// unset($pruefung['orte_firmaid']);
 	$data['pruefung'] = $pruefung;
 

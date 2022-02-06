@@ -41,7 +41,7 @@ class Pdf_model extends CI_Model
 				} else {
 					$urlprefix='http://';
 				}
-				//echo $urlprefix.$serverurl[0].':'.$serverurl[1].'/pdfgen/'.$kind;
+				#echo $urlprefix.$serverurl[0].':'.$serverurl[1].'/pdfgen/'.$kind;
 
 
 			if($socket =@ fsockopen($serverurl[0], $serverurl[1], $errno, $errstr, $timeout = 10)) {
@@ -115,7 +115,11 @@ class Pdf_model extends CI_Model
 		$filename = $data['filename'];
 
 
-		if($data['ort']['geraeteanzahl']!='0') {
+		if($data['ort']['geraeteanzahl']=='0') {
+			echo 'keine geräte im ort<br>';
+			return null;
+
+		}
 
 		//unset($data['filename']);
 
@@ -135,7 +139,7 @@ class Pdf_model extends CI_Model
 			echo '<br>';
 
 			return null;}
-		}
+		
 	}
 
 

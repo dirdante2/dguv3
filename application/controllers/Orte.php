@@ -21,15 +21,17 @@ class Orte extends CI_Controller {
 	}
 
 	function index() {
+		if($this->agent->is_mobile()){$useragent = 'mobile';} else {$useragent = 'desktop';}
+
 		if($this->session->userdata('logged_in') !== TRUE){
-			if($this->agent->is_mobile()){
-				$this->load->view('templates/header_mobile');
-			} else {
-				$this->load->view('templates/header');
-			}
+
+			
+			$this->load->view('templates/header_'.$useragent);
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
+
+			
 			  //userlevel 2 oder höher kann nur orte mit eigener firma sehen 8
 			if($this->session->userdata('level')>='2'){
 				$firmen_firmaid=$this->session->userdata('firmaid');
@@ -53,16 +55,14 @@ $header['title']= 'Orte';
 
 
 		//$data['filename'] = $this->File_model->get_file_pfad();
+		$this->load->view('templates/header_'.$useragent,$header);
 
 		if($this->agent->is_mobile()){
-			$this->load->view('templates/header_mobile',$header);
-			$this->load->view('templates/scroll');
-			$this->load->view('orte/index_mobile',$data);
-		  } else {
-			$this->load->view('templates/header',$header);
-			$this->load->view('templates/datatable');
-			$this->load->view('orte/index',$data);
+			$this->load->view('templates/scroll');			
+		  } else {			
+			$this->load->view('templates/datatable');			
 		  }
+		  $this->load->view('orte/index_'.$useragent,$data);
 
 			$this->load->view('templates/footer');
 			}
@@ -73,59 +73,50 @@ $header['title']= 'Orte';
 
 
 	function edit($oid=0) {
+		if($this->agent->is_mobile()){$useragent = 'mobile';} else {$useragent = 'desktop';}
 		//user level 4 oder höher darf keine orte erstellen oder bearbeiten
-		if($this->session->userdata('level')>='4'){
-          $this->load->view('templates/header');
+		
+		if($this->session->userdata('level')>='4' || $this->session->userdata('logged_in') !== TRUE){
+			$this->load->view('templates/header_'.$useragent);
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
 			$header['cronjobs']= $this->File_model->getfiles('cronjob');
+			
+			
 
 		$this->form_validation->set_rules('name', 'Name', 'required');
 		$this->form_validation->set_rules('beschreibung', 'Beschreibung', 'required');
 		//$this->form_validation->set_rules('firmen_firmaid', 'Firma', 'required');
 
 		if($this->form_validation->run() === FALSE) {
-			if($this->agent->is_mobile()){
-				$this->load->view('templates/header_mobile',$header);
-			  } else {
-				$this->load->view('templates/header',$header);
-			  }
+			$this->load->view('templates/header_'.$useragent,$header);
 
 			if($oid==0) {
 
-				if($this->agent->is_mobile()){
-					$this->load->view('orte/form_mobile',array(
+				
+					$this->load->view('orte/form_'.$useragent,array(
 						'ort'=>array('oid'=>0,'beschreibung'=>'','name'=>''),
 						'firmen'=> $this->Firmen_model->get()
 					));
-				  } else {
-					$this->load->view('orte/form',array(
-						'ort'=>array('oid'=>0,'beschreibung'=>'','name'=>''),
-						'firmen'=> $this->Firmen_model->get()
-					));
-				  }
+				  
 				 
 
 			} else {
 
-				if($this->agent->is_mobile()){
-					$this->load->view('orte/form_mobile',array(
+				
+					$this->load->view('orte/form_'.$useragent,array(
 						'ort'=>$this->Orte_model->get($oid),
 						'firmen'=> $this->Firmen_model->get()
 
 					));
-				  } else {
-					$this->load->view('orte/form',array(
-						'ort'=>$this->Orte_model->get($oid),
-						'firmen'=> $this->Firmen_model->get()
-
-					));
-				  }
+				  
 
 				  //generiere PDF übersicht
 			//$this->Pdf_model->genpdf_uebersicht($oid);
 			$ort = $this->Orte_model->get($oid);
+			
+
 			file_put_contents('cron/liste/'.$oid,$ort['orte_firmaid']);
 			// $typ='1';
 			// $filename = $this->File_model->get_file_pfad($typ,$oid);
@@ -154,11 +145,15 @@ $header['title']= 'Orte';
 				'beschreibung' => $this->input->post('beschreibung'),
 				'orte_firmaid' => $this->input->post('orte_firmaid'),
 			);
+
 			if ($ort['orte_firmaid']==NULL) {
 				$ort['orte_firmaid']=$this->session->userdata('firmaid');
 
 
 			}
+
+			if($oid!=0) { $filenameold = $this->File_model->get_file_pfad('1', $oid);}
+			
 			$this->Orte_model->set($ort,$oid);
 			
 
@@ -168,10 +163,34 @@ $header['title']= 'Orte';
 			  $this->Log_model->privatlog($context);
 
 			} else {
+				
+				$filenamenew = $this->File_model->get_file_pfad('1', $oid);
+
 				$context='Ort bearbeitet name '.$ort['name'].' besschreibung '.$ort['beschreibung'].' oid '.$oid;
 				$this->Log_model->privatlog($context);
 
+				echo $filenamenew;
+				echo '<br>';
+				echo $filenameold;
+
+				if (!file_exists($filenamenew) && file_exists($filenameold)) {
+					echo '<br>namensänderung<br>';
+					
+					$dateinameold = basename($filenameold);
+					$dirnameold = dirname($filenameold);
+	
+					$dateinamenew = basename($filenamenew);
+					$dirnamenew = dirname($filenamenew);
+	
+	
+					rename ($dirnameold, $dirnamenew);
+					rename ($dirnamenew.'/'.$dateinameold, $filenamenew);
+	
+					}
+
 			}
+
+
 
 			
 
@@ -201,6 +220,18 @@ $header['title']= 'Orte';
 			));
 			$this->load->view('templates/footer');
 		} else {
+
+			$filename = $this->File_model->get_file_pfad('1', $oid);
+
+			if (file_exists($filename)) {
+				$dirname = dirname($filename);
+
+				array_map('unlink', glob("$dirname/*.*"));
+
+				rmdir($dirname);
+				
+				}
+
 			$this->Orte_model->delete($oid);
 			
 
