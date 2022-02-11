@@ -1,7 +1,8 @@
 <h1>Willkommen!</h1>
 
-Letzter login: <?php echo $userdata['user_lastlogin']; ?>
-<br>: 
+<!-- Letzter login: <?php echo $userdata['user_lastlogin']; ?> -->
+Letzter login: <?php echo $this->session->userdata('lastlogin'); ?>
+<br>
 <br>
 <h2><span class="iconify" data-icon="whh:statistics" data-width="30" data-height="30"></span> Statistiken \o/</h2>
 <br>

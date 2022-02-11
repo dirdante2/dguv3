@@ -13,7 +13,7 @@ echo validation_errors();
 <form>
 
   <div class="form-group row">
-  <label for="name" class="col-sm-5 col-form-label">Name*</label>
+  <label for="name" class="col-sm-5 col-form-label">Name*<br>zb. Nummernschild</label>
 <div class="col-sm-7">
 <input type="text" name="name" value="<?php echo $ort['name'] ?>">
 </div>
@@ -21,7 +21,7 @@ echo validation_errors();
 
 
 <div class="form-group row">
-    <label for="name" class="col-sm-5 col-form-label">Beschreibung</label>
+    <label for="name" class="col-sm-5 col-form-label">Beschreibung*<br>zb. Name des Besitzers</label>
     <div class="col-sm-7">
       <input type="text" class="form-control" name="beschreibung" id="beschreibung" value="<?php echo $ort['beschreibung']; ?>" >
     </div>

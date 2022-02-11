@@ -2,24 +2,30 @@
 class Login extends CI_Controller{
   function __construct(){
     parent::__construct();
-    $this->load->model('login_model');
+    $this->load->model('Login_model');
+    $this->load->model('Users_model');
   }
  
   function index(){
-  	if($this->agent->is_mobile()){      
-      $this->load->view('templates/header_mobile');
-      $this->load->view('login_view_mobile');
+    if($this->agent->is_mobile()){
+      $data['useragent'] = 'mobile';
+      $header['useragent'] = 'mobile';
     } else {
-      $this->load->view('templates/header');
-      $this->load->view('login_view');
+      $data['useragent'] = 'desktop';
+      $header['useragent'] = 'desktop';
     }
+
+    $this->load->view('templates/header',$header);
+    $this->load->view('login_view',$data);
+
+  	
     
   }
  
   function auth(){
     $email    = $this->input->post('email',TRUE);
     $password = md5($this->input->post('password',TRUE));
-    $validate = $this->login_model->validate($email,$password);
+    $validate = $this->Login_model->validate($email,$password);
     if($validate->num_rows() > 0){
         $data  = $validate->row_array();
         $name  = $data['user_name'];
@@ -29,6 +35,9 @@ class Login extends CI_Controller{
         $level = $data['user_level'];
         $firmaid = $data['users_firmaid'];
         $userid = $data['user_id'];
+        $lastlogin = $data['user_lastlogin'];
+        
+
         $sesdata = array(
             'username'  => $name,
             'userpid'  => $userpid,
@@ -37,9 +46,16 @@ class Login extends CI_Controller{
             'level'     => $level,
             'firmaid'     => $firmaid,
             'userid'     => $userid,
+            'lastlogin'     => $lastlogin,
             'logged_in' => TRUE
         );
         $this->session->set_userdata($sesdata);
+
+        $user['user_lastlogin']=date('Y-m-d H:i:s');
+        
+      
+        $this->Users_model->update($user,$userid);
+
         
             redirect('Dguv3');
         
@@ -69,6 +85,7 @@ class Login extends CI_Controller{
         $level = $data['user_level'];
         $firmaid = $data['users_firmaid'];
         $userid = $data['user_id'];
+        $lastlogin = $data['user_lastlogin'];
 
         $sesdata = array(
             'username'  => $name,
@@ -78,6 +95,7 @@ class Login extends CI_Controller{
             'level'     => $level,
             'firmaid'     => $firmaid,
             'userid'     => $userid,
+            'lastlogin'     => $lastlogin,
             'logged_in' => TRUE
         );
         $this->session->set_userdata($sesdata);

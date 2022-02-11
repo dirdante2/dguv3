@@ -3,32 +3,48 @@
 <head>
 <?php if(isset($title) && $title) { ?>
 <title><?php echo $title; ?></title>
-<?php } ?>
+<?php } 
+#print_r( $useragent);
+?>
+
 	<meta charset="UTF-8">
-	<script src="<?php echo base_url();?>lib/jquery/jquery-3.4.1.min.js"></script>
+	<script src="<?php echo base_url();?>lib/jquery/jquery-3.6.0.min.js"></script>
 	<script src="<?php echo base_url();?>lib/jquery/jquery-ui.min.js"></script>
 	<script src="<?php echo base_url();?>lib/bootstrap/bootstrap.min.js"></script>
-	<script src="<?php echo base_url();?>lib/datatables/datatables.js"></script>
-	<!--<script src="<?php echo base_url();?>lib/datatables/datatables.min.js"></script>-->
-	<!--<script src="<?php echo base_url();?>lib/datatables/jquery.dataTables.min.js"></script>-->
+	
 	<script src="https://code.iconify.design/1/1.0.4/iconify.min.js"></script>
-	<!-- <script defer src="<?php echo base_url();?>lib/navbar.js"></script> -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.3/toastr.min.js"></script>
 
-  <link
-    href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&display=swap" rel="stylesheet">
 
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/bootstrap/bootstrap.min.css">
+	
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/jquery/jquery-ui.min.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/jquery/jquery-ui.structure.min.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/jquery/jquery-ui.theme.min.css">
-	<!--<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/datatables/datatables.min.css">-->
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/bootstrap/bootstrap.min.css">
+	
+	<?php if($useragent == 'desktop') { 
+		
+		$datawidth="20"; 
+		$dataheight="20";
+		
+		?>
+
+		
+		<script src="<?php echo base_url();?>lib/datatables/datatables.js"></script>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/datatables/datatables.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/dguv3.css">
 
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.3/toastr.css">
+	<?php } else { 
+			$datawidth="60"; 
+			$dataheight="60";
+		
+		
+		?>
+		
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/bootstrap.min_mobile.css">
+
+	<?php } ?>
 
 
 <link rel="shortcut icon" href="/favicon.ico">
@@ -56,28 +72,28 @@
 
 
       <li class="nav-item">
-        			<a class="nav-link" href="<?php echo site_url('geraete'); ?>"><span class="iconify" data-icon="jam:plug" data-width="20" data-height="20"></span> Gerät</a>
+        			<a class="nav-link" href="<?php echo site_url('geraete'); ?>"><span class="iconify" data-icon="jam:plug" data-width="<?php echo $datawidth;?>" data-height="<?php echo $dataheight;?>"></span> Gerät</a>
       			</li>
 	      		<li class="nav-item">
-        			<a class="nav-link" href="<?php echo site_url('orte'); ?>"><span class="iconify" data-icon="ic:baseline-room" data-width="20" data-height="20"></span> Orte</a>
+        			<a class="nav-link" href="<?php echo site_url('orte'); ?>"><span class="iconify" data-icon="ic:baseline-room" data-width="<?php echo $datawidth;?>" data-height="<?php echo $dataheight;?>"></span> Orte</a>
       			</li>
       			<li class="nav-item">
-	        		<a class="nav-link" href="<?php echo site_url('pruefer'); ?>"><span class="iconify" data-icon="ic:baseline-account-circle" data-width="20" data-height="20"></span> Prüfer</a>
+	        		<a class="nav-link" href="<?php echo site_url('pruefer'); ?>"><span class="iconify" data-icon="ic:baseline-account-circle" data-width="<?php echo $datawidth;?>" data-height="<?php echo $dataheight;?>"></span> Prüfer</a>
       			</li>
                         <li class="nav-item">
-	        		<a class="nav-link" href="<?php echo site_url('messgeraete'); ?>"><span class="iconify" data-icon="ic:outline-computer" data-width="20" data-height="20"></span> Messgeräte</a>
+	        		<a class="nav-link" href="<?php echo site_url('messgeraete'); ?>"><span class="iconify" data-icon="ic:outline-computer" data-width="<?php echo $datawidth;?>" data-height="<?php echo $dataheight;?>"></span> Messgeräte</a>
       			</li>
                         <li class="nav-item">
-	        		<a class="nav-link" href="<?php echo site_url('pruefung'); ?>"><span class="iconify" data-icon="bx:bx-clipboard" data-width="20" data-height="20"></span> Prüfungen</a>
+	        		<a class="nav-link" href="<?php echo site_url('pruefung'); ?>"><span class="iconify" data-icon="bx:bx-clipboard" data-width="<?php echo $datawidth;?>" data-height="<?php echo $dataheight;?>"></span> Prüfungen</a>
       			</li>
 				  <li class="nav-item">
-	        		<a class="nav-link" href="<?php echo site_url('firmen'); ?>"><span class="iconify" data-icon="bx:bxs-business" data-width="20" data-height="20"></span> Firmen</a>
+	        		<a class="nav-link" href="<?php echo site_url('firmen'); ?>"><span class="iconify" data-icon="bx:bxs-business" data-width="<?php echo $datawidth;?>" data-height="<?php echo $dataheight;?>"></span> Firmen</a>
       			</li>
 				  <li class="nav-item">
-	        		<a class="nav-link" href="<?php echo site_url('users'); ?>"><span class="iconify" data-icon="fa-solid:users" data-width="20" data-height="20"></span> User</a>
+	        		<a class="nav-link" href="<?php echo site_url('users'); ?>"><span class="iconify" data-icon="fa-solid:users" data-width="<?php echo $datawidth;?>" data-height="<?php echo $dataheight;?>"></span> User</a>
       			</li>
 				  <li class="nav-item">
-	        		<a class="nav-link" href="<?php echo site_url('log'); ?>"><span class="iconify" data-icon="carbon:catalog" data-width="20" data-height="20"></span> Logs</a>
+	        		<a class="nav-link" href="<?php echo site_url('log'); ?>"><span class="iconify" data-icon="carbon:catalog" data-width="<?php echo $datawidth;?>" data-height="<?php echo $dataheight;?>"></span> Logs</a>
       			</li>
 
     </ul>
@@ -101,10 +117,10 @@
 
 
 
-      <li class="nav-item"> <a class="nav-link" href="<?php echo site_url('login/logout');?>"><span class="iconify" data-icon="mdi:logout" data-width="20" data-height="20"></span> Logout</a></li>
+      <li class="nav-item"> <a class="nav-link" href="<?php echo site_url('login/logout');?>"><span class="iconify" data-icon="mdi:logout" data-width="<?php echo $datawidth;?>" data-height="<?php echo $dataheight;?>"></span> Logout</a></li>
 
     <?php } else { ?>
-     <li class="nav-item"><a class="nav-link" href="<?php echo site_url('login');?>"><span class="iconify" data-icon="mdi:logout" data-width="20" data-height="20"></span> Login</a></li>
+     <li class="nav-item"><a class="nav-link" href="<?php echo site_url('login');?>"><span class="iconify" data-icon="mdi:logout" data-width="<?php echo $datawidth;?>" data-height="<?php echo $dataheight;?>"></span> Login</a></li>
     <?php } ?>
 	</div>
     </ul>

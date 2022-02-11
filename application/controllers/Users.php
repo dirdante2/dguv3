@@ -27,15 +27,18 @@ class Users extends CI_Controller {
 	}
 
 	function index($user_id=NULL) {
-		if($this->session->userdata('logged_in') !== TRUE){
-			if($this->agent->is_mobile()){
-				$this->load->view('templates/header_mobile');
-			} else {
-				$this->load->view('templates/header');
-			}
-			$this->load->view('static/denied');
-			$this->load->view('templates/footer');
-          }else{
+		site_denied($this->session->userdata('logged_in'));
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
+
+		
+		
+
 			if($this->session->userdata('level')!='1'){
 				$user_id=$this->session->userdata('userid');
 
@@ -53,10 +56,18 @@ class Users extends CI_Controller {
 		$this->load->view('templates/datatable');
 		$this->load->view('users/index',$data);
 		$this->load->view('templates/footer');
-	}
+	
 	}
 
 	function new($user_id=NULL) {
+		site_denied($this->session->userdata('logged_in'));
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
 		if($this->session->userdata('level')!='1'){
           $this->load->view('templates/header');
 			$this->load->view('static/denied');
@@ -81,11 +92,15 @@ class Users extends CI_Controller {
 	}
 
 	function edit($user_id=0) {
-		if(!$this->session->userdata('level')){
-          $this->load->view('templates/header');
-			$this->load->view('static/denied');
-			$this->load->view('templates/footer');
-          }else{
+		site_denied($this->session->userdata('logged_in'));
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
+		
 			$header['cronjobs']= $this->File_model->getfiles('cronjob');
 
 			if($this->session->userdata('level')!='1'){
@@ -183,10 +198,18 @@ class Users extends CI_Controller {
 			//redirect('geraete/index/'.$gortsid['oid']);
 			//}
 	}
-}
+
 	}
 
 	function delete($user_id) {
+		site_denied($this->session->userdata('logged_in'));
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
 		if($this->session->userdata('level')!='1'){
           $this->load->view('templates/header');
 			$this->load->view('static/denied');

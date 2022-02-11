@@ -1,5 +1,5 @@
 <h1>Ort hinzufügen/bearbeiten</h1>
-<br>
+
 <?php
 
 echo form_open('orte/edit/'.$ort['oid']);
@@ -7,31 +7,32 @@ echo validation_errors();
 
 ?>
 <input type="hidden" name="oid" value="<?php echo $ort['oid'] ?>">
-<div class="row" style="width=100%; border: 1px solid #0000;" > 
- <div class="col">
+<div class="row">
+ <div class="col-md-6">
 	
 <form>
 
   <div class="form-group row">
-  <label for="name" class="col-sm-5 col-form-label">Name*<br>zb. Nummernschild</label>
-
-<input type="text" class="form-control" id="name" name="name" value="<?php echo $ort['name'] ?>">
+  <label for="name" class="col-sm-5 col-form-label">Name*</label>
+<div class="col-sm-7">
+<input type="text" name="name" value="<?php echo $ort['name'] ?>">
 </div>
-  <br>
+  </div>
+
 
 <div class="form-group row">
-    <label for="name" class="col-sm-5 col-form-label">Beschreibung*<br>zb. Name des Besitzers</label>
-    
+    <label for="name" class="col-sm-5 col-form-label">Beschreibung</label>
+    <div class="col-sm-7">
       <input type="text" class="form-control" name="beschreibung" id="beschreibung" value="<?php echo $ort['beschreibung']; ?>" >
     </div>
-  
-	<br>
+  </div>
+
 
 <?php if($this->session->userdata('level')=='1'){?>
 <div class="form-group row">
-    <label for="Firma" class="col-sm-5 col-form-label">Firma*</label>
-    
-       	<select name="orte_firmaid" class="form-control form-control-lg custom-select-lg">
+    <label for="Firma" class="col-sm-5 col-form-label">Firma</label>
+    <div class="col-sm-7">
+       	<select name="orte_firmaid">
          
     		<?php
     		foreach($firmen as $f) {
@@ -48,14 +49,14 @@ echo validation_errors();
     		?>
     	</select>
     </div>
-  
+  </div>
         <?php } ?>
 <br>
 <input type="submit" class="btn btn-primary btn-lg btn-block" value="speichern">
 </form>
 
 </div>
-
+ <div class="col-6"  style="width:50%"></div>
  </div>
 
 

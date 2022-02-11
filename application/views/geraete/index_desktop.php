@@ -3,6 +3,7 @@
 <div class="row">
  <div class="col">
 
+
 <?php	if($ort) { ?>
 <h1>Geräte für <?php echo $ort['name']; ?></h1>
 <h3><?php echo $ort['beschreibung']; ?></h3>
@@ -57,21 +58,21 @@ if($page_total_rows<=$page_show_rows) {
 }
 
 //wenn pages mehr als 5 dann kürze pagination ein
-if($page_pages>=5) {
-	if($page_pageid>=3) {
-		$page_start=$page_pageid -3;
-		$page_end=$page_pageid +4;
-	} else {
-		$page_start=0;
-		$page_end=7;
-	}
-} else {
+if($page_pages<=5) {
 	$page_start=0;
 	$page_end=$page_pages;
-}
-if($page_pages>=5 && $page_pageid+4>= $page_pages) {
-$page_end=$page_pages;
-$page_start=$page_end -7;
+} else {
+	
+	if($page_pageid>=3) {
+		$page_start=$page_pageid -3;
+		
+		$page_end=$page_pageid +4;
+		
+	} else {
+
+		$page_start=0;
+		$page_end=5;
+	}
 }
 
 ?>

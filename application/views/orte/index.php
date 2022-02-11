@@ -1,3 +1,4 @@
+
 <h1>Orte</h1>
 <div class="btn-group pull-right">
 <a href="<?php echo site_url('orte/edit'); ?>" class="btn btn-primary"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Ort hinzufügen</a>

@@ -24,15 +24,16 @@ class Pruefung extends CI_Controller {
 	}
 
 	function index($gid=NULL) {
-		if($this->session->userdata('logged_in') !== TRUE){
-			if($this->agent->is_mobile()){
-				$this->load->view('templates/header_mobile');
-			} else {
-				$this->load->view('templates/header');
-			}
-			$this->load->view('static/denied');
-			$this->load->view('templates/footer');
-          }else{
+		site_denied($this->session->userdata('logged_in'));
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
+		  
+		
 
 
 			$pageid =  $this->uri->segment(4);
@@ -121,7 +122,7 @@ class Pruefung extends CI_Controller {
 		  }
 
 			$this->load->view('templates/footer');
-			}
+			
 
 	}
 //TODO abfrage ob user eingeloggt ist

@@ -19,15 +19,16 @@ class Messgeraete extends CI_Controller {
 	}
 
 	function index() {
-		if($this->session->userdata('logged_in') !== TRUE){
-			if($this->agent->is_mobile()){
-				$this->load->view('templates/header_mobile');
-			} else {
-				$this->load->view('templates/header');
-			}
-			$this->load->view('static/denied');
-			$this->load->view('templates/footer');
-          }else{
+		site_denied($this->session->userdata('logged_in'));
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
+		  
+		
 			if($this->session->userdata('level')>='2'){
 				$firmen_firmaid=$this->session->userdata('firmaid');
 
@@ -42,15 +43,19 @@ class Messgeraete extends CI_Controller {
 		$this->load->view('templates/datatable');
 		$this->load->view('messgeraete/index',$data);
 		$this->load->view('templates/footer');
-	}
+	
 	}
 
 	function edit($mid=0) {
-		if($this->session->userdata('logged_in') !== TRUE){
-          $this->load->view('templates/header');
-			$this->load->view('static/denied');
-			$this->load->view('templates/footer');
-          }else{
+		site_denied($this->session->userdata('logged_in'));
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
+		
 			$header['cronjobs']= $this->File_model->getfiles('cronjob');
 
 		$this->form_validation->set_rules('name', 'Name', 'required');
@@ -95,10 +100,18 @@ class Messgeraete extends CI_Controller {
 			$this->Messgeraete_model->set($messgeraet,$mid);
 			redirect('messgeraete');
 		}
-	}
+	
 	}
 
 	function delete($mid) {
+		site_denied($this->session->userdata('logged_in'));
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
 		if(!$this->session->userdata('level')=='1'){
           $this->load->view('templates/header');
 			$this->load->view('static/denied');

@@ -13,7 +13,7 @@
 
 <div class="btn-group" role="group" aria-label="options" style="width:100%">
 <a class="<?php if(!$ort) { echo "d-none"; } ?> btn btn-primary" href="<?php echo site_url('geraete'); ?>">Alle Geräte auflisten</a>
-<a class="btn btn-success <?php if($this->session->userdata('level')=='3') { echo " disabled"; }?>" href="<?php echo site_url('geraete/edit'); ?>"><span class="iconify icon:typcn:document-add icon-width:50 icon-height:50"></span> Neues Gerät hinzufügen</a>
+<a class="btn btn-success <?php if($this->session->userdata('level')=='3') { echo " disabled"; }?>" href="<?php echo site_url('geraete/edit/'); ?><?php if($ort) { echo '0/'.$ort['oid'];} ?>"><span class="iconify icon:typcn:document-add icon-width:50 icon-height:50"></span> Neues Gerät hinzufügen</a>
 
 <?php
 	if($ort) {
@@ -22,7 +22,8 @@
 
 			<a href="<?php echo site_url('orte/edit/'.$ort['oid']); ?>" class="btn btn-secondary <?php if($this->session->userdata('level')=='3') { echo " disabled"; }?>"><span class="iconify icon:typcn:edit icon-width:50 icon-height:50"></span> Ort bearbeiten</a>
 
-			<a href="<?php echo base_url('orte/download_file/1/'.$ort['oid']);?>" target="_blank" class="btn btn-primary <?php if (!file_exists($pdf_data[ $ort['oid']]) || (filesize($pdf_data[ $ort['oid']])=='0')) { echo "disabled"; } ?>"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="50" data-height="50"></span> Übersicht</a>
+			<a href="<?php echo base_url('orte/download_file/1/'.$ort['oid']);?>" target="_blank" class="btn btn-primary <?php if (!file_exists($pdf_data) || (filesize($pdf_data)=='0')) { echo "disabled"; } ?>"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="50" data-height="50"></span> Übersicht</a>
+
 
 
 		<!--<a href="<?php echo site_url('geraete/geraete/'.$ort['oid']); ?>" class="btn btn-primary"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
@@ -50,11 +51,11 @@
 </div>
 <br><br>
 <!-- table-hover table-bordered table-sm table-striped -->
-<!-- <?php echo $page_total_rows; ?> total rows<br>
+ <!-- <?php echo $page_total_rows; ?> total rows<br>
 <?php echo $page_show_rows; ?> show rows<br>
 <?php echo $page_pages; ?> pages<br>
 <?php echo $page_pageid; ?> pageid<br>
-<?php echo $page_offset; ?> offset<br> -->
+<?php echo $page_offset; ?> offset<br>  -->
 
 <?php
 if(!$ort) {
@@ -64,31 +65,39 @@ if(!$ort) {
 }
 if($page_total_rows<=$page_show_rows) {
 
-	$page_show_rows=$page_total_rows;
+	$page_show_rows= $page_total_rows;
 }
 
 //wenn pages mehr als 5 dann kürze pagination ein
-if($page_pages>=5) {
-	if($page_pageid>=3) {
-		$page_start=$page_pageid -3;
-		$page_end=$page_pageid +4;
-	} else {
-		$page_start=0;
-		$page_end=7;
-	}
-} else {
+if($page_pages<=5) {
 	$page_start=0;
 	$page_end=$page_pages;
-}
-if($page_pages>=5 && $page_pageid+4>= $page_pages) {
-$page_end=$page_pages;
-$page_start=$page_end -7;
+} else {
+	
+	if($page_pageid>=3) {
+		$page_start=$page_pageid -3;
+		
+		$page_end=$page_pageid +4;
+		
+	} else {
+
+		$page_start=0;
+		$page_end=5;
+	}
 }
 
+
+
+
+
 ?>
-<!--
-<?php echo $page_start; ?> start<br>
-<?php echo $page_end; ?> end<br> -->
+
+<!-- <?php echo $page_total_rows; ?> total rows<br>
+<?php echo $page_show_rows; ?> show rows<br>
+<?php echo $page_pages; ?> pages<br>
+<?php echo $page_pageid; ?> pageid<br>
+<?php echo $page_offset; ?> offset<br>  -->
+
 <div class="" style="text-align: center;border: 0px solid #343a40;" role="group" aria-label="pagination">
 
 
@@ -105,6 +114,9 @@ while($i < $page_end) { ?>
    //echo "$i, ";
 
    $i++;
+   if($i>=$page_pages) {
+	   break;
+   }
 }
 ?>
 <a class="btn btn-outline-dark <?php if($page_pageid+1==$page_pages || $page_pages==0) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $ortsid; ?>/<?php echo $page_pages-1; ?>">ende</a>

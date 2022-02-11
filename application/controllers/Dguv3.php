@@ -20,18 +20,27 @@
 
     //$this->load->library('user_agent');
     if($this->session->userdata('logged_in') !== TRUE){
-      //redirect('login');
-     // $this->output->cache(60);
+			#$this->load->view('templates/header',$header);
+			#$this->load->view('static/denied');
+			#$this->load->view('templates/footer');
+			redirect('login');
+			return;
+			
 
-	 redirect('login');
-
-    }
+          }
 
 
   }
 
   function index(){
-    
+    site_denied($this->session->userdata('logged_in'));
+    if($this->agent->is_mobile()){
+      $data['useragent'] = 'mobile';
+      $header['useragent'] = 'mobile';
+    } else {
+      $data['useragent'] = 'desktop';
+      $header['useragent'] = 'desktop';
+    }
 
     if($this->session->userdata('logged_in') === TRUE){
 
@@ -78,19 +87,20 @@
 
 		$data['firma'] = $this->Firmen_model-> get($this->session->userdata('firmaid'));
       }
-	  $data['pdfserver']= $this->config->item('dguv3_pdf_server');
+      $data['pdfserver']= $this->config->item('dguv3_pdf_server');
 	  //echo $this->input->cookie('dguv3',true);
 
 
+    
 
+    $this->load->view('templates/header', $header);
       if($this->agent->is_mobile()){
-        $this->load->view('templates/header_mobile',$header);
+       
         $this->load->view('dashboard_view_mobile',$data);
-      } else {
-		$this->load->view('templates/header', $header);
-		$this->load->view('templates/toast');
 
-        $this->load->view('dashboard_view',$data);
+      } else {
+		
+		$this->load->view('dashboard_view',$data);
 	  }
 
       $this->load->view('templates/footer');
@@ -123,32 +133,7 @@
 
 	}
 
-	function get_toast() {
 
-		if($this->session->userdata('logged_in') === TRUE){
-
-			$toasts_files= $this->File_model->getfiles(null,'toast');
-			//print_r($toasts_files);
-
-
-			$toastarray=array();
-foreach($toasts_files as $toastobj) {
-		$details = file_get_contents('toast/'.$this->session->userdata('userid').'/'.$toastobj, true);
-
-		$toasts=json_decode($details, TRUE);
-		//print_r($toasts);
-		array_push($toastarray,$toasts);
-
-		}
-
-$data['toasts']=$toastarray;
-//print_r($toastarray);
-		$this->load->view('templates/toast_view',$data);
-//return $data;
-
-		}
-
-	}
 
 
 }

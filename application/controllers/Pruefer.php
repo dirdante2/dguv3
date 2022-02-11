@@ -20,15 +20,17 @@ class Pruefer extends CI_Controller {
 	}
 
 	function index() {
-		if($this->session->userdata('logged_in') !== TRUE){
-			if($this->agent->is_mobile()){
-				$this->load->view('templates/header_mobile');
-			} else {
-				$this->load->view('templates/header');
-			}
-			$this->load->view('static/denied');
-			$this->load->view('templates/footer');
-          }else{
+		site_denied($this->session->userdata('logged_in'));
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
+		  
+
+		
 			  //userlevel 2 oder höher kann nur orte mit eigener firma sehen
 			if($this->session->userdata('level')>='2'){
 				$firmen_firmaid=$this->session->userdata('firmaid');
@@ -47,10 +49,20 @@ class Pruefer extends CI_Controller {
 		$this->load->view('templates/datatable');
 		$this->load->view('pruefer/index',$data);
 		$this->load->view('templates/footer');
-		}
+		
 	}
 
 	function edit($pid=0) {
+
+		site_denied($this->session->userdata('logged_in'));
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
+
 		//nur rolle 1 und 2 darf prüfer hinzufügen
 		if($this->session->userdata('level')>='3'){
           $this->load->view('templates/header');
@@ -108,6 +120,15 @@ class Pruefer extends CI_Controller {
 	}
 
 	function delete($pid) {
+		site_denied($this->session->userdata('logged_in'));
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
+		  
 		if(!$this->session->userdata('level')!='1'){
           $this->load->view('templates/header');
 			$this->load->view('static/denied');

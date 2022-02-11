@@ -45,15 +45,20 @@ class Geraete_model extends CI_Model {
 		$this->db->limit($limit,$offset);
 		$result = $this->db->get()->result_array();
 
-		if(!empty($result)) {
-			if($gid) {
+
+		#print_r($result);
+
+		if(empty($result)) {
+			return NULL;
+		}
+		if($gid) {
 				return $result[0];
 			} else {
 				return $result;
 			}
-		} else {
-			return NULL;
-		}
+		
+			
+		
 	}
 
 	function getByName($name,$firmen_firmaid=NULL) {
@@ -68,22 +73,26 @@ class Geraete_model extends CI_Model {
 			//$this->db->where('orte.orte_firmaid', $firmen_firmaid);
 			$this->db->having('orte.orte_firmaid', $firmen_firmaid);
 		} 
+		
+		$this->db->group_by("geraete.typ");
 
-		#$search = array("Ä", "Ö", "Ü", "ä", "ö", "ü", "ß", "´");
-		#$replace = array("Ae", "Oe", "Ue", "ae", "oe", "ue", "ss", "");
-		#$string= str_replace($search, $replace, $string);
+		
+
+		
 
 		$this->db->like('geraete.typ', $name); 
 		$this->db->or_like('geraete.name', $name);
+		$this->db->or_like('geraete.hersteller', $name);
 
 		$this->db->limit(10);
-		$this->db->order_by('geraete.typ');
+		$this->db->order_by('geraete.name');
+
 		$result = $this->db->get()->result_array();
-		if (!empty($result)) {
-			return $result;
-		} else {
-			return NULL;
-		}
+
+
+
+		if (empty($result)) {return NULL;} 			
+		return $result;
 	}
 
 

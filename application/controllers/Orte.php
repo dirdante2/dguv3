@@ -21,15 +21,19 @@ class Orte extends CI_Controller {
 	}
 
 	function index() {
+		site_denied($this->session->userdata('logged_in'));
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
 		if($this->agent->is_mobile()){$useragent = 'mobile';} else {$useragent = 'desktop';}
 
-		if($this->session->userdata('logged_in') !== TRUE){
+		
 
-			
-			$this->load->view('templates/header_'.$useragent);
-			$this->load->view('static/denied');
-			$this->load->view('templates/footer');
-          }else{
+		
 
 			
 			  //userlevel 2 oder höher kann nur orte mit eigener firma sehen 8
@@ -65,7 +69,7 @@ $header['title']= 'Orte';
 		  $this->load->view('orte/index_'.$useragent,$data);
 
 			$this->load->view('templates/footer');
-			}
+			
 
 
 
@@ -169,9 +173,9 @@ $header['title']= 'Orte';
 				$context='Ort bearbeitet name '.$ort['name'].' besschreibung '.$ort['beschreibung'].' oid '.$oid;
 				$this->Log_model->privatlog($context);
 
-				echo $filenamenew;
-				echo '<br>';
-				echo $filenameold;
+				#echo $filenamenew;
+				#echo '<br>';
+				#echo $filenameold;
 
 				if (!file_exists($filenamenew) && file_exists($filenameold)) {
 					echo '<br>namensänderung<br>';
