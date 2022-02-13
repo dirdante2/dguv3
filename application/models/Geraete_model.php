@@ -20,7 +20,7 @@ class Geraete_model extends CI_Model {
 	}
 
 	function get($gid=NULL,$oid=null,$firmen_firmaid=null,$limit=null, $offset=null) {
-		$this->db->select('geraete.*, firmen.firmen_firmaid,firmen.firma_name,orte.name AS ortsname, pruefung.bestanden, pruefung.datum AS letztesdatum, (select count(*) from pruefung as pr where geraete.gid = pr.gid) AS anzahl, pruefer.name as pruefername');
+		$this->db->select('geraete.*, firmen.firmen_firmaid,firmen.firma_name,orte.name AS ortsname,orte.beschreibung AS orte_beschreibung, pruefung.bestanden, pruefung.datum AS letztesdatum, (select count(*) from pruefung as pr where geraete.gid = pr.gid) AS anzahl, pruefer.name as pruefername');
 		$this->db->from('geraete');
 		$this->db->join('orte', 'geraete.oid = orte.oid');
 		$this->db->join('firmen', 'geraete.geraete_firmaid = firmen.firmen_firmaid', 'LEFT');
@@ -135,9 +135,7 @@ function pdfdata($oid) {
 	$data['ort'] = $this->Orte_model->get($oid);
 
 
-	if($data['ort']===NULL) {
-return NULL;
-	}
+	if($data['ort']===NULL) {return NULL;}
 	$geraete = $this->Geraete_model->get(null,$oid);
 
 	//$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_pdf_col');
@@ -196,6 +194,7 @@ foreach((array) $geraete as $geraet) {
 	unset($geraete[$i]['geraete_firmaid']);
 	unset($geraete[$i]['oid']);
 	unset($geraete[$i]['geraete_produktfoto']);
+	unset($geraete[$i]['orte_beschreibung']);
 	
 
 	if($geraet['anzahl']=='0') {

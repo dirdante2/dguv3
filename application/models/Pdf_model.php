@@ -23,7 +23,10 @@ class Pdf_model extends CI_Model
 
     }
 
-	function generate_pdf($kind, $data, $filename) {
+	function generate_pdf($typ, $data, $filename) {
+		#print_r($data);
+		$data= pdf_clean_data($typ, $data);
+
 		
 		$dir = dirname($filename);
 		if (!file_exists($dir)) {
@@ -47,7 +50,7 @@ class Pdf_model extends CI_Model
 			if($socket =@ fsockopen($serverurl[0], $serverurl[1], $errno, $errstr, $timeout = 10)) {
 
 				//API Url
-				$url = $urlprefix.$serverurl[0].':'.$serverurl[1].'/pdfgen/'.$kind;
+				$url = $urlprefix.$serverurl[0].':'.$serverurl[1].'/pdfgen/'.$typ;
 
 				 fclose($socket);
 				break;

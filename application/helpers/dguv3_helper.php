@@ -23,4 +23,13 @@ if ( ! function_exists('site_pagination')) {
 		redirect($basepath.$oid.'/'.$pageid);
 	}
 }
+
+if ( ! function_exists('pdf_clean_data')) {
+	function pdf_clean_data($typ, $data) {
+
+$return= $data;
+
+		return $return;
+	}
+}
 	

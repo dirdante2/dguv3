@@ -59,9 +59,9 @@
 
 <?php
 if(!$ort) {
-	$ortsid=0;
+	$page_id=0;
 } else {
-	$ortsid=$ort['oid'];
+	$page_id=$ort['oid'];
 }
 if($page_total_rows<=$page_show_rows) {
 
@@ -101,13 +101,13 @@ if($page_pages<=5) {
 <div class="" style="text-align: center;border: 0px solid #343a40;" role="group" aria-label="pagination">
 
 
-	<a class="btn btn-outline-dark <?php if($page_pageid==0) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $ortsid; ?>/0">start</a>
+	<a class="btn btn-outline-dark <?php if($page_pageid==0) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $page_id; ?>/0">start</a>
 <?php
 $i = $page_start;
 while($i < $page_end) { ?>
 
 
-	<a class="btn <?php if($i==$page_pageid) { echo 'btn-dark disabled active';} else { echo 'btn-outline-dark';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $ortsid; ?>/<?php echo $i; ?>" tabindex="0"><?php echo $i +1; ?></a>
+	<a class="btn <?php if($i==$page_pageid) { echo 'btn-dark disabled active';} else { echo 'btn-outline-dark';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $page_id; ?>/<?php echo $i; ?>" tabindex="0"><?php echo $i +1; ?></a>
 
 	<?php
 
@@ -119,7 +119,7 @@ while($i < $page_end) { ?>
    }
 }
 ?>
-<a class="btn btn-outline-dark <?php if($page_pageid+1==$page_pages || $page_pages==0) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $ortsid; ?>/<?php echo $page_pages-1; ?>">ende</a>
+<a class="btn btn-outline-dark <?php if($page_pageid+1==$page_pages || $page_pages==0) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $page_id; ?>/<?php echo $page_pages-1; ?>">ende</a>
 <br>zeige <?php echo $page_show_rows; ?> von <?php echo $page_total_rows; ?> auf <?php echo $page_pages; ?> Seiten<br>
 
 </div>
@@ -153,10 +153,10 @@ keine geräte vorhanden
 
 		?>
 
-			 <div class="card collapse multi-collapse show" style="border: 1px solid #343a40;" id='<?php if($geraet['aktiv']=='0') { echo "suche_inaktiv"; } elseif ($geraet['bestanden']=='0')  { echo "suche_failed"; } elseif ($nextyear < $today)  { echo "suche_abgelaufen"; } elseif ($nextyearfast < $today) { echo "suche_baldabgelaufen"; } else { echo 'suche_ok';} ?>'>
+			 <div class="card collapse multi-collapse show" style="border: 1px solid #343a40;" id='<?php if($geraet['aktiv']=='0') { echo "suche_inaktiv"; } elseif ($geraet['schutzklasse'] == "5") { echo "suche_ok"; } elseif ($geraet['bestanden']=='0')  { echo "suche_failed"; } elseif ($nextyear < $today)  { echo "suche_abgelaufen"; } elseif ($nextyearfast < $today) { echo "suche_baldabgelaufen"; } else { echo 'suche_ok';} ?>'>
 
 
-			<div id="heading<?php echo $geraet['gid']; ?>" class="card-header <?php if($geraet['aktiv']=='0') { echo "bg-secondary"; } elseif ($geraet['bestanden']=='0')  { echo "bg-danger"; } elseif ($nextyear < $today)  { echo "bg-warning"; } elseif ($nextyearfast < $today) { echo "bg-info"; }?>" data-toggle="collapse" data-target="#geraet<?php echo $geraet['gid']; ?>" aria-expanded="true" aria-controls="geraet<?php echo $geraet['gid']; ?>">
+			<div id="heading<?php echo $geraet['gid']; ?>" class="card-header <?php if($geraet['aktiv']=='0') { echo "bg-secondary"; } elseif ($geraet['schutzklasse'] == "5") { echo "table-default"; } elseif ($geraet['bestanden']=='0')  { echo "bg-danger"; } elseif ($nextyear < $today)  { echo "bg-warning"; } elseif ($nextyearfast < $today) { echo "bg-info"; }?>" data-toggle="collapse" data-target="#geraet<?php echo $geraet['gid']; ?>" aria-expanded="true" aria-controls="geraet<?php echo $geraet['gid']; ?>">
 
 			<h4 class="mb-0" id="<?php echo $geraet['gid']; ?>">
 			<div class="row">

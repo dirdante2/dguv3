@@ -192,7 +192,7 @@ class Cron extends CI_Controller {
 			}
 
 			$this->Log_model->cronjoblog($create_pdf_output, 'cron');
-			redirect('Dguv3');
+			#redirect('Dguv3');
 		}
 	
 	

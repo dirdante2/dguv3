@@ -46,11 +46,7 @@ class Pruefung extends CI_Controller {
 			#print_r($data['geraet']);
 			#var_dump(count($data['geraet']));
 
-			if($data['geraet']===NULL) {
-
-			 
-				
-				$gid = NULL;}
+			if($data['geraet']===NULL) {$gid = NULL;}
 			
 
 			if($gid) {
@@ -174,6 +170,7 @@ class Pruefung extends CI_Controller {
 	}
 
 	function new($gid) {
+		
 		if(!$this->session->userdata('level')){
           $this->load->view('templates/header');
 			$this->load->view('static/denied');
@@ -201,11 +198,17 @@ class Pruefung extends CI_Controller {
 
 
 	function edit($pruefung_id) {
-		if(!$this->session->userdata('level')){
-          $this->load->view('templates/header');
-			$this->load->view('static/denied');
-			$this->load->view('templates/footer');
-          }else{
+		site_denied($this->session->userdata('logged_in'));
+
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
+
+		
 
 			$header['cronjobs']= $this->File_model->getfiles('cronjob');
 
@@ -303,7 +306,7 @@ class Pruefung extends CI_Controller {
 
 			redirect('pruefung/index/'.$gid);
 		}
-	}
+	
 	}
 
 	function delete($pruefung_id) {
@@ -357,8 +360,9 @@ class Pruefung extends CI_Controller {
 	function pagination($gid,$pageid) {
 
 
-
-		redirect('pruefung/index/'.$gid.'/'.$pageid);
+		#path with end /,oid,pageid
+		site_pagination('geraete/index/',$gid,$pageid);
+		
 	}
 
 	function json($pruefung_id="") {

@@ -72,8 +72,8 @@ class File_model extends CI_Model
 
 
 	function download_file($typ,$id) {
-
-		if($this->session->userdata('logged_in') === TRUE){
+		site_denied($this->session->userdata('logged_in'));
+		
 		//automatischer download
 
 		$filename = $this->get_file_pfad($typ,$id);
@@ -94,11 +94,13 @@ class File_model extends CI_Model
 			//return 'error';
 
 		}
-	  }
+	  
 	}
 
 	//listet alle ordner in $root
     function getfiles($cronjobs=null,$toast=null) {
+		
+
 		$dguv3_show_list_archiv= $this->config->item('dguv3_show_list_archiv');
 
 		if(!$toast) {

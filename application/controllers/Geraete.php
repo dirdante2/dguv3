@@ -289,17 +289,13 @@ site_denied($this->session->userdata('logged_in'));
 		}
 
 		function json($key="") {
+			site_denied($this->session->userdata('logged_in'));
 
-			if($this->session->userdata('logged_in') !== TRUE){
-				$this->load->view('templates/header',$header);
-				$this->load->view('static/denied');
-				$this->load->view('templates/footer');
-			}else{
-				
+			
 
 				$search = array("%C3%A4", "%C3%B6", "%C3%BC", "%C3%9F", "%60");
 		
-				$replace = array("ä", "ö", "ü", "ss", "");
+				$replace = array("ä", "ö", "ü", "ß", "");
 				
 				$key= str_replace($search, $replace, $key);
 
@@ -320,7 +316,7 @@ site_denied($this->session->userdata('logged_in'));
 	
 				if (empty($geraete)) {return NULL;} 	
 
-				#print_r($geraete);
+				
 	
 				$kabelinfo="";
 				
@@ -340,19 +336,16 @@ site_denied($this->session->userdata('logged_in'));
 				#print_r($response);
 
 				echo json_encode($response);
-			}
+			
 		}
 
 
 
 
 		function jsongid($gid) {
+			site_denied($this->session->userdata('logged_in'));
 
-			if($this->session->userdata('logged_in') !== TRUE){
-				$this->load->view('templates/header',$header);
-				$this->load->view('static/denied');
-				$this->load->view('templates/footer');
-			}else{
+		
 
 			$geraete=$this->Geraete_model->get($gid);
 			
@@ -361,7 +354,7 @@ site_denied($this->session->userdata('logged_in'));
 			#print_r($geraete);
 			
 			echo json_encode($geraete);
-			}
+			
 		}
 
 

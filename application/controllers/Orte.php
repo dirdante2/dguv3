@@ -248,11 +248,13 @@ $header['title']= 'Orte';
 	}
 
 	function json($key="") {
-		if($this->session->userdata('logged_in') !== TRUE){
-			$this->load->view('templates/header',$header);
-			$this->load->view('static/denied');
-			$this->load->view('templates/footer');
-		}else{
+		site_denied($this->session->userdata('logged_in'));
+		
+			$search = array("%C3%A4", "%C3%B6", "%C3%BC", "%C3%9F", "%60");		
+			$replace = array("ä", "ö", "ü", "ß", "");			
+			$key= str_replace($search, $replace, $key);
+
+
 			 //userlevel 2 oder höher kann nur orte mit eigener firma sehen
 			 if($this->session->userdata('level')>='2'){
 				$firmen_firmaid=$this->session->userdata('firmaid');
@@ -261,7 +263,7 @@ $header['title']= 'Orte';
 			} else {
 				$orte=$this->Orte_model->getByName($key);
 			}
-
+			
 
 
 
@@ -272,7 +274,7 @@ $header['title']= 'Orte';
 			}
 
 			echo json_encode($response);
-		}
+		
 	}
 
 

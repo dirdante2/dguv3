@@ -11,7 +11,7 @@ jQuery(document).ready(function($) {
 				setTimeout(function() {
 					var top = $(event.delegateTarget).offset().top;
 					var scroll_top = top - fixedHeaderHeight;
-					$('html, body').animate({scrollTop: scroll_top}, 500);
+					$('html, body').animate({scrollTop: scroll_top}, 300);
 				}, 0);
 		});
 	});
