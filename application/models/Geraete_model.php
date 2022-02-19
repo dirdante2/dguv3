@@ -19,7 +19,7 @@ class Geraete_model extends CI_Model {
         return $this->db->count_all_results();
 	}
 
-	function get($gid=NULL,$oid=null,$firmen_firmaid=null,$limit=null, $offset=null) {
+	function get($gid=NULL,$oid=null,$firmen_firmaid=null,$limit=null, $offset=null, $notwerkzeug=null) {
 		$this->db->select('geraete.*, firmen.firmen_firmaid,firmen.firma_name,orte.name AS ortsname,orte.beschreibung AS orte_beschreibung, pruefung.bestanden, pruefung.datum AS letztesdatum, (select count(*) from pruefung as pr where geraete.gid = pr.gid) AS anzahl, pruefer.name as pruefername');
 		$this->db->from('geraete');
 		$this->db->join('orte', 'geraete.oid = orte.oid');
@@ -27,7 +27,9 @@ class Geraete_model extends CI_Model {
 		$this->db->join('pruefung','geraete.gid = pruefung.gid AND pruefung.pruefungid = (SELECT pruefungid from pruefung as pr where geraete.gid = pr.gid order by datum desc, pruefungid desc limit 1)','LEFT');
 		$this->db->join('pruefer', 'pruefung.pid = pruefer.pid', 'LEFT');
 
-		
+		if($notwerkzeug) {
+			$this->db->where('schutzklasse !=', '5');
+		}
 
 
 		if($firmen_firmaid) {
@@ -120,23 +122,35 @@ class Geraete_model extends CI_Model {
 	function set($data,$gid=NULL) {
 		if($gid) {
 			$this->db->where('gid',$gid);
-			return $this->db->update('geraete',$data);
+			$this->db->update('geraete',$data);
+			$insert_id = $gid;
+		} else {
+			$this->db->insert('geraete',$data);
+			$insert_id = $this->db->insert_id();
 		}
-		return $this->db->insert('geraete',$data);
+		
+		return $insert_id;
 	}
+
+
+
 
 	function delete($gid) {
 		$this->db->where('gid',$gid);
 		return $this->db->delete('geraete');
 	}
 
-// aufruf geräte pdf
+
+
+
+// aufruf geräte pdf übersicht liste für ort
 function pdfdata($oid) {
 	$data['ort'] = $this->Orte_model->get($oid);
 
+#	function get($gid=NULL,$oid=null,$firmen_firmaid=null,$limit=null, $offset=null, $notwerkzeug=null) {
 
 	if($data['ort']===NULL) {return NULL;}
-	$geraete = $this->Geraete_model->get(null,$oid);
+	$geraete = $this->Geraete_model->get(null,$oid,null,null,null,"5");
 
 	//$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_pdf_col');
 		// -> aktuell $data['dguv3_logourl']= $this->config->config['base_url'].$this->config->item('dguv3_logourl');

@@ -108,7 +108,7 @@ class Pruefung extends CI_Controller {
 		$header['cronjobs']= $this->File_model->getfiles('cronjob');
 
 		if($this->agent->is_mobile()){
-			$this->load->view('templates/header_mobile',$header);
+			$this->load->view('templates/header',$header);
 			$this->load->view('templates/scroll');
 			$this->load->view('pruefung/index_mobile',$data);
 		  } else {
@@ -170,7 +170,7 @@ class Pruefung extends CI_Controller {
 	}
 
 	function new($gid) {
-		
+		site_denied($this->session->userdata('logged_in'));
 		if(!$this->session->userdata('level')){
           $this->load->view('templates/header');
 			$this->load->view('static/denied');
@@ -222,17 +222,23 @@ class Pruefung extends CI_Controller {
 		$this->form_validation->set_rules('mid', 'Messgerät', 'callback_mid_check');
 		$this->form_validation->set_rules('pid', 'Prüfer', 'callback_pid_check');
 
+		
+
 		$gid = $this->getGid($pruefung_id);
 		$RPEmax = $this->Geraete_model->getRPEmax($gid);
+		$geraet= $this->Geraete_model->get($gid);
 
-		$schutzklasse = $this->Geraete_model->get($gid)['schutzklasse'];
-		$geraetename = $this->Geraete_model->get($gid)['name'];
-		$ortsid = $this->Geraete_model->get($gid)['oid'];
-		$ortsname = $this->Geraete_model->get($gid)['ortsname'];
-		$firma_id = $this->Geraete_model->get($gid)['geraete_firmaid'];
+
+		$schutzklasse = $geraet['schutzklasse'];
+		$geraetename = $geraet['name'];
+		$ortsid = $geraet['oid'];
+		$ortsname = $geraet['ortsname'];
+		$firma_id = $geraet['geraete_firmaid'];
 
 
 		$header['title']= 'Prüfung '.$geraetename;
+		
+		//todo daten werden doppelt abgerufen?!?! in pruefung_model get sind schon alle informationen drinnen
 
 		if($this->form_validation->run() === FALSE) {
 			$this->load->view('templates/header',$header);
@@ -257,40 +263,38 @@ class Pruefung extends CI_Controller {
 				}
 
 			}
-			if($schutzklasse!=4) {
+			if($schutzklasse=='1' || $schutzklasse=='2' || $schutzklasse=='3') {
 
 				$pruefung['RPEmax'] = $RPEmax;
-			}
-			$pruefung['bestanden'] = 1;
+				
+				$pruefung['bestanden'] = 1;
 
-			//schutzklasse 4=Leiter
-			//Kriterein
-			if($pruefung['funktion']==0) {
-				$pruefung['bestanden'] = 0;
-			}
-			if($pruefung['sichtpruefung']==0) {
-				$pruefung['bestanden'] = 0;
-			}
-			if($pruefung['schutzleiter']>$RPEmax && $schutzklasse!=4) {
-				$pruefung['bestanden'] = 0;
+				// schutzklasse 4 Leiter
+				// schutzklasse 5 werkzeug(kein elektro gerät)
 
-			}
-			if($pruefung['isowiderstand']<2.0 && $schutzklasse!=4) {
-				$pruefung['bestanden'] = 0;
+				//Kriterien eigendlich wird bei sichtprüfung =0 alle weiteren prüfungen auf 0 gesetzt aber es ist besser die daten zu speichen um zu sehen ob sich reparatur lohnt
 
+				if($pruefung['funktion']==0 || $pruefung['schutzleiter']>=$RPEmax || $pruefung['isowiderstand']<=2.0 || $pruefung['schutzleiterstrom']>=0.5 || $pruefung['beruehrstrom']>=0.25) {
+					$pruefung['bestanden'] = 0;
+				}
+				if($pruefung['sichtpruefung']==0) {
+					$pruefung['bestanden'] = 0;
+				}
+				
+				
+				
+			
 			}
-			if($pruefung['schutzleiterstrom']>=0.5 && $schutzklasse!=4) {
-				$pruefung['bestanden'] = 0;
-			}
-			if($pruefung['beruehrstrom']>0.25 && $schutzklasse!=4) {
-				$pruefung['bestanden'] = 0;
-			}
-
 			//setze firma id auf die gleiche des gerätes
 			$pruefung['pruefung_firmaid'] =$firma_id;
 
+			$arrayold = $this->Pruefung_model->get($pruefung_id);
+			$logstatus='edit';
 
 			$this->Pruefung_model->update($pruefung,$pruefung_id);
+
+			$arraynew = $this->Pruefung_model->get($pruefung_id);
+
 
 			//generiere PDF übersicht
 			//$this->Pdf_model->genpdf_uebersicht($ortsid);
@@ -299,10 +303,21 @@ class Pruefung extends CI_Controller {
 			//$this->Pdf_model->genpdf_protokoll($pruefung_id);
 			file_put_contents('cron/protokoll/'.$pruefung_id,$pruefung['pruefung_firmaid']);
 
-			$pruefung = $this->Pruefung_model->get($pruefung_id);
 
-			$context='Prüfung bearbeitet name '.$pruefung['geraetename'].' pruefungid '.$pruefung['pruefungid'].' ort '.$pruefung['ortsname'];
-			$this->Log_model->privatlog($context);
+			
+			
+			// log data
+			$log_diff=log_change($arrayold, $arraynew, $logstatus);
+			if(!empty($log_diff)) {
+				$context='Prüfung bearbeitet pid '.$pruefung_id.' ; '.$log_diff;
+				#print_r($context);
+				$this->Log_model->privatlog($context);
+			} 
+			
+
+			
+
+			
 
 			redirect('pruefung/index/'.$gid);
 		}
@@ -310,6 +325,15 @@ class Pruefung extends CI_Controller {
 	}
 
 	function delete($pruefung_id) {
+
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
+
 		if(!$this->session->userdata('level')){
           $this->load->view('templates/header');
 			$this->load->view('static/denied');
@@ -331,6 +355,10 @@ class Pruefung extends CI_Controller {
 			$pruefung = $this->Pruefung_model->get($pruefung_id);
 			$filename = $this->File_model->get_file_pfad('2', $pruefung_id);
 
+			$arrayold = $this->Pruefung_model->get($pruefung_id);
+			$arraynew= array();
+			$logstatus='delete';
+
 			$this->Pruefung_model->delete($pruefung_id);
 
 			$cron_protokoll_pfad = 'cron/protokoll/';
@@ -345,8 +373,13 @@ class Pruefung extends CI_Controller {
 				}
 
 			
-			$context='Prüfung gelöscht name '.$pruefung['geraetename'].' pruefungid '.$pruefung['pruefungid'].' ort '.$pruefung['ortsname'];
-			$this->Log_model->privatlog($context);
+			// log data
+			$log_diff=log_change($arrayold, $arraynew, $logstatus);
+			if(!empty($log_diff)) {
+				$context='Prüfung gelöscht pid '.$pruefung_id.' ; '.$log_diff;
+				#print_r($context);
+				$this->Log_model->privatlog($context);
+			} 
 
 
 			redirect('pruefung');

@@ -88,42 +88,35 @@ class Geraete extends CI_Controller {
 	}
 
 
-	function uebersicht($oid=NULL) {
+	function uebersicht($oid) {
 
 		$data['ort'] = $this->Orte_model->get($oid);
-		#print_r($data['ort']);
-		# bei oid ohne eintrag setze auf null
-		if($data['ort']===NULL) { 
-			$oid = NULL;
-			
-		
-		}
 
-		if($oid) {
-			#$data['ort'] = $this->Orte_model->get($oid);
-			$data['geraete'] = $this->Geraete_model->get(null,$oid);
-		} else {
-			$data['ort'] = NULL;
-			$data['geraete'] = $this->Geraete_model->get();
-		}
-//FIXME
-		
-		$data['adresse']= $this->config->item('dguv3_adresse');
+		if($data['ort']===NULL) {exit;}
 
-
-		/*$this->output->cache(5);*/
-
-		//ob_start();
+		$data['geraete'] = $this->Geraete_model->get(null,$oid,null,null,null,"5");
 
 		$this->load->view('templates/print/header_desktop');
 		$this->load->view('templates/desktop');
 		$this->load->view('geraete/uebersicht',$data);
 		$this->load->view('templates/print/footer');
-//$content = ob_get_contents();
-    //ob_clean();
-
     
-		}
+	}
+
+	function werkzeug($oid) {
+
+		$data['ort'] = $this->Orte_model->get($oid);
+
+		if($data['ort']===NULL) {exit;}
+
+		$data['geraete'] = $this->Geraete_model->get(null,$oid);
+
+		$this->load->view('templates/print/header_desktop');
+		$this->load->view('templates/desktop');
+		$this->load->view('geraete/werkzeug',$data);
+		$this->load->view('templates/print/footer');
+    
+	}
 
 
 	/**
@@ -142,8 +135,18 @@ class Geraete extends CI_Controller {
 
 
 	function edit($gid=0,$oid=NULL) {
-site_denied($this->session->userdata('logged_in'));
+		site_denied($this->session->userdata('logged_in'));
+
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
+		
 		$data['ort'] = $this->Orte_model->get($oid);
+
 		if($this->agent->is_mobile()){$useragent = 'mobile';} else {$useragent = 'desktop';}
 		#$useragent = 'desktop';
 		$felder = array('oid','geraete_firmaid','hersteller','name','typ','seriennummer','nennstrom','nennspannung','leistung','hinzugefuegt','beschreibung','aktiv','schutzklasse','verlaengerungskabel','kabellaenge');
@@ -154,7 +157,7 @@ site_denied($this->session->userdata('logged_in'));
 		$header['cronjobs']= $this->File_model->getfiles('cronjob');
 
 		if($this->form_validation->run() === FALSE) {
-			$this->load->view('templates/header_'.$useragent,$header);
+			$this->load->view('templates/header',$header);
 
 			//Neues Gerät
 			if($gid==0) {
@@ -211,9 +214,20 @@ site_denied($this->session->userdata('logged_in'));
 
 			}
 
+			if($gid!=0) {
+			$arrayold = $this->Geraete_model->get($gid);
+			$logstatus='edit';
 
+			} else {$logstatus='new';}
 
-			$this->Geraete_model->set($geraet,$gid);
+			//get the correct gid if new geraet
+			$gid= $this->Geraete_model->set($geraet,$gid);
+
+			
+			
+			$arraynew = $this->Geraete_model->get($gid);
+			
+
 			#print_r($geraet['oid']);
 
 				// get ortsid von neu angelegtem gerät damit redirect zu richtiger seite führt?!!
@@ -222,9 +236,19 @@ site_denied($this->session->userdata('logged_in'));
 			//$this->Pdf_model->genpdf_uebersicht($gortsid);
 			file_put_contents('cron/liste/'.$ortsid,$geraet['geraete_firmaid']);
 
-			$context='Gerät bearbeitet name '.$geraet['name'].' gid '.$gid.' oid '.$geraet['oid'];
-			$this->Log_model->privatlog($context);
 
+			// log data
+			$log_diff=log_change($arrayold, $arraynew, $logstatus);
+			if(!empty($log_diff)) {
+				if(empty($arrayold)) {
+					$context='Gerät neu gid '.$gid.' ; '.$log_diff;
+				} else {
+					$context='Gerät bearbeitet gid '.$gid.' ; '.$log_diff;
+				}
+
+				#print_r($context);
+				$this->Log_model->privatlog($context);
+			} 
 
 			if($ortsid===NULL) {
 				redirect('geraete');
@@ -242,32 +266,66 @@ site_denied($this->session->userdata('logged_in'));
 
 	function delete($gid) {
 		site_denied($this->session->userdata('logged_in'));
+
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
+
 		$this->form_validation->set_rules('confirm', 'Bestätigung', 'required');
 		$header['cronjobs']= $this->File_model->getfiles('cronjob');
 		$geraet = $this->Geraete_model->get($gid);
-//TODO userabfrage
-		if($this->form_validation->run() === FALSE) {
-			$this->load->view('templates/header',$header);
-			$this->load->view('templates/confirm',array(
-				'beschreibung' => 'Geraet wirklich löschen?',
+// //TODO userabfrage
 
-				'target' => 'geraete/delete/'.$gid,
-				'canceltarget' => 'geraete'
-			));
+
+
+		if($this->form_validation->run() === FALSE) {
+
+			$data['geraet']= $geraet;
+			
+			$data['target']= 'geraete/delete/'.$gid;
+			$data['canceltarget']= 'geraete';
+
+			$this->load->view('templates/header',$header);
+			$this->load->view('geraete/delete_info',$data);
+			$this->load->view('templates/confirm',$data);
 			$this->load->view('templates/footer');
 		} else {
+
+			$arrayold = $this->Geraete_model->get($gid);
+			$arraynew= array();
+			$logstatus='delete';
+
 			$this->Geraete_model->delete($gid);
 
 
-			$context='Gerät gelöscht name '.$geraet['name'].' gid '.$gid.' oid '.$geraet['oid'];
-			$this->Log_model->privatlog($context);
+			
+			
 			
 			file_put_contents('cron/liste/'.$geraet['oid'],$geraet['geraete_firmaid']);
 
+			// log data
+			$log_diff=log_change($arrayold, $arraynew, $logstatus);
+			if(!empty($log_diff)) {
+				
+				$context='Gerät gelöscht gid '.$gid.' ; '.$log_diff;
+				
+
+				#print_r($context);
+				$this->Log_model->privatlog($context);
+			} 
 
 			redirect('geraete/index/'.$geraet['oid']);
 		}
 	}
+
+
+
+
+
 	function pagination($oid,$pageid) {
 
 
@@ -277,7 +335,12 @@ site_denied($this->session->userdata('logged_in'));
 			
 		}
 
-		function jsonout($oid="") {
+
+
+
+
+		#gibt übersichtsliste für ort mit geräten aus
+		function jsonout($oid) {
 			$data = $this->Geraete_model->pdfdata($oid);
 			
 

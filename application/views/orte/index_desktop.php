@@ -78,7 +78,8 @@ if(count($orte)==0) {
 				<!--<a href="<?php echo site_url('geraete/geraete/'.$ort['oid']); ?>" class="btn btn-primary"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
 				-->
 				<!-- <a href='<?php echo site_url('geraete_json/genpdf/'.$ort['oid']); ?>'  class="btn btn-primary">Übersichten erstellen</a> -->
-				<a href="<?php echo base_url('orte/download_file/1/'.$ort['oid']);?>" target="_blank" class="btn btn-primary <?php if (!file_exists($pdf_data[ $ort['oid']]) || (filesize($pdf_data[ $ort['oid']])=='0')) { echo "disabled"; } ?>"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
+				<a href="<?php echo base_url('orte/download_file/1/'.$ort['oid']);?>" target="_blank" class="btn btn-primary <?php if (!file_exists($pdf_data[ $ort['oid']]) || (filesize($pdf_data[ $ort['oid']])=='0')) { echo "disabled"; } ?>"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> E-Übersicht</a>
+				<a href="<?php echo base_url('geraete/werkzeug/'.$ort['oid']);?>" target="_blank" class="btn btn-primary"><span class="iconify" data-icon="uil:file-blank" data-width="20" data-height="20"></span> Werkzeug</a>
 
 				<!-- <?php if (!file_exists('pdf/'. $ort['orte_firmaid'].'/'.$year.'/'.$ort['name'].'_'.$ort['oid'].'/'.$ort['name'].'_liste.pdf')) { echo "disabled"; } ?> -->
 				<a href="<?php echo site_url('orte/edit/'.$ort['oid']); ?>" class="<?php if($this->session->userdata('level')>='4') { echo " disabled"; }?> btn btn-secondary"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> edit</a>

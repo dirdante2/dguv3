@@ -138,27 +138,40 @@ $page_start=$page_end -7;
 }
 
 ?>
-<div class="" style="text-align: center;border: 0px solid #343a40;" role="group" aria-label="pagination">
+<div class="text-center">
+<div class="btn-group" role="toolbar" aria-label="Toolbar with button groups" style="border: 0px solid #343a40;">
+<div class="btn-group mr-5" role="group" aria-label="pagination1" >
 
 
-<a class="btn btn-outline-dark <?php if($page_pageid==0) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>pruefung/pagination/<?php echo $page_id; ?>/0">start</a>
+
+	<a class="btn-lg btn btn-outline-dark <?php if($page_pageid==0) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $page_id; ?>/0">start</a>
+	</div>
+	<div class="btn-group mr-5" role="group" aria-label="pagination2" >
 <?php
 $i = $page_start;
 while($i < $page_end) { ?>
 
 
-<a class="btn <?php if($i==$page_pageid) { echo 'btn-dark disabled active';} else { echo 'btn-outline-dark';} ?>" type="button" href="<?php echo base_url(); ?>pruefung/pagination/<?php echo $page_id; ?>/<?php echo $i; ?>" tabindex="0"><?php echo $i +1; ?></a>
+	<a class="btn btn-lg <?php if($i==$page_pageid) { echo 'btn-dark disabled active';} else { echo 'btn-outline-dark';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $page_id; ?>/<?php echo $i; ?>" tabindex="0"><?php echo $i +1; ?></a>
 
-<?php
+	<?php
 
-//echo "$i, ";
+   //echo "$i, ";
 
-$i++;
+   $i++;
+   if($i>=$page_pages) {
+	   break;
+   }
 }
 ?>
-<a class="btn btn-outline-dark <?php if($page_pageid+1==$page_pages || $page_pages==0) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>pruefung/pagination/<?php echo $page_id; ?>/<?php echo $page_pages-1; ?>">ende</a>
-<br>zeige <?php echo $page_show_rows; ?> von <?php echo $page_total_rows; ?> auf <?php echo $page_pages; ?> Seiten<br>
+</div>
+<div class="btn-group mr-5" role="group" aria-label="pagination3" >
+<a class="btn-lg btn btn-outline-dark <?php if($page_pageid+1==$page_pages || $page_pages==0) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $page_id; ?>/<?php echo $page_pages-1; ?>">ende</a>
+</div>
 
+
+</div>
+<br>zeige <?php echo $page_show_rows; ?> von <?php echo $page_total_rows; ?> auf <?php echo $page_pages; ?> Seiten<br>
 </div>
 
 <?php

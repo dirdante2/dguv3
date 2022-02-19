@@ -5,12 +5,15 @@ $().ready(function() {
 });
 </script>
 
+
+
 <h1>Prüfung bearbeiten</h1>  <br>
 <h2><?php echo $geraet['geraetename'].' ( ID: '.$geraet['gid'].')'; ?> <br>von <?php echo $geraet['ortsname']; ?></h2>
 <br>
-<div class="row">
-<div class="col-3">
-						<b>Objekt</b><br><br>
+<b>Objekt</b><br><br>
+<div class="row" style="border: 1px solid #000; max-width: 900px;">
+<div class="col" style="width: 600px;border: 0px solid #000;white-space: nowrap;">
+						
 <table  class="table table-sm">
 							<tr>
 								<td>ID</td>
@@ -42,8 +45,8 @@ $().ready(function() {
 							</tr>
 						</table>
 </div>
-<div class="col-3">
-						<b> </b><br><br>
+<div class="col" style="width: 600px;border: 0px solid #000;white-space: nowrap;">
+						
 <table  class="table table-sm">
 							<tr>
 								<td>Nennspannung</td>
@@ -72,7 +75,7 @@ $().ready(function() {
 						
 						</table>
 </div>
-</div>
+</div><br><br>
 <?php
 echo form_open('pruefung/edit/'.$geraet['pruefungid']);
 echo validation_errors();
@@ -223,9 +226,12 @@ maximal jedoch 1 Ohm.-->
 
 <br>
 <input type="submit" class="btn btn-primary btn-lg btn-block" value="speichern">
+<a href="<?php echo site_url('pruefung/delete/'.$geraet['pruefungid']); ?>" class="<?php if($this->session->userdata('level')>='3') { echo " disabled"; }?> btn btn-danger btn-lg btn-block"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span> delete</a>
+
 </form>
 
 </div>
  <div class="col-6"  style="width:50%"></div>
+
 
 </div>

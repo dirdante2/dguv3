@@ -148,7 +148,7 @@ class Log_model extends CI_Model {
 		}
 		
 		
-				file_put_contents('application/privat_logs/'.date('Y-m-d').'.php', PHP_EOL .  date('Y-m-d H:i:s').' --> '.$context.' von '.$user, FILE_APPEND);
+				file_put_contents('application/privat_logs/'.date('Y-m-d').'.php', PHP_EOL .  date('Y-m-d H:i:s').' ; '.$user.' ; '.$context, FILE_APPEND);
 		
 		
 			}

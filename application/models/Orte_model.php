@@ -67,16 +67,18 @@ class Orte_model extends CI_Model {
 	}
 
 	function set($data, $oid=NULL) {
-		if($oid) {
-			$this->db->set(array(
-				'name' => $data['name'],
-				'beschreibung' => $data['beschreibung']
-			));
+		 if($oid) {
+		
 			$this->db->where('oid',$oid);
-
-			return $this->db->update('orte',$data);
+			$this->db->update('orte',$data);
+			$insert_id = $oid;
+		} else {
+			$this->db->insert('orte',$data);
+			$insert_id = $this->db->insert_id();
 		}
-		return $this->db->insert('orte',$data);
+		
+		
+		return $insert_id;
 	}
 
 	function delete($oid) {

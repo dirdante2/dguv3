@@ -1,6 +1,6 @@
 <br><br>
 <div class="container-fluid" style="width:99%">
-<div class="col">
+<div class="col" style="width: 400px;border: 0px solid #000;white-space: nowrap;">
 <span class="iconify" data-icon="logos:github-icon" data-width="20" data-height="20"></span> <a class="link" target="_blank" href="https://github.com/dirdante2/dguv3">https://github.com/dirdante2/dguv3</a><br>
 
 <span class="iconify" data-icon="logos:github-icon" data-width="20" data-height="20"></span> <a class="link" target="_blank" href="https://github.com/SimonLSchlee/json2pdf">https://github.com/SimonLSchlee/json2pdf</a><br>
