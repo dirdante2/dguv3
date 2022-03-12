@@ -153,6 +153,7 @@ $header['title']= 'Orte';
 			
 				$arrayold = array();
 				$logstatus='new';
+				$filenameold='';
 			} else {
 				$logstatus='edit';
 				$arrayold = $this->Orte_model->get($oid);

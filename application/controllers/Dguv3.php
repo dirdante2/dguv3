@@ -82,7 +82,7 @@
 		$data['archiv_ordner']= $this->File_model->getfiles();
 		$data['cronjobs']= $this->File_model->getfiles('cronjob');
 		$header['cronjobs']= $this->File_model->getfiles('cronjob');
-
+    $data['fehlerquote']=  $this->fehlerquote();
 
 
 		$data['firma'] = $this->Firmen_model-> get($this->session->userdata('firmaid'));
@@ -111,23 +111,63 @@
 
   }
 
-  function create_archiv($foldername) {
-    if($this->session->userdata('logged_in') === TRUE){
-    $this->File_model->createfiles($foldername);
+  function fehlerquote() {
+
+    $zeitraumausfallrate     = $this->config->item('dguv3_zeitraumausfallrate');			
+    $oldestday=strtotime('-'.$zeitraumausfallrate); // Jetzt vor einer Woche
+    $oldestday=date("Y-m-d", $oldestday);
+
+
+
+    $anzahlbestanden = $this->Geraete_model->fehlerquote('1',$oldestday); //status(bestanden),zeitraum
+    #echo $data;
+
+
+    $anzahldurchgefallen = $this->Geraete_model->fehlerquote('0',$oldestday); //status(bestanden),zeitraum
+    #echo $data;
+    $fehlerquote=round((($anzahldurchgefallen * 100) / ($anzahlbestanden + $anzahldurchgefallen)), 2);
+
+    $data['prozent']=$fehlerquote;
+    $data['zeitraum']=$oldestday;
+    $data['anzahlbestanden']=$anzahlbestanden;
+    $data['anzahldurchgefallen']=$anzahldurchgefallen;
+
+
+    return $data;      
+    }
+
+
+
+  function create_archiv($folder) {
+    site_denied($this->session->userdata('logged_in'));
+    
+    $fimra_id=$this->session->userdata('firmaid');
+    $this->File_model->createfiles($folder,$fimra_id); //folder, firmaid
+
+    #$this->File_model->createfiles($folder); //folder, firmaid
 
 
       redirect('Dguv3');
-    }
+    
 
 	}
 
+  // typ 1 file elektro geräte übersicht
+  // typ 2 file protokoll
+  // typ 3 archiv 
 	function download_file($file,$typ,$pfad=null) {
+    site_denied($this->session->userdata('logged_in'));
 
+// echo "file $file";
+// echo "<br>";
+// echo "typ $typ";
+// echo "<br>";
+// echo "pfad $pfad";
 
 		if($pfad==null) {
 			$pfad='';
 		}
-		$this->File_model->download_file($file,$typ,$pfad);
+		$this->File_model->download_file($typ,$file); //typ, id
 
 
 

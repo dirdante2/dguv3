@@ -54,7 +54,7 @@
 
 
 
-<nav class="py-3 navbar sticky-top navbar-expand-xl bg-dark navbar-dark">
+<nav class="<?php  if($useragent == 'mobile') { echo 'py-4';} else { echo 'py-0';} ?> navbar sticky-top navbar-expand-xl bg-dark navbar-dark">
   <a class="navbar-brand" href="<?php echo site_url('Dguv3'); ?>">DGUV3
 	<?php if(isset($cronjobs) && $cronjobs) { ?>
 
@@ -64,9 +64,8 @@
 	<?php  if($useragent == 'mobile') { ?>
 
 
-	<ul class="nav navbar-nav navbar-right">
-  <div class="d-flex align-items-right">
-  <?php if($this->session->userdata('level')) {
+	
+  <?php if($this->session->userdata('logged_in')) {
 			if($this->session->userdata('level')==1) {
 				$userroll='admin';
 			} elseif($this->session->userdata('level')==2) {
@@ -79,46 +78,49 @@
 		
 			?>
 
-<a class="nav-link" href="<?php echo site_url('users/index/');?><?php echo $this->session->userdata('userid');?>"><?php echo $this->session->userdata('username');?> (<?php echo $userroll;?>)</a>
+			<ul class="nav navbar-nav navbar-right">
+  			<div class="d-flex align-items-right">
+
+			<a class="nav-link" href="<?php echo site_url('users/index/');?><?php echo $this->session->userdata('userid');?>"><?php echo $this->session->userdata('username');?> (<?php echo $userroll;?>)</a>
 
 
-		</div>
-		</ul>
-		<?php  }} ?>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			</div>
+			</ul>
+			<?php  }} ?>
+  	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent" >
     <ul class="navbar-nav mr-auto">
 
 
+	<?php if($this->session->userdata('logged_in')) { ?>
 
-
-      	<li class="nav-item py-2">
+      	<li class="nav-item <?php  if($useragent == 'mobile') { echo 'py-2';} else { echo 'py-0';} ?>">
         			<a class="nav-link" href="<?php echo site_url('geraete'); ?>"><span class="iconify" data-icon="jam:plug" data-width="<?php echo $datawidth;?>" data-height="<?php echo $dataheight;?>"></span> Gerät</a>
       			</li>
-		<li class="nav-item py-2">
+		<li class="nav-item <?php  if($useragent == 'mobile') { echo 'py-2';} else { echo 'py-0';} ?>">
         			<a class="nav-link" href="<?php echo site_url('orte'); ?>"><span class="iconify" data-icon="ic:baseline-room" data-width="<?php echo $datawidth;?>" data-height="<?php echo $dataheight;?>"></span> Orte</a>
       			</li>
-      	<li class="nav-item py-2">
+      	<li class="nav-item <?php  if($useragent == 'mobile') { echo 'py-2';} else { echo 'py-0';} ?>">
 	        		<a class="nav-link" href="<?php echo site_url('pruefer'); ?>"><span class="iconify" data-icon="ic:baseline-account-circle" data-width="<?php echo $datawidth;?>" data-height="<?php echo $dataheight;?>"></span> Prüfer</a>
       			</li>
-    	<li class="nav-item py-2">
+    	<li class="nav-item <?php  if($useragent == 'mobile') { echo 'py-2';} else { echo 'py-0';} ?>">
 	        		<a class="nav-link" href="<?php echo site_url('messgeraete'); ?>"><span class="iconify" data-icon="ic:outline-computer" data-width="<?php echo $datawidth;?>" data-height="<?php echo $dataheight;?>"></span> Messgeräte</a>
       			</li>
-        <li class="nav-item py-2">
+        <li class="nav-item <?php  if($useragent == 'mobile') { echo 'py-2';} else { echo 'py-0';} ?>">
 	        		<a class="nav-link" href="<?php echo site_url('pruefung'); ?>"><span class="iconify" data-icon="bx:bx-clipboard" data-width="<?php echo $datawidth;?>" data-height="<?php echo $dataheight;?>"></span> Prüfungen</a>
       			</li>
-		<li class="nav-item py-2">
+		<li class="nav-item <?php  if($useragent == 'mobile') { echo 'py-2';} else { echo 'py-0';} ?>">
 	        		<a class="nav-link" href="<?php echo site_url('firmen'); ?>"><span class="iconify" data-icon="bx:bxs-business" data-width="<?php echo $datawidth;?>" data-height="<?php echo $dataheight;?>"></span> Firmen</a>
       			</li>
-		<li class="nav-item py-2">
+		<li class="nav-item <?php  if($useragent == 'mobile') { echo 'py-2';} else { echo 'py-0';} ?>">
 	        		<a class="nav-link" href="<?php echo site_url('users'); ?>"><span class="iconify" data-icon="fa-solid:users" data-width="<?php echo $datawidth;?>" data-height="<?php echo $dataheight;?>"></span> User</a>
       			</li>
-		<li class="nav-item py-2">
+		<li class="nav-item <?php  if($useragent == 'mobile') { echo 'py-2';} else { echo 'py-0';} ?>">
 	        		<a class="nav-link" href="<?php echo site_url('log'); ?>"><span class="iconify" data-icon="carbon:catalog" data-width="<?php echo $datawidth;?>" data-height="<?php echo $dataheight;?>"></span> Logs</a>
       			</li>
+				  <?php } ?>
 
     </ul>
     <ul class="nav navbar-nav navbar-right">
@@ -128,7 +130,7 @@
 
 	<ul class="nav navbar-nav navbar-right">
 	<div class="d-flex align-items-center">
-    	<?php if($this->session->userdata('level')) {
+    	<?php if($this->session->userdata('logged_in')) {
 			if($this->session->userdata('level')==1) {
 				$userroll='admin';
 			} elseif($this->session->userdata('level')==2) {
@@ -150,7 +152,7 @@
 
     <?php } } ?>
 	
-	<?php if($this->session->userdata('level')) { ?>
+	<?php if($this->session->userdata('logged_in')) { ?>
 		<li class="nav-item"> <a class="nav-link" href="<?php echo site_url('login/logout');?>"><span class="iconify" data-icon="mdi:logout" data-width="<?php echo $datawidth;?>" data-height="<?php echo $dataheight;?>"></span> Logout</a></li>
 	<?php } else { ?>
 		<li class="nav-item"><a class="nav-link" href="<?php echo site_url('login');?>"><span class="iconify" data-icon="mdi:logout" data-width="<?php echo $datawidth;?>" data-height="<?php echo $dataheight;?>"></span> Login</a></li>

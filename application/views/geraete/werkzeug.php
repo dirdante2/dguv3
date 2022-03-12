@@ -117,13 +117,13 @@ if(count($geraete)==0) {
 <br><br><br><br>
 <div class="row">
 <div class="col">
-
+Firma 
 Unterschrift: ______________________
 
 
 </div>
 <div class="col">
-
+Mitarbeiter 
 Unterschrift: ______________________
 
 

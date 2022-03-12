@@ -125,6 +125,8 @@ class Geraete extends CI_Controller {
 	 * @return TRUE / FALSE
 	 */
 	public function oid_check($oid) {
+
+		
 		if($this->Orte_model->get($oid)) {
 			return TRUE;
 		} else {
@@ -144,16 +146,19 @@ class Geraete extends CI_Controller {
 			$data['useragent'] = 'desktop';
 			$header['useragent'] = 'desktop';
 		  }
+		  
 		
-		$data['ort'] = $this->Orte_model->get($oid);
+		  $firmen_firmaid=$this->session->userdata('firmaid');
+		  $lagerorte=$this->Orte_model->getByName('Lager',$firmen_firmaid);
+		  
 
 		if($this->agent->is_mobile()){$useragent = 'mobile';} else {$useragent = 'desktop';}
 		#$useragent = 'desktop';
-		$felder = array('oid','geraete_firmaid','hersteller','name','typ','seriennummer','nennstrom','nennspannung','leistung','hinzugefuegt','beschreibung','aktiv','schutzklasse','verlaengerungskabel','kabellaenge');
+		$felder = array('oid','geraete_firmaid','lagerorte','hersteller','name','typ','seriennummer','nennstrom','nennspannung','leistung','hinzugefuegt','beschreibung','aktiv','schutzklasse','verlaengerungskabel','kabellaenge');
 
 		$this->form_validation->set_rules('typ', 'Typ', 'required');
-		$this->form_validation->set_rules('oid', 'Orts-ID', 'required');
-		$this->form_validation->set_rules('oid', 'Ort', 'callback_oid_check'); //valid oid?
+		#$this->form_validation->set_rules('oid', 'Orts-ID', 'required');
+		#$this->form_validation->set_rules('oid', 'Ort', 'callback_oid_check'); //valid oid?
 		$header['cronjobs']= $this->File_model->getfiles('cronjob');
 
 		if($this->form_validation->run() === FALSE) {
@@ -164,11 +169,25 @@ class Geraete extends CI_Controller {
 				foreach($felder as $feld) {
 					$liste[$feld]="";
 				}
+
+				if($oid) {
+					$ort = $this->Orte_model->get($oid);
+
+					$liste['oid']=$ort['oid'];
+					$liste['ortsname']=$ort['name'];
+					$liste['orte_beschreibung']=$ort['beschreibung'];	
+
+				} else {
+				$liste['oid']='';
+				$liste['ortsname']='';
+				$liste['orte_beschreibung']='';	
+				}
+
+
 				$liste['gid']=0;
-					if($oid) {
-					$liste['ortsname']=$data['ort']['name'].' ('.$data['ort']['beschreibung'].')';
-					$liste['oid']=$oid;
-					} else {$liste['ortsname']='';}
+
+						
+				
 
 				$liste['geraete_firmaid']=$this->session->userdata('firmaid');
 				$liste['aktiv']=TRUE;
@@ -176,9 +195,11 @@ class Geraete extends CI_Controller {
 				$liste['schutzklasse']='2';
 				$liste['hinzugefuegt']=date('Y-m-d');
 
-
-				$this->load->view('geraete/form_'.$useragent,array(
+				#$this->load->view('geraete/form_'.$useragent,array(
+				$this->load->view('geraete/form',array(
 					'geraet'=>$liste,
+					'data'=>$data,
+					'lagerorte'=>$lagerorte,
 					'firmen'=> $this->Firmen_model->get()
 				));
 				
@@ -191,9 +212,10 @@ class Geraete extends CI_Controller {
 			else {
 
 				
-
-				  $this->load->view('geraete/form_'.$useragent,array(
+				#$this->load->view('geraete/form_'.$useragent,array(
+				$this->load->view('geraete/form',array(
 					'geraet'=>$this->Geraete_model->get($gid),
+					'lagerorte'=>$lagerorte,
 					'firmen'=> $this->Firmen_model->get()
 				));
 
@@ -214,11 +236,33 @@ class Geraete extends CI_Controller {
 
 			}
 
+		    #print_r($geraet);
+
+
+			if ($geraet['lagerorte']!='NULL') {
+				#echo "lagerort wird als oid verwendet";
+				$geraet['oid']=$geraet['lagerorte'];
+				unset($geraet['lagerorte']);
+				
+			} else {
+
+				
+				unset($geraet['lagerorte']);
+
+			}
+
+
+
+			#print_r($geraet);
+
 			if($gid!=0) {
 			$arrayold = $this->Geraete_model->get($gid);
 			$logstatus='edit';
 
-			} else {$logstatus='new';}
+			} else {
+				$logstatus='new';
+				$arrayold= array();
+			}
 
 			//get the correct gid if new geraet
 			$gid= $this->Geraete_model->set($geraet,$gid);
@@ -228,13 +272,10 @@ class Geraete extends CI_Controller {
 			$arraynew = $this->Geraete_model->get($gid);
 			
 
-			#print_r($geraet['oid']);
-
-				// get ortsid von neu angelegtem gerät damit redirect zu richtiger seite führt?!!
-			$ortsid = $geraet['oid'];
+			
 
 			//$this->Pdf_model->genpdf_uebersicht($gortsid);
-			file_put_contents('cron/liste/'.$ortsid,$geraet['geraete_firmaid']);
+			file_put_contents('cron/liste/'.$geraet['oid'],$geraet['geraete_firmaid']);
 
 
 			// log data
@@ -250,12 +291,12 @@ class Geraete extends CI_Controller {
 				$this->Log_model->privatlog($context);
 			} 
 
-			if($ortsid===NULL) {
+			if($geraet['oid']===NULL) {
 				redirect('geraete');
 				}
 			//Vorhandeses Gerät
 			else {
-			redirect('geraete/index/'.$ortsid);
+			redirect('geraete/index/'.$geraet['oid']);
 
 			}
 
@@ -334,7 +375,6 @@ class Geraete extends CI_Controller {
 		site_pagination('geraete/index/',$oid,$pageid);
 			
 		}
-
 
 
 

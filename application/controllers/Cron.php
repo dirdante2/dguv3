@@ -112,9 +112,11 @@ class Cron extends CI_Controller {
 			//listen übersicht als pdf anfordern
 			foreach($cron_liste as $ortsid) {
 
-				if($this->Orte_model->get($ortsid)) {
+				if($ort=$this->Orte_model->get($ortsid)) {
 					
-					echo 'ort existiert '.$ortsid.'<br>';
+					#print_r($ort);
+
+					echo 'ort existiert oid '.$ortsid.'; Name '.$ort['name'].'; Beschreibung '.$ort['beschreibung'].'<br>';
 				
 
 
@@ -139,6 +141,7 @@ class Cron extends CI_Controller {
 					$error='Fehler '.$filename;
 					array_push($errordata, $error);
 				}
+				echo "-----<br>";
 			}
 
 			// protokoll als pdf anfordern
@@ -173,10 +176,11 @@ class Cron extends CI_Controller {
 
 
 			//FIXME fehler wenn nicht vorhandener ort als letztes kommt und damit keine firmaid vorhanden ist
-			//muss wohl cron für jede firma getrennt angelegt werden
+			//muss wohl cron ordner für jede firma getrennt angelegt werden
 				//aktuelles jahr wird als zip neu erstellt wenn änderungen sind
 				$year=date('Y');
 				if(!empty($cron_liste) || !empty($cron_protokoll)){
+
 				$this->File_model->createfiles($year,$firmaid);
 				}
 

@@ -53,8 +53,9 @@ if($userid && $cookietoken){
 
 
 } else{
+	$salt= $this->config->item('passwordsalt');
 	$email = $this->input->post('email',TRUE);
-    $password = md5($this->input->post('password',TRUE));
+    $password = md5($salt.$this->input->post('password',TRUE));
 	$validate = $this->login_model->validate($email,$password);
 
 }
@@ -68,8 +69,8 @@ if($userid && $cookietoken){
         $email = $data['user_email'];
         $level = $data['user_level'];
         $firmaid = $data['users_firmaid'];
-		    $userid = $data['user_id'];
-		    $userlastlogin = $data['user_lastlogin']; 
+		$userid = $data['user_id'];
+		$userlastlogin = $data['user_lastlogin']; 
 		
 
 
@@ -81,8 +82,8 @@ if($userid && $cookietoken){
             'email'     => $email,
             'level'     => $level,
             'firmaid'     => $firmaid,
-			      'userid'     => $userid,
-			      'lastlogin'     => $userlastlogin,
+			'userid'     => $userid,
+			'lastlogin'     => $userlastlogin,
             'logged_in' => TRUE
         );
 		$this->session->set_userdata($sesdata);

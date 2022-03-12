@@ -19,7 +19,7 @@ class Orte_model extends CI_Model {
 	 * @param oid requested id or NULL if all Orte are requested
 	 * @return list of Orte, single Ort or NULL
 	 */
-	function get($oid=NULL,$firmen_firmaid=NULL) {
+	function get($oid=NULL,$firmen_firmaid=NULL,$geraetetyp=NULL) {
 		$this->db->select('orte.*, firmen.*,COUNT(gid) AS geraeteanzahl');
 		$this->db->from('orte');
 		$this->db->join('geraete', 'orte.oid = geraete.oid','LEFT');
@@ -28,6 +28,10 @@ class Orte_model extends CI_Model {
 		if($firmen_firmaid!==NULL) {
 			$this->db->having('orte.orte_firmaid', $firmen_firmaid);
 		} 
+		if($geraetetyp!==NULL) {
+			$this->db->where('schutzklasse <', $geraetetyp);
+
+		}
 
 		if($oid===NULL) {
 			return $this->db->get()->result_array();

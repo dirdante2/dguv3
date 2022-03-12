@@ -97,6 +97,20 @@ class Geraete_model extends CI_Model {
 		return $result;
 	}
 
+	function fehlerquote($status,$zeitraum) {
+
+		$this->db->select('*');
+		$this->db->from('geraete');
+		$this->db->join('pruefung','geraete.gid = pruefung.gid AND pruefung.pruefungid = (SELECT pruefungid from pruefung as pr where geraete.gid = pr.gid order by datum desc, pruefungid desc limit 1)','LEFT');
+
+		$this->db->where('schutzklasse !=', '5');
+		$this->db->where('bestanden', $status);
+		$this->db->where('datum >=', $zeitraum);
+
+		#$result = $this->db->get()->result_array();
+		#return $result;
+        return $this->db->count_all_results();
+	}
 
 
 	/*Verlängerungskabel
@@ -125,6 +139,7 @@ class Geraete_model extends CI_Model {
 			$this->db->update('geraete',$data);
 			$insert_id = $gid;
 		} else {
+			
 			$this->db->insert('geraete',$data);
 			$insert_id = $this->db->insert_id();
 		}
@@ -145,8 +160,10 @@ class Geraete_model extends CI_Model {
 
 // aufruf geräte pdf übersicht liste für ort
 function pdfdata($oid) {
-	$data['ort'] = $this->Orte_model->get($oid);
 
+	$geraetetyp="5"; // gibt nur geräte mit schutzklasse kleiner als zurück
+	$data['ort'] = $this->Orte_model->get($oid,null,$geraetetyp);
+	#print_r($data);
 #	function get($gid=NULL,$oid=null,$firmen_firmaid=null,$limit=null, $offset=null, $notwerkzeug=null) {
 
 	if($data['ort']===NULL) {return NULL;}
