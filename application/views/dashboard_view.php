@@ -185,6 +185,7 @@ Letzter login: <?php echo $this->session->userdata('lastlogin'); ?>
        <b class="<?php echo $fehlerquotecolor; ?>">Prozent: <?php echo $fehlerquote['prozent']; ?>%</b><br>
 
         Zeitraum: <?php echo $fehlerquote['zeitraum']; ?><br>
+        Geprüft: <?php echo $fehlerquote['geprüft']; ?><br>
         Bestanden: <?php echo $fehlerquote['anzahlbestanden']; ?><br>
         Durchgefallen: <?php echo $fehlerquote['anzahldurchgefallen']; ?><br>
         

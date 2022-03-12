@@ -40,7 +40,7 @@ class Messgeraete extends CI_Controller {
 			$header['cronjobs']= $this->File_model->getfiles('cronjob');
 
 		$this->load->view('templates/header',$header);
-		$this->load->view('templates/datatable');
+		$this->load->view('templates/desktop');
 		$this->load->view('messgeraete/index',$data);
 		$this->load->view('templates/footer');
 	

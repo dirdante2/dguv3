@@ -10,7 +10,7 @@
 	<meta charset="UTF-8">
 	<script src="<?php echo base_url();?>lib/jquery/jquery-3.6.0.min.js"></script>
 	<script src="<?php echo base_url();?>lib/jquery/jquery-ui.min.js"></script>
-	<script src="<?php echo base_url();?>lib/bootstrap/bootstrap.min.js"></script>
+	<!-- <script src="<?php echo base_url();?>lib/bootstrap/bootstrap.min.js"></script> -->
 	
 	<script src="https://code.iconify.design/1/1.0.4/iconify.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.3/toastr.min.js"></script>
@@ -23,6 +23,28 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/jquery/jquery-ui.theme.min.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>lib/bootstrap/bootstrap.min.css">
 	
+<!-- Popper -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+<!-- Latest compiled and minified Bootstrap JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+<!-- Initialize Bootstrap functionality -->
+<script>
+// Initialize tooltip component
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+
+// Initialize popover component
+$(function () {
+  $('[data-toggle="popover"]').popover()
+})
+</script>
+
+
+
 	<?php if($useragent == 'desktop') { 
 		
 		$datawidth="20"; 

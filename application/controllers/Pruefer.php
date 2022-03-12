@@ -46,7 +46,7 @@ class Pruefer extends CI_Controller {
 
 
 		$this->load->view('templates/header',$header);
-		$this->load->view('templates/datatable');
+		$this->load->view('templates/desktop');
 		$this->load->view('pruefer/index',$data);
 		$this->load->view('templates/footer');
 		

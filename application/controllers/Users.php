@@ -53,7 +53,7 @@ class Users extends CI_Controller {
 		$header['cronjobs']= $this->File_model->getfiles('cronjob');
 
 		$this->load->view('templates/header',$header);
-		$this->load->view('templates/datatable');
+		$this->load->view('templates/desktop');
 		$this->load->view('users/index',$data);
 		$this->load->view('templates/footer');
 	

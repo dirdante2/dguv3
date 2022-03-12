@@ -131,6 +131,7 @@
     $data['zeitraum']=$oldestday;
     $data['anzahlbestanden']=$anzahlbestanden;
     $data['anzahldurchgefallen']=$anzahldurchgefallen;
+    $data['geprüft']=($anzahlbestanden + $anzahldurchgefallen);
 
 
     return $data;      

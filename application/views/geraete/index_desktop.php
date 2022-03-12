@@ -201,8 +201,7 @@ if($geraete==NULL) {
 
 			<td class="d-none"><?php echo $tabletd_filterid; ?></td>
 
-
-				<td style="white-space:nowrap;" class="<?php if($ort) { echo "d-none"; } ?>"><?php echo $geraet['ortsname']; ?><br><?php echo $geraet['orte_beschreibung']; ?></td>
+				<td style="white-space:nowrap;" class="<?php if($ort) { echo "d-none"; } ?>"><a href="<?php echo site_url('geraete/index/'.$geraet['oid']); ?>"><?php echo $geraet['ortsname']; ?><br><?php echo $geraet['orte_beschreibung']; ?></a></td>
 
 			<td class=""><?php echo $geraet['name']; ?><?php if($geraet['verlaengerungskabel']=='1') { ?> | <?php echo $geraet['kabellaenge']; ?>m<?php	} ?>
 				</td>
@@ -215,15 +214,17 @@ if($geraete==NULL) {
 			<td class="d-none"><?php if($geraet['nennspannung']=='0') { echo "-"; } else { echo $geraet['nennspannung'].'V'; } ?></td>
 			<td class="d-none"><?php if($geraet['nennstrom']=='0.00') { echo "-"; } else { echo $geraet['nennstrom'].'A'; } ?></td>
 			<td class="d-none"><?php if($geraet['leistung']=='0') { echo "-"; } else { echo $geraet['leistung'].'W'; } ?></td>
-			<td class=""><?php echo $geraet['schutzklasse']; ?></td>
+			<td class="" role="group" aria-label="options" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="1-3 Elektro | 4 Leitern | 5 Werkzeug">
+				<?php echo $geraet['schutzklasse']; ?></td>
 			<td class="d-none"><?php if($geraet['verlaengerungskabel']=='0') { ?>  <?php } else { ?><?php echo $geraet['kabellaenge']; ?>m</td><?php	} ?></td>
-			<td class=""><?php echo $geraet['letztesdatum']?>    (<?php echo $geraet['anzahl']?>) </td>
+			<td class="" role="group" aria-label="options" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Letzte Prüfung (Anzahl der Prüfungen)">
+<?php echo $geraet['letztesdatum']?>    (<?php echo $geraet['anzahl']?>) </td>
 			<td class="">
 				<div class="text-right btn-group btn-group-sm" role="group" aria-label="options">
 
 					<a href="<?php if($geraet) { echo site_url('pruefung/new/'.$geraet['gid']); } ?>" class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-success btn-sm <?php if($geraet['aktiv']=='0' || $this->session->userdata('level')>='3') { echo " disabled"; } ?>"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neue Prüfung</a>
 					<a href="<?php echo site_url('pruefung/index/'.$geraet['gid']); ?>" class="btn btn-primary btn-sm <?php if($geraet['aktiv']=='0') { echo " disabled"; } ?>"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span> prüfung</a>
-					<a href="<?php echo site_url('geraete/index/'.$geraet['oid']); ?>" class="<?php if($ort) { echo "d-none"; } ?> btn btn-primary btn-sm"><span class="iconify" data-icon="ic:baseline-room" data-width="20" data-height="20"></span> Ort</a>
+					<!-- <a href="<?php echo site_url('geraete/index/'.$geraet['oid']); ?>" class="<?php if($ort) { echo "d-none"; } ?> btn btn-primary btn-sm"><span class="iconify" data-icon="ic:baseline-room" data-width="20" data-height="20"></span> Ort</a> -->
 					<a href="<?php echo site_url('geraete/edit/'.$geraet['gid']); ?>" class="btn btn-secondary btn-sm <?php if($this->session->userdata('level')=='3') { echo " disabled"; }?>"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> edit</a>
 					<a href="<?php echo site_url('geraete/delete/'.$geraet['gid']); ?>" class="btn btn-danger btn-sm <?php if($this->session->userdata('level')>='2') { echo " disabled"; }?>"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span> delete</a>
 				</div>

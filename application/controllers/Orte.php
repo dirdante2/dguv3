@@ -64,7 +64,7 @@ $header['title']= 'Orte';
 		if($this->agent->is_mobile()){
 			$this->load->view('templates/scroll');			
 		  } else {			
-			$this->load->view('templates/datatable');			
+			$this->load->view('templates/desktop');			
 		  }
 		  $this->load->view('orte/index_'.$useragent,$data);
 
@@ -105,7 +105,7 @@ $header['title']= 'Orte';
 			if($oid==0) {
 
 				
-					$this->load->view('orte/form_'.$header['useragent'],array(
+					$this->load->view('orte/form_desktop',array(
 						'ort'=>array('oid'=>0,'beschreibung'=>'','name'=>''),
 						'firmen'=> $this->Firmen_model->get()
 					));
@@ -115,7 +115,7 @@ $header['title']= 'Orte';
 			} else {
 
 				
-					$this->load->view('orte/form_'.$header['useragent'],array(
+					$this->load->view('orte/form_desktop',array(
 						'ort'=>$this->Orte_model->get($oid),
 						'firmen'=> $this->Firmen_model->get()
 

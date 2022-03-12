@@ -113,7 +113,7 @@ class Pruefung extends CI_Controller {
 			$this->load->view('pruefung/index_mobile',$data);
 		  } else {
 			$this->load->view('templates/header',$header);
-			$this->load->view('templates/datatable');
+			$this->load->view('templates/desktop');
 			$this->load->view('pruefung/index',$data);
 		  }
 
@@ -145,7 +145,7 @@ class Pruefung extends CI_Controller {
 
 		$data['logourl']= $this->config->item('dguv3_logourl');
 		$this->load->view('templates/print/header');
-		$this->load->view('templates/datatable');
+		$this->load->view('templates/desktop');
 		$this->load->view('pruefung/protokoll',$data);
 		$this->load->view('templates/print/footer');
 	}
@@ -179,9 +179,13 @@ class Pruefung extends CI_Controller {
 
 		if($this->Geraete_model->get($gid)) {
 			 $oid = $this->Geraete_model->get($gid)['oid'];
+
+
 			$pruefung_id = $this->Pruefung_model->new(array(
 			'gid'=>$gid,
 			'oid'=>$oid,
+			'mid'=>$this->session->userdata('usermid'),
+			'pid'=>$this->session->userdata('userpid'),
 			'datum'=>date('Y-m-d')
 			));
 			redirect('pruefung/edit/'.$pruefung_id);
