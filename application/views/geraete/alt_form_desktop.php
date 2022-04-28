@@ -25,7 +25,7 @@ $().ready(function() {
 	    source: function (request, response) {
         	$.getJSON("<?php echo site_url(); ?>/geraete/json/" + request.term, function (data) {
 	            response($.map(data, function (value, key) {
-               
+                console.log(data);
                 	return {
 	                    label: value.dummyname,
                     	value: key
@@ -46,18 +46,36 @@ $().ready(function() {
                 $( "#leistung" ).val( data.leistung );	
                 $( "#nennspannung" ).val( data.nennspannung );	
                 $( "#nennstrom" ).val( data.nennstrom );
-                
-                $( "#verlaengerungskabel" ).val( data.verlaengerungskabel );
                 $( "#kabellaenge" ).val( data.kabellaenge );
-                $( "#verlaengerungskabel" ).val( data.verlaengerungskabel );
+               
+                // if (data.aktiv == 1) {
+                //   radiobtna = document.getElementById("aktiv");
+                // } else {
+                //   radiobtna = document.getElementById("inaktiv");
+                // }
+                // radiobtna.checked = true;
 
-                $("input:schutzklasse").val( data.schutzklasse ) == "true"
+                if (data.verlaengerungskabel == 1) {
+                  radiobtnk = document.getElementById("verlaengerungskabel1");
+                } else {
+                  radiobtnk = document.getElementById("verlaengerungskabel0");
+                }
+                radiobtnk.checked = true;
 
-                $("#id_of_radiobutton").prop("checked", true);
-                $('input[name=foo]').prop('checked', true);
+                if (data.schutzklasse == 1) {
+                  radiobtns = document.getElementById("schutzklasse1");
+                } else if (data.schutzklasse == 2) {
+                  radiobtns = document.getElementById("schutzklasse2");
+                } else if (data.schutzklasse == 3) {
+                  radiobtns = document.getElementById("schutzklasse3");
+                } else if (data.schutzklasse == 4) {
+                  radiobtns = document.getElementById("schutzklasse4");
+                } else if (data.schutzklasse == 5) {
+                  radiobtns = document.getElementById("schutzklasse5");
+                }
+                radiobtns.checked = true;
 
 
-            	
             });
 
 
@@ -192,23 +210,23 @@ echo validation_errors();
       <legend class="col-form-label col-sm-5 pt-0">Schutzklasse*</legend>
       <div class="col-sm-7">
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="schutzklasse" id="1" value="1" <?php if($geraet['schutzklasse']=='1') { echo 'checked'; } ?> required>
+          <input class="form-check-input" type="radio" name="schutzklasse" id="schutzklasse1" value="1" <?php if($geraet['schutzklasse']=='1') { echo 'checked'; } ?> required>
           <label class="form-check-label" for="1">I</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="schutzklasse" id="2" value="2" <?php if($geraet['schutzklasse']=='2') { echo 'checked'; } ?>>
+          <input class="form-check-input" type="radio" name="schutzklasse" id="schutzklasse2" value="2" <?php if($geraet['schutzklasse']=='2') { echo 'checked'; } ?>>
           <label class="form-check-label" for="2">II</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="schutzklasse" id="3" value="3" <?php if($geraet['schutzklasse']=='3') { echo 'checked'; } ?>>
+          <input class="form-check-input" type="radio" name="schutzklasse" id="schutzklasse3" value="3" <?php if($geraet['schutzklasse']=='3') { echo 'checked'; } ?>>
           <label class="form-check-label" for="3">III</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="schutzklasse" id="4" value="4" <?php if($geraet['schutzklasse']=='4') { echo 'checked'; } ?>>
+          <input class="form-check-input" type="radio" name="schutzklasse" id="schutzklasse4" value="4" <?php if($geraet['schutzklasse']=='4') { echo 'checked'; } ?>>
           <label class="form-check-label" for="4">Leiter</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="schutzklasse" id="5" value="5" <?php if($geraet['schutzklasse']=='5') { echo 'checked'; } ?>>
+          <input class="form-check-input" type="radio" name="schutzklasse" id="schutzklasse5" value="5" <?php if($geraet['schutzklasse']=='5') { echo 'checked'; } ?>>
           <label class="form-check-label" for="5">Anderes Gerät</label>
         </div>
        
@@ -220,7 +238,7 @@ echo validation_errors();
       <legend class="col-form-label col-sm-5 pt-0">Verlängerungskabel</legend>
       <div class="col-sm-7">
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="verlaengerungskabel" id="verlaengerungskabel0" data-toggle="collapse" data-target=".collapseOne.show" value="0" <?php if($geraet['verlaengerungskabel']=='0') { echo 'checked'; } ?>>
+          <input class="form-check-input" type="radio" name="verlaengerungskabel" id="verlaengerungskabel0" data-toggle="collapse" data-target=".collapseOne.show" value="0" <?php if($geraet['verlaengerungskabel']=='0' || $geraet['verlaengerungskabel']==null) { echo 'checked'; } ?>>
           <label class="form-check-label" for="verlaengerungskabel0">nein</label>
         </div>
         <div class="form-check">

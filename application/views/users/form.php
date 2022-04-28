@@ -38,7 +38,7 @@ echo validation_errors();
 
 <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
 <div class="row">
- <div class="col-md-6">
+ <div class="col-md">
 
 <form>
 
@@ -145,7 +145,7 @@ echo validation_errors();
     <div class="col-sm-7">
       <input type="text" class="form-control" id="orte" value="<?php echo $user['ortsname']; ?>">
       <!-- hidden -->
-      <input type="text" id="user_oid" name="user_oid" value="<?php echo $user['user_oid']; ?>">
+      <input type="hidden" id="user_oid" name="user_oid" value="<?php echo $user['user_oid']; ?>">
     </div>
   </div>
 

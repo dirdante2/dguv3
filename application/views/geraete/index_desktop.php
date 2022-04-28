@@ -3,6 +3,7 @@
 <div class="row">
  <div class="col">
 
+
 <?php	if($ort) { ?>
 <h1>Geräte für <?php echo $ort['name']; ?></h1>
 <h3><?php echo $ort['beschreibung']; ?></h3>
@@ -47,9 +48,9 @@
 
 <?php
 if(!$ort) {
-	$ortsid=0;
+	$page_id=0;
 } else {
-	$ortsid=$ort['oid'];
+	$page_id=$ort['oid'];
 }
 if($page_total_rows<=$page_show_rows) {
 
@@ -57,21 +58,21 @@ if($page_total_rows<=$page_show_rows) {
 }
 
 //wenn pages mehr als 5 dann kürze pagination ein
-if($page_pages>=5) {
-	if($page_pageid>=3) {
-		$page_start=$page_pageid -3;
-		$page_end=$page_pageid +4;
-	} else {
-		$page_start=0;
-		$page_end=7;
-	}
-} else {
+if($page_pages<=5) {
 	$page_start=0;
 	$page_end=$page_pages;
-}
-if($page_pages>=5 && $page_pageid+4>= $page_pages) {
-$page_end=$page_pages;
-$page_start=$page_end -7;
+} else {
+	
+	if($page_pageid>=3) {
+		$page_start=$page_pageid -3;
+		
+		$page_end=$page_pageid +4;
+		
+	} else {
+
+		$page_start=0;
+		$page_end=5;
+	}
 }
 
 ?>
@@ -81,13 +82,13 @@ $page_start=$page_end -7;
 <div class="" style="text-align: center;border: 0px solid #343a40;" role="group" aria-label="pagination">
 
 
-	<a class="btn btn-outline-dark <?php if($page_pageid==0) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $ortsid; ?>/0">start</a>
+	<a class="btn btn-outline-dark <?php if($page_pageid==0) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $page_id; ?>/0">start</a>
 <?php
 $i = $page_start;
 while($i < $page_end) { ?>
 
 
-	<a class="btn <?php if($i==$page_pageid) { echo 'btn-dark disabled active';} else { echo 'btn-outline-dark';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $ortsid; ?>/<?php echo $i; ?>" tabindex="0"><?php echo $i +1; ?></a>
+	<a class="btn <?php if($i==$page_pageid) { echo 'btn-dark disabled active';} else { echo 'btn-outline-dark';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $page_id; ?>/<?php echo $i; ?>" tabindex="0"><?php echo $i +1; ?></a>
 
 	<?php
 
@@ -96,7 +97,7 @@ while($i < $page_end) { ?>
    $i++;
 }
 ?>
-<a class="btn btn-outline-dark <?php if($page_pageid+1==$page_pages || $page_pages==0) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $ortsid; ?>/<?php echo $page_pages-1; ?>">ende</a>
+<a class="btn btn-outline-dark <?php if($page_pageid+1==$page_pages || $page_pages==0) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $page_id; ?>/<?php echo $page_pages-1; ?>">ende</a>
 <br>zeige <?php echo $page_show_rows; ?> von <?php echo $page_total_rows; ?> auf <?php echo $page_pages; ?> Seiten<br>
 
 </div>
@@ -126,6 +127,7 @@ while($i < $page_end) { ?>
 				<th class="">Schutzklasse</th>
 				<th class="d-none">Kabel</th>
 				<th class="">Prüfung</th>
+				<th class="">Bild</th>
 				<th class="">Aktion</th>
 			</tr>
 </thead>
@@ -141,7 +143,10 @@ if($geraete==NULL) {
 <?php
 
 } else {
+
+	
 	foreach($geraete as $geraet) {
+		
 
 				$today = date("Y-m-d");
 				$day     = $geraet['letztesdatum'];
@@ -149,6 +154,32 @@ if($geraete==NULL) {
 				$nextyearfast = strtotime('+'.$pruefungbaldabgelaufen, strtotime($day));
 				$nextyear = date("Y-m-d", $nextyear);
 				$nextyearfast = date("Y-m-d", $nextyearfast);
+
+				if($geraet['aktiv']=='0') { $tabletr_color= "table-secondary"; 
+				} elseif ($geraet['schutzklasse'] == "5") { $tabletr_color= "table-light"; 
+				} elseif ($geraet['bestanden']=='0')  { $tabletr_color= "table-danger"; 
+				} elseif ($nextyear < $today)  { $tabletr_color= "table-warning"; 
+				} elseif ($nextyearfast < $today) { $tabletr_color= "table-info"; 
+				} else {$tabletr_color= "table-light";}
+
+				#0 suche bestanden
+				#1 suche inaktiv
+				#2 suche abgelaufen
+				#3 suche bald abgelaufen
+				#4 suche failed
+				#* suche alle
+				#5 suche werkzeug
+
+				if($geraet['aktiv']== "0") { $tabletd_filterid= "1"; 
+				} elseif ($geraet['schutzklasse'] == "5") { $tabletd_filterid= "5"; 
+				} elseif ($geraet['bestanden']=="0") { $tabletd_filterid= "4"; 
+				} elseif ($nextyear <= $today) { $tabletd_filterid= "2"; 
+				} elseif ($nextyearfast <= $today) { $tabletd_filterid= "3"; 
+				} else { $tabletd_filterid= "0";}
+
+
+				$product_typ_pic = get_product_typ_pic_url($geraet);
+
 
 
 
@@ -169,13 +200,12 @@ if($geraete==NULL) {
 						-->
 
 
-		<tr class="<?php if($geraet['aktiv']=='0') { echo "table-secondary"; } elseif ($geraet['bestanden']=='0')  { echo "table-danger"; } elseif ($nextyear < $today)  { echo "table-warning"; } elseif ($nextyearfast < $today) { echo "table-info"; }?>">
+		<tr class="<?php echo $tabletr_color; ?>">
 		<td class=""><?php echo $geraet['gid']; ?></td>
 
-			<td class="d-none"><?php if($geraet['aktiv']=='0') { echo "1"; } elseif ($geraet['bestanden']=='0')  { echo "4"; } elseif ($nextyear < $today)  { echo "2"; } elseif ($nextyearfast < $today) { echo "3"; }?></td>
+			<td class="d-none"><?php echo $tabletd_filterid; ?></td>
 
-
-				<td style="white-space:nowrap;" class="<?php if($ort) { echo "d-none"; } ?>"><?php echo $geraet['ortsname']; ?></td>
+				<td style="white-space:nowrap;" class="<?php if($ort) { echo "d-none"; } ?>"><a href="<?php echo site_url('geraete/index/'.$geraet['oid']); ?>"><?php echo $geraet['ortsname']; ?><br><?php echo $geraet['orte_beschreibung']; ?></a></td>
 
 			<td class=""><?php echo $geraet['name']; ?><?php if($geraet['verlaengerungskabel']=='1') { ?> | <?php echo $geraet['kabellaenge']; ?>m<?php	} ?>
 				</td>
@@ -188,15 +218,24 @@ if($geraete==NULL) {
 			<td class="d-none"><?php if($geraet['nennspannung']=='0') { echo "-"; } else { echo $geraet['nennspannung'].'V'; } ?></td>
 			<td class="d-none"><?php if($geraet['nennstrom']=='0.00') { echo "-"; } else { echo $geraet['nennstrom'].'A'; } ?></td>
 			<td class="d-none"><?php if($geraet['leistung']=='0') { echo "-"; } else { echo $geraet['leistung'].'W'; } ?></td>
-			<td class=""><?php echo $geraet['schutzklasse']; ?></td>
-			<td class="d-none"><?php if($geraet['verlaengerungskabel']=='0') { ?>  <?php } else { ?><?php echo $geraet['kabellaenge']; ?>m</td><?php	} ?>
-			<td class=""><?php echo $geraet['letztesdatum']?>    (<?php echo $geraet['anzahl']?>)</td>
+			<td class="" role="group" aria-label="options" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="1-3 Elektro | 4 Leitern | 5 Werkzeug">
+				<?php echo $geraet['schutzklasse']; ?></td>
+			<td class="d-none"><?php if($geraet['verlaengerungskabel']=='0') { ?>  <?php } else { ?><?php echo $geraet['kabellaenge']; ?>m</td><?php	} ?></td>
+			<td class="" role="group" aria-label="options" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Letzte Prüfung (Anzahl der Prüfungen)">
+			<?php echo $geraet['letztesdatum']?>    (<?php echo $geraet['anzahl']?>) </td>
+			<td class=""><?php if ($product_typ_pic['pic_exist']) { ?>
+			<img  class="mx-auto d-block" src="<?php echo $product_typ_pic['url_orginal'] ?>" height="50px" alt="Responsive image">
+			<?php } else {
+			echo '--';?>
+			
+			<?php } ?>
+			</td>
 			<td class="">
 				<div class="text-right btn-group btn-group-sm" role="group" aria-label="options">
 
 					<a href="<?php if($geraet) { echo site_url('pruefung/new/'.$geraet['gid']); } ?>" class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-success btn-sm <?php if($geraet['aktiv']=='0' || $this->session->userdata('level')>='3') { echo " disabled"; } ?>"><span class="iconify icon:typcn:document-add icon-width:20 icon-height:20"></span> Neue Prüfung</a>
 					<a href="<?php echo site_url('pruefung/index/'.$geraet['gid']); ?>" class="btn btn-primary btn-sm <?php if($geraet['aktiv']=='0') { echo " disabled"; } ?>"><span class="iconify icon:typcn:clipboard icon-width:20 icon-height:20"></span> prüfung</a>
-					<a href="<?php echo site_url('geraete/index/'.$geraet['oid']); ?>" class="<?php if($ort) { echo "d-none"; } ?> btn btn-primary btn-sm"><span class="iconify" data-icon="ic:baseline-room" data-width="20" data-height="20"></span> Ort</a>
+					<!-- <a href="<?php echo site_url('geraete/index/'.$geraet['oid']); ?>" class="<?php if($ort) { echo "d-none"; } ?> btn btn-primary btn-sm"><span class="iconify" data-icon="ic:baseline-room" data-width="20" data-height="20"></span> Ort</a> -->
 					<a href="<?php echo site_url('geraete/edit/'.$geraet['gid']); ?>" class="btn btn-secondary btn-sm <?php if($this->session->userdata('level')=='3') { echo " disabled"; }?>"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> edit</a>
 					<a href="<?php echo site_url('geraete/delete/'.$geraet['gid']); ?>" class="btn btn-danger btn-sm <?php if($this->session->userdata('level')>='2') { echo " disabled"; }?>"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span> delete</a>
 				</div>

@@ -27,15 +27,18 @@ class Users extends CI_Controller {
 	}
 
 	function index($user_id=NULL) {
-		if($this->session->userdata('logged_in') !== TRUE){
-			if($this->agent->is_mobile()){
-				$this->load->view('templates/header_mobile');
-			} else {
-				$this->load->view('templates/header');
-			}
-			$this->load->view('static/denied');
-			$this->load->view('templates/footer');
-          }else{
+		site_denied($this->session->userdata('logged_in'));
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
+
+		
+		
+
 			if($this->session->userdata('level')!='1'){
 				$user_id=$this->session->userdata('userid');
 
@@ -50,13 +53,21 @@ class Users extends CI_Controller {
 		$header['cronjobs']= $this->File_model->getfiles('cronjob');
 
 		$this->load->view('templates/header',$header);
-		$this->load->view('templates/datatable');
+		$this->load->view('templates/desktop');
 		$this->load->view('users/index',$data);
 		$this->load->view('templates/footer');
-	}
+	
 	}
 
 	function new($user_id=NULL) {
+		site_denied($this->session->userdata('logged_in'));
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
 		if($this->session->userdata('level')!='1'){
           $this->load->view('templates/header');
 			$this->load->view('static/denied');
@@ -73,6 +84,20 @@ class Users extends CI_Controller {
 			//'oid'=>$oid,
 			//'datum'=>date('Y-m-d')
 			));
+			$arrayold = array();
+			$arraynew = $this->Users_model->get($user_id);
+			$logstatus='edit';
+
+			// log data
+			$log_diff=log_change($arrayold, $arraynew, $logstatus);
+			if(!empty($log_diff)) {
+				$context='User neu id '.$user_id.' ; '.$log_diff;
+				#print_r($context);
+				$this->Log_model->privatlog($context);
+			} 
+
+
+
 			redirect('users/edit/'.$user_id);
 		} else {
 			show_error('user mit der id "'.$user_id.'" existiert nicht.', 404);
@@ -80,12 +105,16 @@ class Users extends CI_Controller {
 	}
 	}
 
-	function edit($user_id=0) {
-		if(!$this->session->userdata('level')){
-          $this->load->view('templates/header');
-			$this->load->view('static/denied');
-			$this->load->view('templates/footer');
-          }else{
+	function edit($user_id) {
+		site_denied($this->session->userdata('logged_in'));
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
+		
 			$header['cronjobs']= $this->File_model->getfiles('cronjob');
 
 			if($this->session->userdata('level')!='1'){
@@ -103,25 +132,7 @@ class Users extends CI_Controller {
 		if($this->form_validation->run() === FALSE) {
 			$this->load->view('templates/header',$header);
 
-			if($user_id==0) {
-				$this->load->view('users/form',array(
-					'pruefer'=> $this->Pruefer_model->get(),
-					'messgeraete'=> $this->Messgeraete_model->get(),
-					'firmen'=> $this->Firmen_model->get(),
-					'user'=>array(
-						'user_id'=>0,
-						'user_name'=>'',
-						'user_oid'=>'',
-						'ortsname'=>'',
-						'user_showlink1'=>'0',
-						'user_delete'=>'0',
-						'user_edit'=>'0',
-						'user_new'=>'0',
-						'user_edituser'=>'0',
-						)
-
-				));
-			} else {
+			
 				$this->load->view('users/form',array(
 					'pruefer'=> $this->Pruefer_model->get(),
 					'messgeraete'=> $this->Messgeraete_model->get(),
@@ -129,7 +140,7 @@ class Users extends CI_Controller {
 					'user'=>$this->Users_model->get($user_id)
 
 				));
-			}
+			
 			$this->load->view('templates/footer');
 
 
@@ -146,7 +157,10 @@ class Users extends CI_Controller {
 				$user[$feld]=$this->input->post($feld);
 			}
 			if($user['user_password']) {
-				$user['user_password']= md5($user['user_password']);
+				$salt= $this->config->item('passwordsalt');
+				#echo $salt.$user['user_password'];
+
+				$user['user_password']= md5($salt.$user['user_password']);
 			} else {
 				$user['user_password']=$userpassword;
 			}
@@ -160,33 +174,42 @@ class Users extends CI_Controller {
 				$user['user_level']=$userlevel;
 			}
 
+			$arrayold = $this->Users_model->get($user_id);
 
 			$this->Users_model->update($user,$user_id);
 			$this->Login_model->update();
+			
+			$arraynew = $this->Users_model->get($user_id);
+			$logstatus='edit';
+
+			// log data
+			$log_diff=log_change($arrayold, $arraynew, $logstatus);
+			if(!empty($log_diff)) {
+				
+					$context='User bearbeitet id '.$user_id.' ; '.$log_diff;
+				
+
+				#print_r($context);
+				$this->Log_model->privatlog($context);
+			} 
 
 
-			$user = $this->Users_model->get($user_id);
-
-			$context='User bearbeitet name '.$user['user_name'].' userid '.$user['user_id'].' email '.$user['user_email'];
-			$this->Log_model->privatlog($context);
-
-
-
-				// get ortsid von neu angelegtem gerät damit redirect zu richtiger seite führt?!!
-			//$gortsid = $this->Geraete_model->get($gid);
-
-			//if($gid==0) {
+				
 				redirect('users');
-			//	}
-			//Vorhandeses Gerät
-			//else {
-			//redirect('geraete/index/'.$gortsid['oid']);
-			//}
-	}
-}
+		}
+		
+
 	}
 
 	function delete($user_id) {
+		site_denied($this->session->userdata('logged_in'));
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
 		if($this->session->userdata('level')!='1'){
           $this->load->view('templates/header');
 			$this->load->view('static/denied');
@@ -205,12 +228,27 @@ class Users extends CI_Controller {
 			));
 			$this->load->view('templates/footer');
 		} else {
+
+			$arrayold = $this->Users_model->get($user_id);
+			$arraynew= array();
+			$logstatus='delete';
+
 			$this->Users_model->delete($user_id);
 
-			$user = $this->Users_model->get($user_id);
 
-			$context='User gelöscht name '.$user['user_name'].' userid '.$user['user_id'].' email '.$user['user_email'];
-			$this->Log_model->privatlog($context);
+
+
+			// log data
+			$log_diff=log_change($arrayold, $arraynew, $logstatus);
+			if(!empty($log_diff)) {
+				
+				$context='User gelöscht id '.$user_id.' ; '.$log_diff;
+				
+
+				#print_r($context);
+				$this->Log_model->privatlog($context);
+			} 
+
 
 			redirect('users');
 		}

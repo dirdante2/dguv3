@@ -1,7 +1,4 @@
 
-
-
-
 <table style="width:100%"><tr>
 	<td class="text-left">QR<br><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo base_url();?>index.php/pruefung/index/<?php echo $pruefung['gid']; ?>" width="80px" alt="Responsive image"></td>
 	<td class="text-right"><img src="<?php echo base_url();?>application/bilder/logo.jpg" width="280px" alt="Responsive image" ></td>

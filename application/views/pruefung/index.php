@@ -1,14 +1,18 @@
 <div class="row">
  <div class="col">
 
-
+ <?php
+	#print_r($geraet);
+	
+?>
 <h1>Prüfungen</h1>
 <?php
 	if($geraet) {
 ?>
-<div class="row">
-<div class="col-3">
-						<b>Objekt</b><br><br>
+<b>Objekt</b><br><br>
+<div class="row" style="border: 1px solid #000;">
+<div class="col-lg-3 col-md"style="min-width: 400px; border: 0px solid #000;">
+						
 
 						<table  class="table table-sm">
 							<tr>
@@ -17,7 +21,7 @@
 							</tr>
 							<tr>
 								<td>Ort</td>
-								<td><?php if($geraet['ortsname']==NULL) { echo "-"; } else { echo $geraet['ortsname']; } ?></td>
+								<td><?php if($geraet['ortsname']==NULL) { echo "-"; } else { echo $geraet['ortsname'].' '.$geraet['orte_beschreibung']; } ?></td>
 							</tr>
 							<tr>
 								<td>Name</td>
@@ -41,8 +45,8 @@
 							</tr>
 						</table>
 </div>
-<div class="col-3">
-						<b> </b><br><br>
+<div class="col-lg-3 col-md"style="min-width: 400px; border: 0px solid #000;">
+						
 
 						<table  class="table table-sm">
 						
@@ -72,8 +76,17 @@
 							</tr>
 						</table>
 </div>
+<div class="col-lg-5 col-md text-center" >
+<br>
+<?php if ($product_typ_pic['pic_exist']) { ?>
+	<img  class="mx-auto img-fluid" src="<?php echo $product_typ_pic['url_orginal'] ?>" style="max-width:650px; max-height:300px"  alt="Responsive image">
+<?php } else {
+	echo 'error';?>
+	<?php echo $product_typ_pic['url_orginal']?>
+	<?php } ?>
 </div>
-
+</div>
+<br><br>
 
 
 <div class="btn-group pull-right">
@@ -98,6 +111,68 @@
 <button id="suche_alle" class="btn btn-info filter">Alle</button>
 </div>
 <br>
+<br>
+<!-- <?php echo $page_total_rows; ?> total rows<br>
+<?php echo $page_show_rows; ?> show rows<br>
+<?php echo $page_pages; ?> pages<br>
+<?php echo $page_pageid; ?> pageid<br>
+<?php echo $page_offset; ?> offset<br>  -->
+<?php
+if(!$geraet) {
+	$page_id=0;
+} else {
+	$page_id=$geraet['gid'];
+	
+}
+if($page_total_rows<=$page_show_rows) {
+
+	$page_show_rows=$page_total_rows;
+}
+
+//wenn pages mehr als 5 dann kürze pagination ein
+if($page_pages<=5) {
+	$page_start=0;
+	$page_end=$page_pages;
+} else {
+	
+	if($page_pageid>=3) {
+		$page_start=$page_pageid -3;
+		
+		$page_end=$page_pageid +4;
+		
+	} else {
+
+		$page_start=0;
+		$page_end=5;
+	}
+}
+
+?>
+
+
+<div class="" style="text-align: center;border: 0px solid #343a40;" role="group" aria-label="pagination">
+
+
+	<a class="btn btn-outline-dark <?php if($page_pageid==0) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $page_id; ?>/0">start</a>
+<?php
+$i = $page_start;
+while($i < $page_end) { ?>
+
+
+	<a class="btn <?php if($i==$page_pageid) { echo 'btn-dark disabled active';} else { echo 'btn-outline-dark';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $page_id; ?>/<?php echo $i; ?>" tabindex="0"><?php echo $i +1; ?></a>
+
+	<?php
+
+   //echo "$i, ";
+
+   $i++;
+}
+?>
+<a class="btn btn-outline-dark <?php if($page_pageid+1==$page_pages || $page_pages==0) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $page_id; ?>/<?php echo $page_pages-1; ?>">ende</a>
+<br>zeige <?php echo $page_show_rows; ?> von <?php echo $page_total_rows; ?> auf <?php echo $page_pages; ?> Seiten<br>
+
+</div>
+
 <br>
 
 <?php /*<a href="<?php echo site_url('pruefung/edit'); ?>" class="btn btn-primary">Neues Prüfung hinzufügen</a> */?>
@@ -172,7 +247,7 @@ if(count($pruefung)==0) {
 
                         <td><?php if($pr['sichtpruefung']=='1') { echo "ja"; } else { echo "nein"; } ?> <?php if($pr['sichtpruefung']=='1') {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
 
-                        <td><?php if($pr['schutzleiter']===NULL) { echo "-"; } else { echo $pr['schutzleiter']; } ?> <?php $y = $pr['RPEmax']; if($pr['schutzleiter']===NULL) { echo ""; } elseif($pr['schutzleiter'] <= $y)  {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?><?php if($pr['RPEmax']===NULL) { echo ""; } else { echo '('.$pr['RPEmax'].')'; } ?></td>
+                        <td><?php if($pr['schutzleiter']===NULL) { echo "-"; } else { echo $pr['schutzleiter']; } ?> <?php $y = $pr['RPEmax']; if($pr['schutzleiter']===NULL) { echo ""; } elseif($pr['schutzleiter'] <= $y)  {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?><?php if($pr['RPEmax']===NULL || $pr['schutzleiter']===NULL) { echo ""; } else { echo '('.$pr['RPEmax'].')'; } ?></td>
 
                         <td><?php if($pr['isowiderstand']===NULL) { echo "-"; } else { echo $pr['isowiderstand']; } ?> <?php $y = 2.0; if($pr['isowiderstand']===NULL) { echo ""; } elseif($pr['isowiderstand'] >= $y) {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>
 												<td><?php if($pr['schutzleiterstrom']===NULL) { echo "-"; } else { echo $pr['schutzleiterstrom']; } ?> <?php $y = 0.5; if($pr['schutzleiterstrom']===NULL) { echo ""; } elseif($pr['schutzleiterstrom'] <= $y) {?> <span class="iconify" data-icon="el:ok" style="color: green;" data-width="15" data-height="15"></span><?php	} else {?> <span class="iconify" data-icon="oi:circle-x" style="color: red;" data-width="15" data-height="15"></span><?php } ?></td>

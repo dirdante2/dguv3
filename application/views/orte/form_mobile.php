@@ -13,14 +13,14 @@ echo validation_errors();
 <form>
 
   <div class="form-group row">
-  <label for="name" class="col-sm-5 col-form-label">Name*</label>
+  <label for="name" class="col-sm-5 col-form-label">Name*<br>zb. Nummernschild</label>
 
 <input type="text" class="form-control" id="name" name="name" value="<?php echo $ort['name'] ?>">
 </div>
   <br>
 
 <div class="form-group row">
-    <label for="name" class="col-sm-5 col-form-label">Beschreibung</label>
+    <label for="name" class="col-sm-5 col-form-label">Beschreibung*<br>zb. Name des Besitzers</label>
     
       <input type="text" class="form-control" name="beschreibung" id="beschreibung" value="<?php echo $ort['beschreibung']; ?>" >
     </div>

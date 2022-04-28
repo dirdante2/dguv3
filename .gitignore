@@ -2,7 +2,7 @@
 application/config/database.php
 application/config/config.php
 application/config/config_dguv3.php
-application/bilder/logo.jpg
+application/bilder/*
 application/logs/*
 application/cron_log/*
 application/privat_logs/*

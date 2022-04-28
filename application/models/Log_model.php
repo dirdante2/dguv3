@@ -82,9 +82,9 @@ class Log_model extends CI_Model {
 						$line= implode(' --> ',$lineparts);
 						$line=$colorpre.$line.$colorsuf;
 
-					}elseif($var=='2' && strpos($line, ' --> ')){
+					}elseif($var=='2' && strpos($line, ' ; ')){
 
-						$lineparts = explode(" --> ", $line);
+						$lineparts = explode(" ; ", $line);
 						$colorpre='<span class="badge badge-light">info</span> ';
 						$colorsuf='';
 
@@ -95,11 +95,11 @@ class Log_model extends CI_Model {
 							$nachlastlogin='0';
 						}
 
-						$line= implode(' --> ',$lineparts);
+						$line= implode(' ; ',$lineparts);
 						$line=$colorpre.$line.$colorsuf;
 					}
 
-					if(strpos($line, ' --> ')) {
+					if(strpos($line, ' ; ') || strpos($line, ' --> ')) {
 
 					if($nachlastlogin=='lastlogin'){
 						array_push($contentformated, $colorpre.$this->session->userdata('lastseen').'<hr>'.$colorsuf);
@@ -148,7 +148,7 @@ class Log_model extends CI_Model {
 		}
 		
 		
-				file_put_contents('application/privat_logs/'.date('Y-m-d').'.php', PHP_EOL .  date('Y-m-d H:i:s').' --> '.$context.' von '.$user, FILE_APPEND);
+				file_put_contents('application/privat_logs/'.date('Y-m-d').'.php', PHP_EOL .  date('Y-m-d H:i:s').' ; '.$user.' ; '.$context, FILE_APPEND);
 		
 		
 			}

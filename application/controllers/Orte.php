@@ -21,15 +21,19 @@ class Orte extends CI_Controller {
 	}
 
 	function index() {
+		site_denied($this->session->userdata('logged_in'));
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
 		if($this->agent->is_mobile()){$useragent = 'mobile';} else {$useragent = 'desktop';}
 
-		if($this->session->userdata('logged_in') !== TRUE){
+		
 
-			
-			$this->load->view('templates/header_'.$useragent);
-			$this->load->view('static/denied');
-			$this->load->view('templates/footer');
-          }else{
+		
 
 			
 			  //userlevel 2 oder höher kann nur orte mit eigener firma sehen 8
@@ -55,17 +59,17 @@ $header['title']= 'Orte';
 
 
 		//$data['filename'] = $this->File_model->get_file_pfad();
-		$this->load->view('templates/header_'.$useragent,$header);
+		$this->load->view('templates/header',$header);
 
 		if($this->agent->is_mobile()){
 			$this->load->view('templates/scroll');			
 		  } else {			
-			$this->load->view('templates/datatable');			
+			$this->load->view('templates/desktop');			
 		  }
 		  $this->load->view('orte/index_'.$useragent,$data);
 
 			$this->load->view('templates/footer');
-			}
+			
 
 
 
@@ -73,11 +77,17 @@ $header['title']= 'Orte';
 
 
 	function edit($oid=0) {
-		if($this->agent->is_mobile()){$useragent = 'mobile';} else {$useragent = 'desktop';}
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
 		//user level 4 oder höher darf keine orte erstellen oder bearbeiten
 		
 		if($this->session->userdata('level')>='4' || $this->session->userdata('logged_in') !== TRUE){
-			$this->load->view('templates/header_'.$useragent);
+			$this->load->view('templates/header',$header);
 			$this->load->view('static/denied');
 			$this->load->view('templates/footer');
           }else{
@@ -90,12 +100,12 @@ $header['title']= 'Orte';
 		//$this->form_validation->set_rules('firmen_firmaid', 'Firma', 'required');
 
 		if($this->form_validation->run() === FALSE) {
-			$this->load->view('templates/header_'.$useragent,$header);
+			$this->load->view('templates/header',$header);
 
 			if($oid==0) {
 
 				
-					$this->load->view('orte/form_'.$useragent,array(
+					$this->load->view('orte/form_desktop',array(
 						'ort'=>array('oid'=>0,'beschreibung'=>'','name'=>''),
 						'firmen'=> $this->Firmen_model->get()
 					));
@@ -105,7 +115,7 @@ $header['title']= 'Orte';
 			} else {
 
 				
-					$this->load->view('orte/form_'.$useragent,array(
+					$this->load->view('orte/form_desktop',array(
 						'ort'=>$this->Orte_model->get($oid),
 						'firmen'=> $this->Firmen_model->get()
 
@@ -113,25 +123,10 @@ $header['title']= 'Orte';
 				  
 
 				  //generiere PDF übersicht
-			//$this->Pdf_model->genpdf_uebersicht($oid);
+			
 			$ort = $this->Orte_model->get($oid);
-			
-
 			file_put_contents('cron/liste/'.$oid,$ort['orte_firmaid']);
-			// $typ='1';
-			// $filename = $this->File_model->get_file_pfad($typ,$oid);
-
-
-			//FIXME fehler weil ordner nicht verfügbar ist w
-			// $toast_content['filename']=$filename;
-			// $toast_content['ortsname']=$ort['name'];
-			// file_put_contents('toast/'.$this->session->userdata('userid').'/'.$oid.'.txt', json_encode($toast_content));
-
 			
-
-			
-			
-
 
 			}
 
@@ -152,29 +147,40 @@ $header['title']= 'Orte';
 
 			}
 
-			if($oid!=0) { $filenameold = $this->File_model->get_file_pfad('1', $oid);}
-			
-			$this->Orte_model->set($ort,$oid);
-			
+		
 
 			if($oid==0) {				
 			
-			  $context='Ort neu erstellt '.$ort['name'].' besschreibung '.$ort['beschreibung'].' oid ';
-			  $this->Log_model->privatlog($context);
-
+				$arrayold = array();
+				$logstatus='new';
+				$filenameold='';
 			} else {
+				$logstatus='edit';
+				$arrayold = $this->Orte_model->get($oid);
+
+				$filenameold = $this->File_model->get_file_pfad('1', $oid);
+			}
+			
+
+			$oid= $this->Orte_model->set($ort,$oid);
+			
+
+			
 				
+				$arraynew = $this->Orte_model->get($oid);
+				
+				#print_r($arraynew);
 				$filenamenew = $this->File_model->get_file_pfad('1', $oid);
 
-				$context='Ort bearbeitet name '.$ort['name'].' besschreibung '.$ort['beschreibung'].' oid '.$oid;
-				$this->Log_model->privatlog($context);
+				
+				
 
-				echo $filenamenew;
-				echo '<br>';
-				echo $filenameold;
+				#echo $filenamenew;
+				#echo '<br>';
+				#echo $filenameold;
 
 				if (!file_exists($filenamenew) && file_exists($filenameold)) {
-					echo '<br>namensänderung<br>';
+					#echo '<br>namensänderung<br>';
 					
 					$dateinameold = basename($filenameold);
 					$dirnameold = dirname($filenameold);
@@ -188,7 +194,20 @@ $header['title']= 'Orte';
 	
 					}
 
-			}
+			
+
+			// log data
+			$log_diff=log_change($arrayold, $arraynew, $logstatus);
+			if(!empty($log_diff)) {
+				if(empty($arrayold)) {
+					$context='Ort neu oid '.$oid.' ; '.$log_diff;
+				} else {
+					$context='Ort bearbeitet oid '.$oid.' ; '.$log_diff;
+				}
+
+				#print_r($context);
+				$this->Log_model->privatlog($context);
+			} 
 
 
 
@@ -200,6 +219,15 @@ $header['title']= 'Orte';
 	}
 
 	function delete($oid) {
+		site_denied($this->session->userdata('logged_in'));
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
+
 		//nur admin darf orte löschen
 		if($this->session->userdata('level')!='1'){
           $this->load->view('templates/header');
@@ -212,12 +240,16 @@ $header['title']= 'Orte';
 		$this->form_validation->set_rules('confirm', 'Bestätigung', 'required');
 
 		if($this->form_validation->run() === FALSE) {
+
+			$data['ort']= $this->Orte_model->get($oid);
+			$data['target']= 'orte/delete/'.$oid;
+			$data['canceltarget']= 'orte';
+
+
+
 			$this->load->view('templates/header',$header);
-			$this->load->view('templates/confirm',array(
-				'beschreibung' => 'Ort wirklich löschen?',
-				'target' => 'orte/delete/'.$oid,
-				'canceltarget' => 'orte'
-			));
+			$this->load->view('orte/delete_info',$data);
+			$this->load->view('templates/confirm',$data);
 			$this->load->view('templates/footer');
 		} else {
 
@@ -231,12 +263,25 @@ $header['title']= 'Orte';
 				rmdir($dirname);
 				
 				}
+			$arrayold = $this->Orte_model->get($oid);
+			$arraynew= array();
+			$logstatus='delete';
 
 			$this->Orte_model->delete($oid);
 			
 
-			$context='Ort gelöscht name '.$ort['name'].' oid '.$ort['oid'];
-			$this->Log_model->privatlog($context);
+			// log data
+			$log_diff=log_change($arrayold, $arraynew, $logstatus);
+			if(!empty($log_diff)) {
+				if(empty($arrayold)) {
+					$context='Ort neu oid '.$oid.' ; '.$log_diff;
+				} else {
+					$context='Ort bearbeitet oid '.$oid.' ; '.$log_diff;
+				}
+
+				#print_r($context);
+				$this->Log_model->privatlog($context);
+			} 
 
 			redirect('orte');
 		}
@@ -244,11 +289,13 @@ $header['title']= 'Orte';
 	}
 
 	function json($key="") {
-		if($this->session->userdata('logged_in') !== TRUE){
-			$this->load->view('templates/header',$header);
-			$this->load->view('static/denied');
-			$this->load->view('templates/footer');
-		}else{
+		site_denied($this->session->userdata('logged_in'));
+		
+			$search = array("%C3%A4", "%C3%B6", "%C3%BC", "%C3%9F", "%60");		
+			$replace = array("ä", "ö", "ü", "ß", "");			
+			$key= str_replace($search, $replace, $key);
+
+
 			 //userlevel 2 oder höher kann nur orte mit eigener firma sehen
 			 if($this->session->userdata('level')>='2'){
 				$firmen_firmaid=$this->session->userdata('firmaid');
@@ -257,7 +304,7 @@ $header['title']= 'Orte';
 			} else {
 				$orte=$this->Orte_model->getByName($key);
 			}
-
+			
 
 
 
@@ -268,7 +315,7 @@ $header['title']= 'Orte';
 			}
 
 			echo json_encode($response);
-		}
+		
 	}
 
 

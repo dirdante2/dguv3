@@ -48,3 +48,9 @@ echo $details_protokoll_cronjob;
 
 ?></div>
 <br>
+<h2>andere links</h2>
+<?php $year=date('Y'); ?>
+<a href="<?php echo site_url('dguv3/create_archiv/'.$year); ?>" class="btn btn-primary">zip archiv <?php $year=date('Y'); echo $year; ?> neu</a><br>
+<a href="<?php echo site_url('cron/create_pdf_3/'); ?>" class="btn btn-primary">cronjob PDF erstellen</a><br>
+<a href="<?php echo site_url('cron/create_pdf_1/'); ?>" class="btn btn-primary">alle Übersicht PDF erstellen</a><br>
+<a href="<?php echo site_url('cron/create_pdf_2/'); ?>" class="btn btn-primary">alle protokolle PDF erstellen</a><br>

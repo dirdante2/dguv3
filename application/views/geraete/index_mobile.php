@@ -11,18 +11,19 @@
 <h1>Geräte</h1>
 <?php	} ?>
 
-<div class="btn-group" role="group" aria-label="options" style="width:100%">
-<a class="<?php if(!$ort) { echo "d-none"; } ?> btn btn-primary" href="<?php echo site_url('geraete'); ?>">Alle Geräte auflisten</a>
-<a class="btn btn-success <?php if($this->session->userdata('level')=='3') { echo " disabled"; }?>" href="<?php echo site_url('geraete/edit'); ?>"><span class="iconify icon:typcn:document-add icon-width:50 icon-height:50"></span> Neues Gerät hinzufügen</a>
+<div class="btn-group-vertical" role="group" aria-label="options" style="width:100%">
+<a class="btn-lg <?php if(!$ort) { echo "d-none"; } ?> btn btn-primary" href="<?php echo site_url('geraete'); ?>">Alle Geräte auflisten</a>
+<a class="btn-lg btn btn-success <?php if($this->session->userdata('level')=='3') { echo " disabled"; }?>" href="<?php echo site_url('geraete/edit/'); ?><?php if($ort) { echo '0/'.$ort['oid'];} ?>"><span class="iconify icon:typcn:document-add icon-width:50 icon-height:50"></span> Neues Gerät hinzufügen</a>
 
 <?php
 	if($ort) {
 
 		$year=date("Y"); ?>
 
-			<a href="<?php echo site_url('orte/edit/'.$ort['oid']); ?>" class="btn btn-secondary <?php if($this->session->userdata('level')=='3') { echo " disabled"; }?>"><span class="iconify icon:typcn:edit icon-width:50 icon-height:50"></span> Ort bearbeiten</a>
+			<a href="<?php echo site_url('orte/edit/'.$ort['oid']); ?>" class="btn-lg btn btn-secondary <?php if($this->session->userdata('level')=='3') { echo " disabled"; }?>"><span class="iconify icon:typcn:edit icon-width:50 icon-height:50"></span> Ort bearbeiten</a>
 
-			<a href="<?php echo base_url('orte/download_file/1/'.$ort['oid']);?>" target="_blank" class="btn btn-primary <?php if (!file_exists($pdf_data[ $ort['oid']]) || (filesize($pdf_data[ $ort['oid']])=='0')) { echo "disabled"; } ?>"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="50" data-height="50"></span> Übersicht</a>
+			<a href="<?php echo base_url('orte/download_file/1/'.$ort['oid']);?>" target="_blank" class="btn btn-primary <?php if (!file_exists($pdf_data) || (filesize($pdf_data)=='0')) { echo "disabled"; } ?>"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="50" data-height="50"></span> Übersicht</a>
+
 
 
 		<!--<a href="<?php echo site_url('geraete/geraete/'.$ort['oid']); ?>" class="btn btn-primary"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Übersicht</a>
@@ -50,68 +51,87 @@
 </div>
 <br><br>
 <!-- table-hover table-bordered table-sm table-striped -->
+ <!-- <?php echo $page_total_rows; ?> total rows<br>
+<?php echo $page_show_rows; ?> show rows<br>
+<?php echo $page_pages; ?> pages<br>
+<?php echo $page_pageid; ?> pageid<br>
+<?php echo $page_offset; ?> offset<br>  -->
+
+<?php
+if(!$ort) {
+	$page_id=0;
+} else {
+	$page_id=$ort['oid'];
+}
+if($page_total_rows<=$page_show_rows) {
+
+	$page_show_rows= $page_total_rows;
+}
+
+//wenn pages mehr als 5 dann kürze pagination ein
+if($page_pages<=5) {
+	$page_start=0;
+	$page_end=$page_pages;
+} else {
+	
+	if($page_pageid>=3) {
+		$page_start=$page_pageid -3;
+		
+		$page_end=$page_pageid +4;
+		
+	} else {
+
+		$page_start=0;
+		$page_end=5;
+	}
+}
+
+
+
+
+
+?>
+
 <!-- <?php echo $page_total_rows; ?> total rows<br>
 <?php echo $page_show_rows; ?> show rows<br>
 <?php echo $page_pages; ?> pages<br>
 <?php echo $page_pageid; ?> pageid<br>
-<?php echo $page_offset; ?> offset<br> -->
-
-<?php
-if(!$ort) {
-	$ortsid=0;
-} else {
-	$ortsid=$ort['oid'];
-}
-if($page_total_rows<=$page_show_rows) {
-
-	$page_show_rows=$page_total_rows;
-}
-
-//wenn pages mehr als 5 dann kürze pagination ein
-if($page_pages>=5) {
-	if($page_pageid>=3) {
-		$page_start=$page_pageid -3;
-		$page_end=$page_pageid +4;
-	} else {
-		$page_start=0;
-		$page_end=7;
-	}
-} else {
-	$page_start=0;
-	$page_end=$page_pages;
-}
-if($page_pages>=5 && $page_pageid+4>= $page_pages) {
-$page_end=$page_pages;
-$page_start=$page_end -7;
-}
-
-?>
-<!--
-<?php echo $page_start; ?> start<br>
-<?php echo $page_end; ?> end<br> -->
-<div class="" style="text-align: center;border: 0px solid #343a40;" role="group" aria-label="pagination">
+<?php echo $page_offset; ?> offset<br>  -->
+<div class="text-center">
+<div class="btn-group" role="toolbar" aria-label="Toolbar with button groups" style="border: 0px solid #343a40;">
+<div class="btn-group mr-5" role="group" aria-label="pagination1" >
 
 
-	<a class="btn btn-outline-dark <?php if($page_pageid==0) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $ortsid; ?>/0">start</a>
+
+	<a class="btn-lg btn btn-outline-dark <?php if($page_pageid==0) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $page_id; ?>/0">start</a>
+	</div>
+	<div class="btn-group mr-5" role="group" aria-label="pagination2" >
 <?php
 $i = $page_start;
 while($i < $page_end) { ?>
 
 
-	<a class="btn <?php if($i==$page_pageid) { echo 'btn-dark disabled active';} else { echo 'btn-outline-dark';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $ortsid; ?>/<?php echo $i; ?>" tabindex="0"><?php echo $i +1; ?></a>
+	<a class="btn btn-lg <?php if($i==$page_pageid) { echo 'btn-dark disabled active';} else { echo 'btn-outline-dark';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $page_id; ?>/<?php echo $i; ?>" tabindex="0"><?php echo $i +1; ?></a>
 
 	<?php
 
    //echo "$i, ";
 
    $i++;
+   if($i>=$page_pages) {
+	   break;
+   }
 }
 ?>
-<a class="btn btn-outline-dark <?php if($page_pageid+1==$page_pages || $page_pages==0) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $ortsid; ?>/<?php echo $page_pages-1; ?>">ende</a>
-<br>zeige <?php echo $page_show_rows; ?> von <?php echo $page_total_rows; ?> auf <?php echo $page_pages; ?> Seiten<br>
-
+</div>
+<div class="btn-group mr-5" role="group" aria-label="pagination3" >
+<a class="btn-lg btn btn-outline-dark <?php if($page_pageid+1==$page_pages || $page_pages==0) { echo 'disabled';} ?>" type="button" href="<?php echo base_url(); ?>geraete/pagination/<?php echo $page_id; ?>/<?php echo $page_pages-1; ?>">ende</a>
 </div>
 
+
+</div>
+<br>zeige <?php echo $page_show_rows; ?> von <?php echo $page_total_rows; ?> auf <?php echo $page_pages; ?> Seiten<br>
+</div>
 
 <?php
 
@@ -137,14 +157,39 @@ keine geräte vorhanden
 				$nextyear = date("Y-m-d", $nextyear);
 				$nextyearfast = date("Y-m-d", $nextyearfast);
 
+				if($geraet['aktiv']=='0') { $tabletr_color= "bg-secondary"; 
+				} elseif ($geraet['schutzklasse'] == "5") { $tabletr_color= "bg-light"; 
+				} elseif ($geraet['bestanden']=='0')  { $tabletr_color= "bg-danger"; 
+				} elseif ($nextyear <= $today)  { $tabletr_color= "bg-warning"; 
+				} elseif ($nextyearfast <= $today) { $tabletr_color= "bg-info"; 
+				} else {$tabletr_color= "bg-light";}
+
+				#0 suche bestanden
+				#1 suche inaktiv
+				#2 suche abgelaufen
+				#3 suche bald abgelaufen
+				#4 suche failed
+				#* suche alle
+				#5 suche werkzeug
+
+				if($geraet['aktiv']== "0") { $tabletd_filterid= "1"; 
+				} elseif ($geraet['schutzklasse'] == "5") { $tabletd_filterid= "5"; 
+				} elseif ($geraet['bestanden']=="0") { $tabletd_filterid= "4"; 
+				} elseif ($nextyear <= $today) { $tabletd_filterid= "2"; 
+				} elseif ($nextyearfast <= $today) { $tabletd_filterid= "3"; 
+				} else { $tabletd_filterid= "0";}
+
+				$product_typ_pic = get_product_typ_pic_url($geraet);
+
+
 
 
 		?>
 
-			 <div class="card collapse multi-collapse show" style="border: 1px solid #343a40;" id='<?php if($geraet['aktiv']=='0') { echo "suche_inaktiv"; } elseif ($geraet['bestanden']=='0')  { echo "suche_failed"; } elseif ($nextyear < $today)  { echo "suche_abgelaufen"; } elseif ($nextyearfast < $today) { echo "suche_baldabgelaufen"; } else { echo 'suche_ok';} ?>'>
+			 <div class="card collapse multi-collapse show" style="border: 1px solid #343a40;" id='<?php if($geraet['aktiv']=='0') { echo "suche_inaktiv"; } elseif ($geraet['schutzklasse'] == "5") { echo "suche_ok"; } elseif ($geraet['bestanden']=='0')  { echo "suche_failed"; } elseif ($nextyear < $today)  { echo "suche_abgelaufen"; } elseif ($nextyearfast < $today) { echo "suche_baldabgelaufen"; } else { echo 'suche_ok';} ?>'>
 
 
-			<div id="heading<?php echo $geraet['gid']; ?>" class="card-header <?php if($geraet['aktiv']=='0') { echo "bg-secondary"; } elseif ($geraet['bestanden']=='0')  { echo "bg-danger"; } elseif ($nextyear < $today)  { echo "bg-warning"; } elseif ($nextyearfast < $today) { echo "bg-info"; }?>" data-toggle="collapse" data-target="#geraet<?php echo $geraet['gid']; ?>" aria-expanded="true" aria-controls="geraet<?php echo $geraet['gid']; ?>">
+			<div id="heading<?php echo $geraet['gid']; ?>" class="card-header <?php echo $tabletr_color; ?>" data-toggle="collapse" data-target="#geraet<?php echo $geraet['gid']; ?>" aria-expanded="true" aria-controls="geraet<?php echo $geraet['gid']; ?>">
 
 			<h4 class="mb-0" id="<?php echo $geraet['gid']; ?>">
 			<div class="row">
@@ -166,20 +211,32 @@ keine geräte vorhanden
 					<div class="col-5">Hinzugefügt:</div><div class="col-7" style="white-space:nowrap;"><?php $blubb = new DateTime($geraet['hinzugefuegt']); echo $blubb->format('d.m.Y');  ?></div>
 					<div class="col-5">Schutzklasse:</div><div class="col-7"><?php echo $geraet['schutzklasse']; ?></div>
 					<div class="col-5">letzte Prüfung:</div><div class="col-7"><?php echo $geraet['letztesdatum']?>  <?php if($geraet['letztesdatum']) { echo '('.$geraet['anzahl'].')'; } ?> </div>
-					<div class="col-5">Beschreibung:</div><div class="col-7"><?php echo $geraet['beschreibung']; ?></div>
+					<div class="col-5">Beschreibung:</div><div class="col-7"><?php echo $geraet['beschreibung']; ?></div><br>
+					<div class="col" style="border: 1px solid #343a40;">
+
+					<?php if ($product_typ_pic['pic_exist']) { ?>
+					<img  class="mx-auto d-block" src="<?php echo $product_typ_pic['url_orginal'] ?>" height="300px" alt="Responsive image">
+					<?php } else {
+					echo 'kein Foto';?>
+				
+					<?php } ?></div>
 				</div>
-
-					<div id="1" class="text-right btn-group" role="group" aria-label="options" style="width:100%">
-
-							<a href="<?php if($geraet) { echo site_url('pruefung/new/'.$geraet['gid']); } ?>" class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-success <?php if($geraet['aktiv']=='0' || $this->session->userdata('level')>='3') { echo " disabled"; } ?>"><span class="iconify icon:typcn:document-add icon-width:50 icon-height:50"></span> Neue Prüfung</a>
-							<a href="<?php echo site_url('pruefung/index/'.$geraet['gid']); ?>" class="btn btn-primary <?php if($geraet['aktiv']=='0') { echo " disabled"; } ?>"><span class="iconify icon:typcn:clipboard icon-width:50 icon-height:50"></span> Prüfungen</a>
+				<br>
+				<div id="1" class="btn-group-lg btn-group-vertical text-right btn-group" role="group" aria-label="options" style="width:100%">
+				<?php if ($geraet['schutzklasse']<=4) { ?>
+							<a href="<?php if($geraet) { echo site_url('pruefung/new/'.$geraet['gid']); } ?>" class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-success <?php if($geraet['aktiv']=='0' || $this->session->userdata('level')>='3') { echo " disabled"; } ?>"><span class="iconify icon:typcn:document-add icon-width:50 icon-height:50"></span> Neue Prüfung</a><?php } ?>
 							<a href="<?php echo site_url('geraete/index/'.$geraet['oid']); ?>" class="<?php if($ort) { echo "d-none"; } ?> btn btn-primary btn"><span class="iconify" data-icon="ic:baseline-room" data-width="50" data-height="50"></span> Ort</a>
 							<a href="<?php echo site_url('geraete/edit/'.$geraet['gid']); ?>" class="btn btn-secondary <?php if($this->session->userdata('level')=='3') { echo " disabled"; }?>"><span class="iconify icon:typcn:edit icon-width:50 icon-height:50"></span> edit</a>
-							<a href="<?php echo site_url('geraete/delete/'.$geraet['gid']); ?>" class="btn btn-danger <?php if($this->session->userdata('level')>='2') { echo " disabled"; }?>"><span class="iconify icon:typcn:delete icon-width:50 icon-height:50"></span> delete</a>
 						</div>
+<br><br>
+				<div id="2" class="text-right btn-group" role="group" aria-label="options" style="width:100%"><?php if ($geraet['schutzklasse']<=4) { ?>
+				<a href="<?php echo site_url('pruefung/index/'.$geraet['gid']); ?>" class="btn btn-primary <?php if($geraet['aktiv']=='0') { echo " disabled"; } ?>"><span class="iconify icon:typcn:clipboard icon-width:50 icon-height:50"></span> Prüfungen</a><?php } ?>
+
+				<a href="<?php echo site_url('geraete/delete/'.$geraet['gid']); ?>" class="btn btn-danger <?php if($this->session->userdata('level')>='2') { echo " disabled"; }?>"><span class="iconify icon:typcn:delete icon-width:50 icon-height:50"></span> delete</a>
 
 
-
+				</div>
+				
 					</div>
 					</div>
 					</div>

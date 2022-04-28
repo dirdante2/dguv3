@@ -30,24 +30,33 @@ class Cron extends CI_Controller {
 
 				foreach($orte as $ort) {
 					// nur fürs aktuelle jahr
-
+					
+					echo $ort['name'].' | '.$ort['beschreibung'].' | '.$ort['geraeteanzahl'].'<br>';
 					$filename= $this->Pdf_model->genpdf_uebersicht($ort['oid']);
 					if (file_exists($filename)) {
 						echo $filename.' '.round(filesize($filename)/1024,2). ' KB';
 						$create_pdf_output.= $filename.' '.round(filesize($filename)/1024,2). ' KB<br>';
-					} else {echo $filename;}
+					} else {
+						echo $filename;
+						
 					
-					echo '<br>';
-					echo $ort['oid'].'<br>';
+
+					}
+					
+					echo '<br><br>';
+					
+						
 
 				}
 
 				} else {
+					$ort = $this->Orte_model->get($oid);
+					echo $ort['name'].' | '.$ort['beschreibung'].' | '.$ort['geraeteanzahl'].'<br>';
 
 					$filename= $this->Pdf_model->genpdf_uebersicht($oid);
 					echo $filename.' '.round(filesize($filename)/1024,2). ' KB';
 					$create_pdf_output.= $filename.' '.round(filesize($filename)/1024,2). ' KB<br>';
-					echo '<br>';
+					
 				}
 
 					$this->Log_model->cronjoblog($create_pdf_output, 'uebersicht');
@@ -68,14 +77,20 @@ class Cron extends CI_Controller {
 				#print_r($protokolle);
 				
 				foreach($protokolle as $protokoll) {
+					print_r($protokoll);
+
+					echo  $protokoll['pruefungid'].' '.$protokoll['name'].' | '.$protokoll['typ'].' | '.$protokoll['bestanden'].'<br>';
 					$filename= $this->Pdf_model->genpdf_protokoll($protokoll['pruefungid']);
 					echo $filename.' '.round(filesize($filename)/1024,2).' KB';
 					$create_pdf_output.= $filename.' '.round(filesize($filename)/1024,2). ' KB<br>';
-					echo '<br>';
-					echo $protokoll['pruefungid'].' '.$protokoll['gid'].'<br>';
+					echo '<br><br>';
+					
 				}
 			} else {
 
+					$protokoll = $this->Pruefung_model->get($prid);
+					#print_r($protokoll);
+					echo  $protokoll['pruefungid'].' '.$protokoll['geraetename'].' | '.$protokoll['typ'].' | '.$protokoll['bestanden'].'<br>';
 					$filename= $this->Pdf_model->genpdf_protokoll($prid);
 					
 					#echo '1'.$filename.' 1';
@@ -112,9 +127,11 @@ class Cron extends CI_Controller {
 			//listen übersicht als pdf anfordern
 			foreach($cron_liste as $ortsid) {
 
-				if($this->Orte_model->get($ortsid)) {
+				if($ort=$this->Orte_model->get($ortsid)) {
 					
-					echo 'ort existiert '.$ortsid.'<br>';
+					#print_r($ort);
+
+					echo 'ort existiert oid '.$ortsid.'; Name '.$ort['name'].'; Beschreibung '.$ort['beschreibung'].'<br>';
 				
 
 
@@ -139,6 +156,7 @@ class Cron extends CI_Controller {
 					$error='Fehler '.$filename;
 					array_push($errordata, $error);
 				}
+				echo "-----<br>";
 			}
 
 			// protokoll als pdf anfordern
@@ -173,10 +191,11 @@ class Cron extends CI_Controller {
 
 
 			//FIXME fehler wenn nicht vorhandener ort als letztes kommt und damit keine firmaid vorhanden ist
-			//muss wohl cron für jede firma getrennt angelegt werden
+			//muss wohl cron ordner für jede firma getrennt angelegt werden
 				//aktuelles jahr wird als zip neu erstellt wenn änderungen sind
 				$year=date('Y');
 				if(!empty($cron_liste) || !empty($cron_protokoll)){
+
 				$this->File_model->createfiles($year,$firmaid);
 				}
 
@@ -192,7 +211,7 @@ class Cron extends CI_Controller {
 			}
 
 			$this->Log_model->cronjoblog($create_pdf_output, 'cron');
-			redirect('Dguv3');
+			#redirect('Dguv3');
 		}
 	
 	

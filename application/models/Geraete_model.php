@@ -19,15 +19,22 @@ class Geraete_model extends CI_Model {
         return $this->db->count_all_results();
 	}
 
-	function get($gid=NULL,$oid=null,$firmen_firmaid=null,$limit=null, $offset=null) {
-		$this->db->select('geraete.*, firmen.firmen_firmaid,firmen.firma_name,orte.name AS ortsname, pruefung.bestanden, pruefung.datum AS letztesdatum, (select count(*) from pruefung as pr where geraete.gid = pr.gid) AS anzahl, pruefer.name as pruefername');
+	function get($gid=NULL,$oid=null,$firmen_firmaid=null,$limit=null, $offset=null, $notwerkzeug=null) {
+
+		if($gid=='0') {
+			return null;
+		}
+
+		$this->db->select('geraete.*, firmen.firmen_firmaid,firmen.firma_name,orte.name AS ortsname,orte.beschreibung AS orte_beschreibung, pruefung.bestanden, pruefung.datum AS letztesdatum, (select count(*) from pruefung as pr where geraete.gid = pr.gid) AS anzahl, pruefer.name as pruefername');
 		$this->db->from('geraete');
 		$this->db->join('orte', 'geraete.oid = orte.oid');
 		$this->db->join('firmen', 'geraete.geraete_firmaid = firmen.firmen_firmaid', 'LEFT');
 		$this->db->join('pruefung','geraete.gid = pruefung.gid AND pruefung.pruefungid = (SELECT pruefungid from pruefung as pr where geraete.gid = pr.gid order by datum desc, pruefungid desc limit 1)','LEFT');
 		$this->db->join('pruefer', 'pruefung.pid = pruefer.pid', 'LEFT');
 
-		
+		if($notwerkzeug) {
+			$this->db->where('schutzklasse !=', '5');
+		}
 
 
 		if($firmen_firmaid) {
@@ -45,15 +52,20 @@ class Geraete_model extends CI_Model {
 		$this->db->limit($limit,$offset);
 		$result = $this->db->get()->result_array();
 
-		if(!empty($result)) {
-			if($gid) {
+
+		#print_r($result);
+
+		if(empty($result)) {
+			return NULL;
+		}
+		if($gid) {
 				return $result[0];
 			} else {
 				return $result;
 			}
-		} else {
-			return NULL;
-		}
+		
+			
+		
 	}
 
 	function getByName($name,$firmen_firmaid=NULL) {
@@ -68,24 +80,42 @@ class Geraete_model extends CI_Model {
 			//$this->db->where('orte.orte_firmaid', $firmen_firmaid);
 			$this->db->having('orte.orte_firmaid', $firmen_firmaid);
 		} 
+		
+		$this->db->group_by("geraete.typ");
 
-		#$search = array("Ä", "Ö", "Ü", "ä", "ö", "ü", "ß", "´");
-		#$replace = array("Ae", "Oe", "Ue", "ae", "oe", "ue", "ss", "");
-		#$string= str_replace($search, $replace, $string);
+		
+
+		
 
 		$this->db->like('geraete.typ', $name); 
 		$this->db->or_like('geraete.name', $name);
+		$this->db->or_like('geraete.hersteller', $name);
 
 		$this->db->limit(10);
-		$this->db->order_by('geraete.typ');
+		$this->db->order_by('geraete.name');
+
 		$result = $this->db->get()->result_array();
-		if (!empty($result)) {
-			return $result;
-		} else {
-			return NULL;
-		}
+
+
+
+		if (empty($result)) {return NULL;} 			
+		return $result;
 	}
 
+	function fehlerquote($status,$zeitraum) {
+
+		$this->db->select('*');
+		$this->db->from('geraete');
+		$this->db->join('pruefung','geraete.gid = pruefung.gid AND pruefung.pruefungid = (SELECT pruefungid from pruefung as pr where geraete.gid = pr.gid order by datum desc, pruefungid desc limit 1)','LEFT');
+
+		$this->db->where('schutzklasse !=', '5');
+		$this->db->where('bestanden', $status);
+		$this->db->where('datum >=', $zeitraum);
+
+		#$result = $this->db->get()->result_array();
+		#return $result;
+        return $this->db->count_all_results();
+	}
 
 
 	/*Verlängerungskabel
@@ -111,25 +141,38 @@ class Geraete_model extends CI_Model {
 	function set($data,$gid=NULL) {
 		if($gid) {
 			$this->db->where('gid',$gid);
-			return $this->db->update('geraete',$data);
+			$this->db->update('geraete',$data);
+			$insert_id = $gid;
+		} else {
+			
+			$this->db->insert('geraete',$data);
+			$insert_id = $this->db->insert_id();
 		}
-		return $this->db->insert('geraete',$data);
+		
+		return $insert_id;
 	}
+
+
+
 
 	function delete($gid) {
 		$this->db->where('gid',$gid);
 		return $this->db->delete('geraete');
 	}
 
-// aufruf geräte pdf
+
+
+
+// aufruf geräte pdf übersicht liste für ort
 function pdfdata($oid) {
-	$data['ort'] = $this->Orte_model->get($oid);
 
+	$geraetetyp="5"; // gibt nur geräte mit schutzklasse kleiner als zurück
+	$data['ort'] = $this->Orte_model->get($oid,null,$geraetetyp);
+	#print_r($data);
+#	function get($gid=NULL,$oid=null,$firmen_firmaid=null,$limit=null, $offset=null, $notwerkzeug=null) {
 
-	if($data['ort']===NULL) {
-return NULL;
-	}
-	$geraete = $this->Geraete_model->get(null,$oid);
+	if($data['ort']===NULL) {return NULL;}
+	$geraete = $this->Geraete_model->get(null,$oid,null,null,null,"5");
 
 	//$data['dguv3_show_geraete_col']= $this->config->item('dguv3_show_geraete_pdf_col');
 		// -> aktuell $data['dguv3_logourl']= $this->config->config['base_url'].$this->config->item('dguv3_logourl');
@@ -187,6 +230,7 @@ foreach((array) $geraete as $geraet) {
 	unset($geraete[$i]['geraete_firmaid']);
 	unset($geraete[$i]['oid']);
 	unset($geraete[$i]['geraete_produktfoto']);
+	unset($geraete[$i]['orte_beschreibung']);
 	
 
 	if($geraet['anzahl']=='0') {
@@ -194,7 +238,7 @@ foreach((array) $geraete as $geraet) {
 		$geraete[$i]['pruefername']='';
 	}
 
-if($geraet['bestanden']=='0') {
+if($geraet['bestanden']=='0' || $geraet['bestanden']===NULL) {
 	$geraete[$i]['bestanden']='nein';
 } else {
 	$geraete[$i]['bestanden']='ja';

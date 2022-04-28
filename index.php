@@ -57,6 +57,34 @@
 
 	define('ENVIRONMENT', 'development');
 
+// 	$server_ip = getHostByName(getHostName());
+
+// if (preg_match("/^(127\.0\.|10\.0\.).+/i", $server_ip)) {
+//     define("ENVIRONMENT", "development");
+//     define("BASEURL", "http://localhost:8000/");
+// } else {
+//     define("ENVIRONMENT", "production");
+//     define("BASEURL", "https://domain.com/");
+// }
+// application/config/config.php add:
+
+// $config['base_url'] = BASEURL;
+// if(ENVIRONMENT !== 'production') {
+//     $db = [
+//             'username' => '',
+//             'password' => '',
+//             'database' => '',
+//             'hostname' => '127.0.0.1'
+//     ];
+// } else {
+//     $db = [
+//             'username' => '',
+//             'password' => '',
+//             'database' => '',
+//             'hostname' => ''
+//     ];
+// }
+
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING

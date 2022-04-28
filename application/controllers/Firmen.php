@@ -24,15 +24,17 @@ class Firmen extends CI_Controller {
 	}
 
 	function index($firmen_firmaid=NULL) {
-		if($this->session->userdata('logged_in') !== TRUE){
-			if($this->agent->is_mobile()){
-				$this->load->view('templates/header_mobile');
-			} else {
-				$this->load->view('templates/header');
-			}
-			$this->load->view('static/denied');
-			$this->load->view('templates/footer');
-          }else{
+		site_denied($this->session->userdata('logged_in'));
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
+		  
+		
+		
 			//echo $this->session->userdata('level');
 			//echo $this->session->userdata('firmaid');
 
@@ -50,13 +52,21 @@ class Firmen extends CI_Controller {
 		$header['cronjobs']= $this->File_model->getfiles('cronjob');
 
 		$this->load->view('templates/header',$header);
-		$this->load->view('templates/datatable');
+		$this->load->view('templates/desktop');
 		$this->load->view('firmen/index',$data);
 		$this->load->view('templates/footer');
-	}
+	
 	}
 
 	function edit($firmen_firmaid=0) {
+		site_denied($this->session->userdata('logged_in'));
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
 		//admin prüfer verwalter dürfen bearbeiten
 		if($this->session->userdata('level')>='4'){
           $this->load->view('templates/header');
@@ -123,6 +133,14 @@ class Firmen extends CI_Controller {
 	}
 
 	function delete($firmen_firmaid) {
+		site_denied($this->session->userdata('logged_in'));
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
 		//nur admin darf löschen
 		if($this->session->userdata('level')!=1){
           $this->load->view('templates/header');

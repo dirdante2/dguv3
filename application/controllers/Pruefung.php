@@ -22,17 +22,55 @@ class Pruefung extends CI_Controller {
 		$this->load->library('form_validation');
 		$this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 	}
+	//ausgabe für nicht angemeldete Gäste
+	function guest($gid=NULL) {
+
+
+		$gid =  $this->uri->segment(2);
+		if($this->session->userdata('logged_in')) {
+
+			redirect('pruefung/index/'.$gid);
+		}
+
+
+
+		$data['geraet'] = $this->Geraete_model->get($gid);
+		#print_r($data['geraet']);
+		if($data['geraet']) {
+			
+
+			
+				
+			$data['product_typ_pic'] = get_product_typ_pic_url($data['geraet']);
+			
+
+			$data['pruefung'] = $this->Pruefung_model->list($gid,NULL,NULL,NULL); //prüfungen mit einer gid
+			if($data['pruefung']) {$data['pruefung']= $data['pruefung'][0];
+			#print_r($data['pruefung']);
+			}
+
+		}
+
+		$this->load->view('templates/print/header');
+		$this->load->view('templates/desktop');
+		$this->load->view('pruefung/guest',$data);
+		$this->load->view('templates/print/footer');
+
+	}
 
 	function index($gid=NULL) {
-		if($this->session->userdata('logged_in') !== TRUE){
-			if($this->agent->is_mobile()){
-				$this->load->view('templates/header_mobile');
-			} else {
-				$this->load->view('templates/header');
-			}
-			$this->load->view('static/denied');
-			$this->load->view('templates/footer');
-          }else{
+		site_denied($this->session->userdata('logged_in'));
+
+
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
+		  
+		
 
 
 			$pageid =  $this->uri->segment(4);
@@ -41,15 +79,18 @@ class Pruefung extends CI_Controller {
 
 
 			$data['geraet'] = $this->Geraete_model->get($gid);
+
+			if($gid) {
+				
+			$data['product_typ_pic'] = get_product_typ_pic_url($data['geraet']);
+			}
+
+			
 			# bei oid ohne eintrag setze auf null
 			#print_r($data['geraet']);
 			#var_dump(count($data['geraet']));
 
-			if($data['geraet']===NULL) {
-
-			 
-				
-				$gid = NULL;}
+			if($data['geraet']===NULL) {$gid = NULL;}
 			
 
 			if($gid) {
@@ -111,19 +152,22 @@ class Pruefung extends CI_Controller {
 		$header['cronjobs']= $this->File_model->getfiles('cronjob');
 
 		if($this->agent->is_mobile()){
-			$this->load->view('templates/header_mobile',$header);
+			$this->load->view('templates/header',$header);
 			$this->load->view('templates/scroll');
 			$this->load->view('pruefung/index_mobile',$data);
 		  } else {
 			$this->load->view('templates/header',$header);
-			$this->load->view('templates/datatable');
+			$this->load->view('templates/desktop');
 			$this->load->view('pruefung/index',$data);
 		  }
 
 			$this->load->view('templates/footer');
-			}
+			
 
 	}
+
+
+
 //TODO abfrage ob user eingeloggt ist
 	function protokoll($pruefung_id=NULL) {
 		if($pruefung_id) {
@@ -131,6 +175,13 @@ class Pruefung extends CI_Controller {
 
 
 		}
+		//TODO abfrage ob prüdungid exsistiert wie bei orte
+
+		if(!$data['pruefung']) {
+			exit;
+		}
+
+
 
 		#print_r($data['pruefung']['schutzklasse']);
 		$data['dguv3_logourl']= $this->config->item('dguv3_logourl');
@@ -148,7 +199,7 @@ class Pruefung extends CI_Controller {
 
 		$data['logourl']= $this->config->item('dguv3_logourl');
 		$this->load->view('templates/print/header');
-		$this->load->view('templates/datatable');
+		$this->load->view('templates/desktop');
 		$this->load->view('pruefung/protokoll',$data);
 		$this->load->view('templates/print/footer');
 	}
@@ -173,6 +224,7 @@ class Pruefung extends CI_Controller {
 	}
 
 	function new($gid) {
+		site_denied($this->session->userdata('logged_in'));
 		if(!$this->session->userdata('level')){
           $this->load->view('templates/header');
 			$this->load->view('static/denied');
@@ -181,9 +233,13 @@ class Pruefung extends CI_Controller {
 
 		if($this->Geraete_model->get($gid)) {
 			 $oid = $this->Geraete_model->get($gid)['oid'];
+
+
 			$pruefung_id = $this->Pruefung_model->new(array(
 			'gid'=>$gid,
 			'oid'=>$oid,
+			'mid'=>$this->session->userdata('usermid'),
+			'pid'=>$this->session->userdata('userpid'),
 			'datum'=>date('Y-m-d')
 			));
 			redirect('pruefung/edit/'.$pruefung_id);
@@ -200,11 +256,17 @@ class Pruefung extends CI_Controller {
 
 
 	function edit($pruefung_id) {
-		if(!$this->session->userdata('level')){
-          $this->load->view('templates/header');
-			$this->load->view('static/denied');
-			$this->load->view('templates/footer');
-          }else{
+		site_denied($this->session->userdata('logged_in'));
+
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
+
+		
 
 			$header['cronjobs']= $this->File_model->getfiles('cronjob');
 
@@ -218,26 +280,33 @@ class Pruefung extends CI_Controller {
 		$this->form_validation->set_rules('mid', 'Messgerät', 'callback_mid_check');
 		$this->form_validation->set_rules('pid', 'Prüfer', 'callback_pid_check');
 
-		$gid = $this->getGid($pruefung_id);
-		$RPEmax = $this->Geraete_model->getRPEmax($gid);
+		
 
-		$schutzklasse = $this->Geraete_model->get($gid)['schutzklasse'];
-		$geraetename = $this->Geraete_model->get($gid)['name'];
-		$ortsid = $this->Geraete_model->get($gid)['oid'];
-		$ortsname = $this->Geraete_model->get($gid)['ortsname'];
-		$firma_id = $this->Geraete_model->get($gid)['geraete_firmaid'];
+		$gid = $this->getGid($pruefung_id);
+		$data['RPEmax'] = $this->Geraete_model->getRPEmax($gid);
+		$geraet= $this->Geraete_model->get($gid);
+
+		$data['product_typ_pic'] = get_product_typ_pic_url($geraet);
+
+		$data['pruefer']= $this->Pruefer_model->get();
+		$data['messgeraete']= $this->Messgeraete_model->get();
+		$data['geraet']= $this->Pruefung_model->get($pruefung_id);
+
+
+		$schutzklasse = $geraet['schutzklasse'];
+		$geraetename = $geraet['name'];
+		$ortsid = $geraet['oid'];
+		$ortsname = $geraet['ortsname'];
+		$firma_id = $geraet['geraete_firmaid'];
 
 
 		$header['title']= 'Prüfung '.$geraetename;
+		
+		//todo daten werden doppelt abgerufen?!?! in pruefung_model get sind schon alle informationen drinnen
 
 		if($this->form_validation->run() === FALSE) {
 			$this->load->view('templates/header',$header);
-			$this->load->view('pruefung/form', array(
-					'pruefer'=> $this->Pruefer_model->get(),
-					'messgeraete'=> $this->Messgeraete_model->get(),
-					'geraet'=>$this->Pruefung_model->get($pruefung_id),
-					'RPEmax'=>$RPEmax
-					));
+			$this->load->view('pruefung/form', $data);
 			$this->load->view('templates/footer');
 
 		} else {
@@ -253,40 +322,38 @@ class Pruefung extends CI_Controller {
 				}
 
 			}
-			if($schutzklasse!=4) {
+			if($schutzklasse=='1' || $schutzklasse=='2' || $schutzklasse=='3') {
 
 				$pruefung['RPEmax'] = $RPEmax;
-			}
-			$pruefung['bestanden'] = 1;
+				
+				$pruefung['bestanden'] = 1;
 
-			//schutzklasse 4=Leiter
-			//Kriterein
-			if($pruefung['funktion']==0) {
-				$pruefung['bestanden'] = 0;
-			}
-			if($pruefung['sichtpruefung']==0) {
-				$pruefung['bestanden'] = 0;
-			}
-			if($pruefung['schutzleiter']>$RPEmax && $schutzklasse!=4) {
-				$pruefung['bestanden'] = 0;
+				// schutzklasse 4 Leiter
+				// schutzklasse 5 werkzeug(kein elektro gerät)
 
-			}
-			if($pruefung['isowiderstand']<2.0 && $schutzklasse!=4) {
-				$pruefung['bestanden'] = 0;
+				//Kriterien eigendlich wird bei sichtprüfung =0 alle weiteren prüfungen auf 0 gesetzt aber es ist besser die daten zu speichen um zu sehen ob sich reparatur lohnt
 
+				if($pruefung['funktion']==0 || $pruefung['schutzleiter']>=$RPEmax || $pruefung['isowiderstand']<=2.0 || $pruefung['schutzleiterstrom']>=0.5 || $pruefung['beruehrstrom']>=0.25) {
+					$pruefung['bestanden'] = 0;
+				}
+				if($pruefung['sichtpruefung']==0) {
+					$pruefung['bestanden'] = 0;
+				}
+				
+				
+				
+			
 			}
-			if($pruefung['schutzleiterstrom']>=0.5 && $schutzklasse!=4) {
-				$pruefung['bestanden'] = 0;
-			}
-			if($pruefung['beruehrstrom']>0.25 && $schutzklasse!=4) {
-				$pruefung['bestanden'] = 0;
-			}
-
 			//setze firma id auf die gleiche des gerätes
 			$pruefung['pruefung_firmaid'] =$firma_id;
 
+			$arrayold = $this->Pruefung_model->get($pruefung_id);
+			$logstatus='edit';
 
 			$this->Pruefung_model->update($pruefung,$pruefung_id);
+
+			$arraynew = $this->Pruefung_model->get($pruefung_id);
+
 
 			//generiere PDF übersicht
 			//$this->Pdf_model->genpdf_uebersicht($ortsid);
@@ -295,17 +362,37 @@ class Pruefung extends CI_Controller {
 			//$this->Pdf_model->genpdf_protokoll($pruefung_id);
 			file_put_contents('cron/protokoll/'.$pruefung_id,$pruefung['pruefung_firmaid']);
 
-			$pruefung = $this->Pruefung_model->get($pruefung_id);
 
-			$context='Prüfung bearbeitet name '.$pruefung['geraetename'].' pruefungid '.$pruefung['pruefungid'].' ort '.$pruefung['ortsname'];
-			$this->Log_model->privatlog($context);
+			
+			
+			// log data
+			$log_diff=log_change($arrayold, $arraynew, $logstatus);
+			if(!empty($log_diff)) {
+				$context='Prüfung bearbeitet pid '.$pruefung_id.' ; '.$log_diff;
+				#print_r($context);
+				$this->Log_model->privatlog($context);
+			} 
+			
+
+			
+
+			
 
 			redirect('pruefung/index/'.$gid);
 		}
-	}
+	
 	}
 
 	function delete($pruefung_id) {
+
+		if($this->agent->is_mobile()){
+			$data['useragent'] = 'mobile';
+			$header['useragent'] = 'mobile';
+		  } else {
+			$data['useragent'] = 'desktop';
+			$header['useragent'] = 'desktop';
+		  }
+
 		if(!$this->session->userdata('level')){
           $this->load->view('templates/header');
 			$this->load->view('static/denied');
@@ -327,6 +414,10 @@ class Pruefung extends CI_Controller {
 			$pruefung = $this->Pruefung_model->get($pruefung_id);
 			$filename = $this->File_model->get_file_pfad('2', $pruefung_id);
 
+			$arrayold = $this->Pruefung_model->get($pruefung_id);
+			$arraynew= array();
+			$logstatus='delete';
+
 			$this->Pruefung_model->delete($pruefung_id);
 
 			$cron_protokoll_pfad = 'cron/protokoll/';
@@ -341,8 +432,13 @@ class Pruefung extends CI_Controller {
 				}
 
 			
-			$context='Prüfung gelöscht name '.$pruefung['geraetename'].' pruefungid '.$pruefung['pruefungid'].' ort '.$pruefung['ortsname'];
-			$this->Log_model->privatlog($context);
+			// log data
+			$log_diff=log_change($arrayold, $arraynew, $logstatus);
+			if(!empty($log_diff)) {
+				$context='Prüfung gelöscht pid '.$pruefung_id.' ; '.$log_diff;
+				#print_r($context);
+				$this->Log_model->privatlog($context);
+			} 
 
 
 			redirect('pruefung');
@@ -356,8 +452,9 @@ class Pruefung extends CI_Controller {
 	function pagination($gid,$pageid) {
 
 
-
-		redirect('pruefung/index/'.$gid.'/'.$pageid);
+		#path with end /,oid,pageid
+		site_pagination('geraete/index/',$gid,$pageid);
+		
 	}
 
 	function json($pruefung_id="") {

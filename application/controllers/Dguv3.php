@@ -20,18 +20,27 @@
 
     //$this->load->library('user_agent');
     if($this->session->userdata('logged_in') !== TRUE){
-      //redirect('login');
-     // $this->output->cache(60);
+			#$this->load->view('templates/header',$header);
+			#$this->load->view('static/denied');
+			#$this->load->view('templates/footer');
+			redirect('login');
+			return;
+			
 
-	 redirect('login');
-
-    }
+          }
 
 
   }
 
   function index(){
-    
+    site_denied($this->session->userdata('logged_in'));
+    if($this->agent->is_mobile()){
+      $data['useragent'] = 'mobile';
+      $header['useragent'] = 'mobile';
+    } else {
+      $data['useragent'] = 'desktop';
+      $header['useragent'] = 'desktop';
+    }
 
     if($this->session->userdata('logged_in') === TRUE){
 
@@ -73,24 +82,25 @@
 		$data['archiv_ordner']= $this->File_model->getfiles();
 		$data['cronjobs']= $this->File_model->getfiles('cronjob');
 		$header['cronjobs']= $this->File_model->getfiles('cronjob');
-
+    $data['fehlerquote']=  $this->fehlerquote();
 
 
 		$data['firma'] = $this->Firmen_model-> get($this->session->userdata('firmaid'));
       }
-	  $data['pdfserver']= $this->config->item('dguv3_pdf_server');
+      $data['pdfserver']= $this->config->item('dguv3_pdf_server');
 	  //echo $this->input->cookie('dguv3',true);
 
 
+    
 
+    $this->load->view('templates/header', $header);
       if($this->agent->is_mobile()){
-        $this->load->view('templates/header_mobile',$header);
+       
         $this->load->view('dashboard_view_mobile',$data);
-      } else {
-		$this->load->view('templates/header', $header);
-		$this->load->view('templates/toast');
 
-        $this->load->view('dashboard_view',$data);
+      } else {
+		
+		$this->load->view('dashboard_view',$data);
 	  }
 
       $this->load->view('templates/footer');
@@ -101,54 +111,70 @@
 
   }
 
-  function create_archiv($foldername) {
-    if($this->session->userdata('logged_in') === TRUE){
-    $this->File_model->createfiles($foldername);
+  function fehlerquote() {
+
+    $zeitraumausfallrate     = $this->config->item('dguv3_zeitraumausfallrate');			
+    $oldestday=strtotime('-'.$zeitraumausfallrate); // Jetzt vor einer Woche
+    $oldestday=date("Y-m-d", $oldestday);
 
 
-      redirect('Dguv3');
+
+    $anzahlbestanden = $this->Geraete_model->fehlerquote('1',$oldestday); //status(bestanden),zeitraum
+    #echo $data;
+
+
+    $anzahldurchgefallen = $this->Geraete_model->fehlerquote('0',$oldestday); //status(bestanden),zeitraum
+    #echo $data;
+    $fehlerquote=round((($anzahldurchgefallen * 100) / ($anzahlbestanden + $anzahldurchgefallen)), 2);
+
+    $data['prozent']=$fehlerquote;
+    $data['zeitraum']=$oldestday;
+    $data['anzahlbestanden']=$anzahlbestanden;
+    $data['anzahldurchgefallen']=$anzahldurchgefallen;
+    $data['geprüft']=($anzahlbestanden + $anzahldurchgefallen);
+
+
+    return $data;      
     }
+
+
+
+  function create_archiv($folder) {
+    site_denied($this->session->userdata('logged_in'));
+    
+    $fimra_id=$this->session->userdata('firmaid');
+    $this->File_model->createfiles($folder,$fimra_id); //folder, firmaid
+
+    #$this->File_model->createfiles($folder); //folder, firmaid
+
+
+     # redirect('Dguv3');
+    
 
 	}
 
+  // typ 1 file elektro geräte übersicht
+  // typ 2 file protokoll
+  // typ 3 archiv 
 	function download_file($file,$typ,$pfad=null) {
+    site_denied($this->session->userdata('logged_in'));
 
+// echo "file $file";
+// echo "<br>";
+// echo "typ $typ";
+// echo "<br>";
+// echo "pfad $pfad";
 
 		if($pfad==null) {
 			$pfad='';
 		}
-		$this->File_model->download_file($file,$typ,$pfad);
+		$this->File_model->download_file($typ,$file); //typ, id
 
 
 
 	}
 
-	function get_toast() {
 
-		if($this->session->userdata('logged_in') === TRUE){
-
-			$toasts_files= $this->File_model->getfiles(null,'toast');
-			//print_r($toasts_files);
-
-
-			$toastarray=array();
-foreach($toasts_files as $toastobj) {
-		$details = file_get_contents('toast/'.$this->session->userdata('userid').'/'.$toastobj, true);
-
-		$toasts=json_decode($details, TRUE);
-		//print_r($toasts);
-		array_push($toastarray,$toasts);
-
-		}
-
-$data['toasts']=$toastarray;
-//print_r($toastarray);
-		$this->load->view('templates/toast_view',$data);
-//return $data;
-
-		}
-
-	}
 
 
 }

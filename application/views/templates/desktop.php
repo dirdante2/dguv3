@@ -9,7 +9,7 @@ $(document).ready( function () {
       "bFilter": true,
       "bSort": true,
       "info": true,
-      "iDisplayLength":25,
+      "iDisplayLength":50,
       "order": [[ 0, "desc" ]]
       
   
@@ -24,7 +24,7 @@ $(document).ready( function () {
       "bFilter": true,
       "bSort": true,
       "info": true,
-      "iDisplayLength":25,
+      "iDisplayLength":50,
       "order": [[ 0, "desc" ]]
       
   

@@ -1,7 +1,8 @@
 <h1>Willkommen!</h1>
 
-Letzter login: <?php echo $userdata['user_lastlogin']; ?>
-<br>: 
+<!-- Letzter login: <?php echo $userdata['user_lastlogin']; ?> -->
+Letzter login: <?php echo $this->session->userdata('lastlogin'); ?>
+<br>
 <br>
 <h2><span class="iconify" data-icon="whh:statistics" data-width="30" data-height="30"></span> Statistiken \o/</h2>
 <br>
@@ -167,6 +168,30 @@ Letzter login: <?php echo $userdata['user_lastlogin']; ?>
         <?php } ?>
     </div>
 
+    <div class="col" style="width: 100%; max-width: 200px;">
+        <h4>Fehlerquote</h4><br>
+        
+        <?php 
+        if($fehlerquote['prozent']<='2'){
+            $fehlerquotecolor="text-success";
+            } elseif($fehlerquote['prozent']<='10') {
+                $fehlerquotecolor="text-warning";
+            } else {
+                    $fehlerquotecolor="text-danger";
+                }
+                    
+                    ?>
+
+       <b class="<?php echo $fehlerquotecolor; ?>">Prozent: <?php echo $fehlerquote['prozent']; ?>%</b><br>
+
+        Zeitraum: <?php echo $fehlerquote['zeitraum']; ?><br>
+        Geprüft: <?php echo $fehlerquote['geprüft']; ?><br>
+        Bestanden: <?php echo $fehlerquote['anzahlbestanden']; ?><br>
+        Durchgefallen: <?php echo $fehlerquote['anzahldurchgefallen']; ?><br>
+        
+
+    </div>
+
 
 
 	<div class="col" style="width: 100%; max-width: 160px;">
@@ -260,7 +285,7 @@ $ch = curl_init();
 					<div class="col">
 					<span class="iconify" data-icon="whh:archive" data-width="20" data-height="20"></span>
                     <!-- ordner und archiv existieren -->
-                    <a class="btn-sm btn-secondary" href="<?php echo site_url('dguv3/download_file/3/'.$file); ?>"><?php echo $file; ?> (<?php echo $fileSizeMB; ?>MB)</a>
+                    <a class="btn-sm btn-secondary" href="<?php echo site_url('dguv3/download_file/'.$file.'/3'); ?>"><?php echo $file; ?> (<?php echo $fileSizeMB; ?>MB)</a>
 					<!-- $file+1 wenn in vergangenheit neuerstellen -->
 					<?php if($file >= $year) { ?>
 					<a href="<?php echo site_url('dguv3/create_archiv/'.$file); ?>" class="btn-sm btn-warning">neu</a>
