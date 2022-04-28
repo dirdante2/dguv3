@@ -156,6 +156,11 @@ class File_model extends CI_Model
     }
 	// erstellt zip file für jahr "folder"
     function createfiles($file=null,$firmaid=null) {
+<<<<<<< HEAD
+=======
+
+		//FIXME wenn cron ausführt gibt es keine firmaid var ....es muss für jede firmaid extra sub ornder angelegt werden
+>>>>>>> 10346586e10449e2b380656870ba181159d8dea2
 		if($firmaid==NULL) {
 			$firmadir = glob('pdf/' . '*' , GLOB_ONLYDIR);
 
@@ -164,8 +169,14 @@ class File_model extends CI_Model
 		}
 		
 
+<<<<<<< HEAD
 		foreach ($firmadir as $root) {
 		
+=======
+		foreach ($firmadir as $firma) {
+		
+			$root = $firma.'/';
+>>>>>>> 10346586e10449e2b380656870ba181159d8dea2
 
 			
 			if($file==NULL) {

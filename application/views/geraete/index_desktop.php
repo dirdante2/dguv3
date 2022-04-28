@@ -178,9 +178,12 @@ if($geraete==NULL) {
 				} else { $tabletd_filterid= "0";}
 
 
+<<<<<<< HEAD
 				$product_typ_pic = get_product_typ_pic_url($geraet);
 
 
+=======
+>>>>>>> 10346586e10449e2b380656870ba181159d8dea2
 
 
 		?>
@@ -222,6 +225,7 @@ if($geraete==NULL) {
 				<?php echo $geraet['schutzklasse']; ?></td>
 			<td class="d-none"><?php if($geraet['verlaengerungskabel']=='0') { ?>  <?php } else { ?><?php echo $geraet['kabellaenge']; ?>m</td><?php	} ?></td>
 			<td class="" role="group" aria-label="options" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Letzte Prüfung (Anzahl der Prüfungen)">
+<<<<<<< HEAD
 			<?php echo $geraet['letztesdatum']?>    (<?php echo $geraet['anzahl']?>) </td>
 			<td class=""><?php if ($product_typ_pic['pic_exist']) { ?>
 			<img  class="mx-auto d-block" src="<?php echo $product_typ_pic['url_orginal'] ?>" height="50px" alt="Responsive image">
@@ -230,6 +234,9 @@ if($geraete==NULL) {
 			
 			<?php } ?>
 			</td>
+=======
+<?php echo $geraet['letztesdatum']?>    (<?php echo $geraet['anzahl']?>) </td>
+>>>>>>> 10346586e10449e2b380656870ba181159d8dea2
 			<td class="">
 				<div class="text-right btn-group btn-group-sm" role="group" aria-label="options">
 

@@ -122,7 +122,11 @@ if(!$geraet) {
 	$page_id=0;
 } else {
 	$page_id=$geraet['gid'];
+<<<<<<< HEAD
 	
+=======
+	echo "test";
+>>>>>>> 10346586e10449e2b380656870ba181159d8dea2
 }
 if($page_total_rows<=$page_show_rows) {
 

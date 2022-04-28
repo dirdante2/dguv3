@@ -75,6 +75,7 @@ if ( ! function_exists('log_change')) {
 
 		if(!empty($array_old) || !empty($array_new)) {return $result;}
 	}
+<<<<<<< HEAD
 }
 
 //gibt immer array zurück aber wenn keine inputdaten vorhanden dann 0
@@ -110,4 +111,6 @@ if ( ! function_exists('get_product_typ_pic_url')) {
 	
 		return $url;
 	}
+=======
+>>>>>>> 10346586e10449e2b380656870ba181159d8dea2
 }

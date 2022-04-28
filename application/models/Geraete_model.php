@@ -20,11 +20,14 @@ class Geraete_model extends CI_Model {
 	}
 
 	function get($gid=NULL,$oid=null,$firmen_firmaid=null,$limit=null, $offset=null, $notwerkzeug=null) {
+<<<<<<< HEAD
 
 		if($gid=='0') {
 			return null;
 		}
 
+=======
+>>>>>>> 10346586e10449e2b380656870ba181159d8dea2
 		$this->db->select('geraete.*, firmen.firmen_firmaid,firmen.firma_name,orte.name AS ortsname,orte.beschreibung AS orte_beschreibung, pruefung.bestanden, pruefung.datum AS letztesdatum, (select count(*) from pruefung as pr where geraete.gid = pr.gid) AS anzahl, pruefer.name as pruefername');
 		$this->db->from('geraete');
 		$this->db->join('orte', 'geraete.oid = orte.oid');

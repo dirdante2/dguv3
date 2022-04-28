@@ -5,12 +5,19 @@ $().ready(function() {
 });
 </script>
 
+
+
 <h1>Prüfung bearbeiten</h1>  <br>
 <h2><?php echo $geraet['geraetename'].' ( ID: '.$geraet['gid'].')'; ?> <br>von <?php echo $geraet['ortsname']; ?></h2>
 <br>
 <b>Objekt</b><br><br>
+<<<<<<< HEAD
 <div class="row" style="border: 1px solid #000;">
 <div class="col-lg-4 col-md" style="width: 600px;border: 0px solid #000;white-space: nowrap;">
+=======
+<div class="row" style="border: 1px solid #000; max-width: 900px;">
+<div class="col" style="width: 600px;border: 0px solid #000;white-space: nowrap;">
+>>>>>>> 10346586e10449e2b380656870ba181159d8dea2
 						
 <table  class="table table-sm">
 							<tr>
@@ -43,7 +50,11 @@ $().ready(function() {
 							</tr>
 						</table>
 </div>
+<<<<<<< HEAD
 <div class="col-lg-4 col-md" style="width: 600px;border: 0px solid #000;white-space: nowrap;">
+=======
+<div class="col" style="width: 600px;border: 0px solid #000;white-space: nowrap;">
+>>>>>>> 10346586e10449e2b380656870ba181159d8dea2
 						
 <table  class="table table-sm">
 							<tr>
@@ -73,6 +84,7 @@ $().ready(function() {
 						
 						</table>
 </div>
+<<<<<<< HEAD
 <div class="col-lg-4 col-md text-center" >
 
 <?php
@@ -88,6 +100,9 @@ $().ready(function() {
 </div>
 </div>
 <br><br>
+=======
+</div><br><br>
+>>>>>>> 10346586e10449e2b380656870ba181159d8dea2
 <?php
 echo form_open('pruefung/edit/'.$geraet['pruefungid']);
 echo validation_errors();

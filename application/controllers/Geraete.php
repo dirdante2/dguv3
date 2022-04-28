@@ -150,12 +150,17 @@ class Geraete extends CI_Controller {
 		  
 		
 		  $firmen_firmaid=$this->session->userdata('firmaid');
+<<<<<<< HEAD
 		  $data['lagerorte']=$this->Orte_model->getByName('Lager',$firmen_firmaid);
 
 		  $data['geraet'] = $this->Geraete_model->get($gid);
 		  $data['product_typ_pic'] = get_product_typ_pic_url($data['geraet']);
 		  #print_r($data['product_typ_pic']);
 		  $data['firmen'] = $this->Firmen_model->get();
+=======
+		  $lagerorte=$this->Orte_model->getByName('Lager',$firmen_firmaid);
+		  
+>>>>>>> 10346586e10449e2b380656870ba181159d8dea2
 
 		if($this->agent->is_mobile()){$useragent = 'mobile';} else {$useragent = 'desktop';}
 		#$useragent = 'desktop';
@@ -176,6 +181,28 @@ class Geraete extends CI_Controller {
 				foreach($felder as $feld) {
 					$data['geraet'][$feld]="";
 				}
+<<<<<<< HEAD
+=======
+
+				if($oid) {
+					$ort = $this->Orte_model->get($oid);
+
+					$liste['oid']=$ort['oid'];
+					$liste['ortsname']=$ort['name'];
+					$liste['orte_beschreibung']=$ort['beschreibung'];	
+
+				} else {
+				$liste['oid']='';
+				$liste['ortsname']='';
+				$liste['orte_beschreibung']='';	
+				}
+
+
+				$liste['gid']=0;
+
+						
+				
+>>>>>>> 10346586e10449e2b380656870ba181159d8dea2
 
 				if($oid) {
 					$ort = $this->Orte_model->get($oid);
@@ -190,6 +217,7 @@ class Geraete extends CI_Controller {
 					$data['geraet']['orte_beschreibung']='';	
 				}
 
+<<<<<<< HEAD
 
 				$data['geraet']['gid']=0;
 
@@ -204,6 +232,15 @@ class Geraete extends CI_Controller {
 
 				#$this->load->view('geraete/form_'.$useragent,array(
 				$this->load->view('geraete/form',$data);
+=======
+				#$this->load->view('geraete/form_'.$useragent,array(
+				$this->load->view('geraete/form',array(
+					'geraet'=>$liste,
+					'data'=>$data,
+					'lagerorte'=>$lagerorte,
+					'firmen'=> $this->Firmen_model->get()
+				));
+>>>>>>> 10346586e10449e2b380656870ba181159d8dea2
 				
 				
 
@@ -215,7 +252,15 @@ class Geraete extends CI_Controller {
 
 				
 				#$this->load->view('geraete/form_'.$useragent,array(
+<<<<<<< HEAD
 				$this->load->view('geraete/form',$data);
+=======
+				$this->load->view('geraete/form',array(
+					'geraet'=>$this->Geraete_model->get($gid),
+					'lagerorte'=>$lagerorte,
+					'firmen'=> $this->Firmen_model->get()
+				));
+>>>>>>> 10346586e10449e2b380656870ba181159d8dea2
 
 
 

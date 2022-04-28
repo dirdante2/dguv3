@@ -116,6 +116,7 @@
     $zeitraumausfallrate     = $this->config->item('dguv3_zeitraumausfallrate');			
     $oldestday=strtotime('-'.$zeitraumausfallrate); // Jetzt vor einer Woche
     $oldestday=date("Y-m-d", $oldestday);
+<<<<<<< HEAD
 
 
 
@@ -136,6 +137,42 @@
 
     return $data;      
     }
+=======
+
+
+
+    $anzahlbestanden = $this->Geraete_model->fehlerquote('1',$oldestday); //status(bestanden),zeitraum
+    #echo $data;
+
+
+    $anzahldurchgefallen = $this->Geraete_model->fehlerquote('0',$oldestday); //status(bestanden),zeitraum
+    #echo $data;
+    $fehlerquote=round((($anzahldurchgefallen * 100) / ($anzahlbestanden + $anzahldurchgefallen)), 2);
+
+    $data['prozent']=$fehlerquote;
+    $data['zeitraum']=$oldestday;
+    $data['anzahlbestanden']=$anzahlbestanden;
+    $data['anzahldurchgefallen']=$anzahldurchgefallen;
+    $data['geprüft']=($anzahlbestanden + $anzahldurchgefallen);
+
+
+    return $data;      
+    }
+
+
+
+  function create_archiv($folder) {
+    site_denied($this->session->userdata('logged_in'));
+    
+    $fimra_id=$this->session->userdata('firmaid');
+    $this->File_model->createfiles($folder,$fimra_id); //folder, firmaid
+
+    #$this->File_model->createfiles($folder); //folder, firmaid
+
+
+      redirect('Dguv3');
+    
+>>>>>>> 10346586e10449e2b380656870ba181159d8dea2
 
 
 
