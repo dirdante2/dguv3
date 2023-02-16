@@ -140,6 +140,13 @@ $header['title']= 'Orte';
 				'beschreibung' => $this->input->post('beschreibung'),
 				'orte_firmaid' => $this->input->post('orte_firmaid'),
 			);
+			
+			//nummernschild immer in großbuchstaben und leerzeichen zu - wandeln
+			$ort['name']= str_replace([' ', '.'], '-', $ort['name']);
+			$ort['name']= strtoupper($ort['name']);
+
+			
+
 
 			if ($ort['orte_firmaid']==NULL) {
 				$ort['orte_firmaid']=$this->session->userdata('firmaid');

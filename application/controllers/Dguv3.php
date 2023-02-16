@@ -124,8 +124,16 @@
 
 
     $anzahldurchgefallen = $this->Geraete_model->fehlerquote('0',$oldestday); //status(bestanden),zeitraum
+    $anzahlbestanden_anzahldurchgefallen = $anzahlbestanden + $anzahldurchgefallen;
+
+
+    if ($anzahlbestanden_anzahldurchgefallen >= 1) {
     #echo $data;
+
     $fehlerquote=round((($anzahldurchgefallen * 100) / ($anzahlbestanden + $anzahldurchgefallen)), 2);
+    } else {
+      $fehlerquote= "0";
+    }
 
     $data['prozent']=$fehlerquote;
     $data['zeitraum']=$oldestday;

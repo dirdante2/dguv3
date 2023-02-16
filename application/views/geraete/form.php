@@ -228,15 +228,15 @@ echo validation_errors();
       <div class="col-sm-8">
         <div class="form-check">
           <input class="form-check-input" type="radio" name="schutzklasse" id="schutzklasse1" value="1" <?php if($geraet['schutzklasse']=='1') { echo 'checked'; } ?> required>
-          <label class="form-check-label" for="1">I</label>
+          <label class="form-check-label" for="1">Elektro I</label>
         </div>
         <div class="form-check">
           <input class="form-check-input" type="radio" name="schutzklasse" id="schutzklasse2" value="2" <?php if($geraet['schutzklasse']=='2') { echo 'checked'; } ?>>
-          <label class="form-check-label" for="2">II</label>
+          <label class="form-check-label" for="2">Elektro II</label>
         </div>
         <div class="form-check">
           <input class="form-check-input" type="radio" name="schutzklasse" id="schutzklasse3" value="3" <?php if($geraet['schutzklasse']=='3') { echo 'checked'; } ?>>
-          <label class="form-check-label" for="3">III</label>
+          <label class="form-check-label" for="3">Elektro III</label>
         </div>
         <div class="form-check">
           <input class="form-check-input" type="radio" name="schutzklasse" id="schutzklasse4" value="4" <?php if($geraet['schutzklasse']=='4') { echo 'checked'; } ?>>

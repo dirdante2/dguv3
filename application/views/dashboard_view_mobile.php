@@ -184,6 +184,12 @@ Letzter login: <?php echo $this->session->userdata('lastseen');?>
         </table>
 
       </div>
+
+
+
+
+
+      
     </div>
   </div>
 
@@ -204,6 +210,32 @@ Letzter login: <?php echo $this->session->userdata('lastseen');?>
         <?php } else {?>
             keine Firma
         <?php } ?>
+        <br><br>
+    </div>
+
+    
+    <div class="col-auto" style="width: 100%;">
+        <b>Fehlerquote</b><br>
+        
+        <?php 
+        if($fehlerquote['prozent']<='2'){
+            $fehlerquotecolor="text-success";
+            } elseif($fehlerquote['prozent']<='10') {
+                $fehlerquotecolor="text-warning";
+            } else {
+                    $fehlerquotecolor="text-danger";
+                }
+                    
+                    ?>
+
+       <b class="<?php echo $fehlerquotecolor; ?>">Prozent: <?php echo $fehlerquote['prozent']; ?>%</b><br>
+
+        seit: <?php echo $fehlerquote['zeitraum']; ?><br>
+        Geprüft: <?php echo $fehlerquote['geprüft']; ?><br>
+        Bestanden: <?php echo $fehlerquote['anzahlbestanden']; ?><br>
+        Durchgefallen: <?php echo $fehlerquote['anzahldurchgefallen']; ?><br>
+        
+
     </div>
 
 	<div class="col" style="width: 100%;">
