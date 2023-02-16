@@ -141,19 +141,19 @@ echo validation_errors();
   <div class="form-group row">
     <label for="hersteller" class="col-sm-4 col-form-label">Hersteller</label>
     <div class="col-sm-8">
-      <input type="text" class="form-control" name="hersteller" id="hersteller" value="<?php echo $geraet['hersteller']; ?>">
+      <input type="text" maxlength="40" class="form-control" name="hersteller" id="hersteller" value="<?php echo $geraet['hersteller']; ?>">
     </div>
   </div>
   <div class="form-group row">
     <label for="typ" class="col-sm-4 col-form-label">Typ*</label>
     <div class="col-sm-8">
-      <input type="text" class="form-control" name="typ" id="typ" value="<?php echo $geraet['typ']; ?>" required>
+      <input type="text" maxlength="40" class="form-control" name="typ" id="typ" value="<?php echo $geraet['typ']; ?>" required>
     </div>
   </div>
   <div class="form-group row">
     <label for="seriennummer" class="col-sm-4 col-form-label">seriennummer</label>
     <div class="col-sm-8">
-      <input type="text" class="form-control" name="seriennummer" id="seriennummer" value="<?php echo $geraet['seriennummer']; ?>">
+      <input type="text" maxlength="40" class="form-control" name="seriennummer" id="seriennummer" value="<?php echo $geraet['seriennummer']; ?>">
     </div>
   </div>
   <?php if($this->session->userdata('level')=='1'){?>
@@ -294,7 +294,6 @@ echo validation_errors();
 </form>
 <br><br>
 </div>
-<<<<<<< HEAD
  <div class="col-lg-4"  >
 
  <?php if ($product_typ_pic['pic_exist']) { ?>
@@ -305,8 +304,5 @@ echo validation_errors();
 	<?php } ?>
 
  </div>
-=======
- <div class="col-lg-6"  ></div>
->>>>>>> 10346586e10449e2b380656870ba181159d8dea2
  
 </div>

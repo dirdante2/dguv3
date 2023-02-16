@@ -179,11 +179,8 @@ keine geräte vorhanden
 				} elseif ($nextyearfast <= $today) { $tabletd_filterid= "3"; 
 				} else { $tabletd_filterid= "0";}
 
-<<<<<<< HEAD
 				$product_typ_pic = get_product_typ_pic_url($geraet);
 
-=======
->>>>>>> 10346586e10449e2b380656870ba181159d8dea2
 
 
 
@@ -224,28 +221,16 @@ keine geräte vorhanden
 				
 					<?php } ?></div>
 				</div>
-<<<<<<< HEAD
 				<br>
 				<div id="1" class="btn-group-lg btn-group-vertical text-right btn-group" role="group" aria-label="options" style="width:100%">
 				<?php if ($geraet['schutzklasse']<=4) { ?>
 							<a href="<?php if($geraet) { echo site_url('pruefung/new/'.$geraet['gid']); } ?>" class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-success <?php if($geraet['aktiv']=='0' || $this->session->userdata('level')>='3') { echo " disabled"; } ?>"><span class="iconify icon:typcn:document-add icon-width:50 icon-height:50"></span> Neue Prüfung</a><?php } ?>
-=======
-				
-				<div id="1" class="btn-group-lg btn-group-vertical text-right btn-group" role="group" aria-label="options" style="width:100%">
-
-							<a href="<?php if($geraet) { echo site_url('pruefung/new/'.$geraet['gid']); } ?>" class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-success <?php if($geraet['aktiv']=='0' || $this->session->userdata('level')>='3') { echo " disabled"; } ?>"><span class="iconify icon:typcn:document-add icon-width:50 icon-height:50"></span> Neue Prüfung</a>
->>>>>>> 10346586e10449e2b380656870ba181159d8dea2
 							<a href="<?php echo site_url('geraete/index/'.$geraet['oid']); ?>" class="<?php if($ort) { echo "d-none"; } ?> btn btn-primary btn"><span class="iconify" data-icon="ic:baseline-room" data-width="50" data-height="50"></span> Ort</a>
 							<a href="<?php echo site_url('geraete/edit/'.$geraet['gid']); ?>" class="btn btn-secondary <?php if($this->session->userdata('level')=='3') { echo " disabled"; }?>"><span class="iconify icon:typcn:edit icon-width:50 icon-height:50"></span> edit</a>
 						</div>
 <br><br>
-<<<<<<< HEAD
 				<div id="2" class="text-right btn-group" role="group" aria-label="options" style="width:100%"><?php if ($geraet['schutzklasse']<=4) { ?>
 				<a href="<?php echo site_url('pruefung/index/'.$geraet['gid']); ?>" class="btn btn-primary <?php if($geraet['aktiv']=='0') { echo " disabled"; } ?>"><span class="iconify icon:typcn:clipboard icon-width:50 icon-height:50"></span> Prüfungen</a><?php } ?>
-=======
-				<div id="2" class="text-right btn-group" role="group" aria-label="options" style="width:100%">
-				<a href="<?php echo site_url('pruefung/index/'.$geraet['gid']); ?>" class="btn btn-primary <?php if($geraet['aktiv']=='0') { echo " disabled"; } ?>"><span class="iconify icon:typcn:clipboard icon-width:50 icon-height:50"></span> Prüfungen</a>
->>>>>>> 10346586e10449e2b380656870ba181159d8dea2
 
 				<a href="<?php echo site_url('geraete/delete/'.$geraet['gid']); ?>" class="btn btn-danger <?php if($this->session->userdata('level')>='2') { echo " disabled"; }?>"><span class="iconify icon:typcn:delete icon-width:50 icon-height:50"></span> delete</a>
 

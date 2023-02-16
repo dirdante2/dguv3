@@ -60,11 +60,8 @@ class Pruefung extends CI_Controller {
 
 	function index($gid=NULL) {
 		site_denied($this->session->userdata('logged_in'));
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 10346586e10449e2b380656870ba181159d8dea2
 		if($this->agent->is_mobile()){
 			$data['useragent'] = 'mobile';
 			$header['useragent'] = 'mobile';
@@ -284,7 +281,6 @@ class Pruefung extends CI_Controller {
 		$this->form_validation->set_rules('pid', 'Prüfer', 'callback_pid_check');
 
 		
-<<<<<<< HEAD
 
 		$gid = $this->getGid($pruefung_id);
 		$data['RPEmax'] = $this->Geraete_model->getRPEmax($gid);
@@ -296,13 +292,6 @@ class Pruefung extends CI_Controller {
 		$data['messgeraete']= $this->Messgeraete_model->get();
 		$data['geraet']= $this->Pruefung_model->get($pruefung_id);
 
-=======
-
-		$gid = $this->getGid($pruefung_id);
-		$RPEmax = $this->Geraete_model->getRPEmax($gid);
-		$geraet= $this->Geraete_model->get($gid);
-
->>>>>>> 10346586e10449e2b380656870ba181159d8dea2
 
 		$schutzklasse = $geraet['schutzklasse'];
 		$geraetename = $geraet['name'];
