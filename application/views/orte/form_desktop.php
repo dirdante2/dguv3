@@ -2,6 +2,7 @@
 
 <?php
 
+
 echo form_open('orte/edit/'.$ort['oid']);
 echo validation_errors();
 
@@ -15,7 +16,7 @@ echo validation_errors();
   <div class="form-group row">
   <label for="name" class="col-sm-4 col-form-label">Name*</label>
 <div class="col-sm-8">
-<input type="text" name="name" class="form-control" value="<?php echo $ort['name'] ?>">zb. Nummernschild<br><br>
+<input type="text" name="name" class="form-control" value="<?php echo $ort['name'] ?>">zb. Nummernschild im format "XX YY 1234" oder Standort<br><br>
 </div>
   </div>
 

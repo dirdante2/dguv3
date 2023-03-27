@@ -322,9 +322,10 @@ class Pruefung extends CI_Controller {
 				}
 
 			}
+			//elektro geräte klasse 1-3
 			if($schutzklasse=='1' || $schutzklasse=='2' || $schutzklasse=='3') {
 
-				$pruefung['RPEmax'] = $RPEmax;
+				$pruefung['RPEmax'] = $data['RPEmax'];
 				
 				$pruefung['bestanden'] = 1;
 
@@ -333,17 +334,26 @@ class Pruefung extends CI_Controller {
 
 				//Kriterien eigendlich wird bei sichtprüfung =0 alle weiteren prüfungen auf 0 gesetzt aber es ist besser die daten zu speichen um zu sehen ob sich reparatur lohnt
 
-				if($pruefung['funktion']==0 || $pruefung['schutzleiter']>=$RPEmax || $pruefung['isowiderstand']<=2.0 || $pruefung['schutzleiterstrom']>=0.5 || $pruefung['beruehrstrom']>=0.25) {
+				if($pruefung['sichtpruefung']==0 || $pruefung['funktion']==0 || $pruefung['schutzleiter']>=$data['RPEmax'] || $pruefung['isowiderstand']<=2.0 || $pruefung['schutzleiterstrom']>=0.5 || $pruefung['beruehrstrom']>=0.25) {
 					$pruefung['bestanden'] = 0;
 				}
-				if($pruefung['sichtpruefung']==0) {
-					$pruefung['bestanden'] = 0;
-				}
-				
-				
-				
-			
+					
 			}
+			// Leitern
+			if($schutzklasse=='4') {
+				$pruefung['bestanden'] = 1;
+				if($pruefung['sichtpruefung']==0 || $pruefung['funktion']==0) {
+					$pruefung['bestanden'] = 0;
+
+				}
+
+
+
+
+			}
+
+
+
 			//setze firma id auf die gleiche des gerätes
 			$pruefung['pruefung_firmaid'] =$firma_id;
 
@@ -378,7 +388,7 @@ class Pruefung extends CI_Controller {
 
 			
 
-			redirect('pruefung/index/'.$gid);
+			redirect('geraete/index/'.$ortsid);
 		}
 	
 	}

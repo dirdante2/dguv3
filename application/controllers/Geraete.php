@@ -68,7 +68,7 @@ class Geraete extends CI_Controller {
 			$data['geraete'] = $this->Geraete_model->get(null,$oid,$firmen_firmaid,$data["page_show_rows"],$data['page_offset']); //$gid=NULL,$oid=null,$firmen_firmaid=NULL,$limit=null, $offset=null
 			$data['pdf_data'] = $this->File_model->get_file_pfad('1',$oid);
 			$header['title']= 'Geräte '.$haeder_ortsname;
-				
+				#print_r($data['geraete']);
 
 			
 
@@ -103,6 +103,8 @@ class Geraete extends CI_Controller {
 		$this->load->view('templates/print/footer');
     
 	}
+
+
 
 	function werkzeug($oid) {
 
@@ -392,6 +394,19 @@ class Geraete extends CI_Controller {
 
 			echo json_encode($data);
 		}
+
+		#gibt übersichtsliste für ort mit geräten aus
+		function jsonouttest($oid) {
+			$data = $this->Geraete_model->getlastpruefung($oid);
+			
+
+			// $this->output
+       		// 	 ->set_content_type('application/json', 'utf-8')
+			// 		->set_output(json_encode(array($data)));
+
+			echo json_encode($data);
+		}
+
 
 		function json($key="") {
 			site_denied($this->session->userdata('logged_in'));

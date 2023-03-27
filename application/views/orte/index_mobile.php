@@ -39,18 +39,30 @@ keine geräte vorhanden
 
 <?php
 
-} else { ?>
+} else { 
+	$today = date("Y-m-d");
+	
+
+
+?>
 
 <div id="accordion" class="scroll" style="width:100%">
 
 <?php	foreach($orte as $ort) {
+	
+
+	$month_last_pruefung = strtotime('+10months', strtotime($lastpruefung[$ort['oid']]));
+	
+	$month_last_pruefung = date("Y-m-d", $month_last_pruefung);
+	
+	
 
 		?>
 
 		<div class="card collapse multi-collapse show" style="border: 1px solid #343a40;" id='<?php if($ort['geraeteanzahl']=='0') { echo "suche_keinegeraete"; } else { echo 'suche_ok';} ?>'>
 
 
-		<div id="heading<?php echo $ort['oid']; ?>" class="card-header <?php if($ort['geraeteanzahl']=='0') { echo "bg-warning"; } ?> " data-toggle="collapse" data-target="#ort<?php echo $ort['oid']; ?>" aria-expanded="true" aria-controls="ort<?php echo $ort['oid']; ?>">
+		<div id="heading<?php echo $ort['oid']; ?>" class="card-header <?php if($ort['geraeteanzahl']=='0' || $lastpruefung[$ort['oid']]=="nein" || $month_last_pruefung<= $today ) { echo "bg-warning"; } ?> " data-toggle="collapse" data-target="#ort<?php echo $ort['oid']; ?>" aria-expanded="true" aria-controls="ort<?php echo $ort['oid']; ?>">
 
 			<h4 class="mb-0" >
 			<div class="row">
@@ -65,7 +77,8 @@ keine geräte vorhanden
 				<div class="row" id="<?php echo $ort['oid']; ?>">
 					<div class="col-5">Beschreibung:</div><div class="col-7" style="white-space:nowrap;"><?php echo $ort['beschreibung']; ?></div>
 					<div class="col-5">Geräteanzahl:</div><div class="col-7" style="white-space:nowrap;"><?php echo $ort['geraeteanzahl']; ?></div>
-
+					<div class="col-5">Letzte Prüfung:</div><div class="col-7" style="white-space:nowrap;"><?php echo $lastpruefung[$ort['oid']]; ?></div>
+					
 				</div>
 
 					<div id="1" class="text-right btn-group" role="group" aria-label="options" style="width:100%">

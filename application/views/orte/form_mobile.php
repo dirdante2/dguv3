@@ -13,7 +13,7 @@ echo validation_errors();
 <form>
 
   <div class="form-group row">
-  <label for="name" class="col-sm-5 col-form-label">Name*<br>zb. Nummernschild</label>
+  <label for="name" class="col-sm-5 col-form-label">Name*<br>zb. Nummernschild im format "XX YY 1234" oder Standort</label>
 
 <input type="text" class="form-control" id="name" name="name" value="<?php echo $ort['name'] ?>">
 </div>

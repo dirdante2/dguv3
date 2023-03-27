@@ -25,7 +25,7 @@ class Geraete_model extends CI_Model {
 			return null;
 		}
 
-		$this->db->select('geraete.*, firmen.firmen_firmaid,firmen.firma_name,orte.name AS ortsname,orte.beschreibung AS orte_beschreibung, pruefung.bestanden, pruefung.datum AS letztesdatum, (select count(*) from pruefung as pr where geraete.gid = pr.gid) AS anzahl, pruefer.name as pruefername');
+		$this->db->select('geraete.*, firmen.firmen_firmaid,firmen.firma_name,orte.name AS ortsname,orte.beschreibung AS orte_beschreibung, pruefung.bestanden, pruefung.datum AS letztesdatum, (select count(*) from pruefung as pr where geraete.gid = pr.gid) AS anzahl, pruefer.name as pruefername, pruefung.pruefungid');
 		$this->db->from('geraete');
 		$this->db->join('orte', 'geraete.oid = orte.oid');
 		$this->db->join('firmen', 'geraete.geraete_firmaid = firmen.firmen_firmaid', 'LEFT');
@@ -63,6 +63,45 @@ class Geraete_model extends CI_Model {
 			} else {
 				return $result;
 			}
+		
+			
+		
+	}
+	function getlastpruefung($oid=null,$firmen_firmaid=null) {
+
+		
+
+		$this->db->select('geraete.*, firmen.firmen_firmaid,firmen.firma_name,orte.name AS ortsname,orte.beschreibung AS orte_beschreibung, pruefung.bestanden, pruefung.datum AS letztesdatum, (select count(*) from pruefung as pr where geraete.gid = pr.gid) AS anzahl, pruefer.name as pruefername, pruefung.pruefungid');
+		$this->db->from('geraete');
+		$this->db->join('orte', 'geraete.oid = orte.oid');
+		$this->db->join('firmen', 'geraete.geraete_firmaid = firmen.firmen_firmaid', 'LEFT');
+		$this->db->join('pruefung','geraete.gid = pruefung.gid AND pruefung.pruefungid = (SELECT pruefungid from pruefung as pr where geraete.gid = pr.gid order by datum desc, pruefungid desc limit 1)','LEFT');
+		$this->db->join('pruefer', 'pruefung.pid = pruefer.pid', 'LEFT');
+
+		
+		$this->db->where('schutzklasse !=', '5');
+
+		if($firmen_firmaid) {
+			
+			$this->db->where('geraete.geraete_firmaid', $firmen_firmaid);
+			
+		}
+
+		$this->db->order_by('letztesdatum', 'DESC');
+		#$this->db->group_by("orte.oid");
+
+		
+		if($oid) { //ortsliste
+			$this->db->where('orte.oid',$oid);
+		}
+		
+		$result = $this->db->get()->result_array();
+
+
+		#print_r($result);
+
+		if (empty($result)) {return NULL;} 			
+		return $result[0];
 		
 			
 		
@@ -231,6 +270,7 @@ foreach((array) $geraete as $geraet) {
 	unset($geraete[$i]['oid']);
 	unset($geraete[$i]['geraete_produktfoto']);
 	unset($geraete[$i]['orte_beschreibung']);
+	unset($geraete[$i]['pruefungid']);
 	
 
 	if($geraet['anzahl']=='0') {

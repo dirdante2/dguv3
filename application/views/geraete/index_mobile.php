@@ -149,13 +149,20 @@ keine geräte vorhanden
 
 
 <?php	foreach($geraete as $geraet) {
+	
+	#print_r($geraet);
+	
+
 
 				$today = date("Y-m-d");
 				$day     = $geraet['letztesdatum'];
 				$nextyear = strtotime('+'.$pruefungabgelaufen, strtotime($day));
 				$nextyearfast = strtotime('+'.$pruefungbaldabgelaufen, strtotime($day));
+				$oneweek_last_pruefung = strtotime('+1days', strtotime($day));
 				$nextyear = date("Y-m-d", $nextyear);
 				$nextyearfast = date("Y-m-d", $nextyearfast);
+				$oneweek_last_pruefung = date("Y-m-d", $oneweek_last_pruefung);
+
 
 				if($geraet['aktiv']=='0') { $tabletr_color= "bg-secondary"; 
 				} elseif ($geraet['schutzklasse'] == "5") { $tabletr_color= "bg-light"; 
@@ -194,7 +201,7 @@ keine geräte vorhanden
 			<h4 class="mb-0" id="<?php echo $geraet['gid']; ?>">
 			<div class="row">
 			<div class="col-6 text-left" id="<?php echo $geraet['gid']; ?>">
-			<?php if(!$ort) { echo $geraet['ortsname']; } ?> <?php echo $geraet['name']; ?><?php if($geraet['verlaengerungskabel']=='1') { ?> | <?php echo $geraet['kabellaenge']; ?>m<?php	} ?></div>
+			<?php if(!$ort) { echo $geraet['ortsname']; } ?> <?php echo $geraet['name']; ?><?php if($geraet['verlaengerungskabel']=='1') { ?> | <?php echo $geraet['kabellaenge']; ?>m<?php	} elseif($geraet['schutzklasse']=='4') { ?> | <?php echo $geraet['beschreibung']; ?>m<?php	} ?></div>
  			<div class="col-6 text-right" id="<?php echo $geraet['gid']; ?>"><?php if($this->session->userdata('level')=='1'){?><?php echo $geraet['firma_name']; ?><?php } ?></div>
 			</div>
 
@@ -204,13 +211,14 @@ keine geräte vorhanden
 			<div id="geraet<?php echo $geraet['gid']; ?>" class="collapse" aria-labelledby="heading<?php echo $geraet['gid']; ?>" data-parent="#accordion">
 			<div class="card-body bg-light">
 				<div class="row">
+					<div class="col-5">ID:</div><div class="col-7" style="white-space:nowrap;"><?php echo $geraet['gid']; ?></div>
 					<div class="col-5">Hersteller:</div><div class="col-7" style="white-space:nowrap;"><?php echo $geraet['hersteller']; ?></div>
 					<div class="col-5">Typ:</div><div class="col-7" style="white-space:nowrap;"><?php echo $geraet['typ']; ?></div>
 					<div class="col-5">Seriennummer:</div><div class="col-7" style="white-space:nowrap;"><?php echo $geraet['seriennummer']; ?></div>
 					<div class="col-5">Aktiv:</div><div class="col-7"><?php if($geraet['aktiv']=='0') { echo "nein"; } else { echo "ja"; } ?></div>
 					<div class="col-5">Hinzugefügt:</div><div class="col-7" style="white-space:nowrap;"><?php $blubb = new DateTime($geraet['hinzugefuegt']); echo $blubb->format('d.m.Y');  ?></div>
 					<div class="col-5">Schutzklasse:</div><div class="col-7"><?php echo $geraet['schutzklasse']; ?></div>
-					<div class="col-5">letzte Prüfung:</div><div class="col-7"><?php echo $geraet['letztesdatum']?>  <?php if($geraet['letztesdatum']) { echo '('.$geraet['anzahl'].')'; } ?> </div>
+					<div class="col-5">letzte Prüfung:</div><div class="col-7"><?php echo $geraet['letztesdatum']?> <?php if($geraet['letztesdatum']) { echo '('.$geraet['anzahl'].')'; } ?> </div>
 					<div class="col-5">Beschreibung:</div><div class="col-7"><?php echo $geraet['beschreibung']; ?></div><br>
 					<div class="col" style="border: 1px solid #343a40;">
 
@@ -224,15 +232,17 @@ keine geräte vorhanden
 				<br>
 				<div id="1" class="btn-group-lg btn-group-vertical text-right btn-group" role="group" aria-label="options" style="width:100%">
 				<?php if ($geraet['schutzklasse']<=4) { ?>
-							<a href="<?php if($geraet) { echo site_url('pruefung/new/'.$geraet['gid']); } ?>" class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-success <?php if($geraet['aktiv']=='0' || $this->session->userdata('level')>='3') { echo " disabled"; } ?>"><span class="iconify icon:typcn:document-add icon-width:50 icon-height:50"></span> Neue Prüfung</a><?php } ?>
+							<a href="<?php if($geraet) { echo site_url('pruefung/new/'.$geraet['gid']); } ?>" class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-success <?php if($geraet['aktiv']=='0' || $this->session->userdata('level')>='3') { echo " disabled"; } ?>"><span class="iconify icon:typcn:document-add icon-width:50 icon-height:50"></span> Neue Prüfung</a><?php ?>
+							<?php if ($oneweek_last_pruefung >= $today) { ?>
+							<a href="<?php if($geraet) { echo site_url('pruefung/edit/'.$geraet['pruefungid']); } ?>" class="<?php if(!$geraet) { echo "d-none"; } ?> btn btn-warning <?php if($geraet['aktiv']=='0' || $this->session->userdata('level')>='3') { echo " disabled"; } ?>"><span class="iconify icon:typcn:clipboard icon-width:50 icon-height:50"></span>Prüfung bearbeiten</a><?php } } ?>
 							<a href="<?php echo site_url('geraete/index/'.$geraet['oid']); ?>" class="<?php if($ort) { echo "d-none"; } ?> btn btn-primary btn"><span class="iconify" data-icon="ic:baseline-room" data-width="50" data-height="50"></span> Ort</a>
-							<a href="<?php echo site_url('geraete/edit/'.$geraet['gid']); ?>" class="btn btn-secondary <?php if($this->session->userdata('level')=='3') { echo " disabled"; }?>"><span class="iconify icon:typcn:edit icon-width:50 icon-height:50"></span> edit</a>
+							<a href="<?php echo site_url('geraete/edit/'.$geraet['gid']); ?>" class="btn btn-secondary <?php if($this->session->userdata('level')=='3') { echo " disabled"; }?>"><span class="iconify icon:typcn:edit icon-width:50 icon-height:50"></span> Gerät bearbeiten</a>
 						</div>
 <br><br>
 				<div id="2" class="text-right btn-group" role="group" aria-label="options" style="width:100%"><?php if ($geraet['schutzklasse']<=4) { ?>
 				<a href="<?php echo site_url('pruefung/index/'.$geraet['gid']); ?>" class="btn btn-primary <?php if($geraet['aktiv']=='0') { echo " disabled"; } ?>"><span class="iconify icon:typcn:clipboard icon-width:50 icon-height:50"></span> Prüfungen</a><?php } ?>
 
-				<a href="<?php echo site_url('geraete/delete/'.$geraet['gid']); ?>" class="btn btn-danger <?php if($this->session->userdata('level')>='2') { echo " disabled"; }?>"><span class="iconify icon:typcn:delete icon-width:50 icon-height:50"></span> delete</a>
+				<a href="<?php echo site_url('geraete/delete/'.$geraet['gid']); ?>" class="btn btn-danger <?php if($this->session->userdata('level')>='2') { echo " disabled"; }?>"><span class="iconify icon:typcn:delete icon-width:50 icon-height:50"></span> Löschen</a>
 
 
 				</div>

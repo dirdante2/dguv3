@@ -95,7 +95,7 @@ echo form_open('pruefung/edit/'.$geraet['pruefungid']);
 echo validation_errors();
 ?>
 <div class="row">
-<div class="col-md-6">
+<div class="col-lg-6 col-md">
 <form>
 <input type="hidden" class="form-control" name="oid" id="oid" value="<?php echo $geraet['oid']; ?>" required>
   <div class="form-group row">
@@ -103,7 +103,7 @@ echo validation_errors();
     <div class="col-sm-7">
       <input type="text" class="form-control" name="datum" id="datum" value="<?php echo $geraet['datum']; ?>" required>
     </div>
-  </div>
+  </div><br>
 
   
   <div class="form-group row">
@@ -133,7 +133,7 @@ echo validation_errors();
     		?>
     	</select>
     </div>
-  </div>
+  </div><br>
   <div class="form-group row">
     <label for="Prüfer" class="col-sm-5 col-form-label">Prüfer</label>
     <div class="col-sm-7">
@@ -158,7 +158,7 @@ echo validation_errors();
     		?>
     	</select>
     </div>
-  </div>
+  </div><br>
 
   <fieldset class="form-group">
     <div class="row">
@@ -174,7 +174,7 @@ echo validation_errors();
         </div>
       </div>
     </div>
-  </fieldset>
+  </fieldset><br>
 
   <?php if ( $geraet['schutzklasse'] == '1') {?>
   <div class="form-group row">
@@ -182,7 +182,7 @@ echo validation_errors();
     <div class="col-sm-7">
       <input type="number" step="0.01" class="form-control" name="schutzleiter" id="schutzleiter" value="<?php echo $geraet['schutzleiter']; ?>" > (max 0.3)(<?php echo $RPEmax; ?>)
     </div>
-  </div>
+  </div><br>
    <?php }?>
   <?php if ( $geraet['schutzklasse'] == '1' || $geraet['schutzklasse'] == '2' || $geraet['schutzklasse'] == '3') {?>
   <div class="form-group row">
@@ -193,7 +193,7 @@ für jede weiteren 7,5m 0,1 Ohm mehr
 maximal jedoch 1 Ohm.-->
       <input type="number" step="0.01" class="form-control" name="isowiderstand" id="isowiderstand" value="<?php echo $geraet['isowiderstand']; ?>"> (min 2)
     </div>
-  </div>
+  </div><br>
  <?php }?>
   <?php if ( $geraet['schutzklasse'] == '1') {?>
   <div class="form-group row">
@@ -201,7 +201,7 @@ maximal jedoch 1 Ohm.-->
     <div class="col-sm-7">
       <input type="number" step="0.01" class="form-control" name="schutzleiterstrom" id="schutzleiterstrom" value="<?php echo $geraet['schutzleiterstrom']; ?>" > (max 0.5)
     </div>
-  </div>
+  </div><br>
   <?php }?>
   <?php if ( $geraet['schutzklasse'] == '1' || $geraet['schutzklasse'] == '2') {?>
   <div class="form-group row">
@@ -209,7 +209,7 @@ maximal jedoch 1 Ohm.-->
     <div class="col-sm-7">
       <input type="number" step="0.01" class="form-control" name="beruehrstrom" id="beruehrstrom" value="<?php echo $geraet['beruehrstrom']; ?>" > (max 0.25)
     </div>
-  </div>
+  </div><br>
   <?php }?>
 
 
@@ -227,20 +227,20 @@ maximal jedoch 1 Ohm.-->
         </div>
       </div>
     </div>
-  </fieldset>
+  </fieldset><br>
 
   <div class="form-group row">
     <label for="beschreibung" class="col-sm-5 col-form-label">Bemerkung</label>
     <div class="col-sm-7">
       <textarea class="form-control" rows="3" name="bemerkung" id="bemerkung" ><?php echo $geraet['bemerkung']; ?></textarea>
     </div>
-  </div>
+  </div><br>
 
 
 
 <br>
-<input type="submit" class="btn btn-primary btn-lg btn-block" value="speichern">
-<a href="<?php echo site_url('pruefung/delete/'.$geraet['pruefungid']); ?>" class="<?php if($this->session->userdata('level')>='3') { echo " disabled"; }?> btn btn-danger btn-lg btn-block"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span> delete</a>
+<input type="submit" class="btn btn-primary btn-lg btn-block" value="Speichern">
+<a href="<?php echo site_url('pruefung/delete/'.$geraet['pruefungid']); ?>" class="<?php if($this->session->userdata('level')>='3') { echo " disabled"; }?> btn btn-danger btn-lg btn-block"><span class="iconify icon:typcn:delete icon-width:20 icon-height:20"></span> Löschen</a>
 
 </form>
 

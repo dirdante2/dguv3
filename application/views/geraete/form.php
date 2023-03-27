@@ -222,21 +222,38 @@ echo validation_errors();
       </div>
     </div>
   </fieldset>
+  
   <fieldset class="form-group">
     <div class="row">
-      <legend class="col-form-label col-sm-4 pt-0">Schutzklasse*</legend>
+      <legend class="col-form-label col-sm-4 pt-0">Schutzklasse*<br> <button class="btn btn-sm btn-primary" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="schutzklasse1 schutzklasse2 schutzklasse3 schutzklasse4 schutzklasse5">Hilfe</button></legend>
       <div class="col-sm-8">
         <div class="form-check">
           <input class="form-check-input" type="radio" name="schutzklasse" id="schutzklasse1" value="1" <?php if($geraet['schutzklasse']=='1') { echo 'checked'; } ?> required>
-          <label class="form-check-label" for="1">Elektro I</label>
+          <label class="form-check-label" for="1">Schutzklasse I: Schutzerdung <div class="collapse multi-collapse" id="schutzklasse2"><p>(Die Schutzklasse I zeichnet sich durch die umfangreichsten Schutzmaßnahmen aller Schutzklassen aus, nämlich durch einen doppelten Schutz. 
+            Dabei wird zusätzlich zu einer generell vorhandenen Basis-Isolierung an den aktiven, das heißt den elektrisch leitfähigen Teilen des Elektrogerätes eine Erdung hergestellt. In der Elektrotechnik wird hierbei auch von einem Potentialausgleich gesprochen.)<br> Beispiele Kühlschränke
+Elektroherde
+Waschmaschinen
+Bügeleisen
+Warmwasseraufbereiter</p></div></label>
         </div>
         <div class="form-check">
           <input class="form-check-input" type="radio" name="schutzklasse" id="schutzklasse2" value="2" <?php if($geraet['schutzklasse']=='2') { echo 'checked'; } ?>>
-          <label class="form-check-label" for="2">Elektro II</label>
+          <label class="form-check-label" for="2">
+            Schutzklasse II: Schutzisolierung <div class="collapse multi-collapse" id="schutzklasse2"><p>(Alle Geräte, die in diese Schutzklasse eingeteilt werden, verfügen über eine doppelte oder zumindest verstärkte Isolierung zwischen Netzstromkreis und Ausgangsspannung. 
+            Bei der Ausgangsspannung handelt es sich um die elektrische Spannung, die von der elektrischen Schaltung an ihrem Ausgang zur Verfügung gestellt wird. Die Isolierung kann aber auch zwischen Netzstromkreis und (Metall-) Gehäuse bestehen.)<br> Beispiele Elektrowerkzeuge
+Handleuchten
+Geräte für Haar- und Hautbehandlungen</p>
+            </div>
+            
+          </label>
+          
         </div>
         <div class="form-check">
           <input class="form-check-input" type="radio" name="schutzklasse" id="schutzklasse3" value="3" <?php if($geraet['schutzklasse']=='3') { echo 'checked'; } ?>>
-          <label class="form-check-label" for="3">Elektro III</label>
+          <label class="form-check-label" for="3">Schutzklasse III: Schutzkleinspannung 
+          <div class="collapse multi-collapse" id="schutzklasse2"><p>(Elektrische Geräte der Schutzklasse III zeichnen sich durch eine vergleichsweise niedrige Spannung, die sogenannte Schutzkleinspannung)<br> Beispiele diverse medizinische Geräte
+Spielzeuge
+Geräte, die in Badewanne oder Dusche verwendet werden können</p></div></label>
         </div>
         <div class="form-check">
           <input class="form-check-input" type="radio" name="schutzklasse" id="schutzklasse4" value="4" <?php if($geraet['schutzklasse']=='4') { echo 'checked'; } ?>>
@@ -244,7 +261,7 @@ echo validation_errors();
         </div>
         <div class="form-check">
           <input class="form-check-input" type="radio" name="schutzklasse" id="schutzklasse5" value="5" <?php if($geraet['schutzklasse']=='5') { echo 'checked'; } ?>>
-          <label class="form-check-label" for="5">Anderes Gerät</label>
+          <label class="form-check-label" for="5">Anderes Gerät<div class="collapse multi-collapse" id="schutzklasse2"><p>( keine Elektro Geräte wie Feuerlöscher, Erste Hilfe kasten, Akkus und anderes Werkzeug)</p></div></label>
         </div>
        
       </div>

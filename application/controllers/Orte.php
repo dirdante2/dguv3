@@ -50,9 +50,21 @@ foreach($data['orte'] as $ort) {
 	$pdf_pfad=$this->File_model->get_file_pfad('1',$ort['oid']);
 	$pdffile_data[$ort['oid']]=$pdf_pfad;
 
+	$lastpruefung_array= $this->Geraete_model->getlastpruefung($ort['oid']);
+	#print_r($ort['oid']);
+	#print_r($lastpruefung_array);
+	
+	if (empty($lastpruefung_array['letztesdatum'])) {
+		$lastpruefung_array['letztesdatum']="nein";
+	}
+
+
+	$lastpruefung[$ort['oid']]=$lastpruefung_array['letztesdatum'];
+
 }
 
 $data['pdf_data']=$pdffile_data;
+$data['lastpruefung']=$lastpruefung;
 			}
 $header['cronjobs']= $this->File_model->getfiles('cronjob');
 $header['title']= 'Orte';
@@ -142,10 +154,16 @@ $header['title']= 'Orte';
 			);
 			
 			//nummernschild immer in großbuchstaben und leerzeichen zu - wandeln
+
+			// reg ex für nummernschilder "xxx xx 12345" oder "xxx-xx-12345" oder "xxx-xx12345"
+			if(preg_match('{([a-zA-Z]{1,3})(\s|\.|-)([a-zA-Z]{1,2})(-|\s||\.)([0-9]{1,5})}', $ort['name'])) {
+
+
+			
 			$ort['name']= str_replace([' ', '.'], '-', $ort['name']);
 			$ort['name']= strtoupper($ort['name']);
 
-			
+			}
 
 
 			if ($ort['orte_firmaid']==NULL) {

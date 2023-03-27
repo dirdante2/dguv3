@@ -41,6 +41,7 @@ file_put_contents('pdf/'.$year.'/'.$ortsname.'/liste.pdf',$result); */
 	<th>Name</th>
 	<th>Beschreiung</th>
 	<th>Geräte</th>
+	<th>geprüft</th>
 	<?php if($this->session->userdata('level')=='1'){?><th>Firma</th><?php } ?>
 	<th>PDF erstellt</th>
 	<th>Aktion</th>
@@ -70,6 +71,7 @@ if(count($orte)==0) {
 			<td><?php echo $ort['name']; ?></td>
 			<td><?php echo $ort['beschreibung']; ?></td>
 			<td><?php echo $ort['geraeteanzahl']; ?></td>
+			<td><?php echo $lastpruefung[$ort['oid']]; ?></td>
 			<?php if($this->session->userdata('level')=='1'){?><td><?php echo $ort['firma_name']; ?></td><?php } ?>
 
 			<td class="" role="group" aria-label="options" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="zuletzt erstellt am">
@@ -85,11 +87,11 @@ if(count($orte)==0) {
 				<?php if (!file_exists($pdf_data[ $ort['oid']]) || (filesize($pdf_data[ $ort['oid']])=='0')) {  ?>
 				<div class="btn-group btn-group-sm" role="group" aria-label="options" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Keine Elektro Geräte vorhanden">
 				<?php } ?>
-				<a href="<?php echo base_url('orte/download_file/1/'.$ort['oid']);?>" target="_blank" class="btn btn-primary <?php if (!file_exists($pdf_data[ $ort['oid']]) || (filesize($pdf_data[ $ort['oid']])=='0')) { echo "disabled"; } ?>" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Elektro Geräte als PDF runterladen"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> E-Übersicht</a>
+				<a href="<?php echo base_url('orte/download_file/1/'.$ort['oid']);?>" target="_blank" class="btn btn-primary <?php if (!file_exists($pdf_data[ $ort['oid']]) || (filesize($pdf_data[ $ort['oid']])=='0')) { echo "disabled"; } ?>" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Elektro Geräte als PDF runterladen"><span class="iconify" data-icon="si-glyph:document-pdf" data-width="20" data-height="20"></span> Elektro Geräte</a>
 				<?php if (!file_exists($pdf_data[ $ort['oid']]) || (filesize($pdf_data[ $ort['oid']])=='0')) {  ?></div><?php } ?>
 
 				
-				<a href="<?php echo base_url('geraete/werkzeug/'.$ort['oid']);?>" target="_blank" class="btn btn-primary" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Alle Werkzeuge als Ausdruck anzeigen"><span class="iconify" data-icon="uil:file-blank" data-width="20" data-height="20"></span> Werkzeug</a>
+				<a href="<?php echo base_url('geraete/werkzeug/'.$ort['oid']);?>" target="_blank" class="btn btn-primary" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="Alle Werkzeuge als Ausdruck anzeigen"><span class="iconify" data-icon="uil:file-blank" data-width="20" data-height="20"></span> Werkzeug Liste</a>
 
 				<!-- <?php if (!file_exists('pdf/'. $ort['orte_firmaid'].'/'.$year.'/'.$ort['name'].'_'.$ort['oid'].'/'.$ort['name'].'_liste.pdf')) { echo "disabled"; } ?> -->
 				<a href="<?php echo site_url('orte/edit/'.$ort['oid']); ?>" class="<?php if($this->session->userdata('level')>='4') { echo " disabled"; }?> btn btn-secondary"><span class="iconify icon:typcn:edit icon-width:20 icon-height:20"></span> edit</a>
