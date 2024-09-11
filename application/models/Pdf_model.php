@@ -38,12 +38,8 @@ class Pdf_model extends CI_Model
 			$i++;
 
 
-			$urlprefix='';
-				if($serverurl[1]=='443') {
-					$urlprefix='https://';
-				} else {
-					$urlprefix='http://';
-				}
+			$urlprefix='https://';
+				
 				#echo $urlprefix.$serverurl[0].':'.$serverurl[1].'/pdfgen/'.$kind;
 
 
