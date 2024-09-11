@@ -207,7 +207,7 @@ Letzter login: <?php echo $this->session->userdata('lastlogin'); ?>
 $ch = curl_init();
 		curl_setopt($ch, CURLOPT_HEADER, 0);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //Set curl to return the data instead of printing it to the browser.
-		curl_setopt($ch, CURLOPT_URL, $serverurl[0].':'.$serverurl[1].'/pdfgen/ping');
+		curl_setopt($ch, CURLOPT_URL, $serverurl.'/pdfgen/ping');
 		$data = curl_exec($ch);
         curl_close($ch);
         if(strpos($data, 'pong!')){
@@ -216,11 +216,11 @@ $ch = curl_init();
 
 
 			 ?>
-				 <a  href="<?php echo $serverurl[0].':'.$serverurl[1]; ?>" target="_blank" role="button" class="btn btn-sm btn-success">Server <?php echo $i; ?> OK</a>
+				 <a  href="<?php echo $serverurl; ?>" target="_blank" role="button" class="btn btn-sm btn-success">Server <?php echo $i; ?> OK</a>
 				<?php
 				} else { ?>
 				<!-- <button type="button" class="btn btn-sm btn-danger">Server <?php echo $i; ?> Error</button> -->
-				<a  href="<?php echo $serverurl[0].':'.$serverurl[1]; ?>" target="_blank" role="button" class="btn btn-sm btn-danger">Server <?php echo $i; ?> Error</a>
+				<a  href="<?php echo $serverurl; ?>" target="_blank" role="button" class="btn btn-sm btn-danger">Server <?php echo $i; ?> Error</a>
 				<?php } }?>
 
 				</div>

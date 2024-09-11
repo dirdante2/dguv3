@@ -32,28 +32,57 @@ class Pdf_model extends CI_Model
 		if (!file_exists($dir)) {
 			mkdir($dir, 0777, true);
 		}
-		$pdfserver= $this->config->item('dguv3_pdf_server');
-		$i=0;
-		foreach($pdfserver as $serverurl) {
+		$url = null; // Initialize the variable to avoid "undefined variable" error
+		$pdfserver = $this->config->item('dguv3_pdf_server');
+		$i = 0;
+		
+		foreach ($pdfserver as $serverurl) {
 			$i++;
-
-
-			$urlprefix='https://';
-				
-				#echo $urlprefix.$serverurl[0].':'.$serverurl[1].'/pdfgen/'.$kind;
-
-
-			if($socket =@ fsockopen($serverurl[0], $serverurl[1], $errno, $errstr, $timeout = 10)) {
-
-				//API Url
-				$url = $urlprefix.$serverurl[0].':'.$serverurl[1].'/pdfgen/'.$typ;
-
-				 fclose($socket);
+		
+			
+			$test_url = $serverurl . '/pdfgen/ping';
+			$check_url = $serverurl . '/pdfgen/' . $typ;
+		
+			// Initialize curl
+			$ch = curl_init($test_url);
+		
+			// Set curl options
+			curl_setopt($ch, CURLOPT_NOBODY, true);  // We don't need body
+			curl_setopt($ch, CURLOPT_TIMEOUT, 5);    // Timeout after 5 seconds
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Disable SSL cert verification for testing purposes (not recommended in production)
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);  // Return response
+		
+			// Execute request
+			$response = curl_exec($ch);
+			$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		
+			//echo "$check_url";
+			// Check if the request was successful (HTTP 200)
+			if ($http_code == 200) {
+				$url = $check_url;
+				curl_close($ch);
 				break;
 			}
+		
+			// Log if there's an error
+			if (curl_errno($ch)) {
+				log_message('error', "Curl error: " . curl_error($ch));
+			}
+		
+			// Close the curl session
+			curl_close($ch);
 		}
-
-
+		
+		
+// Check if a working URL was found
+if ($url) {
+    // Do something with the working $url
+    // For example, send a request to generate a PDF
+    echo "Found working server URL: " . $url. "<br>";
+} else {
+    // Handle the case where no server was found
+    log_message('error', "No available servers to handle the request.");
+}
 	
 
 		//Initiate cURL.
