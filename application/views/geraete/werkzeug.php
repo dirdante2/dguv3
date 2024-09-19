@@ -63,17 +63,15 @@
 			</tr>
 		</thead>
 		<tbody>
-		<?php
-
-if(count($geraete)==0) {
-
-	?>
-	
-	<td colspan="15">Es sind noch keine Geräte vorhanden.</td>
-	
-	<?php
-	
-	} else {
+			<?php
+			if (!isset($geraete) || count($geraete) == 0) {
+			?>
+				<tr>
+					<td colspan="15">Es sind noch keine Geräte vorhanden.</td>
+				</tr>
+			<?php
+			} else {
+			
 		foreach($geraete as $geraet) {
 	
 			

@@ -68,7 +68,7 @@ class Dguv3_model extends CI_Model
         //gibt geräte zurück die bestanden sind
         } elseif($tblvar== '1') {
         				$pruefungabgelaufen = $this->config->item('dguv3_pruefungabgelaufen');
-								$pruefungbaldabgelaufen = $this->config->item('dguv3_pruefungbaldabgelaufen');
+						$pruefungbaldabgelaufen = $this->config->item('dguv3_pruefungbaldabgelaufen');
         	 			$today = date("Y-m-d");
         	 			$abgelaufen = strtotime('-'.$pruefungabgelaufen, strtotime($today));
         	 			$baldabgelaufen = strtotime('-'.$pruefungbaldabgelaufen, strtotime($today));
@@ -83,9 +83,13 @@ class Dguv3_model extends CI_Model
 	        		 	//geräte mit prüfung die bald abgelaufen sind
 	        		 	} elseif ($letztesdatum== 'baldabgelaufen'){
 
-	        		 		$this->db->where('datum >', $abgelaufen);
-	        		 		$this->db->where('datum <', $baldabgelaufen);
-	        			}
+                            $this->db->where('datum >', $abgelaufen);
+                            $this->db->where('datum <', $baldabgelaufen);
+                       } elseif ($letztesdatum== 'aktuell'){
+
+                        $this->db->where('datum >', $abgelaufen);
+                        $this->db->where('datum >', $baldabgelaufen);
+                   }
 
 
 

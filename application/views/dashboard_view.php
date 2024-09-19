@@ -9,74 +9,104 @@ Letzter login: <?php echo $this->session->userdata('lastlogin'); ?>
 <div class="row">
     <div class="col" style="width: 100%; max-width: 300px;">
 
-        <table class="table">
-            <thead>
-                <th><span class="iconify" data-icon="jam:plug" data-width="20" data-height="20"></span> Geräte</th>
-                <th></th>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Gesamt</td>
-                    <td>
-                        <?php echo $geraete_count; ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-indent:20px;">inaktiv</td>
-                    <td>
-                        <?php echo $geraete_aktiv_0; ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-indent:20px;">aktiv</td>
-                    <td>
-                        <?php echo $geraete_aktiv_1; ?>
-                    </td>
-                </tr>
+<!-- Tabelle für Gesamt -->
+<table class="table">
+    <thead>
+        <th><span class="iconify" data-icon="jam:plug" data-width="20" data-height="20"></span> Geräte</th>
+        
+    </thead>
+  
+    <tbody>
+    <tr>
+    <td>
+
+<!-- Tabelle für Aktiv/Inaktiv (Unterpunkt von Gesamt) -->
+<table class="table table-sm" >
+<thead class="thead-light">
+        <th><span class="iconify" data-icon="fluent-mdl2:total" data-width="20" data-height="20"></span> Gesamt</th>
+        <th><?php echo $geraete_count; ?></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="iconify" data-icon="mdi:stop-pause-outline" data-width="20" data-height="20"></span> Inaktiv</td>
+            <td><?php echo $geraete_aktiv_0; ?></td>
+        </tr>
+        <tr>
+            <td><span class="iconify" data-icon="octicon:play-24" data-width="20" data-height="20"></span> Aktiv</td>
+            <td><?php echo $geraete_aktiv_1; ?></td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Tabelle für Geprüft/Ungeprüft (Unterpunkt von Aktiv) -->
+<table class="table table-sm" >
+<thead class="thead-light">
+        <th><span class="iconify" data-icon="octicon:play-24" data-width="20" data-height="20"></span> Aktiv</th>
+        <th><?php echo $geraete_aktiv_1; ?></th>
+      
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="iconify" data-icon="fluent:checkbox-unchecked-20-regular" data-width="20" data-height="20"></span> Ungeprüft</td>
+            <td><?php echo $geraete_count_geprueft_null; ?></td>
+        </tr>
+        <tr>
+            <td><span class="iconify" data-icon="fluent:checkbox-checked-20-regular" data-width="20" data-height="20"></span> Geprüft</td>
+            <td><?php echo $geraete_count_geprueft; ?></td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Tabelle für Durchgefallen/Bestanden (Unterpunkt von Geprüft) -->
+<table class="table table-sm" >
+<thead class="thead-light">
+        <th><span class="iconify" data-icon="fluent:checkbox-checked-20-regular" data-width="20" data-height="20"></span> Geprüft</th>
+        <th><?php echo $geraete_count_geprueft; ?></th>
+       
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="iconify" data-icon="mdi:stop-alert-outline" data-width="20" data-height="20"></span> Durchgefallen</td>
+            <td><?php echo $geraete_count_geprueft_0; ?></td>
+        </tr>
+        <tr>
+            <td><span class="iconify" data-icon="clarity:success-standard-line" data-width="20" data-height="20"></span> Bestanden</td>
+            <td><?php echo $geraete_count_geprueft_1; ?></td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Tabelle für Abgelaufen/Bald abgelaufen (Unterpunkt von Bestanden) -->
+<table class="table table-sm" >
+<thead class="thead-light">
+        <th><span class="iconify" data-icon="clarity:success-standard-line" data-width="20" data-height="20"></span> Bestanden</th>
+        <th><?php echo $geraete_count_geprueft_1; ?></th>
+        
+    </thead>
+    <tbody>
+        <tr>
+            <td><span class="iconify" data-icon="mdi:stopwatch-remove-outline" data-width="20" data-height="20"></span> Abgelaufen</td>
+            <td><?php echo $geraete_count_geprueft_abgelaufen; ?></td>
+        </tr>
+        <tr>
+            <td><span class="iconify" data-icon="pajamas:expire" data-width="20" data-height="20"></span> Bald abgelaufen</td>
+            <td><?php echo $geraete_count_geprueft_baldabgelaufen; ?></td>
+        </tr>
+        <tr>
+            <td><span class="iconify" data-icon="fluent-mdl2:waitlist-confirm" data-width="20" data-height="20"></span> aktuell</td>
+            <td><?php echo $geraete_count_geprueft_aktuell; ?></td>
+        </tr>
+    </tbody>
+</table>
+
+</td>
+        </tr>
+</tbody>
+</table>
 
 
-                <tr>
-                    <td style="text-indent:30px;">ungeprüft</td>
-                    <td>
-                        <?php echo $geraete_count_geprueft_null; ?>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td style="text-indent:30px;">geprüft</td>
-                    <td>
-                        <?php echo $geraete_count_geprueft; ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-indent:40px;">durchgefallen</td>
-                    <td>
-                        <?php echo $geraete_count_geprueft_0; ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-indent:40px;">bestanden</td>
-                    <td>
-                        <?php echo $geraete_count_geprueft_1; ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-indent:50px;">abgelaufen</td>
-                    <td>
-                        <?php echo $geraete_count_geprueft_abgelaufen; ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-indent:50px;">bald abgelaufen</td>
-                    <td>
-                        <?php echo $geraete_count_geprueft_baldabgelaufen; ?>
-                    </td>
-                </tr>
 
 
-
-            </tbody>
-        </table>
 
     </div>
 

@@ -59,6 +59,11 @@
       $data['geraete_count_geprueft_null']= $this->Dguv3_model->getgeraete_bestanden_countdata2();
       $data['geraete_count_geprueft_baldabgelaufen']= $this->Dguv3_model->getgeraete_bestanden_countdata2('1', 'baldabgelaufen');
       $data['geraete_count_geprueft_abgelaufen']= $this->Dguv3_model->getgeraete_bestanden_countdata2('1', 'abgelaufen');
+      $data['geraete_count_geprueft_aktuell']= $this->Dguv3_model->getgeraete_bestanden_countdata2('1', 'aktuell');
+
+
+
+
 
       //$data['geraete_count_abgelaufen']= $this->Dguv3_model->getgeraete_abgelaufen_countdata();
       if($this->session->userdata('level')=='1'){
