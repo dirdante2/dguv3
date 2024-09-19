@@ -188,7 +188,14 @@ Letzter login: <?php echo $this->session->userdata('lastlogin'); ?>
 
 
     <div class="col" style="width: 100%; max-width: 200px;">
-        <h4>Anschrift</h4><br>
+    <table class="table">
+            <thead>
+                <th><span class="iconify" data-icon="bx:bxs-business" data-width="20" data-height="20"></span> Anschrift</th>
+                
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
         <?php if ($this->session->userdata('firmaid')) { ?>
             <?php echo $firma['firma_name']; ?><br>
             <?php echo $firma['firma_strasse']; ?><br>
@@ -196,12 +203,23 @@ Letzter login: <?php echo $this->session->userdata('lastlogin'); ?>
         <?php } else {?>
             keine Firma
         <?php } ?>
+        </td>   </tr>
+            </tbody>
+        </table>
     </div>
 
     <div class="col" style="width: 100%; max-width: 200px;">
-        <h4>Fehlerquote</h4><br>
-        
-        <?php 
+
+
+    <table class="table">
+            <thead>
+                <th><span class="iconify" data-icon="bx:message-alt-error" data-width="20" data-height="20"></span> Fehlerquote</th>
+                
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+            <?php 
         if($fehlerquote['prozent']<='2'){
             $fehlerquotecolor="text-success";
             } elseif($fehlerquote['prozent']<='10') {
@@ -218,6 +236,12 @@ Letzter login: <?php echo $this->session->userdata('lastlogin'); ?>
         Geprüft: <?php echo $fehlerquote['geprüft']; ?><br>
         Bestanden: <?php echo $fehlerquote['anzahlbestanden']; ?><br>
         Durchgefallen: <?php echo $fehlerquote['anzahldurchgefallen']; ?><br>
+                    </td>   </tr>
+            </tbody>
+        </table>
+        
+        
+       
         
 
     </div>
@@ -225,7 +249,16 @@ Letzter login: <?php echo $this->session->userdata('lastlogin'); ?>
 
 
 	<div class="col" style="width: 100%; max-width: 160px;">
-        <h4>PDF Server</h4><br>
+    <table class="table">
+            <thead>
+                <th>PDF Server</th>
+                
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+       
+
 		<div class="btn-group-vertical" role="group" style="width: 100%;">
 		<?php
 		$i=0;
@@ -234,13 +267,13 @@ Letzter login: <?php echo $this->session->userdata('lastlogin'); ?>
 
 			<?php
 
-$ch = curl_init();
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //Set curl to return the data instead of printing it to the browser.
-		curl_setopt($ch, CURLOPT_URL, $serverurl.'/pdfgen/ping');
-		$data = curl_exec($ch);
-        curl_close($ch);
-        if(strpos($data, 'pong!')){
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_HEADER, 0);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //Set curl to return the data instead of printing it to the browser.
+                curl_setopt($ch, CURLOPT_URL, $serverurl.'/pdfgen/ping');
+                $data = curl_exec($ch);
+                curl_close($ch);
+                if(strpos($data, 'pong!')){
 
 
 
@@ -254,8 +287,15 @@ $ch = curl_init();
 				<?php } }?>
 
 				</div>
-
+                </td>   </tr>
+            </tbody>
+        </table>
                 </div>
+
+                
+        
+
+
                 </div> 
                 <div class="row" style="white-space: nowrap; border: 0px solid #000;">
 
@@ -328,14 +368,14 @@ $ch = curl_init();
 						<span class="iconify" data-icon="whh:archive" data-width="20" data-height="20"></span>
                     <!--  ordner existiert aber kein zip archiv -->
                     <a class="btn-sm btn-light" ><?php echo $file; ?></a> <a href="<?php echo site_url('dguv3/create_archiv/'.$file); ?>" class="btn-sm btn-success">neu</a>
-</div>
+                    </div>
 
 
                     <?php } ?>
                 <br></div><br>
                 <?php } ?>
 
-<?php  } ?>
+                <?php  } ?>
 
         <?php } ?>
 

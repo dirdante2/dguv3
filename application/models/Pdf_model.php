@@ -78,13 +78,10 @@ class Pdf_model extends CI_Model
 if ($url) {
     // Do something with the working $url
     // For example, send a request to generate a PDF
-    echo "Found working server URL: " . $url. "<br>";
-} else {
-    // Handle the case where no server was found
-    log_message('error', "No available servers to handle the request.");
-}
-	
+    echo "working server URL: " . $url. "<br>";
 
+
+	//get pdf from server	
 		//Initiate cURL.
 		$ch = curl_init($url);
 
@@ -111,13 +108,23 @@ if ($url) {
 
 		if($code=='200') {
 		file_put_contents($filename, $result, LOCK_EX);
-	
+
 		} else {
 			echo '<br>';
 			print_r($result);
 			echo '<br>';
 		}
 		return $code;
+
+
+
+} else {
+    // Handle the case where no server was found
+    log_message('error', "No available servers to handle the request.");
+}
+	
+
+echo "no working server found <br>";
 		
 	}
 
